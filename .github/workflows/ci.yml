@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Grant the minimum permissions needed; publish-snapshot upgrades packages to write.
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          # Built-in cache support for Gradle — caches ~/.gradle/caches and
+          # ~/.gradle/wrapper, keyed on build.gradle.kts so a dependency change
+          # always busts the cache.
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build & test
+        run: ./gradlew test --no-daemon
+
+  publish-snapshot:
+    name: Publish SNAPSHOT to GitHub Packages
+    # Only publish on direct pushes to main — not on pull requests.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+
+    # Elevate packages permission only for this job so the build job remains
+    # read-only.
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Publish to GitHub Packages
+        # GITHUB_TOKEN is the built-in secret — no manual secret needed.
+        # The publishing repository in build.gradle.kts reads these two env vars.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: ./gradlew publish --no-daemon
