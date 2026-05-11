@@ -14,6 +14,7 @@ import de.joesst.dev.fulfillmenttools.stocks.StocksClient;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public final class StocksClientImpl implements StocksClient {
 
@@ -57,6 +58,28 @@ public final class StocksClientImpl implements StocksClient {
                     ? request
                     : request.toBuilder().startAfterId(cursor).build();
             return list(r);
+        });
+    }
+
+    @Override
+    public CompletableFuture<Page<StockItem>> listAsync(StockListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/stocks");
+
+        if (request.size() != null) {
+            builder.queryParam("size", String.valueOf(request.size()));
+        }
+        if (request.startAfterId() != null) {
+            builder.queryParam("startAfterId", request.startAfterId());
+        }
+        if (request.facilityRef() != null) {
+            builder.queryParam("facilityRef", request.facilityRef());
+        }
+
+        return transport.executeAsync(builder.build()).thenApply(response -> {
+            StockListResponse body = responseHandler.handle(response, StockListResponse.class);
+            return new Page<>(body.stocks() != null ? body.stocks() : List.of(), body.nextCursor());
         });
     }
 

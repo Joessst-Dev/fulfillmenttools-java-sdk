@@ -1,6 +1,7 @@
 plugins {
     id("java-library")
     id("maven-publish")
+    id("signing")
 }
 
 group = "de.joesst.dev"
@@ -60,6 +61,11 @@ publishing {
                         email = "jostweyers@gmail.com"
                     }
                 }
+                scm {
+                    connection = "scm:git:git://github.com/Joessst-Dev/fulfillmenttools-java-sdk.git"
+                    developerConnection = "scm:git:ssh://github.com/Joessst-Dev/fulfillmenttools-java-sdk.git"
+                    url = "https://github.com/Joessst-Dev/fulfillmenttools-java-sdk"
+                }
             }
         }
     }
@@ -76,5 +82,32 @@ publishing {
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
+        maven {
+            name = "MavenCentral"
+            // Sonatype Central Portal deployment endpoint
+            url = uri(
+                if (version.toString().endsWith("SNAPSHOT"))
+                    "https://central.sonatype.com/repository/maven-snapshots/"
+                else
+                    "https://central.sonatype.com/api/v1/publisher/upload"
+            )
+            credentials {
+                // SONATYPE_USERNAME and SONATYPE_TOKEN are stored as GitHub Actions secrets.
+                username = System.getenv("SONATYPE_USERNAME")
+                password = System.getenv("SONATYPE_TOKEN")
+            }
+        }
+    }
+}
+
+// Sign all publications when the signing key is present.
+// In CI the key is injected via SIGNING_KEY (armored private key) and SIGNING_PASSWORD.
+// Locally, signing is skipped unless gradle.properties supplies these values.
+signing {
+    val signingKey = System.getenv("SIGNING_KEY")
+    val signingPassword = System.getenv("SIGNING_PASSWORD")
+    if (signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign(publishing.publications["mavenJava"])
     }
 }

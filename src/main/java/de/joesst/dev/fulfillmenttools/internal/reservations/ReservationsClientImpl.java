@@ -15,6 +15,7 @@ import de.joesst.dev.fulfillmenttools.reservations.ReservationsClient;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public final class ReservationsClientImpl implements ReservationsClient {
 
@@ -89,6 +90,63 @@ public final class ReservationsClientImpl implements ReservationsClient {
                 .url(baseUrl + "/api/reservations/" + reservationId)
                 .build();
         responseHandler.handleVoid(execute(request));
+    }
+
+    @Override
+    public CompletableFuture<Reservation> getAsync(String reservationId) {
+        SdkHttpRequest request = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/reservations/" + reservationId)
+                .build();
+        return transport.executeAsync(request)
+                .thenApply(response -> responseHandler.handle(response, Reservation.class));
+    }
+
+    @Override
+    public CompletableFuture<Page<Reservation>> listAsync(ReservationListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/reservations");
+
+        if (request.size() != null) {
+            builder.queryParam("size", String.valueOf(request.size()));
+        }
+        if (request.startAfterId() != null) {
+            builder.queryParam("startAfterId", request.startAfterId());
+        }
+        if (request.facilityRef() != null) {
+            builder.queryParam("facilityRef", request.facilityRef());
+        }
+
+        return transport.executeAsync(builder.build()).thenApply(response -> {
+            ReservationListResponse body = responseHandler.handle(response, ReservationListResponse.class);
+            return new Page<>(body.reservations() != null ? body.reservations() : List.of(), body.nextCursor());
+        });
+    }
+
+    @Override
+    public CompletableFuture<Reservation> createAsync(CreateReservationRequest request) {
+        CreateReservationBody body = new CreateReservationBody(
+                request.facilityRef(), request.tenantArticleId(), request.quantity());
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/reservations")
+                .body(responseHandler.encode(body))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, Reservation.class));
+    }
+
+    @Override
+    public CompletableFuture<Void> deleteAsync(String reservationId) {
+        SdkHttpRequest request = SdkHttpRequest.builder()
+                .method(HttpMethod.DELETE)
+                .url(baseUrl + "/api/reservations/" + reservationId)
+                .build();
+        return transport.executeAsync(request).thenApply(response -> {
+            responseHandler.handleVoid(response);
+            return null;
+        });
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

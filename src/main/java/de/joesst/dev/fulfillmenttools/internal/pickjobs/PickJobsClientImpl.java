@@ -15,6 +15,7 @@ import de.joesst.dev.fulfillmenttools.pickjobs.UpdatePickJobRequest;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public final class PickJobsClientImpl implements PickJobsClient {
 
@@ -82,6 +83,53 @@ public final class PickJobsClientImpl implements PickJobsClient {
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), PickJob.class);
+    }
+
+    @Override
+    public CompletableFuture<PickJob> getAsync(String pickJobId) {
+        SdkHttpRequest request = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/pickjobs/" + pickJobId)
+                .build();
+        return transport.executeAsync(request)
+                .thenApply(response -> responseHandler.handle(response, PickJob.class));
+    }
+
+    @Override
+    public CompletableFuture<Page<PickJob>> listAsync(PickJobListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/pickjobs");
+
+        if (request.size() != null) {
+            builder.queryParam("size", String.valueOf(request.size()));
+        }
+        if (request.startAfterId() != null) {
+            builder.queryParam("startAfterId", request.startAfterId());
+        }
+        if (request.facilityRef() != null) {
+            builder.queryParam("facilityRef", request.facilityRef());
+        }
+        if (request.status() != null) {
+            builder.queryParam("status", request.status());
+        }
+
+        return transport.executeAsync(builder.build()).thenApply(response -> {
+            PickJobListResponse body = responseHandler.handle(response, PickJobListResponse.class);
+            return new Page<>(body.pickJobs() != null ? body.pickJobs() : List.of(), body.nextCursor());
+        });
+    }
+
+    @Override
+    public CompletableFuture<PickJob> updateAsync(String pickJobId, UpdatePickJobRequest request) {
+        UpdatePickJobBody body = new UpdatePickJobBody(request.status());
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.PATCH)
+                .url(baseUrl + "/api/pickjobs/" + pickJobId)
+                .body(responseHandler.encode(body))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, PickJob.class));
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

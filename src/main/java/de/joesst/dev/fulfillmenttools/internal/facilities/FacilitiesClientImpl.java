@@ -16,6 +16,7 @@ import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public final class FacilitiesClientImpl implements FacilitiesClient {
 
@@ -97,6 +98,71 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
                 .url(baseUrl + "/api/facilities/" + facilityId)
                 .build();
         responseHandler.handleVoid(execute(httpRequest));
+    }
+
+    @Override
+    public CompletableFuture<Facility> getAsync(String facilityId) {
+        SdkHttpRequest request = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/facilities/" + facilityId)
+                .build();
+        return transport.executeAsync(request)
+                .thenApply(response -> responseHandler.handle(response, Facility.class));
+    }
+
+    @Override
+    public CompletableFuture<Page<Facility>> listAsync(FacilityListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/facilities");
+
+        if (request.size() != null) {
+            builder.queryParam("size", String.valueOf(request.size()));
+        }
+        if (request.startAfterId() != null) {
+            builder.queryParam("startAfterId", request.startAfterId());
+        }
+
+        return transport.executeAsync(builder.build()).thenApply(response -> {
+            FacilityListResponse body = responseHandler.handle(response, FacilityListResponse.class);
+            return new Page<>(body.facilities() != null ? body.facilities() : List.of(), body.nextCursor());
+        });
+    }
+
+    @Override
+    public CompletableFuture<Facility> createAsync(CreateFacilityRequest request) {
+        CreateFacilityBody body = new CreateFacilityBody(request.name(), request.tenantFacilityId());
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/facilities")
+                .body(responseHandler.encode(body))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, Facility.class));
+    }
+
+    @Override
+    public CompletableFuture<Facility> updateAsync(String facilityId, UpdateFacilityRequest request) {
+        UpdateFacilityBody body = new UpdateFacilityBody(request.name(), request.status());
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.PATCH)
+                .url(baseUrl + "/api/facilities/" + facilityId)
+                .body(responseHandler.encode(body))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, Facility.class));
+    }
+
+    @Override
+    public CompletableFuture<Void> deleteAsync(String facilityId) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.DELETE)
+                .url(baseUrl + "/api/facilities/" + facilityId)
+                .build();
+        return transport.executeAsync(httpRequest).thenApply(response -> {
+            responseHandler.handleVoid(response);
+            return null;
+        });
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {
