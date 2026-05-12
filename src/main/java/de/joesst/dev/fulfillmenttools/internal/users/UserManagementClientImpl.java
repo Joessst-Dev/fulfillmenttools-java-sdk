@@ -41,22 +41,10 @@ public final class UserManagementClientImpl implements UserManagementClient {
 
     @Override
     public Page<User> list(UserListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/users");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
+        SdkHttpResponse response = execute(buildListRequest(request));
         UserListResponse body = responseHandler.handle(response, UserListResponse.class);
-        return new Page<>(
-                body.users() != null ? body.users() : List.of(),
-                body.nextCursor());
+        String cursor = body.pageInfo() != null ? body.pageInfo().endCursor() : null;
+        return new Page<>(body.users() != null ? body.users() : List.of(), cursor);
     }
 
     @Override
@@ -71,7 +59,10 @@ public final class UserManagementClientImpl implements UserManagementClient {
 
     @Override
     public User create(CreateUserRequest request) {
-        CreateUserBody body = new CreateUserBody(request.email(), request.firstName(), request.lastName());
+        CreateUserBody body = new CreateUserBody(
+                request.username(), request.password(),
+                request.firstName(), request.lastName(),
+                request.email(), request.locale(), request.assignedRoles());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/users")
@@ -82,9 +73,9 @@ public final class UserManagementClientImpl implements UserManagementClient {
 
     @Override
     public User update(String userId, UpdateUserRequest request) {
-        UpdateUserBody body = new UpdateUserBody(request.firstName(), request.lastName(), request.status());
+        UpdateUserBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/users/" + userId)
                 .body(responseHandler.encode(body))
                 .build();
@@ -112,26 +103,19 @@ public final class UserManagementClientImpl implements UserManagementClient {
 
     @Override
     public CompletableFuture<Page<User>> listAsync(UserListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/users");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        return transport.executeAsync(builder.build()).thenApply(response -> {
+        return transport.executeAsync(buildListRequest(request)).thenApply(response -> {
             UserListResponse body = responseHandler.handle(response, UserListResponse.class);
-            return new Page<>(body.users() != null ? body.users() : List.of(), body.nextCursor());
+            String cursor = body.pageInfo() != null ? body.pageInfo().endCursor() : null;
+            return new Page<>(body.users() != null ? body.users() : List.of(), cursor);
         });
     }
 
     @Override
     public CompletableFuture<User> createAsync(CreateUserRequest request) {
-        CreateUserBody body = new CreateUserBody(request.email(), request.firstName(), request.lastName());
+        CreateUserBody body = new CreateUserBody(
+                request.username(), request.password(),
+                request.firstName(), request.lastName(),
+                request.email(), request.locale(), request.assignedRoles());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/users")
@@ -143,9 +127,9 @@ public final class UserManagementClientImpl implements UserManagementClient {
 
     @Override
     public CompletableFuture<User> updateAsync(String userId, UpdateUserRequest request) {
-        UpdateUserBody body = new UpdateUserBody(request.firstName(), request.lastName(), request.status());
+        UpdateUserBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/users/" + userId)
                 .body(responseHandler.encode(body))
                 .build();
@@ -163,6 +147,37 @@ public final class UserManagementClientImpl implements UserManagementClient {
             responseHandler.handleVoid(response);
             return null;
         });
+    }
+
+    private SdkHttpRequest buildListRequest(UserListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/users");
+
+        if (request.size() != null) {
+            builder.queryParam("size", String.valueOf(request.size()));
+        }
+        if (request.startAfterId() != null) {
+            builder.queryParam("startAfterId", request.startAfterId());
+        }
+        if (request.orderBy() != null) {
+            builder.queryParam("orderBy", request.orderBy());
+        }
+        if (request.facilityId() != null) {
+            builder.queryParam("facilityId", request.facilityId());
+        }
+        if (request.includeAdminUsers() != null) {
+            builder.queryParam("includeAdminUsers", String.valueOf(request.includeAdminUsers()));
+        }
+
+        return builder.build();
+    }
+
+    private UpdateUserBody buildUpdateBody(UpdateUserRequest request) {
+        UpdateUserBody.ModifyUserAction action = new UpdateUserBody.ModifyUserAction(
+                request.firstName(), request.lastName(), request.email(), request.password(),
+                request.locale(), request.assignedRoles(), request.customAttributes());
+        return new UpdateUserBody(request.version(), List.of(action));
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

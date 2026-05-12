@@ -1,8 +1,10 @@
 package de.joesst.dev.fulfillmenttools.users;
 
 import java.util.List;
+import java.util.Map;
 
-/**
- * A role assigned to a user, optionally scoped to specific facilities.
- */
-public record AssignedRole(String roleId, String roleName, List<String> facilityRefs) {}
+public record AssignedRole(
+        String ref,
+        List<Map<String, Object>> context,
+        List<Map<String, Object>> contextLimitations
+) {}

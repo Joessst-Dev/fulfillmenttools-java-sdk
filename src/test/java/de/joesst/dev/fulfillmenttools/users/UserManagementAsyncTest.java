@@ -53,7 +53,7 @@ class UserManagementAsyncTest {
     void listAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/users"))
-                .willReturn(okJson("{\"users\":[{\"id\":\"u-1\",\"email\":\"alice@example.com\"},{\"id\":\"u-2\",\"email\":\"bob@example.com\"}]}")));
+                .willReturn(okJson("{\"users\":[{\"id\":\"u-1\",\"email\":\"alice@example.com\"},{\"id\":\"u-2\",\"email\":\"bob@example.com\"}],\"pageInfo\":{\"endCursor\":null,\"hasNextPage\":false}}")));
 
         // When
         var page = client.users().listAsync(UserListRequest.builder().build()).get();
@@ -70,7 +70,13 @@ class UserManagementAsyncTest {
 
         // When
         User user = client.users()
-                .createAsync(CreateUserRequest.builder().email("charlie@example.com").build()).get();
+                .createAsync(CreateUserRequest.builder()
+                        .username("charlie")
+                        .password("secret123")
+                        .firstName("Charlie")
+                        .lastName("Brown")
+                        .email("charlie@example.com")
+                        .build()).get();
 
         // Then
         assertThat(user.id()).isEqualTo("u-new");
