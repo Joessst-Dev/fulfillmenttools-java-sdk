@@ -39,6 +39,8 @@ import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionsCli
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupsClient;
 import de.joesst.dev.fulfillmenttools.internal.facilityconnections.FacilityConnectionsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.facilitygroups.FacilityGroupsClientImpl;
+import de.joesst.dev.fulfillmenttools.health.HealthClient;
+import de.joesst.dev.fulfillmenttools.internal.health.HealthClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.tags.TagsClientImpl;
 import de.joesst.dev.fulfillmenttools.tags.TagsClient;
 import de.joesst.dev.fulfillmenttools.internal.listings.ListingsClientImpl;
@@ -89,6 +91,7 @@ public final class FulfillmenttoolsClient {
     private volatile FacilityGroupsClient facilityGroupsClient;
     private volatile FacilityConnectionsClient facilityConnectionsClient;
     private volatile TagsClient tagsClient;
+    private volatile HealthClient healthClient;
 
     private FulfillmenttoolsClient(HttpTransport transport, ResponseHandler responseHandler,
                                    String baseUrl) {
@@ -377,6 +380,19 @@ public final class FulfillmenttoolsClient {
                 local = tagsClient;
                 if (local == null) {
                     local = tagsClient = new TagsClientImpl(transport, responseHandler, baseUrl);
+                }
+            }
+        }
+        return local;
+    }
+
+    public HealthClient health() {
+        HealthClient local = healthClient;
+        if (local == null) {
+            synchronized (this) {
+                local = healthClient;
+                if (local == null) {
+                    local = healthClient = new HealthClientImpl(transport, responseHandler, baseUrl);
                 }
             }
         }
