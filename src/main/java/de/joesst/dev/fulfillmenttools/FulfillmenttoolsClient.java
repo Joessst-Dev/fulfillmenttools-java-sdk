@@ -35,6 +35,8 @@ import de.joesst.dev.fulfillmenttools.internal.routingstrategies.RoutingStrategi
 import de.joesst.dev.fulfillmenttools.internal.sourcingoptions.SourcingOptionsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.stocks.StocksClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.storagelocations.StorageLocationsClientImpl;
+import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupsClient;
+import de.joesst.dev.fulfillmenttools.internal.facilitygroups.FacilityGroupsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.listings.ListingsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.processes.OperativeProcessClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.users.UserManagementClientImpl;
@@ -80,6 +82,7 @@ public final class FulfillmenttoolsClient {
     private volatile StorageLocationsClient storageLocationsClient;
     private volatile OperativeProcessClient operativeProcessClient;
     private volatile ListingsClient listingsClient;
+    private volatile FacilityGroupsClient facilityGroupsClient;
 
     private FulfillmenttoolsClient(HttpTransport transport, ResponseHandler responseHandler,
                                    String baseUrl) {
@@ -342,6 +345,19 @@ public final class FulfillmenttoolsClient {
                 local = listingsClient;
                 if (local == null) {
                     local = listingsClient = new ListingsClientImpl(transport, responseHandler, baseUrl);
+                }
+            }
+        }
+        return local;
+    }
+
+    public FacilityGroupsClient facilityGroups() {
+        FacilityGroupsClient local = facilityGroupsClient;
+        if (local == null) {
+            synchronized (this) {
+                local = facilityGroupsClient;
+                if (local == null) {
+                    local = facilityGroupsClient = new FacilityGroupsClientImpl(transport, responseHandler, baseUrl);
                 }
             }
         }
