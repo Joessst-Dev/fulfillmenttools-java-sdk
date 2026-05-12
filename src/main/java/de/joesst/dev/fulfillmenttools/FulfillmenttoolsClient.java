@@ -35,7 +35,9 @@ import de.joesst.dev.fulfillmenttools.internal.routingstrategies.RoutingStrategi
 import de.joesst.dev.fulfillmenttools.internal.sourcingoptions.SourcingOptionsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.stocks.StocksClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.storagelocations.StorageLocationsClientImpl;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionsClient;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupsClient;
+import de.joesst.dev.fulfillmenttools.internal.facilityconnections.FacilityConnectionsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.facilitygroups.FacilityGroupsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.listings.ListingsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.processes.OperativeProcessClientImpl;
@@ -83,6 +85,7 @@ public final class FulfillmenttoolsClient {
     private volatile OperativeProcessClient operativeProcessClient;
     private volatile ListingsClient listingsClient;
     private volatile FacilityGroupsClient facilityGroupsClient;
+    private volatile FacilityConnectionsClient facilityConnectionsClient;
 
     private FulfillmenttoolsClient(HttpTransport transport, ResponseHandler responseHandler,
                                    String baseUrl) {
@@ -358,6 +361,19 @@ public final class FulfillmenttoolsClient {
                 local = facilityGroupsClient;
                 if (local == null) {
                     local = facilityGroupsClient = new FacilityGroupsClientImpl(transport, responseHandler, baseUrl);
+                }
+            }
+        }
+        return local;
+    }
+
+    public FacilityConnectionsClient facilityConnections() {
+        FacilityConnectionsClient local = facilityConnectionsClient;
+        if (local == null) {
+            synchronized (this) {
+                local = facilityConnectionsClient;
+                if (local == null) {
+                    local = facilityConnectionsClient = new FacilityConnectionsClientImpl(transport, responseHandler, baseUrl);
                 }
             }
         }
