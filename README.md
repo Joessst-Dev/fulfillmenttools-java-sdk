@@ -1,5 +1,7 @@
 # fulfillmenttools Java SDK
 
+> **Disclaimer:** This is an independent, community-maintained open source project and is **not** officially developed, maintained, or endorsed by fulfillmenttools GmbH or any of its affiliates. Use at your own risk. For official SDKs and support, refer to the fulfillmenttools documentation and support channels.
+
 A lightweight Java 21 client library for the fulfillmenttools cloud-based Order Management and Fulfillment platform API. Zero framework dependencies — use it with any Java application.
 
 [![Java](https://img.shields.io/badge/Java-21+-orange)](https://www.oracle.com/java/)
