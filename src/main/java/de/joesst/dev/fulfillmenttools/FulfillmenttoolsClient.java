@@ -36,8 +36,10 @@ import de.joesst.dev.fulfillmenttools.internal.sourcingoptions.SourcingOptionsCl
 import de.joesst.dev.fulfillmenttools.internal.stocks.StocksClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.storagelocations.StorageLocationsClientImpl;
 import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionsClient;
+import de.joesst.dev.fulfillmenttools.facilitydiscounts.FacilityDiscountsClient;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupsClient;
 import de.joesst.dev.fulfillmenttools.internal.facilityconnections.FacilityConnectionsClientImpl;
+import de.joesst.dev.fulfillmenttools.internal.facilitydiscounts.FacilityDiscountsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.facilitygroups.FacilityGroupsClientImpl;
 import de.joesst.dev.fulfillmenttools.health.HealthClient;
 import de.joesst.dev.fulfillmenttools.internal.health.HealthClientImpl;
@@ -92,6 +94,7 @@ public final class FulfillmenttoolsClient {
     private volatile FacilityConnectionsClient facilityConnectionsClient;
     private volatile TagsClient tagsClient;
     private volatile HealthClient healthClient;
+    private volatile FacilityDiscountsClient facilityDiscountsClient;
 
     private FulfillmenttoolsClient(HttpTransport transport, ResponseHandler responseHandler,
                                    String baseUrl) {
@@ -380,6 +383,19 @@ public final class FulfillmenttoolsClient {
                 local = tagsClient;
                 if (local == null) {
                     local = tagsClient = new TagsClientImpl(transport, responseHandler, baseUrl);
+                }
+            }
+        }
+        return local;
+    }
+
+    public FacilityDiscountsClient facilityDiscounts() {
+        FacilityDiscountsClient local = facilityDiscountsClient;
+        if (local == null) {
+            synchronized (this) {
+                local = facilityDiscountsClient;
+                if (local == null) {
+                    local = facilityDiscountsClient = new FacilityDiscountsClientImpl(transport, responseHandler, baseUrl);
                 }
             }
         }
