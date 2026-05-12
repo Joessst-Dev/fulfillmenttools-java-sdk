@@ -1,11 +1,21 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Data for creating a new order line item.
+ *
+ * <p>Maps to the {@code OrderLineItemForCreation} schema in the fulfillmenttools OpenAPI spec.
+ * Both {@code article} and {@code quantity} are required.
+ *
+ * <p>Thread-safety: immutable; safe for concurrent use.
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class OrderLineItemForCreation {
 
     private final OrderLineItemArticleForCreation article;
@@ -14,8 +24,8 @@ public final class OrderLineItemForCreation {
     private final String secondaryMeasurementUnitKey;
     private final Integer secondaryQuantity;
     private final List<String> scannableCodes;
-    private final List<Map<String, Object>> allowedSubstitutes;
-    private final Map<String, Object> measurementValidation;
+    private final List<Substitute> allowedSubstitutes;
+    private final MeasurementValidation measurementValidation;
     private final List<TagReference> tags;
     private final Map<String, Object> customAttributes;
 
@@ -38,8 +48,10 @@ public final class OrderLineItemForCreation {
     public String secondaryMeasurementUnitKey() { return secondaryMeasurementUnitKey; }
     public Integer secondaryQuantity() { return secondaryQuantity; }
     public List<String> scannableCodes() { return scannableCodes; }
-    public List<Map<String, Object>> allowedSubstitutes() { return allowedSubstitutes; }
-    public Map<String, Object> measurementValidation() { return measurementValidation; }
+    /** Allowed substitute articles; empty list means no substitutes permitted. */
+    public List<Substitute> allowedSubstitutes() { return allowedSubstitutes; }
+    /** Optional pick-quantity tolerance configuration. */
+    public MeasurementValidation measurementValidation() { return measurementValidation; }
     public List<TagReference> tags() { return tags; }
     public Map<String, Object> customAttributes() { return customAttributes; }
 
@@ -53,8 +65,8 @@ public final class OrderLineItemForCreation {
         private String secondaryMeasurementUnitKey;
         private Integer secondaryQuantity;
         private List<String> scannableCodes;
-        private List<Map<String, Object>> allowedSubstitutes;
-        private Map<String, Object> measurementValidation;
+        private List<Substitute> allowedSubstitutes;
+        private MeasurementValidation measurementValidation;
         private List<TagReference> tags;
         private Map<String, Object> customAttributes;
 
@@ -64,8 +76,8 @@ public final class OrderLineItemForCreation {
         public Builder secondaryMeasurementUnitKey(String secondaryMeasurementUnitKey) { this.secondaryMeasurementUnitKey = secondaryMeasurementUnitKey; return this; }
         public Builder secondaryQuantity(Integer secondaryQuantity) { this.secondaryQuantity = secondaryQuantity; return this; }
         public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
-        public Builder allowedSubstitutes(List<Map<String, Object>> allowedSubstitutes) { this.allowedSubstitutes = allowedSubstitutes; return this; }
-        public Builder measurementValidation(Map<String, Object> measurementValidation) { this.measurementValidation = measurementValidation; return this; }
+        public Builder allowedSubstitutes(List<Substitute> allowedSubstitutes) { this.allowedSubstitutes = allowedSubstitutes; return this; }
+        public Builder measurementValidation(MeasurementValidation measurementValidation) { this.measurementValidation = measurementValidation; return this; }
         public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
