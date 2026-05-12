@@ -4,4 +4,4 @@ import de.joesst.dev.fulfillmenttools.eventing.Subscription;
 
 import java.util.List;
 
-record SubscriptionListResponse(List<Subscription> subscriptions, String nextCursor) {}
+record SubscriptionListResponse(List<Subscription> subscriptions, Integer total) {}

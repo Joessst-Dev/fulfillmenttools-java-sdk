@@ -1,16 +1,16 @@
 package de.joesst.dev.fulfillmenttools.eventing;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Represents an event subscription in fulfillmenttools.
- */
 public record Subscription(
         String id,
-        Integer version,
         Instant created,
         String name,
         String event,
         String callbackUrl,
-        String status
+        List<SubscriptionContext> contexts,
+        List<CallbackHeader> headers,
+        Map<String, Object> target
 ) {}

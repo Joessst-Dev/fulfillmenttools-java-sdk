@@ -56,7 +56,7 @@ public final class EventingClientImpl implements EventingClient {
         SubscriptionListResponse body = responseHandler.handle(response, SubscriptionListResponse.class);
         return new Page<>(
                 body.subscriptions() != null ? body.subscriptions() : List.of(),
-                body.nextCursor());
+                null);
     }
 
     @Override
@@ -71,7 +71,9 @@ public final class EventingClientImpl implements EventingClient {
 
     @Override
     public Subscription create(CreateSubscriptionRequest request) {
-        CreateSubscriptionBody body = new CreateSubscriptionBody(request.topic(), request.callbackUrl());
+        CreateSubscriptionBody body = new CreateSubscriptionBody(
+                request.name(), request.event(), request.callbackUrl(),
+                request.contexts(), request.headers(), request.target());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/subscriptions")
@@ -125,13 +127,15 @@ public final class EventingClientImpl implements EventingClient {
 
         return transport.executeAsync(builder.build()).thenApply(response -> {
             SubscriptionListResponse body = responseHandler.handle(response, SubscriptionListResponse.class);
-            return new Page<>(body.subscriptions() != null ? body.subscriptions() : List.of(), body.nextCursor());
+            return new Page<>(body.subscriptions() != null ? body.subscriptions() : List.of(), null);
         });
     }
 
     @Override
     public CompletableFuture<Subscription> createAsync(CreateSubscriptionRequest request) {
-        CreateSubscriptionBody body = new CreateSubscriptionBody(request.topic(), request.callbackUrl());
+        CreateSubscriptionBody body = new CreateSubscriptionBody(
+                request.name(), request.event(), request.callbackUrl(),
+                request.contexts(), request.headers(), request.target());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/subscriptions")

@@ -53,7 +53,7 @@ class EventingAsyncTest {
     void listAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/subscriptions"))
-                .willReturn(okJson("{\"subscriptions\":[{\"id\":\"s-1\",\"event\":\"ORDER_CREATED\"},{\"id\":\"s-2\",\"event\":\"ORDER_UPDATED\"}]}")));
+                .willReturn(okJson("{\"subscriptions\":[{\"id\":\"s-1\",\"event\":\"ORDER_CREATED\"},{\"id\":\"s-2\",\"event\":\"ORDER_UPDATED\"}],\"total\":2}")));
 
         // When
         var page = client.eventing().listAsync(SubscriptionListRequest.builder().build()).get();
@@ -71,7 +71,8 @@ class EventingAsyncTest {
         // When
         Subscription subscription = client.eventing()
                 .createAsync(CreateSubscriptionRequest.builder()
-                        .topic("ORDER_CREATED")
+                        .name("order-hook")
+                        .event("ORDER_CREATED")
                         .callbackUrl("https://example.com/hook")
                         .build()).get();
 
