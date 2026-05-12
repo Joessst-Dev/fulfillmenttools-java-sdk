@@ -50,8 +50,8 @@ class PickJobsClientTest {
                           "id": "pj-1",
                           "facilityRef": "fac-1",
                           "status": "OPEN",
-                          "createdDate": "2024-03-01T10:00:00Z",
-                          "lastModifiedDate": "2024-03-01T11:00:00Z"
+                          "created": "2024-03-01T10:00:00Z",
+                          "lastModified": "2024-03-01T11:00:00Z"
                         }
                         """)));
 
@@ -62,7 +62,7 @@ class PickJobsClientTest {
         assertThat(job.id()).isEqualTo("pj-1");
         assertThat(job.facilityRef()).isEqualTo("fac-1");
         assertThat(job.status()).isEqualTo("OPEN");
-        assertThat(job.createdDate()).isNotNull();
+        assertThat(job.created()).isNotNull();
     }
 
     @Test

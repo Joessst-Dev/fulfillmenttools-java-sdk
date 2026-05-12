@@ -51,8 +51,8 @@ class FacilitiesClientTest {
                           "tenantFacilityId": "ext-fac-1",
                           "name": "Berlin Warehouse",
                           "status": "ACTIVE",
-                          "createdDate": "2024-01-01T00:00:00Z",
-                          "lastModifiedDate": "2024-01-02T00:00:00Z"
+                          "created": "2024-01-01T00:00:00Z",
+                          "lastModified": "2024-01-02T00:00:00Z"
                         }
                         """)));
 
@@ -64,8 +64,8 @@ class FacilitiesClientTest {
         assertThat(facility.tenantFacilityId()).isEqualTo("ext-fac-1");
         assertThat(facility.name()).isEqualTo("Berlin Warehouse");
         assertThat(facility.status()).isEqualTo("ACTIVE");
-        assertThat(facility.createdDate()).isNotNull();
-        assertThat(facility.lastModifiedDate()).isNotNull();
+        assertThat(facility.created()).isNotNull();
+        assertThat(facility.lastModified()).isNotNull();
     }
 
     @Test

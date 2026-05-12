@@ -38,14 +38,14 @@ class EventingAsyncTest {
     void getAsync_returnsSubscription() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/subscriptions/s-1"))
-                .willReturn(okJson("{\"id\":\"s-1\",\"topic\":\"ORDER_CREATED\",\"callbackUrl\":\"https://example.com/hook\",\"status\":\"ACTIVE\"}")));
+                .willReturn(okJson("{\"id\":\"s-1\",\"event\":\"ORDER_CREATED\",\"callbackUrl\":\"https://example.com/hook\",\"status\":\"ACTIVE\"}")));
 
         // When
         Subscription subscription = client.eventing().getAsync("s-1").get();
 
         // Then
         assertThat(subscription.id()).isEqualTo("s-1");
-        assertThat(subscription.topic()).isEqualTo("ORDER_CREATED");
+        assertThat(subscription.event()).isEqualTo("ORDER_CREATED");
         assertThat(subscription.callbackUrl()).isEqualTo("https://example.com/hook");
     }
 
@@ -53,7 +53,7 @@ class EventingAsyncTest {
     void listAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/subscriptions"))
-                .willReturn(okJson("{\"subscriptions\":[{\"id\":\"s-1\",\"topic\":\"ORDER_CREATED\"},{\"id\":\"s-2\",\"topic\":\"ORDER_UPDATED\"}]}")));
+                .willReturn(okJson("{\"subscriptions\":[{\"id\":\"s-1\",\"event\":\"ORDER_CREATED\"},{\"id\":\"s-2\",\"event\":\"ORDER_UPDATED\"}]}")));
 
         // When
         var page = client.eventing().listAsync(SubscriptionListRequest.builder().build()).get();
@@ -66,7 +66,7 @@ class EventingAsyncTest {
     void createAsync_returnsCreatedSubscription() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/subscriptions"))
-                .willReturn(okJson("{\"id\":\"s-new\",\"topic\":\"ORDER_CREATED\",\"callbackUrl\":\"https://example.com/hook\",\"status\":\"ACTIVE\"}")));
+                .willReturn(okJson("{\"id\":\"s-new\",\"event\":\"ORDER_CREATED\",\"callbackUrl\":\"https://example.com/hook\",\"status\":\"ACTIVE\"}")));
 
         // When
         Subscription subscription = client.eventing()
@@ -77,7 +77,7 @@ class EventingAsyncTest {
 
         // Then
         assertThat(subscription.id()).isEqualTo("s-new");
-        assertThat(subscription.topic()).isEqualTo("ORDER_CREATED");
+        assertThat(subscription.event()).isEqualTo("ORDER_CREATED");
     }
 
     @Test

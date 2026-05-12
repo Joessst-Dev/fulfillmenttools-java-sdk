@@ -66,7 +66,7 @@ class OperativeProcessAsyncTest {
     void searchAsync_returnsMatchingProcesses() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/processes/search"))
-                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"status\":\"OPEN\",\"facilityRef\":\"fac-1\"}]}")));
+                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"status\":\"OPEN\",\"facilityRefs\":[\"fac-1\"]}]}")));
 
         // When
         Page<Process> page = client.processes()
@@ -74,7 +74,7 @@ class OperativeProcessAsyncTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).facilityRef()).isEqualTo("fac-1");
+        assertThat(page.items().get(0).facilityRefs()).containsExactly("fac-1");
     }
 
     // --- Helpers ---

@@ -51,8 +51,7 @@ class ReservationsClientTest {
                           "facilityRef": "fac-1",
                           "tenantArticleId": "art-1",
                           "quantity": 5,
-                          "status": "OPEN",
-                          "createdDate": "2024-03-01T10:00:00Z"
+                          "created": "2024-03-01T10:00:00Z"
                         }
                         """)));
 
@@ -64,8 +63,7 @@ class ReservationsClientTest {
         assertThat(reservation.facilityRef()).isEqualTo("fac-1");
         assertThat(reservation.tenantArticleId()).isEqualTo("art-1");
         assertThat(reservation.quantity()).isEqualTo(5);
-        assertThat(reservation.status()).isEqualTo("OPEN");
-        assertThat(reservation.createdDate()).isNotNull();
+        assertThat(reservation.created()).isNotNull();
     }
 
     @Test

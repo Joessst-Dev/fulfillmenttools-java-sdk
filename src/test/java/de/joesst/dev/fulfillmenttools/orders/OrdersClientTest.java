@@ -50,8 +50,8 @@ class OrdersClientTest {
                           "id": "ord-1",
                           "tenantOrderId": "ext-001",
                           "status": "OPEN",
-                          "createdDate": "2024-03-01T10:00:00Z",
-                          "lastModifiedDate": "2024-03-01T11:00:00Z"
+                          "created": "2024-03-01T10:00:00Z",
+                          "lastModified": "2024-03-01T11:00:00Z"
                         }
                         """)));
 
@@ -62,8 +62,8 @@ class OrdersClientTest {
         assertThat(order.id()).isEqualTo("ord-1");
         assertThat(order.tenantOrderId()).isEqualTo("ext-001");
         assertThat(order.status()).isEqualTo("OPEN");
-        assertThat(order.createdDate()).isNotNull();
-        assertThat(order.lastModifiedDate()).isNotNull();
+        assertThat(order.created()).isNotNull();
+        assertThat(order.lastModified()).isNotNull();
     }
 
     @Test

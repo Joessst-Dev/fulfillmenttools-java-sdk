@@ -45,7 +45,7 @@ class RoutingPlansAsyncTest {
 
         // Then
         assertThat(plan.id()).isEqualTo("rp-1");
-        assertThat(plan.name()).isEqualTo("Default Plan");
+        assertThat(plan.status()).isEqualTo("ACTIVE");
     }
 
     @Test
@@ -73,7 +73,7 @@ class RoutingPlansAsyncTest {
 
         // Then
         assertThat(plan.id()).isEqualTo("rp-new");
-        assertThat(plan.name()).isEqualTo("New Plan");
+        assertThat(plan.status()).isEqualTo("ACTIVE");
     }
 
     @Test

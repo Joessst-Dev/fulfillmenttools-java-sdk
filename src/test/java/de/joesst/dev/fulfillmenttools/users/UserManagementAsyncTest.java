@@ -38,7 +38,7 @@ class UserManagementAsyncTest {
     void getAsync_returnsUser() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/users/u-1"))
-                .willReturn(okJson("{\"id\":\"u-1\",\"email\":\"alice@example.com\",\"firstName\":\"Alice\",\"lastName\":\"Smith\",\"status\":\"ACTIVE\"}")));
+                .willReturn(okJson("{\"id\":\"u-1\",\"email\":\"alice@example.com\",\"firstname\":\"Alice\",\"lastname\":\"Smith\",\"status\":\"ACTIVE\"}")));
 
         // When
         User user = client.users().getAsync("u-1").get();
