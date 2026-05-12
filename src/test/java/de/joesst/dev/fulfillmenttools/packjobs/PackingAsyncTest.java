@@ -69,7 +69,7 @@ class PackingAsyncTest {
 
         // When
         PackJob job = client.packing()
-                .updateAsync("pj-1", UpdatePackJobRequest.builder().status("IN_PROGRESS").build()).get();
+                .updateAsync("pj-1", UpdatePackJobRequest.builder().version(1).status("IN_PROGRESS").build()).get();
 
         // Then
         assertThat(job.status()).isEqualTo("IN_PROGRESS");

@@ -1,12 +1,18 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
 
-/**
- * A single line item within a pack job.
- */
+import de.joesst.dev.fulfillmenttools.model.TagReference;
+
+import java.util.List;
+import java.util.Map;
+
 public record PackLineItem(
         String id,
         Integer quantity,
         PackLineItemArticle article,
         Integer packed,
-        String measurementUnitKey
+        String measurementUnitKey,
+        String originId,
+        List<String> serviceJobRefs,
+        List<Map<String, Object>> stickers,
+        List<TagReference> tags
 ) {}

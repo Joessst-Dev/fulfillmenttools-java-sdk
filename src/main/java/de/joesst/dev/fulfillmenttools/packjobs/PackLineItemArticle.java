@@ -1,13 +1,14 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
 
+import java.util.List;
 import java.util.Map;
 
-/**
- * Article information for a pack job line item.
- */
 public record PackLineItemArticle(
         String tenantArticleId,
         String title,
         String imageUrl,
-        Map<String, Object> customAttributes
+        Double weight,
+        Map<String, Object> titleLocalized,
+        Map<String, Object> customAttributes,
+        List<Map<String, Object>> attributes
 ) {}
