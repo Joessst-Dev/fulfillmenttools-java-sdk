@@ -40,24 +40,7 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
 
     @Override
     public Page<HandoverJob> list(HandoverJobListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/handoverjobs");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-        if (request.facilityRef() != null) {
-            builder.queryParam("facilityRef", request.facilityRef());
-        }
-        if (request.status() != null) {
-            builder.queryParam("status", request.status());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
+        SdkHttpResponse response = execute(buildListRequest(request).build());
         HandoverJobListResponse body = responseHandler.handle(response, HandoverJobListResponse.class);
         return new Page<>(
                 body.handoverJobs() != null ? body.handoverJobs() : List.of(),
@@ -76,11 +59,24 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
 
     @Override
     public HandoverJob update(String handoverJobId, UpdateHandoverJobRequest request) {
-        UpdateHandoverJobBody body = new UpdateHandoverJobBody(request.status());
+        UpdateHandoverJobBody body = new UpdateHandoverJobBody(
+                request.version(),
+                List.of(new UpdateHandoverJobBody.ModifyHandoverjobAction(request.status(), request.customAttributes()))
+        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/handoverjobs/" + handoverJobId)
                 .body(responseHandler.encode(body))
+                .build();
+        return responseHandler.handle(execute(httpRequest), HandoverJob.class);
+    }
+
+    @Override
+    public HandoverJob cancel(String handoverJobId, int version, String cancelReason) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/handoverjobs/" + handoverJobId + "/actions")
+                .body(responseHandler.encode(new HandoverJobCancelBody(version, cancelReason)))
                 .build();
         return responseHandler.handle(execute(httpRequest), HandoverJob.class);
     }
@@ -97,24 +93,7 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
 
     @Override
     public CompletableFuture<Page<HandoverJob>> listAsync(HandoverJobListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/handoverjobs");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-        if (request.facilityRef() != null) {
-            builder.queryParam("facilityRef", request.facilityRef());
-        }
-        if (request.status() != null) {
-            builder.queryParam("status", request.status());
-        }
-
-        return transport.executeAsync(builder.build()).thenApply(response -> {
+        return transport.executeAsync(buildListRequest(request).build()).thenApply(response -> {
             HandoverJobListResponse body = responseHandler.handle(response, HandoverJobListResponse.class);
             return new Page<>(body.handoverJobs() != null ? body.handoverJobs() : List.of(), body.nextCursor());
         });
@@ -122,7 +101,10 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
 
     @Override
     public CompletableFuture<HandoverJob> updateAsync(String handoverJobId, UpdateHandoverJobRequest request) {
-        UpdateHandoverJobBody body = new UpdateHandoverJobBody(request.status());
+        UpdateHandoverJobBody body = new UpdateHandoverJobBody(
+                request.version(),
+                List.of(new UpdateHandoverJobBody.ModifyHandoverjobAction(request.status(), request.customAttributes()))
+        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/handoverjobs/" + handoverJobId)
@@ -130,6 +112,40 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
                 .build();
         return transport.executeAsync(httpRequest)
                 .thenApply(response -> responseHandler.handle(response, HandoverJob.class));
+    }
+
+    @Override
+    public CompletableFuture<HandoverJob> cancelAsync(String handoverJobId, int version, String cancelReason) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/handoverjobs/" + handoverJobId + "/actions")
+                .body(responseHandler.encode(new HandoverJobCancelBody(version, cancelReason)))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, HandoverJob.class));
+    }
+
+    private SdkHttpRequest.Builder buildListRequest(HandoverJobListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/handoverjobs");
+
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
+        if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
+        if (request.pickJobRef() != null) builder.queryParam("pickJobRef", request.pickJobRef());
+        if (request.shipmentRef() != null) builder.queryParam("shipmentRef", request.shipmentRef());
+        if (request.assignedUser() != null) builder.queryParam("assignedUser", request.assignedUser());
+        if (request.carrierRefs() != null) request.carrierRefs().forEach(c -> builder.queryParam("carrierRefs", c));
+        if (request.channel() != null) builder.queryParam("channel", request.channel());
+        if (request.anonymized() != null) builder.queryParam("anonymized", String.valueOf(request.anonymized()));
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.searchTerm() != null) builder.queryParam("searchTerm", request.searchTerm());
+        if (request.startTargetTime() != null) builder.queryParam("startTargetTime", request.startTargetTime());
+        if (request.endTargetTime() != null) builder.queryParam("endTargetTime", request.endTargetTime());
+
+        return builder;
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

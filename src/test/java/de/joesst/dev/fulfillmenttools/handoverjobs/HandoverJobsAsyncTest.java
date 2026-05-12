@@ -69,7 +69,7 @@ class HandoverJobsAsyncTest {
 
         // When
         HandoverJob job = client.handoverJobs()
-                .updateAsync("hj-1", UpdateHandoverJobRequest.builder().status("IN_PROGRESS").build()).get();
+                .updateAsync("hj-1", UpdateHandoverJobRequest.builder().version(1).status("IN_PROGRESS").build()).get();
 
         // Then
         assertThat(job.status()).isEqualTo("IN_PROGRESS");

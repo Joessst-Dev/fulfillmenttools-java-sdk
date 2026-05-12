@@ -16,4 +16,7 @@ public interface HandoverJobsClient {
 
     HandoverJob update(String handoverJobId, UpdateHandoverJobRequest request);
     CompletableFuture<HandoverJob> updateAsync(String handoverJobId, UpdateHandoverJobRequest request);
+
+    HandoverJob cancel(String handoverJobId, int version, String cancelReason);
+    CompletableFuture<HandoverJob> cancelAsync(String handoverJobId, int version, String cancelReason);
 }
