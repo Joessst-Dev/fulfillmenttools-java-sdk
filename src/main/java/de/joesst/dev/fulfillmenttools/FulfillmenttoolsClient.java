@@ -10,6 +10,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.AuthenticatingTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.JdkHttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
+import de.joesst.dev.fulfillmenttools.internal.http.RetryingTransport;
 import de.joesst.dev.fulfillmenttools.checkoutoptions.CheckoutOptionsClient;
 import de.joesst.dev.fulfillmenttools.eventing.EventingClient;
 import de.joesst.dev.fulfillmenttools.externalactions.ExternalActionsClient;
@@ -342,6 +343,7 @@ public final class FulfillmenttoolsClient {
         private TokenProvider tokenProvider;
         private HttpTransport httpTransport;
         private ObjectMapper objectMapper;
+        private int retryMaxAttempts = RetryingTransport.DEFAULT_MAX_ATTEMPTS;
 
         public Builder baseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
@@ -371,6 +373,12 @@ public final class FulfillmenttoolsClient {
             return this;
         }
 
+        /** Sets the maximum number of total attempts (1 = no retries). Default is 3. */
+        public Builder retryMaxAttempts(int retryMaxAttempts) {
+            this.retryMaxAttempts = retryMaxAttempts;
+            return this;
+        }
+
         public FulfillmenttoolsClient build() {
             Objects.requireNonNull(baseUrl, "baseUrl must not be null");
 
@@ -387,10 +395,11 @@ public final class FulfillmenttoolsClient {
             }
 
             HttpTransport authenticating = new AuthenticatingTransport(rawTransport, tokens);
+            HttpTransport retrying = new RetryingTransport(authenticating, retryMaxAttempts);
             JsonCodec codec = objectMapper != null ? new JsonCodec(objectMapper) : new JsonCodec();
             ResponseHandler responseHandler = new ResponseHandler(codec);
 
-            return new FulfillmenttoolsClient(authenticating, responseHandler, baseUrl);
+            return new FulfillmenttoolsClient(retrying, responseHandler, baseUrl);
         }
     }
 }
