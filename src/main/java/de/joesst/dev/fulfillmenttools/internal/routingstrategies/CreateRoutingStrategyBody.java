@@ -1,3 +1,5 @@
 package de.joesst.dev.fulfillmenttools.internal.routingstrategies;
 
-record CreateRoutingStrategyBody(String name) {}
+import java.util.Map;
+
+record CreateRoutingStrategyBody(Map<String, Object> nameLocalized) {}

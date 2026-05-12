@@ -34,47 +34,28 @@ public final class RoutingStrategiesClientImpl implements RoutingStrategiesClien
     public RoutingStrategy get(String routingStrategyId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routingstrategies/" + routingStrategyId)
+                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId)
                 .build();
         return responseHandler.handle(execute(request), RoutingStrategy.class);
     }
 
     @Override
     public Page<RoutingStrategy> list(RoutingStrategyListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routingstrategies");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
-        RoutingStrategyListResponse body = responseHandler.handle(response, RoutingStrategyListResponse.class);
-        return new Page<>(
-                body.routingStrategies() != null ? body.routingStrategies() : List.of(),
-                body.nextCursor());
+        RoutingStrategyListResponse body = responseHandler.handle(execute(buildListRequest(request)), RoutingStrategyListResponse.class);
+        return new Page<>(body.routingStrategies() != null ? body.routingStrategies() : List.of(), null);
     }
 
     @Override
     public Iterable<RoutingStrategy> listAll(RoutingStrategyListRequest request) {
-        return Pages.all(cursor -> {
-            RoutingStrategyListRequest r = cursor == null
-                    ? request
-                    : request.toBuilder().startAfterId(cursor).build();
-            return list(r);
-        });
+        return Pages.all(cursor -> list(request));
     }
 
     @Override
     public RoutingStrategy create(CreateRoutingStrategyRequest request) {
-        CreateRoutingStrategyBody body = new CreateRoutingStrategyBody(request.name());
+        CreateRoutingStrategyBody body = new CreateRoutingStrategyBody(request.nameLocalized());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/routingstrategies")
+                .url(baseUrl + "/api/routing/strategies")
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), RoutingStrategy.class);
@@ -82,10 +63,10 @@ public final class RoutingStrategiesClientImpl implements RoutingStrategiesClien
 
     @Override
     public RoutingStrategy update(String routingStrategyId, UpdateRoutingStrategyRequest request) {
-        UpdateRoutingStrategyBody body = new UpdateRoutingStrategyBody(request.name(), request.status());
+        UpdateRoutingStrategyBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/routingstrategies/" + routingStrategyId)
+                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId)
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), RoutingStrategy.class);
@@ -95,7 +76,7 @@ public final class RoutingStrategiesClientImpl implements RoutingStrategiesClien
     public CompletableFuture<RoutingStrategy> getAsync(String routingStrategyId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routingstrategies/" + routingStrategyId)
+                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId)
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, RoutingStrategy.class));
@@ -103,29 +84,18 @@ public final class RoutingStrategiesClientImpl implements RoutingStrategiesClien
 
     @Override
     public CompletableFuture<Page<RoutingStrategy>> listAsync(RoutingStrategyListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routingstrategies");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        return transport.executeAsync(builder.build()).thenApply(response -> {
+        return transport.executeAsync(buildListRequest(request)).thenApply(response -> {
             RoutingStrategyListResponse body = responseHandler.handle(response, RoutingStrategyListResponse.class);
-            return new Page<>(body.routingStrategies() != null ? body.routingStrategies() : List.of(), body.nextCursor());
+            return new Page<>(body.routingStrategies() != null ? body.routingStrategies() : List.of(), null);
         });
     }
 
     @Override
     public CompletableFuture<RoutingStrategy> createAsync(CreateRoutingStrategyRequest request) {
-        CreateRoutingStrategyBody body = new CreateRoutingStrategyBody(request.name());
+        CreateRoutingStrategyBody body = new CreateRoutingStrategyBody(request.nameLocalized());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/routingstrategies")
+                .url(baseUrl + "/api/routing/strategies")
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -134,14 +104,34 @@ public final class RoutingStrategiesClientImpl implements RoutingStrategiesClien
 
     @Override
     public CompletableFuture<RoutingStrategy> updateAsync(String routingStrategyId, UpdateRoutingStrategyRequest request) {
-        UpdateRoutingStrategyBody body = new UpdateRoutingStrategyBody(request.name(), request.status());
+        UpdateRoutingStrategyBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/routingstrategies/" + routingStrategyId)
+                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId)
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
                 .thenApply(response -> responseHandler.handle(response, RoutingStrategy.class));
+    }
+
+    private SdkHttpRequest buildListRequest(RoutingStrategyListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/routing/strategies");
+
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+
+        return builder.build();
+    }
+
+    private UpdateRoutingStrategyBody buildUpdateBody(UpdateRoutingStrategyRequest request) {
+        return new UpdateRoutingStrategyBody(
+                request.version(),
+                request.nameLocalized(),
+                request.rootNode(),
+                request.globalConfiguration()
+        );
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

@@ -5,6 +5,8 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import org.junit.jupiter.api.*;
 
+import java.util.Map;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -37,8 +39,8 @@ class RoutingStrategiesAsyncTest {
     @Test
     void getAsync_returnsRoutingStrategy() throws Exception {
         // Given
-        server.stubFor(get(urlPathEqualTo("/api/routingstrategies/rs-1"))
-                .willReturn(okJson("{\"id\":\"rs-1\",\"name\":\"Nearest Facility\",\"status\":\"ACTIVE\"}")));
+        server.stubFor(get(urlPathEqualTo("/api/routing/strategies/rs-1"))
+                .willReturn(okJson("{\"id\":\"rs-1\",\"name\":\"Nearest Facility\"}")));
 
         // When
         RoutingStrategy strategy = client.routingStrategies().getAsync("rs-1").get();
@@ -51,8 +53,8 @@ class RoutingStrategiesAsyncTest {
     @Test
     void listAsync_returnsPage() throws Exception {
         // Given
-        server.stubFor(get(urlPathEqualTo("/api/routingstrategies"))
-                .willReturn(okJson("{\"routingStrategies\":[{\"id\":\"rs-1\",\"name\":\"Strategy A\"},{\"id\":\"rs-2\",\"name\":\"Strategy B\"}]}")));
+        server.stubFor(get(urlPathEqualTo("/api/routing/strategies"))
+                .willReturn(okJson("{\"routingStrategies\":[{\"id\":\"rs-1\"},{\"id\":\"rs-2\"}],\"total\":2}")));
 
         // When
         var page = client.routingStrategies().listAsync(RoutingStrategyListRequest.builder().build()).get();
@@ -64,12 +66,14 @@ class RoutingStrategiesAsyncTest {
     @Test
     void createAsync_returnsCreatedRoutingStrategy() throws Exception {
         // Given
-        server.stubFor(post(urlPathEqualTo("/api/routingstrategies"))
-                .willReturn(okJson("{\"id\":\"rs-new\",\"name\":\"New Strategy\",\"status\":\"ACTIVE\"}")));
+        server.stubFor(post(urlPathEqualTo("/api/routing/strategies"))
+                .willReturn(okJson("{\"id\":\"rs-new\",\"name\":\"New Strategy\"}")));
 
         // When
         RoutingStrategy strategy = client.routingStrategies()
-                .createAsync(CreateRoutingStrategyRequest.builder().name("New Strategy").build()).get();
+                .createAsync(CreateRoutingStrategyRequest.builder()
+                        .nameLocalized(Map.of("en_US", "New Strategy"))
+                        .build()).get();
 
         // Then
         assertThat(strategy.id()).isEqualTo("rs-new");
