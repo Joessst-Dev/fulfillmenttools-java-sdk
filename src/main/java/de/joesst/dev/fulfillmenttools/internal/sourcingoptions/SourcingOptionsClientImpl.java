@@ -27,7 +27,8 @@ public final class SourcingOptionsClientImpl implements SourcingOptionsClient {
 
     @Override
     public SourcingOptionsResult evaluate(SourcingOptionsRequest request) {
-        SourcingOptionsBody body = new SourcingOptionsBody(request.order(), request.includeListingCustomAttributes());
+        SourcingOptionsBody body = new SourcingOptionsBody(
+                request.order(), request.additionalInfo(), request.optimizationHints(), request.resourceInvestment());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/sourcingoptions")
@@ -38,7 +39,8 @@ public final class SourcingOptionsClientImpl implements SourcingOptionsClient {
 
     @Override
     public CompletableFuture<SourcingOptionsResult> evaluateAsync(SourcingOptionsRequest request) {
-        SourcingOptionsBody body = new SourcingOptionsBody(request.order(), request.includeListingCustomAttributes());
+        SourcingOptionsBody body = new SourcingOptionsBody(
+                request.order(), request.additionalInfo(), request.optimizationHints(), request.resourceInvestment());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/sourcingoptions")

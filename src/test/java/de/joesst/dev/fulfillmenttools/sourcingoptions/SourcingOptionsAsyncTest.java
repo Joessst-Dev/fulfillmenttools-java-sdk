@@ -3,6 +3,8 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticleForCreation;
+import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -42,9 +44,13 @@ class SourcingOptionsAsyncTest {
         server.stubFor(post(urlPathEqualTo("/api/sourcingoptions"))
                 .willReturn(okJson("{\"id\":\"run-1\",\"options\":[]}")));
 
+        ConsumerAddressesForSourcingOptions consumer = ConsumerAddressesForSourcingOptions.builder()
+                .consumerId("consumer-1")
+                .build();
+
         SourcingOptionsRequest request = SourcingOptionsRequest.builder()
                 .order(OrderForSourcingOptionsRequest.builder()
-                        .orderLineItems(List.of(new SourcingOrderLineItem("article-1", 2)))
+                        .consumer(consumer)
                         .build())
                 .build();
 
@@ -57,17 +63,28 @@ class SourcingOptionsAsyncTest {
     }
 
     @Test
-    void evaluateAsync_sendsOrderInBody() throws Exception {
+    void evaluateAsync_sendsFullRequestInBody() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/sourcingoptions"))
                 .willReturn(okJson("{\"id\":\"run-2\",\"options\":[]}")));
 
+        ConsumerAddressesForSourcingOptions consumer = ConsumerAddressesForSourcingOptions.builder()
+                .consumerId("consumer-42")
+                .build();
+
+        OrderLineItemForCreation lineItem = OrderLineItemForCreation.builder()
+                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-42").build())
+                .quantity(3)
+                .build();
+
         SourcingOptionsRequest request = SourcingOptionsRequest.builder()
                 .order(OrderForSourcingOptionsRequest.builder()
-                        .orderLineItems(List.of(new SourcingOrderLineItem("art-42", 1)))
+                        .consumer(consumer)
+                        .orderLineItems(List.of(lineItem))
                         .tenantOrderId("tenant-ord-1")
                         .build())
-                .includeListingCustomAttributes(true)
+                .additionalInfo(new SourcingOptionsRequestAdditionalInfo(true))
+                .optimizationHints(new OptimizationHints(false, 3))
                 .build();
 
         // When
@@ -77,7 +94,32 @@ class SourcingOptionsAsyncTest {
         server.verify(postRequestedFor(urlPathEqualTo("/api/sourcingoptions"))
                 .withHeader("Authorization", equalTo("Bearer test-bearer"))
                 .withRequestBody(matchingJsonPath("$.order.tenantOrderId", equalTo("tenant-ord-1")))
-                .withRequestBody(matchingJsonPath("$.includeListingCustomAttributes", equalTo("true"))));
+                .withRequestBody(matchingJsonPath("$.order.consumer.consumerId", equalTo("consumer-42")))
+                .withRequestBody(matchingJsonPath("$.additionalInfo.includeListingCustomAttributes", equalTo("true")))
+                .withRequestBody(matchingJsonPath("$.optimizationHints.requestedResultCount", equalTo("3"))));
+    }
+
+    @Test
+    void evaluateAsync_sendsResourceInvestment() throws Exception {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/sourcingoptions"))
+                .willReturn(okJson("{\"id\":\"run-3\",\"options\":[]}")));
+
+        ConsumerAddressesForSourcingOptions consumer = ConsumerAddressesForSourcingOptions.builder().build();
+
+        SourcingOptionsRequest request = SourcingOptionsRequest.builder()
+                .order(OrderForSourcingOptionsRequest.builder()
+                        .consumer(consumer)
+                        .build())
+                .resourceInvestment(ResourceInvestment.builder().level(0.8).build())
+                .build();
+
+        // When
+        client.sourcingOptions().evaluateAsync(request).get();
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/sourcingoptions"))
+                .withRequestBody(matchingJsonPath("$.resourceInvestment.level", equalTo("0.8"))));
     }
 
     // --- Helpers ---

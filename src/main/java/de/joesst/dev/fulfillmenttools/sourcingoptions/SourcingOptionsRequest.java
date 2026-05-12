@@ -5,30 +5,48 @@ import java.util.Objects;
 public final class SourcingOptionsRequest {
 
     private final OrderForSourcingOptionsRequest order;
-    private final Boolean includeListingCustomAttributes;
+    private final SourcingOptionsRequestAdditionalInfo additionalInfo;
+    private final OptimizationHints optimizationHints;
+    private final ResourceInvestment resourceInvestment;
 
     private SourcingOptionsRequest(Builder builder) {
         this.order = Objects.requireNonNull(builder.order, "order must not be null");
-        this.includeListingCustomAttributes = builder.includeListingCustomAttributes;
+        this.additionalInfo = builder.additionalInfo;
+        this.optimizationHints = builder.optimizationHints;
+        this.resourceInvestment = builder.resourceInvestment;
     }
 
     public OrderForSourcingOptionsRequest order() { return order; }
-    public Boolean includeListingCustomAttributes() { return includeListingCustomAttributes; }
+    public SourcingOptionsRequestAdditionalInfo additionalInfo() { return additionalInfo; }
+    public OptimizationHints optimizationHints() { return optimizationHints; }
+    public ResourceInvestment resourceInvestment() { return resourceInvestment; }
 
     public static Builder builder() { return new Builder(); }
 
     public static final class Builder {
 
         private OrderForSourcingOptionsRequest order;
-        private Boolean includeListingCustomAttributes;
+        private SourcingOptionsRequestAdditionalInfo additionalInfo;
+        private OptimizationHints optimizationHints;
+        private ResourceInvestment resourceInvestment;
 
         public Builder order(OrderForSourcingOptionsRequest order) {
             this.order = order;
             return this;
         }
 
-        public Builder includeListingCustomAttributes(Boolean includeListingCustomAttributes) {
-            this.includeListingCustomAttributes = includeListingCustomAttributes;
+        public Builder additionalInfo(SourcingOptionsRequestAdditionalInfo additionalInfo) {
+            this.additionalInfo = additionalInfo;
+            return this;
+        }
+
+        public Builder optimizationHints(OptimizationHints optimizationHints) {
+            this.optimizationHints = optimizationHints;
+            return this;
+        }
+
+        public Builder resourceInvestment(ResourceInvestment resourceInvestment) {
+            this.resourceInvestment = resourceInvestment;
             return this;
         }
 
