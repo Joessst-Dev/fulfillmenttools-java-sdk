@@ -1,27 +1,46 @@
 package de.joesst.dev.fulfillmenttools.externalactions;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 public final class UpdateExternalActionRequest {
 
-    private final String name;
-    private final String status;
+    private final Integer version;
+    private final Map<String, Object> nameLocalized;
+    private final List<String> groups;
+    private final Map<String, Object> action;
+    private final Map<String, Object> customAttributes;
 
     private UpdateExternalActionRequest(Builder builder) {
-        this.name = builder.name;
-        this.status = builder.status;
+        this.version = Objects.requireNonNull(builder.version, "version must not be null");
+        this.nameLocalized = Objects.requireNonNull(builder.nameLocalized, "nameLocalized must not be null");
+        this.groups = Objects.requireNonNull(builder.groups, "groups must not be null");
+        this.action = Objects.requireNonNull(builder.action, "action must not be null");
+        this.customAttributes = builder.customAttributes;
     }
 
-    public String name() { return name; }
-    public String status() { return status; }
+    public Integer version() { return version; }
+    public Map<String, Object> nameLocalized() { return nameLocalized; }
+    public List<String> groups() { return groups; }
+    public Map<String, Object> action() { return action; }
+    public Map<String, Object> customAttributes() { return customAttributes; }
 
     public static Builder builder() { return new Builder(); }
 
     public static final class Builder {
 
-        private String name;
-        private String status;
+        private Integer version;
+        private Map<String, Object> nameLocalized;
+        private List<String> groups;
+        private Map<String, Object> action;
+        private Map<String, Object> customAttributes;
 
-        public Builder name(String name) { this.name = name; return this; }
-        public Builder status(String status) { this.status = status; return this; }
+        public Builder version(Integer version) { this.version = version; return this; }
+        public Builder nameLocalized(Map<String, Object> nameLocalized) { this.nameLocalized = nameLocalized; return this; }
+        public Builder groups(List<String> groups) { this.groups = groups; return this; }
+        public Builder action(Map<String, Object> action) { this.action = action; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public UpdateExternalActionRequest build() { return new UpdateExternalActionRequest(this); }
     }

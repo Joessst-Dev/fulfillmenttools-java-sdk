@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.internal.externalactions;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import de.joesst.dev.fulfillmenttools.TransportException;
 import de.joesst.dev.fulfillmenttools.externalactions.CreateExternalActionRequest;
 import de.joesst.dev.fulfillmenttools.externalactions.ExternalAction;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public final class ExternalActionsClientImpl implements ExternalActionsClient {
+
+    private static final TypeReference<List<ExternalAction>> EXTERNAL_ACTION_LIST_TYPE = new TypeReference<>() {};
 
     private final HttpTransport transport;
     private final ResponseHandler responseHandler;
@@ -41,22 +44,9 @@ public final class ExternalActionsClientImpl implements ExternalActionsClient {
 
     @Override
     public Page<ExternalAction> list(ExternalActionListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/externalactions");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
-        ExternalActionListResponse body = responseHandler.handle(response, ExternalActionListResponse.class);
-        return new Page<>(
-                body.externalActions() != null ? body.externalActions() : List.of(),
-                body.nextCursor());
+        SdkHttpResponse response = execute(buildListRequest(request));
+        List<ExternalAction> items = responseHandler.handle(response, EXTERNAL_ACTION_LIST_TYPE);
+        return new Page<>(items != null ? items : List.of(), null);
     }
 
     @Override
@@ -71,7 +61,9 @@ public final class ExternalActionsClientImpl implements ExternalActionsClient {
 
     @Override
     public ExternalAction create(CreateExternalActionRequest request) {
-        CreateExternalActionBody body = new CreateExternalActionBody(request.name(), request.actionType());
+        CreateExternalActionBody body = new CreateExternalActionBody(
+                request.processRef(), request.nameLocalized(), request.groups(),
+                request.action(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/externalactions")
@@ -82,9 +74,11 @@ public final class ExternalActionsClientImpl implements ExternalActionsClient {
 
     @Override
     public ExternalAction update(String externalActionId, UpdateExternalActionRequest request) {
-        UpdateExternalActionBody body = new UpdateExternalActionBody(request.name(), request.status());
+        UpdateExternalActionBody body = new UpdateExternalActionBody(
+                request.version(), request.nameLocalized(), request.groups(),
+                request.action(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PATCH)
+                .method(HttpMethod.PUT)
                 .url(baseUrl + "/api/externalactions/" + externalActionId)
                 .body(responseHandler.encode(body))
                 .build();
@@ -103,26 +97,17 @@ public final class ExternalActionsClientImpl implements ExternalActionsClient {
 
     @Override
     public CompletableFuture<Page<ExternalAction>> listAsync(ExternalActionListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/externalactions");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        return transport.executeAsync(builder.build()).thenApply(response -> {
-            ExternalActionListResponse body = responseHandler.handle(response, ExternalActionListResponse.class);
-            return new Page<>(body.externalActions() != null ? body.externalActions() : List.of(), body.nextCursor());
+        return transport.executeAsync(buildListRequest(request)).thenApply(response -> {
+            List<ExternalAction> items = responseHandler.handle(response, EXTERNAL_ACTION_LIST_TYPE);
+            return new Page<>(items != null ? items : List.of(), null);
         });
     }
 
     @Override
     public CompletableFuture<ExternalAction> createAsync(CreateExternalActionRequest request) {
-        CreateExternalActionBody body = new CreateExternalActionBody(request.name(), request.actionType());
+        CreateExternalActionBody body = new CreateExternalActionBody(
+                request.processRef(), request.nameLocalized(), request.groups(),
+                request.action(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/externalactions")
@@ -134,14 +119,31 @@ public final class ExternalActionsClientImpl implements ExternalActionsClient {
 
     @Override
     public CompletableFuture<ExternalAction> updateAsync(String externalActionId, UpdateExternalActionRequest request) {
-        UpdateExternalActionBody body = new UpdateExternalActionBody(request.name(), request.status());
+        UpdateExternalActionBody body = new UpdateExternalActionBody(
+                request.version(), request.nameLocalized(), request.groups(),
+                request.action(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PATCH)
+                .method(HttpMethod.PUT)
                 .url(baseUrl + "/api/externalactions/" + externalActionId)
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
                 .thenApply(response -> responseHandler.handle(response, ExternalAction.class));
+    }
+
+    private SdkHttpRequest buildListRequest(ExternalActionListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/externalactions");
+
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.processRef() != null) builder.queryParam("processRef", request.processRef());
+        if (request.groups() != null) {
+            request.groups().forEach(g -> builder.queryParam("groups", g));
+        }
+
+        return builder.build();
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

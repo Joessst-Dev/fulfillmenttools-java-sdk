@@ -5,6 +5,9 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+import java.util.Map;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -38,7 +41,7 @@ class ExternalActionsAsyncTest {
     void getAsync_returnsExternalAction() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/externalactions/ea-1"))
-                .willReturn(okJson("{\"id\":\"ea-1\",\"name\":\"Notify Warehouse\",\"actionType\":\"WEBHOOK\",\"status\":\"ACTIVE\"}")));
+                .willReturn(okJson("{\"id\":\"ea-1\",\"name\":\"Notify Warehouse\",\"processRef\":\"proc-1\",\"groups\":[]}")));
 
         // When
         ExternalAction action = client.externalActions().getAsync("ea-1").get();
@@ -46,14 +49,14 @@ class ExternalActionsAsyncTest {
         // Then
         assertThat(action.id()).isEqualTo("ea-1");
         assertThat(action.name()).isEqualTo("Notify Warehouse");
-        assertThat(action.actionType()).isEqualTo("WEBHOOK");
+        assertThat(action.processRef()).isEqualTo("proc-1");
     }
 
     @Test
     void listAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/externalactions"))
-                .willReturn(okJson("{\"externalActions\":[{\"id\":\"ea-1\",\"name\":\"Action A\"},{\"id\":\"ea-2\",\"name\":\"Action B\"}]}")));
+                .willReturn(okJson("[{\"id\":\"ea-1\",\"name\":\"Action A\"},{\"id\":\"ea-2\",\"name\":\"Action B\"}]")));
 
         // When
         var page = client.externalActions().listAsync(ExternalActionListRequest.builder().build()).get();
@@ -66,13 +69,15 @@ class ExternalActionsAsyncTest {
     void createAsync_returnsCreatedExternalAction() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/externalactions"))
-                .willReturn(okJson("{\"id\":\"ea-new\",\"name\":\"My Action\",\"actionType\":\"WEBHOOK\",\"status\":\"ACTIVE\"}")));
+                .willReturn(okJson("{\"id\":\"ea-new\",\"name\":\"My Action\",\"processRef\":\"proc-1\",\"groups\":[]}")));
 
         // When
         ExternalAction action = client.externalActions()
                 .createAsync(CreateExternalActionRequest.builder()
-                        .name("My Action")
-                        .actionType("WEBHOOK")
+                        .processRef("proc-1")
+                        .nameLocalized(Map.of("en_US", "My Action"))
+                        .groups(List.of())
+                        .action(Map.of("type", "BLANK_LINK", "url", "https://example.com"))
                         .build()).get();
 
         // Then
