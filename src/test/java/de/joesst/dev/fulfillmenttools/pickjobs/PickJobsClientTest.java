@@ -50,6 +50,7 @@ class PickJobsClientTest {
                           "id": "pj-1",
                           "facilityRef": "fac-1",
                           "status": "OPEN",
+                          "shortId": "AS12",
                           "created": "2024-03-01T10:00:00Z",
                           "lastModified": "2024-03-01T11:00:00Z"
                         }
@@ -62,6 +63,7 @@ class PickJobsClientTest {
         assertThat(job.id()).isEqualTo("pj-1");
         assertThat(job.facilityRef()).isEqualTo("fac-1");
         assertThat(job.status()).isEqualTo("OPEN");
+        assertThat(job.shortId()).isEqualTo("AS12");
         assertThat(job.created()).isNotNull();
     }
 
@@ -128,14 +130,23 @@ class PickJobsClientTest {
 
         // When
         client.pickJobs().list(PickJobListRequest.builder()
-                .size(5).startAfterId("cursor-abc").facilityRef("fac-1").status("OPEN").build());
+                .size(5)
+                .startAfterId("cursor-abc")
+                .facilityRef("fac-1")
+                .status(List.of("OPEN", "IN_PROGRESS"))
+                .tenantOrderId("ext-001")
+                .orderBy("TARGET_TIME_ASC")
+                .build());
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/pickjobs"))
                 .withQueryParam("size", equalTo("5"))
                 .withQueryParam("startAfterId", equalTo("cursor-abc"))
                 .withQueryParam("facilityRef", equalTo("fac-1"))
-                .withQueryParam("status", equalTo("OPEN")));
+                .withQueryParam("status", equalTo("OPEN"))
+                .withQueryParam("status", equalTo("IN_PROGRESS"))
+                .withQueryParam("tenantOrderId", equalTo("ext-001"))
+                .withQueryParam("orderBy", equalTo("TARGET_TIME_ASC")));
     }
 
     // --- listAll ---
@@ -179,7 +190,7 @@ class PickJobsClientTest {
 
         // When
         PickJob job = client.pickJobs().update("pj-1",
-                UpdatePickJobRequest.builder().status("IN_PROGRESS").build());
+                UpdatePickJobRequest.builder().version(2).status("IN_PROGRESS").build());
 
         // Then
         assertThat(job.id()).isEqualTo("pj-1");
@@ -187,18 +198,87 @@ class PickJobsClientTest {
     }
 
     @Test
-    void update_sendsJsonBodyWithPatch() {
+    void update_sendsVersionAndActionInBody() {
         // Given
         server.stubFor(patch(urlPathEqualTo("/api/pickjobs/pj-1"))
                 .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"IN_PROGRESS\"}")));
 
         // When
-        client.pickJobs().update("pj-1", UpdatePickJobRequest.builder().status("IN_PROGRESS").build());
+        client.pickJobs().update("pj-1", UpdatePickJobRequest.builder().version(3).status("IN_PROGRESS").build());
 
         // Then
         server.verify(patchRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1"))
                 .withHeader("Content-Type", containing("application/json"))
-                .withRequestBody(matchingJsonPath("$.status", equalTo("IN_PROGRESS"))));
+                .withRequestBody(matchingJsonPath("$.version", equalTo("3")))
+                .withRequestBody(matchingJsonPath("$.actions[0].action", equalTo("ModifyPickJob")))
+                .withRequestBody(matchingJsonPath("$.actions[0].status", equalTo("IN_PROGRESS"))));
+    }
+
+    @Test
+    void update_requiresVersion() {
+        assertThatThrownBy(() -> UpdatePickJobRequest.builder().build())
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("version");
+    }
+
+    // --- actions ---
+
+    @Test
+    void abort_sendsActionNameAbort() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
+                .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"ABORTED\"}")));
+
+        // When
+        PickJob job = client.pickJobs().abort("pj-1", 2);
+
+        // Then
+        assertThat(job.status()).isEqualTo("ABORTED");
+        server.verify(postRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("ABORT")))
+                .withRequestBody(matchingJsonPath("$.version", equalTo("2"))));
+    }
+
+    @Test
+    void start_sendsActionNameStart() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
+                .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"IN_PROGRESS\"}")));
+
+        // When
+        client.pickJobs().start("pj-1", 1);
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("START"))));
+    }
+
+    @Test
+    void pause_sendsActionNamePause() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
+                .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"PAUSED\"}")));
+
+        // When
+        client.pickJobs().pause("pj-1", 1);
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("PAUSE"))));
+    }
+
+    @Test
+    void restart_sendsActionNameRestart() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
+                .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"OPEN\"}")));
+
+        // When
+        client.pickJobs().restart("pj-1", 1);
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("RESTART"))));
     }
 
     // --- Helpers ---

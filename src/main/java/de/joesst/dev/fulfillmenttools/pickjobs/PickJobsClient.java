@@ -16,4 +16,22 @@ public interface PickJobsClient {
 
     PickJob update(String pickJobId, UpdatePickJobRequest request);
     CompletableFuture<PickJob> updateAsync(String pickJobId, UpdatePickJobRequest request);
+
+    PickJob abort(String pickJobId, int version);
+    CompletableFuture<PickJob> abortAsync(String pickJobId, int version);
+
+    PickJob restart(String pickJobId, int version);
+    CompletableFuture<PickJob> restartAsync(String pickJobId, int version);
+
+    PickJob reset(String pickJobId, int version);
+    CompletableFuture<PickJob> resetAsync(String pickJobId, int version);
+
+    PickJob obsolete(String pickJobId, int version);
+    CompletableFuture<PickJob> obsoleteAsync(String pickJobId, int version);
+
+    PickJob start(String pickJobId, int version);
+    CompletableFuture<PickJob> startAsync(String pickJobId, int version);
+
+    PickJob pause(String pickJobId, int version);
+    CompletableFuture<PickJob> pauseAsync(String pickJobId, int version);
 }

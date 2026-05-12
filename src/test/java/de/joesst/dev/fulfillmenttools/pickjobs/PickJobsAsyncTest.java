@@ -69,7 +69,7 @@ class PickJobsAsyncTest {
 
         // When
         PickJob job = client.pickJobs()
-                .updateAsync("pj-1", UpdatePickJobRequest.builder().status("IN_PROGRESS").build()).get();
+                .updateAsync("pj-1", UpdatePickJobRequest.builder().version(1).status("IN_PROGRESS").build()).get();
 
         // Then
         assertThat(job.status()).isEqualTo("IN_PROGRESS");
