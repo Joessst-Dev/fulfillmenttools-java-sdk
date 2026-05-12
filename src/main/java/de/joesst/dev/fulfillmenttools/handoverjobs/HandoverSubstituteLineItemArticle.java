@@ -6,16 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The article associated with a handover job line item.
+ * The article associated with a substitute line item in a handover job.
  *
- * <p>Maps to the {@code HandoverLineItemArticle} schema in the fulfillmenttools OpenAPI spec,
- * which extends {@code AbstractArticle} with an optional {@code attributes} list
- * (maximum 40 items).
+ * <p>Maps to the {@code SubstituteLineItemArticle} schema in the fulfillmenttools OpenAPI spec,
+ * which extends {@code AbstractArticle} with an optional {@code attributes} list.
  *
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
  * @param tenantArticleId  Tenant-specific article reference number. Required.
- * @param title            Display title of the article. Required.
+ * @param title            Display title of the substitute article. Required.
  * @param imageUrl         Optional URL of the product image; no authentication required.
  * @param weight           Optional weight in grams.
  * @param titleLocalized   Localized translations for the title, keyed by locale
@@ -24,7 +23,7 @@ import java.util.Map;
  * @param attributes       Optional article attributes for display and process customization.
  *                         Maximum 40 items.
  */
-public record HandoverLineItemArticle(
+public record HandoverSubstituteLineItemArticle(
         String tenantArticleId,
         String title,
         String imageUrl,
