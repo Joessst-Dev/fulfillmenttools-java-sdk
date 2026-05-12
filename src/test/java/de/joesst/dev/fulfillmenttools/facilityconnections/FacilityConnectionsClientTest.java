@@ -9,7 +9,6 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -48,7 +47,7 @@ class FacilityConnectionsClientTest {
         server.stubFor(get(urlPathEqualTo("/api/facilities/fac-1/connections/conn-1"))
                 .willReturn(okJson("""
                         {"id":"conn-1","version":1,"sourceFacilityRef":"fac-1",
-                         "target":{"type":"CUSTOMER","id":"cust-1"},
+                         "target":{"type":"CUSTOMER"},
                          "carrierKey":"DHL","carrierName":"DHL Express"}
                         """)));
 
@@ -61,14 +60,14 @@ class FacilityConnectionsClientTest {
         assertThat(conn.sourceFacilityRef()).isEqualTo("fac-1");
         assertThat(conn.carrierKey()).isEqualTo("DHL");
         assertThat(conn.carrierName()).isEqualTo("DHL Express");
-        assertThat(conn.target()).containsEntry("type", "CUSTOMER");
+        assertThat(conn.target()).isInstanceOf(ConnectionTarget.Customer.class);
     }
 
     @Test
     void get_sendsBearerTokenHeader() {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/facilities/fac-1/connections/conn-1"))
-                .willReturn(okJson("{\"id\":\"conn-1\",\"version\":1,\"sourceFacilityRef\":\"fac-1\",\"target\":{}}")));
+                .willReturn(okJson("{\"id\":\"conn-1\",\"version\":1,\"sourceFacilityRef\":\"fac-1\",\"target\":{\"type\":\"CUSTOMER\"}}")));
 
         // When
         client.facilityConnections().get("fac-1", "conn-1");
@@ -99,7 +98,7 @@ class FacilityConnectionsClientTest {
                         {
                           "interFacilityConnections": [
                             {"id":"conn-1","version":1,"sourceFacilityRef":"fac-1","target":{"type":"CUSTOMER"}},
-                            {"id":"conn-2","version":1,"sourceFacilityRef":"fac-1","target":{"type":"SUPPLIER"}}
+                            {"id":"conn-2","version":1,"sourceFacilityRef":"fac-1","target":{"type":"SUPPLIER","facilityRef":"fac-2"}}
                           ],
                           "total": 5
                         }
@@ -124,7 +123,7 @@ class FacilityConnectionsClientTest {
                 .willReturn(okJson("""
                         {
                           "interFacilityConnections": [
-                            {"id":"conn-1","version":1,"sourceFacilityRef":"fac-1","target":{}}
+                            {"id":"conn-1","version":1,"sourceFacilityRef":"fac-1","target":{"type":"CUSTOMER"}}
                           ],
                           "total": 1
                         }
@@ -169,15 +168,15 @@ class FacilityConnectionsClientTest {
                 .withQueryParam("size", equalTo("2"))
                 .willReturn(okJson("""
                         {"interFacilityConnections":[
-                          {"id":"conn-1","version":1,"sourceFacilityRef":"fac-1","target":{}},
-                          {"id":"conn-2","version":1,"sourceFacilityRef":"fac-1","target":{}}
+                          {"id":"conn-1","version":1,"sourceFacilityRef":"fac-1","target":{"type":"CUSTOMER"}},
+                          {"id":"conn-2","version":1,"sourceFacilityRef":"fac-1","target":{"type":"CUSTOMER"}}
                         ],"total":3}
                         """)));
         server.stubFor(get(urlPathEqualTo("/api/facilities/fac-1/connections"))
                 .withQueryParam("startAfterId", equalTo("conn-2"))
                 .willReturn(okJson("""
                         {"interFacilityConnections":[
-                          {"id":"conn-3","version":1,"sourceFacilityRef":"fac-1","target":{}}
+                          {"id":"conn-3","version":1,"sourceFacilityRef":"fac-1","target":{"type":"CUSTOMER"}}
                         ],"total":3}
                         """)));
 
@@ -199,33 +198,33 @@ class FacilityConnectionsClientTest {
         server.stubFor(post(urlPathEqualTo("/api/facilities/fac-1/connections"))
                 .willReturn(okJson("""
                         {"id":"conn-new","version":1,"sourceFacilityRef":"fac-1",
-                         "target":{"type":"CUSTOMER","id":"cust-1"},"carrierKey":"DHL"}
+                         "target":{"type":"CUSTOMER"},"carrierKey":"DHL"}
                         """)));
 
         // When
         FacilityConnection conn = client.facilityConnections().create("fac-1",
                 CreateFacilityConnectionRequest.builder()
-                        .type("CUSTOMER")
-                        .target(Map.of("type", "CUSTOMER", "id", "cust-1"))
+                        .target(ConnectionTarget.Customer.of())
                         .carrierKey("DHL")
                         .build());
 
         // Then
         assertThat(conn.id()).isEqualTo("conn-new");
         assertThat(conn.carrierKey()).isEqualTo("DHL");
+        assertThat(conn.target()).isInstanceOf(ConnectionTarget.Customer.class);
     }
 
     @Test
     void create_sendsCorrectBody() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/facilities/fac-1/connections"))
-                .willReturn(okJson("{\"id\":\"conn-1\",\"version\":1,\"sourceFacilityRef\":\"fac-1\",\"target\":{}}")));
+                .willReturn(okJson("{\"id\":\"conn-1\",\"version\":1,\"sourceFacilityRef\":\"fac-1\"," +
+                        "\"target\":{\"type\":\"MANAGED_FACILITY\",\"facilityRef\":\"fac-2\"}}")));
 
         // When
         client.facilityConnections().create("fac-1",
                 CreateFacilityConnectionRequest.builder()
-                        .type("MANAGED_FACILITY")
-                        .target(Map.of("facilityRef", "fac-2"))
+                        .target(ConnectionTarget.ManagedFacility.of("fac-2"))
                         .carrierKey("UPS")
                         .build());
 
@@ -237,19 +236,10 @@ class FacilityConnectionsClientTest {
     }
 
     @Test
-    void create_requiresType() {
-        assertThatNullPointerException().isThrownBy(() ->
-                CreateFacilityConnectionRequest.builder()
-                        .target(Map.of("type", "CUSTOMER"))
-                        .build()
-        ).withMessageContaining("type");
-    }
-
-    @Test
     void create_requiresTarget() {
+        // Then
         assertThatNullPointerException().isThrownBy(() ->
                 CreateFacilityConnectionRequest.builder()
-                        .type("CUSTOMER")
                         .build()
         ).withMessageContaining("target");
     }
@@ -269,8 +259,7 @@ class FacilityConnectionsClientTest {
         FacilityConnection conn = client.facilityConnections().update("fac-1", "conn-1",
                 UpdateFacilityConnectionRequest.builder()
                         .version(1)
-                        .type("CUSTOMER")
-                        .target(Map.of("type", "CUSTOMER"))
+                        .target(ConnectionTarget.Customer.of())
                         .carrierKey("FedEx")
                         .build());
 
@@ -280,16 +269,27 @@ class FacilityConnectionsClientTest {
                 .withRequestBody(matchingJsonPath("$.type", equalTo("CUSTOMER")))
                 .withRequestBody(matchingJsonPath("$.carrierKey", equalTo("FedEx"))));
         assertThat(conn.version()).isEqualTo(2);
+        assertThat(conn.target()).isInstanceOf(ConnectionTarget.Customer.class);
     }
 
     @Test
     void update_requiresVersion() {
+        // Then
         assertThatNullPointerException().isThrownBy(() ->
                 UpdateFacilityConnectionRequest.builder()
-                        .type("CUSTOMER")
-                        .target(Map.of())
+                        .target(ConnectionTarget.Customer.of())
                         .build()
         ).withMessageContaining("version");
+    }
+
+    @Test
+    void update_requiresTarget() {
+        // Then
+        assertThatNullPointerException().isThrownBy(() ->
+                UpdateFacilityConnectionRequest.builder()
+                        .version(1)
+                        .build()
+        ).withMessageContaining("target");
     }
 
     // --- delete ---

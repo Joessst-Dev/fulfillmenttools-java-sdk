@@ -6,8 +6,6 @@ import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
-import java.util.Map;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -49,6 +47,7 @@ class FacilityConnectionsAsyncTest {
         // Then
         assertThat(conn.id()).isEqualTo("conn-1");
         assertThat(conn.sourceFacilityRef()).isEqualTo("fac-1");
+        assertThat(conn.target()).isInstanceOf(ConnectionTarget.Customer.class);
     }
 
     @Test
@@ -57,8 +56,8 @@ class FacilityConnectionsAsyncTest {
         server.stubFor(get(urlPathEqualTo("/api/facilities/fac-1/connections"))
                 .willReturn(okJson("""
                         {"interFacilityConnections":[
-                          {"id":"conn-1","version":1,"sourceFacilityRef":"fac-1","target":{}},
-                          {"id":"conn-2","version":1,"sourceFacilityRef":"fac-1","target":{}}
+                          {"id":"conn-1","version":1,"sourceFacilityRef":"fac-1","target":{"type":"CUSTOMER"}},
+                          {"id":"conn-2","version":1,"sourceFacilityRef":"fac-1","target":{"type":"MANAGED_FACILITY","facilityRef":"fac-2"}}
                         ],"total":2}
                         """)));
 
@@ -69,23 +68,26 @@ class FacilityConnectionsAsyncTest {
         // Then
         assertThat(page.items()).hasSize(2);
         assertThat(page.hasMore()).isFalse();
+        assertThat(page.items().get(0).target()).isInstanceOf(ConnectionTarget.Customer.class);
+        assertThat(page.items().get(1).target()).isInstanceOf(ConnectionTarget.ManagedFacility.class);
     }
 
     @Test
     void createAsync_returnsCreatedConnection() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/facilities/fac-1/connections"))
-                .willReturn(okJson("{\"id\":\"conn-new\",\"version\":1,\"sourceFacilityRef\":\"fac-1\",\"target\":{\"type\":\"SUPPLIER\"}}")));
+                .willReturn(okJson("{\"id\":\"conn-new\",\"version\":1,\"sourceFacilityRef\":\"fac-1\",\"target\":{\"type\":\"SUPPLIER\",\"facilityRef\":\"fac-3\"}}")));
 
         // When
         FacilityConnection conn = client.facilityConnections().createAsync("fac-1",
                 CreateFacilityConnectionRequest.builder()
-                        .type("SUPPLIER")
-                        .target(Map.of("type", "SUPPLIER"))
+                        .target(ConnectionTarget.Supplier.of("fac-3"))
                         .build()).get();
 
         // Then
         assertThat(conn.id()).isEqualTo("conn-new");
+        assertThat(conn.target()).isInstanceOf(ConnectionTarget.Supplier.class);
+        assertThat(((ConnectionTarget.Supplier) conn.target()).facilityRef()).isEqualTo("fac-3");
     }
 
     @Test
@@ -98,12 +100,12 @@ class FacilityConnectionsAsyncTest {
         FacilityConnection conn = client.facilityConnections().updateAsync("fac-1", "conn-1",
                 UpdateFacilityConnectionRequest.builder()
                         .version(1)
-                        .type("CUSTOMER")
-                        .target(Map.of("type", "CUSTOMER"))
+                        .target(ConnectionTarget.Customer.of())
                         .build()).get();
 
         // Then
         assertThat(conn.version()).isEqualTo(2);
+        assertThat(conn.target()).isInstanceOf(ConnectionTarget.Customer.class);
     }
 
     @Test

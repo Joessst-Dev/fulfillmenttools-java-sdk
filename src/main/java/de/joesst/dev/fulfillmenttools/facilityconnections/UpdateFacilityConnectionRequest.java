@@ -4,24 +4,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Request object for updating an existing facility connection.
+ *
+ * <p>{@code version} and {@code target} are the only required parameters. All other
+ * fields are optional and will be omitted from the request body when {@code null}.
+ *
+ * <p>Example usage:
+ * <pre>{@code
+ * var request = UpdateFacilityConnectionRequest.builder()
+ *     .version(3)
+ *     .target(ConnectionTarget.Customer.of())
+ *     .carrierKey("FedEx")
+ *     .build();
+ * }</pre>
+ */
 public final class UpdateFacilityConnectionRequest {
 
     private final Integer version;
-    private final String type;
-    private final Map<String, Object> target;
+    private final ConnectionTarget target;
     private final String carrierKey;
     private final String carrierName;
-    private final List<Map<String, Object>> context;
-    private final List<Map<String, Object>> fallbackCosts;
-    private final List<Map<String, Object>> nonDeliveryDays;
-    private final List<Map<String, Object>> packagingUnitsByContexts;
-    private final Map<String, Object> cutoffTimes;
-    private final Map<String, Object> fallbackTransitTime;
+    private final List<ConnectionContext> context;
+    private final List<DeliveryCost> fallbackCosts;
+    private final List<NonDeliveryDaysPerCountry> nonDeliveryDays;
+    private final List<PackagingUnitsByContext> packagingUnitsByContexts;
+    private final CutoffTimes cutoffTimes;
+    private final CarrierTransitTime fallbackTransitTime;
     private final Map<String, Object> customAttributes;
 
     private UpdateFacilityConnectionRequest(Builder builder) {
         this.version = Objects.requireNonNull(builder.version, "version must not be null");
-        this.type = Objects.requireNonNull(builder.type, "type must not be null");
         this.target = Objects.requireNonNull(builder.target, "target must not be null");
         this.carrierKey = builder.carrierKey;
         this.carrierName = builder.carrierName;
@@ -34,48 +47,96 @@ public final class UpdateFacilityConnectionRequest {
         this.customAttributes = builder.customAttributes;
     }
 
+    /** Returns the optimistic-locking version; never {@code null}. */
     public Integer version() { return version; }
-    public String type() { return type; }
-    public Map<String, Object> target() { return target; }
+
+    /** Returns the typed connection target; never {@code null}. */
+    public ConnectionTarget target() { return target; }
+
+    /** Returns the optional carrier key. */
     public String carrierKey() { return carrierKey; }
+
+    /** Returns the optional human-readable carrier name. */
     public String carrierName() { return carrierName; }
-    public List<Map<String, Object>> context() { return context; }
-    public List<Map<String, Object>> fallbackCosts() { return fallbackCosts; }
-    public List<Map<String, Object>> nonDeliveryDays() { return nonDeliveryDays; }
-    public List<Map<String, Object>> packagingUnitsByContexts() { return packagingUnitsByContexts; }
-    public Map<String, Object> cutoffTimes() { return cutoffTimes; }
-    public Map<String, Object> fallbackTransitTime() { return fallbackTransitTime; }
+
+    /** Returns the optional scoping contexts. */
+    public List<ConnectionContext> context() { return context; }
+
+    /** Returns the optional fallback delivery costs. */
+    public List<DeliveryCost> fallbackCosts() { return fallbackCosts; }
+
+    /** Returns the optional non-delivery day configuration. */
+    public List<NonDeliveryDaysPerCountry> nonDeliveryDays() { return nonDeliveryDays; }
+
+    /** Returns the optional context-dependent packaging unit mappings. */
+    public List<PackagingUnitsByContext> packagingUnitsByContexts() { return packagingUnitsByContexts; }
+
+    /** Returns the optional cutoff schedule. */
+    public CutoffTimes cutoffTimes() { return cutoffTimes; }
+
+    /** Returns the optional fallback transit time. */
+    public CarrierTransitTime fallbackTransitTime() { return fallbackTransitTime; }
+
+    /** Returns the optional free-form custom attributes. */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
+    /** Returns a new builder for constructing an {@code UpdateFacilityConnectionRequest}. */
     public static Builder builder() { return new Builder(); }
 
+    /**
+     * Fluent builder for {@link UpdateFacilityConnectionRequest}.
+     */
     public static final class Builder {
         private Integer version;
-        private String type;
-        private Map<String, Object> target;
+        private ConnectionTarget target;
         private String carrierKey;
         private String carrierName;
-        private List<Map<String, Object>> context;
-        private List<Map<String, Object>> fallbackCosts;
-        private List<Map<String, Object>> nonDeliveryDays;
-        private List<Map<String, Object>> packagingUnitsByContexts;
-        private Map<String, Object> cutoffTimes;
-        private Map<String, Object> fallbackTransitTime;
+        private List<ConnectionContext> context;
+        private List<DeliveryCost> fallbackCosts;
+        private List<NonDeliveryDaysPerCountry> nonDeliveryDays;
+        private List<PackagingUnitsByContext> packagingUnitsByContexts;
+        private CutoffTimes cutoffTimes;
+        private CarrierTransitTime fallbackTransitTime;
         private Map<String, Object> customAttributes;
 
+        /** Sets the optimistic-locking version; required. */
         public Builder version(Integer version) { this.version = version; return this; }
-        public Builder type(String type) { this.type = type; return this; }
-        public Builder target(Map<String, Object> target) { this.target = target; return this; }
+
+        /** Sets the target of the connection; required. */
+        public Builder target(ConnectionTarget target) { this.target = target; return this; }
+
+        /** Sets the carrier key. */
         public Builder carrierKey(String carrierKey) { this.carrierKey = carrierKey; return this; }
+
+        /** Sets the human-readable carrier name. */
         public Builder carrierName(String carrierName) { this.carrierName = carrierName; return this; }
-        public Builder context(List<Map<String, Object>> context) { this.context = context; return this; }
-        public Builder fallbackCosts(List<Map<String, Object>> fallbackCosts) { this.fallbackCosts = fallbackCosts; return this; }
-        public Builder nonDeliveryDays(List<Map<String, Object>> nonDeliveryDays) { this.nonDeliveryDays = nonDeliveryDays; return this; }
-        public Builder packagingUnitsByContexts(List<Map<String, Object>> packagingUnitsByContexts) { this.packagingUnitsByContexts = packagingUnitsByContexts; return this; }
-        public Builder cutoffTimes(Map<String, Object> cutoffTimes) { this.cutoffTimes = cutoffTimes; return this; }
-        public Builder fallbackTransitTime(Map<String, Object> fallbackTransitTime) { this.fallbackTransitTime = fallbackTransitTime; return this; }
+
+        /** Sets the scoping contexts. */
+        public Builder context(List<ConnectionContext> context) { this.context = context; return this; }
+
+        /** Sets the fallback delivery costs. */
+        public Builder fallbackCosts(List<DeliveryCost> fallbackCosts) { this.fallbackCosts = fallbackCosts; return this; }
+
+        /** Sets the non-delivery day configuration. */
+        public Builder nonDeliveryDays(List<NonDeliveryDaysPerCountry> nonDeliveryDays) { this.nonDeliveryDays = nonDeliveryDays; return this; }
+
+        /** Sets the context-dependent packaging unit mappings. */
+        public Builder packagingUnitsByContexts(List<PackagingUnitsByContext> packagingUnitsByContexts) { this.packagingUnitsByContexts = packagingUnitsByContexts; return this; }
+
+        /** Sets the cutoff schedule. */
+        public Builder cutoffTimes(CutoffTimes cutoffTimes) { this.cutoffTimes = cutoffTimes; return this; }
+
+        /** Sets the fallback transit time. */
+        public Builder fallbackTransitTime(CarrierTransitTime fallbackTransitTime) { this.fallbackTransitTime = fallbackTransitTime; return this; }
+
+        /** Sets the free-form custom attributes. */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
+        /**
+         * Builds and returns a new {@code UpdateFacilityConnectionRequest}.
+         *
+         * @throws NullPointerException if {@code version} or {@code target} has not been set
+         */
         public UpdateFacilityConnectionRequest build() { return new UpdateFacilityConnectionRequest(this); }
     }
 }

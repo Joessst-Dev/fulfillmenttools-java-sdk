@@ -150,7 +150,7 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
                 .method(HttpMethod.POST)
                 .url(connectionsUrl(facilityId))
                 .body(responseHandler.encode(new CreateFacilityConnectionBody(
-                        request.type(),
+                        request.target().type(),
                         request.target(),
                         request.carrierKey(),
                         request.carrierName(),
@@ -170,7 +170,7 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
                 .url(connectionsUrl(facilityId) + "/" + connectionId)
                 .body(responseHandler.encode(new UpdateFacilityConnectionBody(
                         request.version(),
-                        request.type(),
+                        request.target().type(),
                         request.target(),
                         request.carrierKey(),
                         request.carrierName(),
