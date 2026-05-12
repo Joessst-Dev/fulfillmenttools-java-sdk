@@ -69,7 +69,7 @@ class CarriersAsyncTest {
 
         // When
         Carrier carrier = client.carriers()
-                .createAsync(CreateCarrierRequest.builder().name("FedEx").build()).get();
+                .createAsync(CreateCarrierRequest.builder().key("fedex").name("FedEx").build()).get();
 
         // Then
         assertThat(carrier.id()).isEqualTo("c-new");

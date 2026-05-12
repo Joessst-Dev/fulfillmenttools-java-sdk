@@ -1,10 +1,9 @@
 package de.joesst.dev.fulfillmenttools.carriers;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Represents a carrier (shipping provider) in fulfillmenttools.
- */
 public record Carrier(
         String id,
         Integer version,
@@ -20,5 +19,7 @@ public record Carrier(
         String deliveryType,
         String lifecycle,
         String logoUrl,
-        Boolean productValueNeeded
+        Boolean productValueNeeded,
+        Map<String, Object> credentials,
+        List<Map<String, Object>> parcelLabelClassifications
 ) {}

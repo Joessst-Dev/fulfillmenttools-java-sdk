@@ -71,7 +71,13 @@ public final class CarriersClientImpl implements CarriersClient {
 
     @Override
     public Carrier create(CreateCarrierRequest request) {
-        CreateCarrierBody body = new CreateCarrierBody(request.name());
+        CreateCarrierBody body = new CreateCarrierBody(
+                request.key(), request.name(), request.status(), request.logoUrl(),
+                request.deliveryType(), request.lifecycle(),
+                request.defaultParcelWidthInCm(), request.defaultParcelLengthInCm(),
+                request.defaultParcelHeightInCm(), request.defaultParcelWeightInGram(),
+                request.productValueNeeded(), request.credentials(),
+                request.parcelLabelClassifications());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/carriers")
@@ -82,9 +88,9 @@ public final class CarriersClientImpl implements CarriersClient {
 
     @Override
     public Carrier update(String carrierId, UpdateCarrierRequest request) {
-        UpdateCarrierBody body = new UpdateCarrierBody(request.name(), request.status());
+        UpdateCarrierBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/carriers/" + carrierId)
                 .body(responseHandler.encode(body))
                 .build();
@@ -131,7 +137,13 @@ public final class CarriersClientImpl implements CarriersClient {
 
     @Override
     public CompletableFuture<Carrier> createAsync(CreateCarrierRequest request) {
-        CreateCarrierBody body = new CreateCarrierBody(request.name());
+        CreateCarrierBody body = new CreateCarrierBody(
+                request.key(), request.name(), request.status(), request.logoUrl(),
+                request.deliveryType(), request.lifecycle(),
+                request.defaultParcelWidthInCm(), request.defaultParcelLengthInCm(),
+                request.defaultParcelHeightInCm(), request.defaultParcelWeightInGram(),
+                request.productValueNeeded(), request.credentials(),
+                request.parcelLabelClassifications());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/carriers")
@@ -143,9 +155,9 @@ public final class CarriersClientImpl implements CarriersClient {
 
     @Override
     public CompletableFuture<Carrier> updateAsync(String carrierId, UpdateCarrierRequest request) {
-        UpdateCarrierBody body = new UpdateCarrierBody(request.name(), request.status());
+        UpdateCarrierBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/carriers/" + carrierId)
                 .body(responseHandler.encode(body))
                 .build();
@@ -163,6 +175,15 @@ public final class CarriersClientImpl implements CarriersClient {
             responseHandler.handleVoid(response);
             return null;
         });
+    }
+
+    private UpdateCarrierBody buildUpdateBody(UpdateCarrierRequest request) {
+        UpdateCarrierBody.ModifyCarrierAction action = new UpdateCarrierBody.ModifyCarrierAction(
+                request.name(), request.status(), request.logoUrl(), request.deliveryType(),
+                request.lifecycle(), request.defaultParcelWidthInCm(), request.defaultParcelLengthInCm(),
+                request.defaultParcelHeightInCm(), request.defaultParcelWeightInGram(),
+                request.productValueNeeded(), request.credentials());
+        return new UpdateCarrierBody(request.version(), List.of(action));
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {
