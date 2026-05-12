@@ -4,9 +4,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Represents a storage location within a facility.
- */
 public record StorageLocation(
         String id,
         Integer version,
@@ -19,7 +16,10 @@ public record StorageLocation(
         String zoneName,
         String zoneRef,
         String information,
-        List<String> traits,
+        List<Map<String, Object>> traits,
         List<String> scannableCodes,
-        Map<String, Object> customAttributes
+        Map<String, Object> customAttributes,
+        Double schemaVersion,
+        Map<String, Object> traitConfig,
+        List<Map<String, Object>> runningSequences
 ) {}

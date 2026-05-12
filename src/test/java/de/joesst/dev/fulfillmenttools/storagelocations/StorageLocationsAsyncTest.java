@@ -5,6 +5,8 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -55,7 +57,7 @@ class StorageLocationsAsyncTest {
     void listAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/facilities/fac-1/storagelocations"))
-                .willReturn(okJson("{\"storageLocations\":[{\"id\":\"sl-1\",\"name\":\"Shelf A1\"},{\"id\":\"sl-2\",\"name\":\"Shelf B2\"}]}")));
+                .willReturn(okJson("[{\"id\":\"sl-1\",\"name\":\"Shelf A1\"},{\"id\":\"sl-2\",\"name\":\"Shelf B2\"}]")));
 
         // When
         var page = client.storageLocations()
@@ -73,7 +75,10 @@ class StorageLocationsAsyncTest {
 
         // When
         StorageLocation location = client.storageLocations()
-                .createAsync(FACILITY_ID, CreateStorageLocationRequest.builder().name("New Shelf").type("SHELF").build()).get();
+                .createAsync(FACILITY_ID, CreateStorageLocationRequest.builder()
+                        .name("New Shelf").type("SHELF")
+                        .scannableCodes(List.of()).runningSequences(List.of())
+                        .build()).get();
 
         // Then
         assertThat(location.id()).isEqualTo("sl-new");

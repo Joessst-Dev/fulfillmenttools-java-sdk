@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.internal.storagelocations;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import de.joesst.dev.fulfillmenttools.TransportException;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public final class StorageLocationsClientImpl implements StorageLocationsClient {
+
+    private static final TypeReference<List<StorageLocation>> STORAGE_LOCATION_LIST_TYPE = new TypeReference<>() {};
 
     private final HttpTransport transport;
     private final ResponseHandler responseHandler;
@@ -49,22 +52,9 @@ public final class StorageLocationsClientImpl implements StorageLocationsClient 
 
     @Override
     public Page<StorageLocation> list(String facilityId, StorageLocationListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(collectionUrl(facilityId));
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
-        StorageLocationListResponse body = responseHandler.handle(response, StorageLocationListResponse.class);
-        return new Page<>(
-                body.storageLocations() != null ? body.storageLocations() : List.of(),
-                body.nextCursor());
+        SdkHttpResponse response = execute(buildListRequest(facilityId, request).build());
+        List<StorageLocation> items = responseHandler.handle(response, STORAGE_LOCATION_LIST_TYPE);
+        return new Page<>(items != null ? items : List.of(), null);
     }
 
     @Override
@@ -79,7 +69,11 @@ public final class StorageLocationsClientImpl implements StorageLocationsClient 
 
     @Override
     public StorageLocation create(String facilityId, CreateStorageLocationRequest request) {
-        CreateStorageLocationBody body = new CreateStorageLocationBody(request.name(), request.type());
+        CreateStorageLocationBody body = new CreateStorageLocationBody(
+                request.name(), request.type(), request.scannableCodes(),
+                request.runningSequences(), request.information(), request.tenantLocationId(),
+                request.zoneRef(), request.zoneName(), request.traitConfig(),
+                request.traits(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(collectionUrl(facilityId))
@@ -90,9 +84,9 @@ public final class StorageLocationsClientImpl implements StorageLocationsClient 
 
     @Override
     public StorageLocation update(String facilityId, String storageLocationId, UpdateStorageLocationRequest request) {
-        UpdateStorageLocationBody body = new UpdateStorageLocationBody(request.name(), request.type());
+        UpdateStorageLocationBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .url(itemUrl(facilityId, storageLocationId))
                 .body(responseHandler.encode(body))
                 .build();
@@ -120,26 +114,19 @@ public final class StorageLocationsClientImpl implements StorageLocationsClient 
 
     @Override
     public CompletableFuture<Page<StorageLocation>> listAsync(String facilityId, StorageLocationListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(collectionUrl(facilityId));
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        return transport.executeAsync(builder.build()).thenApply(response -> {
-            StorageLocationListResponse body = responseHandler.handle(response, StorageLocationListResponse.class);
-            return new Page<>(body.storageLocations() != null ? body.storageLocations() : List.of(), body.nextCursor());
+        return transport.executeAsync(buildListRequest(facilityId, request).build()).thenApply(response -> {
+            List<StorageLocation> items = responseHandler.handle(response, STORAGE_LOCATION_LIST_TYPE);
+            return new Page<>(items != null ? items : List.of(), null);
         });
     }
 
     @Override
     public CompletableFuture<StorageLocation> createAsync(String facilityId, CreateStorageLocationRequest request) {
-        CreateStorageLocationBody body = new CreateStorageLocationBody(request.name(), request.type());
+        CreateStorageLocationBody body = new CreateStorageLocationBody(
+                request.name(), request.type(), request.scannableCodes(),
+                request.runningSequences(), request.information(), request.tenantLocationId(),
+                request.zoneRef(), request.zoneName(), request.traitConfig(),
+                request.traits(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(collectionUrl(facilityId))
@@ -151,9 +138,9 @@ public final class StorageLocationsClientImpl implements StorageLocationsClient 
 
     @Override
     public CompletableFuture<StorageLocation> updateAsync(String facilityId, String storageLocationId, UpdateStorageLocationRequest request) {
-        UpdateStorageLocationBody body = new UpdateStorageLocationBody(request.name(), request.type());
+        UpdateStorageLocationBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .url(itemUrl(facilityId, storageLocationId))
                 .body(responseHandler.encode(body))
                 .build();
@@ -171,6 +158,27 @@ public final class StorageLocationsClientImpl implements StorageLocationsClient 
             responseHandler.handleVoid(response);
             return null;
         });
+    }
+
+    private UpdateStorageLocationBody buildUpdateBody(UpdateStorageLocationRequest request) {
+        UpdateStorageLocationBody.ModifyStorageLocationAction action =
+                new UpdateStorageLocationBody.ModifyStorageLocationAction(
+                        request.name(), request.type(), request.scannableCodes(),
+                        request.runningSequences(), request.information(), request.tenantLocationId(),
+                        request.zoneRef(), request.traitConfig(), request.customAttributes());
+        return new UpdateStorageLocationBody(request.version(), List.of(action));
+    }
+
+    private SdkHttpRequest.Builder buildListRequest(String facilityId, StorageLocationListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(collectionUrl(facilityId));
+
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.scannableCode() != null) builder.queryParam("scannableCode", request.scannableCode());
+
+        return builder;
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {
