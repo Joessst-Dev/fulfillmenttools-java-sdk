@@ -1,14 +1,6 @@
 package de.joesst.dev.fulfillmenttools.checkoutoptions;
 
-import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Represents a checkout option evaluation result in fulfillmenttools.
- */
-public record CheckoutOption(
-        String id,
-        Integer version,
-        String status,
-        Instant created,
-        Instant lastModified
-) {}
+public record CheckoutOption(List<Map<String, Object>> facilities) {}

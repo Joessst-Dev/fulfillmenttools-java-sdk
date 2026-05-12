@@ -26,23 +26,8 @@ public final class CheckoutOptionsClientImpl implements CheckoutOptionsClient {
     }
 
     @Override
-    public CheckoutOption get(String checkoutOptionId) {
-        SdkHttpRequest request = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/promises/checkoutoptions/" + checkoutOptionId)
-                .build();
-        return responseHandler.handle(execute(request), CheckoutOption.class);
-    }
-
-    @Override
     public CheckoutOption evaluate(EvaluateCheckoutOptionsRequest request) {
-        EvaluateCheckoutOptionsBody body = new EvaluateCheckoutOptionsBody(
-                request.deliveryPreferences(),
-                request.orderLineItems(),
-                request.consumerAddress(),
-                request.customAttributes(),
-                request.filterDuplicates()
-        );
+        EvaluateCheckoutOptionsBody body = buildBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/promises/checkoutoptions")
@@ -52,24 +37,8 @@ public final class CheckoutOptionsClientImpl implements CheckoutOptionsClient {
     }
 
     @Override
-    public CompletableFuture<CheckoutOption> getAsync(String checkoutOptionId) {
-        SdkHttpRequest request = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/promises/checkoutoptions/" + checkoutOptionId)
-                .build();
-        return transport.executeAsync(request)
-                .thenApply(response -> responseHandler.handle(response, CheckoutOption.class));
-    }
-
-    @Override
     public CompletableFuture<CheckoutOption> evaluateAsync(EvaluateCheckoutOptionsRequest request) {
-        EvaluateCheckoutOptionsBody body = new EvaluateCheckoutOptionsBody(
-                request.deliveryPreferences(),
-                request.orderLineItems(),
-                request.consumerAddress(),
-                request.customAttributes(),
-                request.filterDuplicates()
-        );
+        EvaluateCheckoutOptionsBody body = buildBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/promises/checkoutoptions")
@@ -77,6 +46,19 @@ public final class CheckoutOptionsClientImpl implements CheckoutOptionsClient {
                 .build();
         return transport.executeAsync(httpRequest)
                 .thenApply(response -> responseHandler.handle(response, CheckoutOption.class));
+    }
+
+    private EvaluateCheckoutOptionsBody buildBody(EvaluateCheckoutOptionsRequest request) {
+        return new EvaluateCheckoutOptionsBody(
+                request.deliveryPreferences(),
+                request.orderLineItems(),
+                request.consumerAddress(),
+                request.customAttributes(),
+                request.filterDuplicates(),
+                request.customServices(),
+                request.geoFence(),
+                request.tags()
+        );
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

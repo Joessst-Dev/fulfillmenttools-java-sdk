@@ -38,36 +38,46 @@ class CheckoutOptionsAsyncTest {
     }
 
     @Test
-    void getAsync_returnsCheckoutOption() throws Exception {
-        // Given
-        server.stubFor(get(urlPathEqualTo("/api/promises/checkoutoptions/co-1"))
-                .willReturn(okJson("{\"id\":\"co-1\",\"status\":\"AVAILABLE\"}")));
-
-        // When
-        CheckoutOption option = client.checkoutOptions().getAsync("co-1").get();
-
-        // Then
-        assertThat(option.id()).isEqualTo("co-1");
-        assertThat(option.status()).isEqualTo("AVAILABLE");
-    }
-
-    @Test
     void evaluateAsync_returnsResult() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/promises/checkoutoptions"))
-                .willReturn(okJson("{\"id\":\"co-new\",\"status\":\"AVAILABLE\"}")));
+                .willReturn(okJson("{\"facilities\":[{\"facilityRef\":\"fac-1\",\"name\":\"Facility 1\"}]}")));
 
         EvaluateCheckoutOptionsRequest request = EvaluateCheckoutOptionsRequest.builder()
                 .deliveryPreferences(Map.of("type", "HOME_DELIVERY"))
-                .orderLineItems(List.of(new CheckoutOrderLineItem("article-1", 1)))
+                .orderLineItems(List.of(Map.of("tenantArticleId", "article-1", "quantity", 1)))
                 .build();
 
         // When
         CheckoutOption option = client.checkoutOptions().evaluateAsync(request).get();
 
         // Then
-        assertThat(option.id()).isEqualTo("co-new");
-        assertThat(option.status()).isEqualTo("AVAILABLE");
+        assertThat(option.facilities()).hasSize(1);
+        assertThat(option.facilities().get(0)).containsEntry("facilityRef", "fac-1");
+    }
+
+    @Test
+    void evaluateAsync_sendsBodyFields() throws Exception {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/promises/checkoutoptions"))
+                .willReturn(okJson("{\"facilities\":[]}")));
+
+        EvaluateCheckoutOptionsRequest request = EvaluateCheckoutOptionsRequest.builder()
+                .deliveryPreferences(Map.of("type", "HOME_DELIVERY"))
+                .orderLineItems(List.of(Map.of("tenantArticleId", "art-1", "quantity", 2)))
+                .filterDuplicates(true)
+                .consumerAddress(Map.of("country", "DE"))
+                .build();
+
+        // When
+        client.checkoutOptions().evaluateAsync(request).get();
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/promises/checkoutoptions"))
+                .withHeader("Authorization", equalTo("Bearer test-bearer"))
+                .withRequestBody(matchingJsonPath("$.deliveryPreferences.type", equalTo("HOME_DELIVERY")))
+                .withRequestBody(matchingJsonPath("$.filterDuplicates", equalTo("true")))
+                .withRequestBody(matchingJsonPath("$.consumerAddress.country", equalTo("DE"))));
     }
 
     // --- Helpers ---
