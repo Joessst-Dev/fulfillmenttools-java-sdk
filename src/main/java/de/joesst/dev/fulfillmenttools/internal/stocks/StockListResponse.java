@@ -4,4 +4,6 @@ import de.joesst.dev.fulfillmenttools.stocks.StockItem;
 
 import java.util.List;
 
-record StockListResponse(List<StockItem> stocks, String nextCursor) {}
+record StockListResponse(List<StockItem> stocks, PageInfoDto pageInfo, Integer total) {
+    record PageInfoDto(String endCursor, Boolean hasNextPage, Boolean hasPreviousPage, String startCursor) {}
+}

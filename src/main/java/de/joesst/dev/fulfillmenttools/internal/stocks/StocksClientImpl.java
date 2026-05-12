@@ -30,25 +30,8 @@ public final class StocksClientImpl implements StocksClient {
 
     @Override
     public Page<StockItem> list(StockListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/stocks");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-        if (request.facilityRef() != null) {
-            builder.queryParam("facilityRef", request.facilityRef());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
-        StockListResponse body = responseHandler.handle(response, StockListResponse.class);
-        return new Page<>(
-                body.stocks() != null ? body.stocks() : List.of(),
-                body.nextCursor());
+        StockListResponse body = responseHandler.handle(execute(buildListRequest(request)), StockListResponse.class);
+        return toPage(body);
     }
 
     @Override
@@ -63,24 +46,29 @@ public final class StocksClientImpl implements StocksClient {
 
     @Override
     public CompletableFuture<Page<StockItem>> listAsync(StockListRequest request) {
+        return transport.executeAsync(buildListRequest(request))
+                .thenApply(response -> toPage(responseHandler.handle(response, StockListResponse.class)));
+    }
+
+    private SdkHttpRequest buildListRequest(StockListRequest request) {
         SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/stocks");
 
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-        if (request.facilityRef() != null) {
-            builder.queryParam("facilityRef", request.facilityRef());
-        }
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
+        if (request.tenantFacilityId() != null) builder.queryParam("tenantFacilityId", request.tenantFacilityId());
+        if (request.tenantArticleId() != null) request.tenantArticleId().forEach(v -> builder.queryParam("tenantArticleId", v));
+        if (request.locationRef() != null) request.locationRef().forEach(v -> builder.queryParam("locationRef", v));
 
-        return transport.executeAsync(builder.build()).thenApply(response -> {
-            StockListResponse body = responseHandler.handle(response, StockListResponse.class);
-            return new Page<>(body.stocks() != null ? body.stocks() : List.of(), body.nextCursor());
-        });
+        return builder.build();
+    }
+
+    private Page<StockItem> toPage(StockListResponse body) {
+        List<StockItem> items = body.stocks() != null ? body.stocks() : List.of();
+        String cursor = body.pageInfo() != null ? body.pageInfo().endCursor() : null;
+        return new Page<>(items, cursor);
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

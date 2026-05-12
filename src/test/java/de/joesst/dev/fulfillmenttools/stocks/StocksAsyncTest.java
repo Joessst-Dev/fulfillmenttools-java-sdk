@@ -41,8 +41,8 @@ class StocksAsyncTest {
         server.stubFor(get(urlPathEqualTo("/api/stocks"))
                 .willReturn(okJson("""
                         {"stocks":[
-                          {"facilityRef":"fac-1","tenantArticleId":"art-1","quantity":5,"unit":"PIECE"}
-                        ],"nextCursor":"c2"}
+                          {"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":5}
+                        ],"pageInfo":{"endCursor":"c2","hasNextPage":true,"hasPreviousPage":false,"startCursor":"c1"}}
                         """)));
 
         // When
