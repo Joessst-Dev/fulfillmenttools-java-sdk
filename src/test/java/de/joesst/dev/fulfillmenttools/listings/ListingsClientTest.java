@@ -112,7 +112,8 @@ class ListingsClientTest {
         assertThat(l.tags()).hasSize(1);
         assertThat(l.customAttributes()).containsEntry("color", "blue");
         assertThat(l.titleLocalized()).containsEntry("de", "Artikel");
-        assertThat(l.legal()).containsEntry("hsCode", "123456");
+        assertThat(l.legal()).isNotNull();
+        assertThat(l.legal().hsCode()).isEqualTo("123456");
     }
 
     @Test
