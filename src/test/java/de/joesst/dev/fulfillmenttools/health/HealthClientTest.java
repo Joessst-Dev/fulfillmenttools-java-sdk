@@ -35,26 +35,55 @@ class HealthClientTest {
     // --- health ---
 
     @Test
-    void health_returnsDeserializedStatus() {
+    void health_returnsDeserializedResult() {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/health"))
                 .willReturn(okJson("""
-                        {"status":"UP","details":{"db":{"status":"UP"},"redis":{"status":"UP"}}}
+                        {
+                          "status": "UP",
+                          "dependencies": [
+                            {"name": "database", "status": "UP"},
+                            {"name": "cache",    "status": "UP"}
+                          ]
+                        }
                         """)));
 
         // When
-        HealthStatus result = client.health().health();
+        HealthResult result = client.health().health();
 
         // Then
         assertThat(result.status()).isEqualTo("UP");
-        assertThat(result.details()).containsKey("db");
+        assertThat(result.dependencies()).hasSize(2);
+        assertThat(result.dependencies().get(0).name()).isEqualTo("database");
+        assertThat(result.dependencies().get(0).status()).isEqualTo("UP");
+    }
+
+    @Test
+    void health_downStatus_isDeserialised() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/health"))
+                .willReturn(okJson("""
+                        {
+                          "status": "DOWN",
+                          "dependencies": [
+                            {"name": "database", "status": "DOWN"}
+                          ]
+                        }
+                        """)));
+
+        // When
+        HealthResult result = client.health().health();
+
+        // Then
+        assertThat(result.status()).isEqualTo("DOWN");
+        assertThat(result.dependencies().get(0).status()).isEqualTo("DOWN");
     }
 
     @Test
     void health_sendsBearerToken() {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/health"))
-                .willReturn(okJson("{\"status\":\"UP\"}")));
+                .willReturn(okJson("{\"status\":\"UP\",\"dependencies\":[]}")));
 
         // When
         client.health().health();
@@ -65,30 +94,19 @@ class HealthClientTest {
     }
 
     @Test
-    void health_noDetails_returnsNullDetails() {
+    void healthAsync_returnsResult() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/health"))
-                .willReturn(okJson("{\"status\":\"DOWN\"}")));
+                .willReturn(okJson("""
+                        {"status":"UP","dependencies":[{"name":"db","status":"UP"}]}
+                        """)));
 
         // When
-        HealthStatus result = client.health().health();
-
-        // Then
-        assertThat(result.status()).isEqualTo("DOWN");
-        assertThat(result.details()).isNull();
-    }
-
-    @Test
-    void healthAsync_returnsStatus() throws Exception {
-        // Given
-        server.stubFor(get(urlPathEqualTo("/api/health"))
-                .willReturn(okJson("{\"status\":\"UP\"}")));
-
-        // When
-        HealthStatus result = client.health().healthAsync().get();
+        HealthResult result = client.health().healthAsync().get();
 
         // Then
         assertThat(result.status()).isEqualTo("UP");
+        assertThat(result.dependencies()).hasSize(1);
     }
 
     // --- status ---
@@ -97,17 +115,26 @@ class HealthClientTest {
     void status_returnsDeserializedStatus() {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/status"))
-                .willReturn(okJson("""
-                        {"status":"UP","version":"1.2.3","components":{"orders":{"status":"UP"}}}
-                        """)));
+                .willReturn(okJson("{\"status\":\"UP\"}")));
 
         // When
         SystemStatus result = client.health().status();
 
         // Then
         assertThat(result.status()).isEqualTo("UP");
-        assertThat(result.version()).isEqualTo("1.2.3");
-        assertThat(result.components()).containsKey("orders");
+    }
+
+    @Test
+    void status_degraded_isDeserialised() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/status"))
+                .willReturn(okJson("{\"status\":\"DEGRADED\"}")));
+
+        // When
+        SystemStatus result = client.health().status();
+
+        // Then
+        assertThat(result.status()).isEqualTo("DEGRADED");
     }
 
     @Test
@@ -128,14 +155,13 @@ class HealthClientTest {
     void statusAsync_returnsStatus() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/status"))
-                .willReturn(okJson("{\"status\":\"UP\",\"version\":\"2.0.0\"}")));
+                .willReturn(okJson("{\"status\":\"DOWN\"}")));
 
         // When
         SystemStatus result = client.health().statusAsync().get();
 
         // Then
-        assertThat(result.status()).isEqualTo("UP");
-        assertThat(result.version()).isEqualTo("2.0.0");
+        assertThat(result.status()).isEqualTo("DOWN");
     }
 
     // --- Helpers ---

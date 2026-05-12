@@ -2,12 +2,13 @@ package de.joesst.dev.fulfillmenttools.internal.health;
 
 import de.joesst.dev.fulfillmenttools.TransportException;
 import de.joesst.dev.fulfillmenttools.health.HealthClient;
-import de.joesst.dev.fulfillmenttools.health.HealthStatus;
+import de.joesst.dev.fulfillmenttools.health.HealthResult;
 import de.joesst.dev.fulfillmenttools.health.SystemStatus;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
+import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -25,19 +26,19 @@ public final class HealthClientImpl implements HealthClient {
     }
 
     @Override
-    public HealthStatus health() {
+    public HealthResult health() {
         return responseHandler.handle(execute(SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/health")
-                .build()), HealthStatus.class);
+                .build()), HealthResult.class);
     }
 
     @Override
-    public CompletableFuture<HealthStatus> healthAsync() {
+    public CompletableFuture<HealthResult> healthAsync() {
         return transport.executeAsync(SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/health")
-                .build()).thenApply(r -> responseHandler.handle(r, HealthStatus.class));
+                .build()).thenApply(r -> responseHandler.handle(r, HealthResult.class));
     }
 
     @Override
@@ -56,7 +57,7 @@ public final class HealthClientImpl implements HealthClient {
                 .build()).thenApply(r -> responseHandler.handle(r, SystemStatus.class));
     }
 
-    private de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse execute(SdkHttpRequest request) {
+    private SdkHttpResponse execute(SdkHttpRequest request) {
         try {
             return transport.execute(request);
         } catch (IOException e) {

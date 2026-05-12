@@ -4,9 +4,9 @@ import java.util.concurrent.CompletableFuture;
 
 public interface HealthClient {
 
-    HealthStatus health();
+    HealthResult health();
 
-    CompletableFuture<HealthStatus> healthAsync();
+    CompletableFuture<HealthResult> healthAsync();
 
     SystemStatus status();
 
