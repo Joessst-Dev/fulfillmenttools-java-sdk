@@ -57,7 +57,7 @@ All interactions start with a `FulfillmenttoolsClient`, instantiated with your A
 **Authenticate and create a client:**
 
 ```java
-import de.joesst.dev.fulfillmenttools.client.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.EmailPasswordCredentials;
 
 FulfillmenttoolsClient client = FulfillmenttoolsClient.builder()
@@ -93,6 +93,9 @@ All operations except `listAll` have `*Async` variants returning `CompletableFut
 The SDK uses Google Identity Toolkit (Firebase Auth) under the hood. Provide your credentials once when creating the client:
 
 ```java
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.auth.EmailPasswordCredentials;
+
 var credentials = new EmailPasswordCredentials(
     email,     // Your fulfillmenttools user email
     password,  // Your password
@@ -112,13 +115,7 @@ Tokens are cached and refreshed automatically before expiration. No refresh logi
 ### Fetch a Single Order (Sync)
 
 ```java
-import de.joesst.dev.fulfillmenttools.client.orders.GetOrderRequest;
-
-var order = client.orders().get(
-    new GetOrderRequest()
-        .withProjectId("my-project")
-        .withOrderId("order-123")
-);
+var order = client.orders().get("order-123");
 
 System.out.println("Order status: " + order.status());
 ```
@@ -127,11 +124,7 @@ System.out.println("Order status: " + order.status());
 
 ```java
 client.orders()
-    .getAsync(
-        new GetOrderRequest()
-            .withProjectId("my-project")
-            .withOrderId("order-123")
-    )
+    .getAsync("order-123")
     .thenAccept(order -> {
         System.out.println("Order: " + order.status());
     })
@@ -144,11 +137,9 @@ client.orders()
 ### List Orders with Pagination
 
 ```java
-import de.joesst.dev.fulfillmenttools.client.orders.ListOrdersRequest;
+import de.joesst.dev.fulfillmenttools.orders.OrderListRequest;
 
-var request = new ListOrdersRequest()
-    .withProjectId("my-project")
-    .withSize(25);
+var request = OrderListRequest.builder().size(25).build();
 
 var page = client.orders().list(request);
 
@@ -157,7 +148,7 @@ for (var order : page.items()) {
 }
 
 if (page.hasMore()) {
-    var nextRequest = request.withStartAfterId(page.nextCursor());
+    var nextRequest = request.toBuilder().startAfterId(page.nextCursor()).build();
     var nextPage = client.orders().list(nextRequest);
     // Process next page...
 }
@@ -168,9 +159,9 @@ if (page.hasMore()) {
 Use `listAll()` for a lazy, automatic pagination loop:
 
 ```java
-var request = new ListOrdersRequest()
-    .withProjectId("my-project")
-    .withSize(100);
+import de.joesst.dev.fulfillmenttools.orders.OrderListRequest;
+
+var request = OrderListRequest.builder().size(100).build();
 
 for (var order : client.orders().listAll(request)) {
     System.out.println("Order: " + order.id());
@@ -182,12 +173,12 @@ The SDK fetches pages on demand as you iterate — no manual cursor tracking nee
 ### Create an Order
 
 ```java
-import de.joesst.dev.fulfillmenttools.client.orders.CreateOrderRequest;
+import de.joesst.dev.fulfillmenttools.orders.CreateOrderRequest;
 
 var newOrder = client.orders().create(
-    new CreateOrderRequest()
-        .withProjectId("my-project")
-        .withOrder(orderDto)
+    CreateOrderRequest.builder()
+        .tenantOrderId("my-order-001")
+        .build()
 );
 
 System.out.println("Created order: " + newOrder.id());
@@ -198,23 +189,20 @@ System.out.println("Created order: " + newOrder.id());
 All SDK exceptions extend `FulfillmenttoolsException` (unchecked). Handle specific errors with type-safe catches:
 
 ```java
-import de.joesst.dev.fulfillmenttools.client.FulfillmenttoolsException;
-import de.joesst.dev.fulfillmenttools.client.NotFoundException;
-import de.joesst.dev.fulfillmenttools.client.ValidationException;
-import de.joesst.dev.fulfillmenttools.client.RateLimitException;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.NotFoundException;
+import de.joesst.dev.fulfillmenttools.ValidationException;
+import de.joesst.dev.fulfillmenttools.RateLimitException;
 
 try {
-    var order = client.orders().get(
-        new GetOrderRequest()
-            .withProjectId("my-project")
-            .withOrderId("order-123")
-    );
+    var order = client.orders().get("order-123");
 } catch (NotFoundException e) {
     System.err.println("Order not found");
 } catch (ValidationException e) {
     System.err.println("Invalid request: " + e.getMessage());
 } catch (RateLimitException e) {
-    System.err.println("Rate limited. Retry after: " + e.retryAfter() + "ms");
+    String wait = e.retryAfter().map(d -> d.toMillis() + "ms").orElse("unknown");
+    System.err.println("Rate limited. Retry after: " + wait);
 } catch (FulfillmenttoolsException e) {
     System.err.println("API error: " + e.getMessage());
 }
@@ -234,27 +222,23 @@ try {
 ### Facilities and Stocks
 
 ```java
-import de.joesst.dev.fulfillmenttools.client.facilities.ListFacilitiesRequest;
-import de.joesst.dev.fulfillmenttools.client.stocks.ListStocksRequest;
+import de.joesst.dev.fulfillmenttools.facilities.FacilityListRequest;
+import de.joesst.dev.fulfillmenttools.stocks.StockListRequest;
 
 // List facilities
-var facilities = client.facilities().list(
-    new ListFacilitiesRequest()
-        .withProjectId("my-project")
-);
+var facilities = client.facilities().list(FacilityListRequest.builder().build());
 
 for (var facility : facilities.items()) {
     System.out.println("Facility: " + facility.name());
 }
 
-// List stocks
+// List stocks for a specific facility
 var stocks = client.stocks().list(
-    new ListStocksRequest()
-        .withProjectId("my-project")
+    StockListRequest.builder().facilityRef("fac-1").build()
 );
 
 for (var stock : stocks.items()) {
-    System.out.println("SKU: " + stock.sku() + ", Qty: " + stock.quantity());
+    System.out.println("Article: " + stock.tenantArticleId() + ", Qty: " + stock.quantity());
 }
 ```
 
