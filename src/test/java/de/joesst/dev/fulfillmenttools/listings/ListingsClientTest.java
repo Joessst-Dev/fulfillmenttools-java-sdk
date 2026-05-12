@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -46,8 +47,8 @@ class ListingsClientTest {
                 .willReturn(okJson("""
                         {
                           "listings": [
-                            {"id":"l-1","version":1,"facilityRef":"fac-1","tenantArticleId":"art-1","title":"Article 1"},
-                            {"id":"l-2","version":1,"facilityRef":"fac-1","tenantArticleId":"art-2","title":"Article 2"}
+                            {"id":"l-1","version":1,"facilityId":"fac-1","tenantArticleId":"art-1","title":"Article 1","status":"ACTIVE"},
+                            {"id":"l-2","version":1,"facilityId":"fac-1","tenantArticleId":"art-2","title":"Article 2","status":"ACTIVE"}
                           ]
                         }
                         """)));
@@ -55,18 +56,64 @@ class ListingsClientTest {
         // When
         List<Listing> listings = client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
                 .listings(List.of(
-                        ListingUpsertItem.builder().facilityRef("fac-1").tenantArticleId("art-1").title("Article 1").build(),
-                        ListingUpsertItem.builder().facilityRef("fac-1").tenantArticleId("art-2").title("Article 2").build()
+                        ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").title("Article 1").build(),
+                        ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-2").title("Article 2").build()
                 ))
                 .build());
 
         // Then
         assertThat(listings).hasSize(2);
         assertThat(listings.get(0).id()).isEqualTo("l-1");
-        assertThat(listings.get(0).facilityRef()).isEqualTo("fac-1");
+        assertThat(listings.get(0).facilityId()).isEqualTo("fac-1");
         assertThat(listings.get(0).tenantArticleId()).isEqualTo("art-1");
         assertThat(listings.get(0).title()).isEqualTo("Article 1");
+        assertThat(listings.get(0).status()).isEqualTo("ACTIVE");
         assertThat(listings.get(1).id()).isEqualTo("l-2");
+    }
+
+    @Test
+    void bulkUpsert_deserializesAllFields() {
+        // Given
+        server.stubFor(put(urlPathEqualTo("/api/listings"))
+                .willReturn(okJson("""
+                        {
+                          "listings": [{
+                            "id":"l-1","version":2,"facilityId":"fac-1","tenantArticleId":"art-1",
+                            "status":"INACTIVE","title":"T","imageUrl":"https://img.example.com/1.jpg",
+                            "measurementUnitKey":"kg","outOfStockBehaviour":"SHOW",
+                            "currency":"EUR","price":9.99,"weight":1.5,
+                            "categoryRefs":["cat-1","cat-2"],
+                            "scannableCodes":["123456789"],
+                            "attributes":[{"key":"color","value":"red"}],
+                            "tags":[{"tagRef":"sale"}],
+                            "customAttributes":{"color":"blue"},
+                            "titleLocalized":{"de":"Artikel","en":"Article"},
+                            "legal":{"hsCode":"123456"}
+                          }]
+                        }
+                        """)));
+
+        // When
+        List<Listing> listings = client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
+                .listings(List.of(ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").build()))
+                .build());
+
+        // Then
+        Listing l = listings.get(0);
+        assertThat(l.status()).isEqualTo("INACTIVE");
+        assertThat(l.imageUrl()).isEqualTo("https://img.example.com/1.jpg");
+        assertThat(l.measurementUnitKey()).isEqualTo("kg");
+        assertThat(l.outOfStockBehaviour()).isEqualTo("SHOW");
+        assertThat(l.currency()).isEqualTo("EUR");
+        assertThat(l.price()).isEqualTo(9.99);
+        assertThat(l.weight()).isEqualTo(1.5);
+        assertThat(l.categoryRefs()).containsExactly("cat-1", "cat-2");
+        assertThat(l.scannableCodes()).containsExactly("123456789");
+        assertThat(l.attributes()).hasSize(1);
+        assertThat(l.tags()).hasSize(1);
+        assertThat(l.customAttributes()).containsEntry("color", "blue");
+        assertThat(l.titleLocalized()).containsEntry("de", "Artikel");
+        assertThat(l.legal()).containsEntry("hsCode", "123456");
     }
 
     @Test
@@ -78,7 +125,7 @@ class ListingsClientTest {
         // When
         client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
                 .listings(List.of(
-                        ListingUpsertItem.builder().facilityRef("fac-1").tenantArticleId("art-1").build()
+                        ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").build()
                 ))
                 .build());
 
@@ -97,7 +144,7 @@ class ListingsClientTest {
         client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
                 .listings(List.of(
                         ListingUpsertItem.builder()
-                                .facilityRef("fac-1")
+                                .facilityId("fac-1")
                                 .tenantArticleId("art-1")
                                 .title("My Article")
                                 .build()
@@ -106,7 +153,7 @@ class ListingsClientTest {
 
         // Then
         server.verify(putRequestedFor(urlPathEqualTo("/api/listings"))
-                .withRequestBody(matchingJsonPath("$.listings[0].facilityRef", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.listings[0].facilityId", equalTo("fac-1")))
                 .withRequestBody(matchingJsonPath("$.listings[0].tenantArticleId", equalTo("art-1")))
                 .withRequestBody(matchingJsonPath("$.listings[0].title", equalTo("My Article"))));
     }
@@ -120,7 +167,7 @@ class ListingsClientTest {
         // When
         List<Listing> listings = client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
                 .listings(List.of(
-                        ListingUpsertItem.builder().facilityRef("fac-1").tenantArticleId("art-1").build()
+                        ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").build()
                 ))
                 .build());
 
@@ -129,16 +176,16 @@ class ListingsClientTest {
     }
 
     @Test
-    void listingUpsertItem_requiresFacilityRef() {
+    void listingUpsertItem_requiresFacilityId() {
         assertThatNullPointerException().isThrownBy(() ->
                 ListingUpsertItem.builder().tenantArticleId("art-1").build()
-        ).withMessageContaining("facilityRef");
+        ).withMessageContaining("facilityId");
     }
 
     @Test
     void listingUpsertItem_requiresTenantArticleId() {
         assertThatNullPointerException().isThrownBy(() ->
-                ListingUpsertItem.builder().facilityRef("fac-1").build()
+                ListingUpsertItem.builder().facilityId("fac-1").build()
         ).withMessageContaining("tenantArticleId");
     }
 
@@ -158,11 +205,11 @@ class ListingsClientTest {
                 .willReturn(okJson("""
                         {
                           "listings": [
-                            {"id":"l-1","facilityRef":"fac-1","tenantArticleId":"art-1","title":"Article 1","version":1},
-                            {"id":"l-2","facilityRef":"fac-1","tenantArticleId":"art-2","title":"Article 2","version":2}
+                            {"id":"l-1","facilityId":"fac-1","tenantArticleId":"art-1","title":"Article 1","version":1,"status":"ACTIVE"},
+                            {"id":"l-2","facilityId":"fac-1","tenantArticleId":"art-2","title":"Article 2","version":2,"status":"ACTIVE"}
                           ],
                           "total": 2,
-                          "pageInfo": {"endCursor":"cursor-2","hasNextPage":false,"hasPreviousPage":false,"startCursor":"cursor-1"}
+                          "pageInfo": {"endCursor":"cursor-2","hasNextPage":true,"hasPreviousPage":false,"startCursor":"cursor-1"}
                         }
                         """)));
 
@@ -175,7 +222,9 @@ class ListingsClientTest {
         // Then
         assertThat(page.items()).hasSize(2);
         assertThat(page.items().get(0).id()).isEqualTo("l-1");
+        assertThat(page.items().get(0).facilityId()).isEqualTo("fac-1");
         assertThat(page.items().get(0).tenantArticleId()).isEqualTo("art-1");
+        assertThat(page.items().get(0).status()).isEqualTo("ACTIVE");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cursor-2");
     }
@@ -220,7 +269,7 @@ class ListingsClientTest {
         server.stubFor(post(urlPathEqualTo("/api/listings/search"))
                 .willReturn(okJson("""
                         {
-                          "listings": [{"id":"l-1","facilityRef":"fac-1","tenantArticleId":"art-1","version":1}],
+                          "listings": [{"id":"l-1","facilityId":"fac-1","tenantArticleId":"art-1","version":1,"status":"ACTIVE"}],
                           "pageInfo": {"endCursor":"cur-next","hasNextPage":true,"hasPreviousPage":false,"startCursor":"cur-start"}
                         }
                         """)));
@@ -237,7 +286,7 @@ class ListingsClientTest {
     void search_withNoPageInfo_hasMoreIsFalse() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/listings/search"))
-                .willReturn(okJson("{\"listings\":[{\"id\":\"l-1\",\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"version\":1}]}")));
+                .willReturn(okJson("{\"listings\":[{\"id\":\"l-1\",\"facilityId\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"version\":1,\"status\":\"ACTIVE\"}]}")));
 
         // When
         Page<Listing> page = client.listings().search(ListingSearchRequest.builder().build());
@@ -257,8 +306,8 @@ class ListingsClientTest {
                 .withRequestBody(notMatching(".*startAfterId.*"))
                 .willReturn(okJson("""
                         {"listings":[
-                          {"id":"l-1","facilityRef":"fac-1","tenantArticleId":"art-1","version":1},
-                          {"id":"l-2","facilityRef":"fac-1","tenantArticleId":"art-2","version":1}
+                          {"id":"l-1","facilityId":"fac-1","tenantArticleId":"art-1","version":1,"status":"ACTIVE"},
+                          {"id":"l-2","facilityId":"fac-1","tenantArticleId":"art-2","version":1,"status":"ACTIVE"}
                         ],"pageInfo":{"endCursor":"cur-2","hasNextPage":true,"hasPreviousPage":false,"startCursor":"cur-1"}}
                         """)));
 
@@ -266,7 +315,7 @@ class ListingsClientTest {
                 .withRequestBody(matchingJsonPath("$.startAfterId", equalTo("cur-2")))
                 .willReturn(okJson("""
                         {"listings":[
-                          {"id":"l-3","facilityRef":"fac-1","tenantArticleId":"art-3","version":1}
+                          {"id":"l-3","facilityId":"fac-1","tenantArticleId":"art-3","version":1,"status":"ACTIVE"}
                         ]}
                         """)));
 
@@ -285,7 +334,7 @@ class ListingsClientTest {
     void searchAll_doesNotFetchExtraPageAfterLastCursor() {
         // Given — single page, no pageInfo
         server.stubFor(post(urlPathEqualTo("/api/listings/search"))
-                .willReturn(okJson("{\"listings\":[{\"id\":\"l-1\",\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"version\":1}]}")));
+                .willReturn(okJson("{\"listings\":[{\"id\":\"l-1\",\"facilityId\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"version\":1,\"status\":\"ACTIVE\"}]}")));
 
         // When
         List<Listing> items = new ArrayList<>();

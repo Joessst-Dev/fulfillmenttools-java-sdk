@@ -43,7 +43,7 @@ class ListingsAsyncTest {
         server.stubFor(put(urlPathEqualTo("/api/listings"))
                 .willReturn(okJson("""
                         {"listings":[
-                          {"id":"l-1","facilityRef":"fac-1","tenantArticleId":"art-1","version":1}
+                          {"id":"l-1","facilityId":"fac-1","tenantArticleId":"art-1","version":1,"status":"ACTIVE"}
                         ]}
                         """)));
 
@@ -51,7 +51,7 @@ class ListingsAsyncTest {
         List<Listing> listings = client.listings()
                 .bulkUpsertAsync(ListingBulkUpsertRequest.builder()
                         .listings(List.of(
-                                ListingUpsertItem.builder().facilityRef("fac-1").tenantArticleId("art-1").build()
+                                ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").build()
                         ))
                         .build())
                 .get();
@@ -59,7 +59,9 @@ class ListingsAsyncTest {
         // Then
         assertThat(listings).hasSize(1);
         assertThat(listings.get(0).id()).isEqualTo("l-1");
+        assertThat(listings.get(0).facilityId()).isEqualTo("fac-1");
         assertThat(listings.get(0).tenantArticleId()).isEqualTo("art-1");
+        assertThat(listings.get(0).status()).isEqualTo("ACTIVE");
     }
 
     @Test
@@ -68,7 +70,7 @@ class ListingsAsyncTest {
         server.stubFor(post(urlPathEqualTo("/api/listings/search"))
                 .willReturn(okJson("""
                         {"listings":[
-                          {"id":"l-1","facilityRef":"fac-1","tenantArticleId":"art-1","version":1}
+                          {"id":"l-1","facilityId":"fac-1","tenantArticleId":"art-1","version":1,"status":"ACTIVE"}
                         ],"pageInfo":{"endCursor":"c2","hasNextPage":true,"hasPreviousPage":false,"startCursor":"c1"}}
                         """)));
 
