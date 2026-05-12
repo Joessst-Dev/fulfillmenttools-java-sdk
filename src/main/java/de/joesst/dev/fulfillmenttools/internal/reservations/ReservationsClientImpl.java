@@ -8,7 +8,6 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
-import de.joesst.dev.fulfillmenttools.reservations.CreateReservationRequest;
 import de.joesst.dev.fulfillmenttools.reservations.Reservation;
 import de.joesst.dev.fulfillmenttools.reservations.ReservationListRequest;
 import de.joesst.dev.fulfillmenttools.reservations.ReservationsClient;
@@ -40,25 +39,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     @Override
     public Page<Reservation> list(ReservationListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/reservations");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-        if (request.facilityRef() != null) {
-            builder.queryParam("facilityRef", request.facilityRef());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
+        SdkHttpResponse response = execute(buildListRequest(request).build());
         ReservationListResponse body = responseHandler.handle(response, ReservationListResponse.class);
-        return new Page<>(
-                body.reservations() != null ? body.reservations() : List.of(),
-                body.nextCursor());
+        String cursor = body.pageInfo() != null ? body.pageInfo().endCursor() : null;
+        return new Page<>(body.reservations() != null ? body.reservations() : List.of(), cursor);
     }
 
     @Override
@@ -66,30 +50,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
         return Pages.all(cursor -> {
             ReservationListRequest r = cursor == null
                     ? request
-                    : request.toBuilder().startAfterId(cursor).build();
+                    : request.toBuilder().after(cursor).build();
             return list(r);
         });
-    }
-
-    @Override
-    public Reservation create(CreateReservationRequest request) {
-        CreateReservationBody body = new CreateReservationBody(
-                request.facilityRef(), request.tenantArticleId(), request.quantity());
-        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.POST)
-                .url(baseUrl + "/api/reservations")
-                .body(responseHandler.encode(body))
-                .build();
-        return responseHandler.handle(execute(httpRequest), Reservation.class);
-    }
-
-    @Override
-    public void delete(String reservationId) {
-        SdkHttpRequest request = SdkHttpRequest.builder()
-                .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/reservations/" + reservationId)
-                .build();
-        responseHandler.handleVoid(execute(request));
     }
 
     @Override
@@ -104,49 +67,22 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     @Override
     public CompletableFuture<Page<Reservation>> listAsync(ReservationListRequest request) {
+        return transport.executeAsync(buildListRequest(request).build()).thenApply(response -> {
+            ReservationListResponse body = responseHandler.handle(response, ReservationListResponse.class);
+            String cursor = body.pageInfo() != null ? body.pageInfo().endCursor() : null;
+            return new Page<>(body.reservations() != null ? body.reservations() : List.of(), cursor);
+        });
+    }
+
+    private SdkHttpRequest.Builder buildListRequest(ReservationListRequest request) {
         SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/reservations");
 
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-        if (request.facilityRef() != null) {
-            builder.queryParam("facilityRef", request.facilityRef());
-        }
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.after() != null) builder.queryParam("after", request.after());
 
-        return transport.executeAsync(builder.build()).thenApply(response -> {
-            ReservationListResponse body = responseHandler.handle(response, ReservationListResponse.class);
-            return new Page<>(body.reservations() != null ? body.reservations() : List.of(), body.nextCursor());
-        });
-    }
-
-    @Override
-    public CompletableFuture<Reservation> createAsync(CreateReservationRequest request) {
-        CreateReservationBody body = new CreateReservationBody(
-                request.facilityRef(), request.tenantArticleId(), request.quantity());
-        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.POST)
-                .url(baseUrl + "/api/reservations")
-                .body(responseHandler.encode(body))
-                .build();
-        return transport.executeAsync(httpRequest)
-                .thenApply(response -> responseHandler.handle(response, Reservation.class));
-    }
-
-    @Override
-    public CompletableFuture<Void> deleteAsync(String reservationId) {
-        SdkHttpRequest request = SdkHttpRequest.builder()
-                .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/reservations/" + reservationId)
-                .build();
-        return transport.executeAsync(request).thenApply(response -> {
-            responseHandler.handleVoid(response);
-            return null;
-        });
+        return builder;
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

@@ -38,7 +38,7 @@ class ReservationsAsyncTest {
     void getAsync_returnsReservation() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/reservations/res-1"))
-                .willReturn(okJson("{\"id\":\"res-1\",\"quantity\":3,\"status\":\"OPEN\"}")));
+                .willReturn(okJson("{\"id\":\"res-1\",\"quantity\":3}")));
 
         // When
         Reservation reservation = client.reservations().getAsync("res-1").get();
@@ -52,42 +52,16 @@ class ReservationsAsyncTest {
     void listAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/reservations"))
-                .willReturn(okJson("{\"reservations\":[{\"id\":\"res-1\",\"quantity\":1},{\"id\":\"res-2\",\"quantity\":2}]}")));
+                .willReturn(okJson("""
+                        {"reservations":[{"id":"res-1","quantity":1},{"id":"res-2","quantity":2}],
+                         "pageInfo":{"endCursor":null,"hasNextPage":false,"hasPreviousPage":false,"startCursor":""}}
+                        """)));
 
         // When
         var page = client.reservations().listAsync(ReservationListRequest.builder().build()).get();
 
         // Then
         assertThat(page.items()).hasSize(2);
-    }
-
-    @Test
-    void createAsync_returnsCreatedReservation() throws Exception {
-        // Given
-        server.stubFor(post(urlPathEqualTo("/api/reservations"))
-                .willReturn(aResponse().withStatus(201)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"id\":\"res-new\",\"quantity\":5}")));
-
-        // When
-        Reservation reservation = client.reservations().createAsync(
-                CreateReservationRequest.builder()
-                        .facilityRef("fac-1").tenantArticleId("art-1").quantity(5).build()).get();
-
-        // Then
-        assertThat(reservation.id()).isEqualTo("res-new");
-        assertThat(reservation.quantity()).isEqualTo(5);
-    }
-
-    @Test
-    void deleteAsync_completesWithoutException() {
-        // Given
-        server.stubFor(delete(urlPathEqualTo("/api/reservations/res-1"))
-                .willReturn(aResponse().withStatus(200)));
-
-        // When / Then
-        assertThatCode(() -> client.reservations().deleteAsync("res-1").get())
-                .doesNotThrowAnyException();
     }
 
     // --- Helpers ---

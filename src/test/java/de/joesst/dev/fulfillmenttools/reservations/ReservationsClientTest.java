@@ -104,10 +104,16 @@ class ReservationsClientTest {
                 .willReturn(okJson("""
                         {
                           "reservations": [
-                            {"id":"res-1","facilityRef":"fac-1","tenantArticleId":"art-1","quantity":1,"status":"OPEN"},
-                            {"id":"res-2","facilityRef":"fac-1","tenantArticleId":"art-2","quantity":2,"status":"OPEN"}
+                            {"id":"res-1","facilityRef":"fac-1","tenantArticleId":"art-1","quantity":1},
+                            {"id":"res-2","facilityRef":"fac-1","tenantArticleId":"art-2","quantity":2}
                           ],
-                          "nextCursor": "cursor-page-2"
+                          "pageInfo": {
+                            "endCursor": "cursor-page-2",
+                            "hasNextPage": true,
+                            "hasPreviousPage": false,
+                            "startCursor": ""
+                          },
+                          "total": 10
                         }
                         """)));
 
@@ -119,23 +125,23 @@ class ReservationsClientTest {
         assertThat(page.items()).hasSize(2);
         assertThat(page.items().get(0).id()).isEqualTo("res-1");
         assertThat(page.hasMore()).isTrue();
+        assertThat(page.nextCursor()).isEqualTo("cursor-page-2");
     }
 
     @Test
     void list_sendsQueryParams() {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/reservations"))
-                .willReturn(okJson("{\"reservations\":[]}")));
+                .willReturn(okJson("{\"reservations\":[],\"pageInfo\":{\"endCursor\":null,\"hasNextPage\":false,\"hasPreviousPage\":false,\"startCursor\":\"\"}}")));
 
         // When
         client.reservations().list(ReservationListRequest.builder()
-                .size(10).startAfterId("cursor-abc").facilityRef("fac-1").build());
+                .size(10).after("cursor-abc").build());
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/reservations"))
                 .withQueryParam("size", equalTo("10"))
-                .withQueryParam("startAfterId", equalTo("cursor-abc"))
-                .withQueryParam("facilityRef", equalTo("fac-1")));
+                .withQueryParam("after", equalTo("cursor-abc")));
     }
 
     // --- listAll ---
@@ -149,14 +155,15 @@ class ReservationsClientTest {
                         {"reservations":[
                           {"id":"res-1","quantity":1},
                           {"id":"res-2","quantity":2}
-                        ],"nextCursor":"cur-2"}
+                        ],"pageInfo":{"endCursor":"cur-2","hasNextPage":true,"hasPreviousPage":false,"startCursor":""}}
                         """)));
 
         server.stubFor(get(urlPathEqualTo("/api/reservations"))
                 .withQueryParam("size", equalTo("2"))
-                .withQueryParam("startAfterId", equalTo("cur-2"))
+                .withQueryParam("after", equalTo("cur-2"))
                 .willReturn(okJson("""
-                        {"reservations":[{"id":"res-3","quantity":3}]}
+                        {"reservations":[{"id":"res-3","quantity":3}],
+                         "pageInfo":{"endCursor":null,"hasNextPage":false,"hasPreviousPage":true,"startCursor":""}}
                         """)));
 
         // When
@@ -169,84 +176,6 @@ class ReservationsClientTest {
         // Then
         assertThat(ids).containsExactly("res-1", "res-2", "res-3");
         server.verify(2, getRequestedFor(urlPathEqualTo("/api/reservations")));
-    }
-
-    // --- create ---
-
-    @Test
-    void create_returnsCreatedReservation() {
-        // Given
-        server.stubFor(post(urlPathEqualTo("/api/reservations"))
-                .willReturn(aResponse().withStatus(201)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("""
-                                {"id":"res-new","facilityRef":"fac-1","tenantArticleId":"art-1","quantity":3,"status":"OPEN"}
-                                """)));
-
-        // When
-        Reservation reservation = client.reservations().create(
-                CreateReservationRequest.builder()
-                        .facilityRef("fac-1").tenantArticleId("art-1").quantity(3).build());
-
-        // Then
-        assertThat(reservation.id()).isEqualTo("res-new");
-        assertThat(reservation.quantity()).isEqualTo(3);
-    }
-
-    @Test
-    void create_sendsJsonBody() {
-        // Given
-        server.stubFor(post(urlPathEqualTo("/api/reservations"))
-                .willReturn(aResponse().withStatus(201)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"id\":\"res-1\"}")));
-
-        // When
-        client.reservations().create(
-                CreateReservationRequest.builder()
-                        .facilityRef("fac-1").tenantArticleId("art-1").quantity(3).build());
-
-        // Then
-        server.verify(postRequestedFor(urlPathEqualTo("/api/reservations"))
-                .withHeader("Content-Type", containing("application/json"))
-                .withRequestBody(matchingJsonPath("$.facilityRef", equalTo("fac-1")))
-                .withRequestBody(matchingJsonPath("$.tenantArticleId", equalTo("art-1")))
-                .withRequestBody(matchingJsonPath("$.quantity", equalTo("3"))));
-    }
-
-    @Test
-    void create_requiresFacilityRef() {
-        // When / Then
-        assertThatThrownBy(() -> CreateReservationRequest.builder()
-                .tenantArticleId("art-1").quantity(1).build())
-                .isInstanceOf(NullPointerException.class)
-                .hasMessageContaining("facilityRef");
-    }
-
-    // --- delete ---
-
-    @Test
-    void delete_succeeds() {
-        // Given
-        server.stubFor(delete(urlPathEqualTo("/api/reservations/res-1"))
-                .willReturn(aResponse().withStatus(200)));
-
-        // When / Then
-        assertThatCode(() -> client.reservations().delete("res-1")).doesNotThrowAnyException();
-    }
-
-    @Test
-    void delete_sendsBearerTokenHeader() {
-        // Given
-        server.stubFor(delete(urlPathEqualTo("/api/reservations/res-1"))
-                .willReturn(aResponse().withStatus(200)));
-
-        // When
-        client.reservations().delete("res-1");
-
-        // Then
-        server.verify(deleteRequestedFor(urlPathEqualTo("/api/reservations/res-1"))
-                .withHeader("Authorization", equalTo("Bearer test-bearer")));
     }
 
     // --- Helpers ---

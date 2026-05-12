@@ -13,10 +13,4 @@ public interface ReservationsClient {
     CompletableFuture<Page<Reservation>> listAsync(ReservationListRequest request);
 
     Iterable<Reservation> listAll(ReservationListRequest request);
-
-    Reservation create(CreateReservationRequest request);
-    CompletableFuture<Reservation> createAsync(CreateReservationRequest request);
-
-    void delete(String reservationId);
-    CompletableFuture<Void> deleteAsync(String reservationId);
 }
