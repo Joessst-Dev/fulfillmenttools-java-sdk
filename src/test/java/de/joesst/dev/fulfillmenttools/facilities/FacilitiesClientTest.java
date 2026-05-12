@@ -197,6 +197,87 @@ class FacilitiesClientTest {
         server.verify(1, getRequestedFor(urlPathEqualTo("/api/facilities")));
     }
 
+    // --- new fields ---
+
+    @Test
+    void get_deserializesNestedFacilityFields() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/facilities/fac-rich"))
+                .willReturn(okJson("""
+                        {
+                          "id": "fac-rich",
+                          "name": "Hamburg Store",
+                          "status": "ONLINE",
+                          "type": "MANAGED_FACILITY",
+                          "locationType": "STORE",
+                          "capacityEnabled": true,
+                          "fulfillmentProcessBuffer": 120,
+                          "contact": {
+                            "firstName": "Max",
+                            "lastName": "Mustermann",
+                            "roleDescription": "Manager"
+                          },
+                          "services": [{"type": "SHIP_FROM_STORE"}, {"type": "PICKUP"}],
+                          "pickingMethods": ["SINGLE_ORDER", "BATCH"],
+                          "operativeCosts": [{"value": 25000, "currency": "EUR", "decimalPlaces": 2}],
+                          "tags": [{"id": "tag-1", "value": "premium"}],
+                          "address": {
+                            "street": "Hauptstr.",
+                            "houseNumber": "1",
+                            "city": "Hamburg",
+                            "postalCode": "20095",
+                            "country": "DE",
+                            "companyName": "Boxales GmbH",
+                            "phoneNumbers": [{"value": "+49123456", "type": "PHONE", "label": "main"}],
+                            "emailAddresses": [{"value": "store@example.com", "recipient": "Store Team"}],
+                            "resolvedCoordinates": {"lat": 53.5511, "lon": 9.9937},
+                            "resolvedTimeZone": {
+                              "timeZoneId": "Europe/Berlin",
+                              "timeZoneName": "Central European Time",
+                              "offsetInSeconds": 3600
+                            }
+                          },
+                          "pickingTimes": {
+                            "monday": [{"start": {"hour": 8, "minute": 0}, "end": {"hour": 20, "minute": 0}}]
+                          },
+                          "closingDays": [{"date": "2025-12-25T00:00:00Z", "reason": "Christmas", "recurrence": "YEARLY"}],
+                          "scanningRule": {
+                            "values": [{"priority": 1.0, "scanningRuleType": "ARTICLE"}]
+                          },
+                          "configs": [{"ref": "cfg-1", "rel": "carrier"}]
+                        }
+                        """)));
+
+        // When
+        Facility facility = client.facilities().get("fac-rich");
+
+        // Then
+        assertThat(facility.locationType()).isEqualTo("STORE");
+        assertThat(facility.capacityEnabled()).isTrue();
+        assertThat(facility.fulfillmentProcessBuffer()).isEqualTo(120);
+        assertThat(facility.contact().firstName()).isEqualTo("Max");
+        assertThat(facility.contact().lastName()).isEqualTo("Mustermann");
+        assertThat(facility.services()).hasSize(2);
+        assertThat(facility.services().get(0).type()).isEqualTo("SHIP_FROM_STORE");
+        assertThat(facility.pickingMethods()).containsExactly("SINGLE_ORDER", "BATCH");
+        assertThat(facility.operativeCosts()).hasSize(1);
+        assertThat(facility.operativeCosts().get(0).currency()).isEqualTo("EUR");
+        assertThat(facility.tags()).hasSize(1);
+        assertThat(facility.tags().get(0).value()).isEqualTo("premium");
+        assertThat(facility.address().city()).isEqualTo("Hamburg");
+        assertThat(facility.address().phoneNumbers()).hasSize(1);
+        assertThat(facility.address().phoneNumbers().get(0).value()).isEqualTo("+49123456");
+        assertThat(facility.address().emailAddresses().get(0).value()).isEqualTo("store@example.com");
+        assertThat(facility.address().resolvedCoordinates().lat()).isEqualTo(53.5511);
+        assertThat(facility.address().resolvedTimeZone().timeZoneId()).isEqualTo("Europe/Berlin");
+        assertThat(facility.pickingTimes().monday()).hasSize(1);
+        assertThat(facility.pickingTimes().monday().get(0).start().hour()).isEqualTo(8);
+        assertThat(facility.closingDays()).hasSize(1);
+        assertThat(facility.closingDays().get(0).reason()).isEqualTo("Christmas");
+        assertThat(facility.scanningRule().values().get(0).scanningRuleType()).isEqualTo("ARTICLE");
+        assertThat(facility.configs().get(0).rel()).isEqualTo("carrier");
+    }
+
     // --- Helpers ---
 
     private static TokenProvider fixedToken(String token) {
