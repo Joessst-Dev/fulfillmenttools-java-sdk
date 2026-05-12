@@ -35,8 +35,10 @@ import de.joesst.dev.fulfillmenttools.internal.routingstrategies.RoutingStrategi
 import de.joesst.dev.fulfillmenttools.internal.sourcingoptions.SourcingOptionsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.stocks.StocksClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.storagelocations.StorageLocationsClientImpl;
+import de.joesst.dev.fulfillmenttools.internal.listings.ListingsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.processes.OperativeProcessClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.users.UserManagementClientImpl;
+import de.joesst.dev.fulfillmenttools.listings.ListingsClient;
 import de.joesst.dev.fulfillmenttools.orders.OrdersClient;
 import de.joesst.dev.fulfillmenttools.processes.OperativeProcessClient;
 import de.joesst.dev.fulfillmenttools.packjobs.PackingClient;
@@ -77,6 +79,7 @@ public final class FulfillmenttoolsClient {
     private volatile CheckoutOptionsClient checkoutOptionsClient;
     private volatile StorageLocationsClient storageLocationsClient;
     private volatile OperativeProcessClient operativeProcessClient;
+    private volatile ListingsClient listingsClient;
 
     private FulfillmenttoolsClient(HttpTransport transport, ResponseHandler responseHandler,
                                    String baseUrl) {
@@ -326,6 +329,19 @@ public final class FulfillmenttoolsClient {
                 local = operativeProcessClient;
                 if (local == null) {
                     local = operativeProcessClient = new OperativeProcessClientImpl(transport, responseHandler, baseUrl);
+                }
+            }
+        }
+        return local;
+    }
+
+    public ListingsClient listings() {
+        ListingsClient local = listingsClient;
+        if (local == null) {
+            synchronized (this) {
+                local = listingsClient;
+                if (local == null) {
+                    local = listingsClient = new ListingsClientImpl(transport, responseHandler, baseUrl);
                 }
             }
         }
