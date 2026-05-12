@@ -56,7 +56,7 @@ public final class ListingsClientImpl implements ListingsClient {
         return Pages.all(cursor -> {
             ListingSearchRequest r = cursor == null
                     ? request
-                    : request.toBuilder().startAfterId(cursor).build();
+                    : request.toBuilder().after(cursor).build();
             return search(r);
         });
     }
@@ -77,15 +77,15 @@ public final class ListingsClientImpl implements ListingsClient {
     }
 
     private SdkHttpRequest buildSearchRequest(ListingSearchRequest request) {
-        ListingSearchBody body = new ListingSearchBody(
-                request.facilityRef(),
-                request.tenantArticleId(),
-                request.size(),
-                request.startAfterId());
         return SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/listings/search")
-                .body(responseHandler.encode(body))
+                .body(responseHandler.encode(new ListingSearchBody(
+                        request.query(),
+                        request.size(),
+                        request.last(),
+                        request.after(),
+                        request.before())))
                 .build();
     }
 

@@ -76,7 +76,9 @@ class ListingsAsyncTest {
 
         // When
         Page<Listing> page = client.listings()
-                .searchAsync(ListingSearchRequest.builder().facilityRef("fac-1").build())
+                .searchAsync(ListingSearchRequest.builder()
+                        .query(ListingSearchQuery.builder().facilityRefEq("fac-1").build())
+                        .build())
                 .get();
 
         // Then
@@ -87,20 +89,27 @@ class ListingsAsyncTest {
     }
 
     @Test
-    void searchAsync_sendsCorrectBody() throws Exception {
+    void searchAsync_sendsTypedQuery() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/listings/search"))
                 .willReturn(okJson("{\"listings\":[]}")));
 
         // When
         client.listings()
-                .searchAsync(ListingSearchRequest.builder().size(5).facilityRef("fac-1").build())
+                .searchAsync(ListingSearchRequest.builder()
+                        .query(ListingSearchQuery.builder()
+                                .facilityRefEq("fac-1")
+                                .statusEq("ACTIVE")
+                                .build())
+                        .size(5)
+                        .build())
                 .get();
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/listings/search"))
-                .withRequestBody(matchingJsonPath("$.size", equalTo("5")))
-                .withRequestBody(matchingJsonPath("$.facilityRef", equalTo("fac-1"))));
+                .withRequestBody(matchingJsonPath("$.query.facilityRef.eq", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.query.status.eq", equalTo("ACTIVE")))
+                .withRequestBody(matchingJsonPath("$.size", equalTo("5"))));
     }
 
     // --- Helpers ---

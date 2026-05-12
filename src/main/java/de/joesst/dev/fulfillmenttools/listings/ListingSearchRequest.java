@@ -2,44 +2,50 @@ package de.joesst.dev.fulfillmenttools.listings;
 
 public final class ListingSearchRequest {
 
-    private final String facilityRef;
-    private final String tenantArticleId;
+    private final ListingSearchQuery query;
     private final Integer size;
-    private final String startAfterId;
+    private final Integer last;
+    private final String after;
+    private final String before;
 
     private ListingSearchRequest(Builder builder) {
-        this.facilityRef = builder.facilityRef;
-        this.tenantArticleId = builder.tenantArticleId;
+        this.query = builder.query;
         this.size = builder.size;
-        this.startAfterId = builder.startAfterId;
+        this.last = builder.last;
+        this.after = builder.after;
+        this.before = builder.before;
     }
 
-    public String facilityRef() { return facilityRef; }
-    public String tenantArticleId() { return tenantArticleId; }
+    public ListingSearchQuery query() { return query; }
     public Integer size() { return size; }
-    public String startAfterId() { return startAfterId; }
+    public Integer last() { return last; }
+    public String after() { return after; }
+    public String before() { return before; }
 
     public Builder toBuilder() {
         Builder b = new Builder();
-        b.facilityRef = this.facilityRef;
-        b.tenantArticleId = this.tenantArticleId;
+        b.query = this.query;
         b.size = this.size;
-        b.startAfterId = this.startAfterId;
+        b.last = this.last;
+        b.after = this.after;
+        b.before = this.before;
         return b;
     }
 
     public static Builder builder() { return new Builder(); }
 
     public static final class Builder {
-        private String facilityRef;
-        private String tenantArticleId;
+        private ListingSearchQuery query;
         private Integer size;
-        private String startAfterId;
+        private Integer last;
+        private String after;
+        private String before;
 
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
-        public Builder tenantArticleId(String tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder query(ListingSearchQuery query) { this.query = query; return this; }
         public Builder size(Integer size) { this.size = size; return this; }
-        public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
+        public Builder last(Integer last) { this.last = last; return this; }
+        public Builder after(String after) { this.after = after; return this; }
+        public Builder before(String before) { this.before = before; return this; }
 
         public ListingSearchRequest build() { return new ListingSearchRequest(this); }
     }

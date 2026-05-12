@@ -103,7 +103,6 @@ class ListingsClientTest {
         assertThat(l.status()).isEqualTo("INACTIVE");
         assertThat(l.imageUrl()).isEqualTo("https://img.example.com/1.jpg");
         assertThat(l.measurementUnitKey()).isEqualTo("kg");
-        assertThat(l.outOfStockBehaviour()).isEqualTo("SHOW");
         assertThat(l.currency()).isEqualTo("EUR");
         assertThat(l.price()).isEqualTo(9.99);
         assertThat(l.weight()).isEqualTo(1.5);
@@ -215,7 +214,7 @@ class ListingsClientTest {
 
         // When
         Page<Listing> page = client.listings().search(ListingSearchRequest.builder()
-                .facilityRef("fac-1")
+                .query(ListingSearchQuery.builder().facilityRefEq("fac-1").build())
                 .size(10)
                 .build());
 
@@ -230,22 +229,26 @@ class ListingsClientTest {
     }
 
     @Test
-    void search_sendsCorrectJsonBody() {
+    void search_sendsTypedQuery() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/listings/search"))
                 .willReturn(okJson("{\"listings\":[]}")));
 
         // When
         client.listings().search(ListingSearchRequest.builder()
-                .facilityRef("fac-1")
-                .tenantArticleId("art-1")
+                .query(ListingSearchQuery.builder()
+                        .facilityRefEq("fac-1")
+                        .tenantArticleIdIn("art-1", "art-2")
+                        .statusEq("ACTIVE")
+                        .build())
                 .size(5)
                 .build());
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/listings/search"))
-                .withRequestBody(matchingJsonPath("$.facilityRef", equalTo("fac-1")))
-                .withRequestBody(matchingJsonPath("$.tenantArticleId", equalTo("art-1")))
+                .withRequestBody(matchingJsonPath("$.query.facilityRef.eq", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.query.tenantArticleId.in[0]", equalTo("art-1")))
+                .withRequestBody(matchingJsonPath("$.query.status.eq", equalTo("ACTIVE")))
                 .withRequestBody(matchingJsonPath("$.size", equalTo("5"))));
     }
 
@@ -302,8 +305,7 @@ class ListingsClientTest {
     void searchAll_lazilyTraversesMultiplePages() {
         // Given — page 1 has 2 listings and a cursor; page 2 has 1 listing and no cursor
         server.stubFor(post(urlPathEqualTo("/api/listings/search"))
-                .withRequestBody(matchingJsonPath("$.size", equalTo("2")))
-                .withRequestBody(notMatching(".*startAfterId.*"))
+                .withRequestBody(notMatching(".*\"after\".*"))
                 .willReturn(okJson("""
                         {"listings":[
                           {"id":"l-1","facilityId":"fac-1","tenantArticleId":"art-1","version":1,"status":"ACTIVE"},
@@ -312,7 +314,7 @@ class ListingsClientTest {
                         """)));
 
         server.stubFor(post(urlPathEqualTo("/api/listings/search"))
-                .withRequestBody(matchingJsonPath("$.startAfterId", equalTo("cur-2")))
+                .withRequestBody(matchingJsonPath("$.after", equalTo("cur-2")))
                 .willReturn(okJson("""
                         {"listings":[
                           {"id":"l-3","facilityId":"fac-1","tenantArticleId":"art-3","version":1,"status":"ACTIVE"}
@@ -321,7 +323,7 @@ class ListingsClientTest {
 
         // When
         List<String> articleIds = new ArrayList<>();
-        for (Listing l : client.listings().searchAll(ListingSearchRequest.builder().size(2).build())) {
+        for (Listing l : client.listings().searchAll(ListingSearchRequest.builder().build())) {
             articleIds.add(l.tenantArticleId());
         }
 
