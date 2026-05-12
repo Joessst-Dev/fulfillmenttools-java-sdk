@@ -72,10 +72,11 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     @Override
     public Facility create(CreateFacilityRequest request) {
         CreateFacilityBody body = new CreateFacilityBody(
-                request.name(),
-                request.tenantFacilityId(),
-                request.status(),
-                request.type(),
+                request.name(), request.tenantFacilityId(), request.status(), request.type(),
+                request.locationType(), request.address(), request.contact(),
+                request.pickingMethods(), request.pickingTimes(), request.closingDays(),
+                request.scanningRule(), request.capacityEnabled(), request.capacityPlanningTimeframe(),
+                request.fulfillmentProcessBuffer(), request.operativeCosts(), request.tags(),
                 request.customAttributes()
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
@@ -88,7 +89,13 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
     @Override
     public Facility update(String facilityId, UpdateFacilityRequest request) {
-        UpdateFacilityBody body = new UpdateFacilityBody(request.name(), request.status());
+        UpdateFacilityBody body = new UpdateFacilityBody(
+                request.name(), request.tenantFacilityId(), request.status(), request.type(),
+                request.locationType(), request.address(), request.contact(),
+                request.pickingMethods(), request.pickingTimes(), request.closingDays(),
+                request.scanningRule(), request.capacityEnabled(), request.capacityPlanningTimeframe(),
+                request.fulfillmentProcessBuffer(), request.operativeCosts(), request.tags(),
+                request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/facilities/" + facilityId)
@@ -138,10 +145,11 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     @Override
     public CompletableFuture<Facility> createAsync(CreateFacilityRequest request) {
         CreateFacilityBody body = new CreateFacilityBody(
-                request.name(),
-                request.tenantFacilityId(),
-                request.status(),
-                request.type(),
+                request.name(), request.tenantFacilityId(), request.status(), request.type(),
+                request.locationType(), request.address(), request.contact(),
+                request.pickingMethods(), request.pickingTimes(), request.closingDays(),
+                request.scanningRule(), request.capacityEnabled(), request.capacityPlanningTimeframe(),
+                request.fulfillmentProcessBuffer(), request.operativeCosts(), request.tags(),
                 request.customAttributes()
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
@@ -155,7 +163,13 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
     @Override
     public CompletableFuture<Facility> updateAsync(String facilityId, UpdateFacilityRequest request) {
-        UpdateFacilityBody body = new UpdateFacilityBody(request.name(), request.status());
+        UpdateFacilityBody body = new UpdateFacilityBody(
+                request.name(), request.tenantFacilityId(), request.status(), request.type(),
+                request.locationType(), request.address(), request.contact(),
+                request.pickingMethods(), request.pickingTimes(), request.closingDays(),
+                request.scanningRule(), request.capacityEnabled(), request.capacityPlanningTimeframe(),
+                request.fulfillmentProcessBuffer(), request.operativeCosts(), request.tags(),
+                request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/facilities/" + facilityId)
