@@ -11,5 +11,9 @@ public record SourcingOption(
         String estimatedPickupDate,
         String validUntil,
         List<SourcingOptionNode> nodes,
-        List<Map<String, Object>> transfers
+        List<Map<String, Object>> transfers,
+        List<Map<String, Object>> listingDetails,
+        List<Map<String, Object>> nonAssignedOrderLineItems,
+        List<Map<String, Object>> ratingResults,
+        Map<String, Object> totalCosts
 ) {}

@@ -6,11 +6,13 @@ import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOption;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsClient;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsRequest;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsResult;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public final class SourcingOptionsClientImpl implements SourcingOptionsClient {
@@ -31,10 +33,10 @@ public final class SourcingOptionsClientImpl implements SourcingOptionsClient {
                 request.order(), request.additionalInfo(), request.optimizationHints(), request.resourceInvestment());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/sourcingoptions")
+                .url(baseUrl + "/api/routing/sourcingoptions")
                 .body(responseHandler.encode(body))
                 .build();
-        return responseHandler.handle(execute(httpRequest), SourcingOptionsResult.class);
+        return toResult(responseHandler.handle(execute(httpRequest), SourcingOptionsResponseDto.class));
     }
 
     @Override
@@ -43,11 +45,37 @@ public final class SourcingOptionsClientImpl implements SourcingOptionsClient {
                 request.order(), request.additionalInfo(), request.optimizationHints(), request.resourceInvestment());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/sourcingoptions")
+                .url(baseUrl + "/api/routing/sourcingoptions")
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
-                .thenApply(response -> responseHandler.handle(response, SourcingOptionsResult.class));
+                .thenApply(response -> toResult(responseHandler.handle(response, SourcingOptionsResponseDto.class)));
+    }
+
+    @Override
+    public SourcingOptionsResult get(String sourcingOptionsRequestId) {
+        SdkHttpRequest request = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/routing/sourcingoptions/" + sourcingOptionsRequestId)
+                .build();
+        return toResult(responseHandler.handle(execute(request), SourcingOptionsResponseDto.class));
+    }
+
+    @Override
+    public CompletableFuture<SourcingOptionsResult> getAsync(String sourcingOptionsRequestId) {
+        SdkHttpRequest request = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/routing/sourcingoptions/" + sourcingOptionsRequestId)
+                .build();
+        return transport.executeAsync(request)
+                .thenApply(response -> toResult(responseHandler.handle(response, SourcingOptionsResponseDto.class)));
+    }
+
+    private SourcingOptionsResult toResult(SourcingOptionsResponseDto dto) {
+        List<SourcingOption> options = dto.result() != null && dto.result().options() != null
+                ? dto.result().options()
+                : List.of();
+        return new SourcingOptionsResult(dto.id(), options);
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

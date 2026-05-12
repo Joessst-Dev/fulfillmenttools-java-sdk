@@ -6,4 +6,7 @@ public interface SourcingOptionsClient {
 
     SourcingOptionsResult evaluate(SourcingOptionsRequest request);
     CompletableFuture<SourcingOptionsResult> evaluateAsync(SourcingOptionsRequest request);
+
+    SourcingOptionsResult get(String sourcingOptionsRequestId);
+    CompletableFuture<SourcingOptionsResult> getAsync(String sourcingOptionsRequestId);
 }

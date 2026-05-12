@@ -41,8 +41,8 @@ class SourcingOptionsAsyncTest {
     @Test
     void evaluateAsync_returnsResult() throws Exception {
         // Given
-        server.stubFor(post(urlPathEqualTo("/api/sourcingoptions"))
-                .willReturn(okJson("{\"id\":\"run-1\",\"options\":[]}")));
+        server.stubFor(post(urlPathEqualTo("/api/routing/sourcingoptions"))
+                .willReturn(okJson("{\"id\":\"run-1\",\"result\":{\"options\":[]}}")));
 
         ConsumerAddressesForSourcingOptions consumer = ConsumerAddressesForSourcingOptions.builder()
                 .consumerId("consumer-1")
@@ -65,8 +65,8 @@ class SourcingOptionsAsyncTest {
     @Test
     void evaluateAsync_sendsFullRequestInBody() throws Exception {
         // Given
-        server.stubFor(post(urlPathEqualTo("/api/sourcingoptions"))
-                .willReturn(okJson("{\"id\":\"run-2\",\"options\":[]}")));
+        server.stubFor(post(urlPathEqualTo("/api/routing/sourcingoptions"))
+                .willReturn(okJson("{\"id\":\"run-2\",\"result\":{\"options\":[]}}")));
 
         ConsumerAddressesForSourcingOptions consumer = ConsumerAddressesForSourcingOptions.builder()
                 .consumerId("consumer-42")
@@ -91,7 +91,7 @@ class SourcingOptionsAsyncTest {
         client.sourcingOptions().evaluateAsync(request).get();
 
         // Then
-        server.verify(postRequestedFor(urlPathEqualTo("/api/sourcingoptions"))
+        server.verify(postRequestedFor(urlPathEqualTo("/api/routing/sourcingoptions"))
                 .withHeader("Authorization", equalTo("Bearer test-bearer"))
                 .withRequestBody(matchingJsonPath("$.order.tenantOrderId", equalTo("tenant-ord-1")))
                 .withRequestBody(matchingJsonPath("$.order.consumer.consumerId", equalTo("consumer-42")))
@@ -102,8 +102,8 @@ class SourcingOptionsAsyncTest {
     @Test
     void evaluateAsync_sendsResourceInvestment() throws Exception {
         // Given
-        server.stubFor(post(urlPathEqualTo("/api/sourcingoptions"))
-                .willReturn(okJson("{\"id\":\"run-3\",\"options\":[]}")));
+        server.stubFor(post(urlPathEqualTo("/api/routing/sourcingoptions"))
+                .willReturn(okJson("{\"id\":\"run-3\",\"result\":{\"options\":[]}}")));
 
         ConsumerAddressesForSourcingOptions consumer = ConsumerAddressesForSourcingOptions.builder().build();
 
@@ -118,8 +118,23 @@ class SourcingOptionsAsyncTest {
         client.sourcingOptions().evaluateAsync(request).get();
 
         // Then
-        server.verify(postRequestedFor(urlPathEqualTo("/api/sourcingoptions"))
+        server.verify(postRequestedFor(urlPathEqualTo("/api/routing/sourcingoptions"))
                 .withRequestBody(matchingJsonPath("$.resourceInvestment.level", equalTo("0.8"))));
+    }
+
+    @Test
+    void getAsync_returnsResult() throws Exception {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/routing/sourcingoptions/run-1"))
+                .willReturn(okJson("{\"id\":\"run-1\",\"result\":{\"options\":[{\"id\":\"opt-1\",\"runId\":\"run-1\",\"totalPenalty\":5.0,\"nodes\":[],\"transfers\":[],\"ratingResults\":[]}]}}")));
+
+        // When
+        SourcingOptionsResult result = client.sourcingOptions().getAsync("run-1").get();
+
+        // Then
+        assertThat(result.id()).isEqualTo("run-1");
+        assertThat(result.options()).hasSize(1);
+        assertThat(result.options().get(0).id()).isEqualTo("opt-1");
     }
 
     // --- Helpers ---
