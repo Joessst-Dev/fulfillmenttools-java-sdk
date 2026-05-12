@@ -38,7 +38,7 @@ class RoutingPlansAsyncTest {
     void getAsync_returnsRoutingPlan() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/routingplans/rp-1"))
-                .willReturn(okJson("{\"id\":\"rp-1\",\"name\":\"Default Plan\",\"status\":\"ACTIVE\"}")));
+                .willReturn(okJson("{\"id\":\"rp-1\",\"status\":\"ACTIVE\"}")));
 
         // When
         RoutingPlan plan = client.routingPlans().getAsync("rp-1").get();
@@ -52,7 +52,7 @@ class RoutingPlansAsyncTest {
     void listAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/routingplans"))
-                .willReturn(okJson("{\"routingPlans\":[{\"id\":\"rp-1\",\"name\":\"Plan A\"},{\"id\":\"rp-2\",\"name\":\"Plan B\"}]}")));
+                .willReturn(okJson("{\"routingPlans\":[{\"id\":\"rp-1\"},{\"id\":\"rp-2\"}],\"total\":2}")));
 
         // When
         var page = client.routingPlans().listAsync(RoutingPlanListRequest.builder().build()).get();
@@ -65,7 +65,7 @@ class RoutingPlansAsyncTest {
     void createAsync_returnsCreatedRoutingPlan() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/routingplans"))
-                .willReturn(okJson("{\"id\":\"rp-new\",\"name\":\"New Plan\",\"status\":\"ACTIVE\"}")));
+                .willReturn(okJson("{\"id\":\"rp-new\",\"status\":\"ACTIVE\"}")));
 
         // When
         RoutingPlan plan = client.routingPlans()

@@ -1,11 +1,9 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
-/**
- * Represents a routing plan in fulfillmenttools.
- */
 public record RoutingPlan(
         String id,
         Integer version,
@@ -16,11 +14,43 @@ public record RoutingPlan(
         String tenantOrderId,
         String processId,
         String status,
+        String consolidatedStatus,
         Instant orderDate,
-        Integer priority,
-        Integer routingRun,
+        Double priority,
+        Double routingRun,
+        Double finalizeRun,
+        Double splitCount,
+        Double fallbackRoutingAfterTimeInSeconds,
         String runId,
         String runType,
-        Map<String, Object> customAttributes,
-        Boolean anonymized
+        Boolean anonymized,
+        String childRoutingPlanRef,
+        String parentRoutingPlanRef,
+        String pickJobRef,
+        String reRoutedFacilityRef,
+        String reRoutedPickJobRef,
+        String reRoutedRoutingPlanRef,
+        Instant firstRoutingAttempt,
+        Instant provisioningTime,
+        Instant targetTimeBaseDate,
+        List<String> predecessorRerouteRoutingPlanRefs,
+        List<String> successorRerouteRoutingPlanRefs,
+        List<String> facilityBlackList,
+        List<String> statusHistory,
+        Map<String, Object> activeConfig,
+        Map<String, Object> deliveryPreferences,
+        Map<String, Object> earliestPickingStart,
+        Map<String, Object> latestPickingStart,
+        Map<String, Object> rerouteDescription,
+        Map<String, Object> reRouteReason,
+        Map<String, Object> targetAddress,
+        Map<String, Object> workflowInformation,
+        List<Map<String, Object>> customServices,
+        List<Map<String, Object>> decisionLogs,
+        List<Map<String, Object>> expectedLineItems,
+        List<Map<String, Object>> history,
+        List<Map<String, Object>> orderLineItems,
+        List<Map<String, Object>> statusReasons,
+        List<Map<String, Object>> targetAddressesByDeliveryEvent,
+        List<Map<String, Object>> transfers
 ) {}

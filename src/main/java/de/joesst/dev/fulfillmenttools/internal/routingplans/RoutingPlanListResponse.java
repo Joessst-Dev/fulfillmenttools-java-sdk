@@ -4,4 +4,4 @@ import de.joesst.dev.fulfillmenttools.routingplans.RoutingPlan;
 
 import java.util.List;
 
-record RoutingPlanListResponse(List<RoutingPlan> routingPlans, String nextCursor) {}
+record RoutingPlanListResponse(List<RoutingPlan> routingPlans, Integer total) {}

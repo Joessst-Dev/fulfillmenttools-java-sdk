@@ -41,32 +41,13 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
 
     @Override
     public Page<RoutingPlan> list(RoutingPlanListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routingplans");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
-        RoutingPlanListResponse body = responseHandler.handle(response, RoutingPlanListResponse.class);
-        return new Page<>(
-                body.routingPlans() != null ? body.routingPlans() : List.of(),
-                body.nextCursor());
+        RoutingPlanListResponse body = responseHandler.handle(execute(buildListRequest(request)), RoutingPlanListResponse.class);
+        return new Page<>(body.routingPlans() != null ? body.routingPlans() : List.of(), null);
     }
 
     @Override
     public Iterable<RoutingPlan> listAll(RoutingPlanListRequest request) {
-        return Pages.all(cursor -> {
-            RoutingPlanListRequest r = cursor == null
-                    ? request
-                    : request.toBuilder().startAfterId(cursor).build();
-            return list(r);
-        });
+        return Pages.all(cursor -> list(request));
     }
 
     @Override
@@ -82,9 +63,9 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
 
     @Override
     public RoutingPlan update(String routingPlanId, UpdateRoutingPlanRequest request) {
-        UpdateRoutingPlanBody body = new UpdateRoutingPlanBody(request.name(), request.status());
+        UpdateRoutingPlanBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/routingplans/" + routingPlanId)
                 .body(responseHandler.encode(body))
                 .build();
@@ -112,20 +93,9 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
 
     @Override
     public CompletableFuture<Page<RoutingPlan>> listAsync(RoutingPlanListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routingplans");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-
-        return transport.executeAsync(builder.build()).thenApply(response -> {
+        return transport.executeAsync(buildListRequest(request)).thenApply(response -> {
             RoutingPlanListResponse body = responseHandler.handle(response, RoutingPlanListResponse.class);
-            return new Page<>(body.routingPlans() != null ? body.routingPlans() : List.of(), body.nextCursor());
+            return new Page<>(body.routingPlans() != null ? body.routingPlans() : List.of(), null);
         });
     }
 
@@ -143,9 +113,9 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
 
     @Override
     public CompletableFuture<RoutingPlan> updateAsync(String routingPlanId, UpdateRoutingPlanRequest request) {
-        UpdateRoutingPlanBody body = new UpdateRoutingPlanBody(request.name(), request.status());
+        UpdateRoutingPlanBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/routingplans/" + routingPlanId)
                 .body(responseHandler.encode(body))
                 .build();
@@ -163,6 +133,22 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
             responseHandler.handleVoid(response);
             return null;
         });
+    }
+
+    private SdkHttpRequest buildListRequest(RoutingPlanListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/routingplans");
+
+        if (request.orderRef() != null) builder.queryParam("orderRef", request.orderRef());
+
+        return builder.build();
+    }
+
+    private UpdateRoutingPlanBody buildUpdateBody(UpdateRoutingPlanRequest request) {
+        UpdateRoutingPlanBody.ModifyRoutingPlanAction action =
+                new UpdateRoutingPlanBody.ModifyRoutingPlanAction(request.facilityRef(), request.status());
+        return new UpdateRoutingPlanBody(request.version(), List.of(action));
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

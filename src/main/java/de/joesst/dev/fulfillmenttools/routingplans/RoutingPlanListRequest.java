@@ -2,21 +2,17 @@ package de.joesst.dev.fulfillmenttools.routingplans;
 
 public final class RoutingPlanListRequest {
 
-    private final Integer size;
-    private final String startAfterId;
+    private final String orderRef;
 
     private RoutingPlanListRequest(Builder builder) {
-        this.size = builder.size;
-        this.startAfterId = builder.startAfterId;
+        this.orderRef = builder.orderRef;
     }
 
-    public Integer size() { return size; }
-    public String startAfterId() { return startAfterId; }
+    public String orderRef() { return orderRef; }
 
     public Builder toBuilder() {
         Builder b = new Builder();
-        b.size = this.size;
-        b.startAfterId = this.startAfterId;
+        b.orderRef = this.orderRef;
         return b;
     }
 
@@ -24,11 +20,9 @@ public final class RoutingPlanListRequest {
 
     public static final class Builder {
 
-        private Integer size;
-        private String startAfterId;
+        private String orderRef;
 
-        public Builder size(Integer size) { this.size = size; return this; }
-        public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
+        public Builder orderRef(String orderRef) { this.orderRef = orderRef; return this; }
 
         public RoutingPlanListRequest build() { return new RoutingPlanListRequest(this); }
     }
