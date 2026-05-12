@@ -5,6 +5,9 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+import java.util.Map;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -69,7 +72,11 @@ class InboundAsyncTest {
 
         // When
         StowJob job = client.inbound()
-                .createAsync(CreateStowJobRequest.builder().facilityRef("fac-1").build()).get();
+                .createAsync(CreateStowJobRequest.builder()
+                        .facilityRef("fac-1")
+                        .status("OPEN")
+                        .stowLineItems(List.of())
+                        .build()).get();
 
         // Then
         assertThat(job.id()).isEqualTo("sj-new");

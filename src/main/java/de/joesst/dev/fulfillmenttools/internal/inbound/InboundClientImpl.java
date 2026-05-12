@@ -41,28 +41,9 @@ public final class InboundClientImpl implements InboundClient {
 
     @Override
     public Page<StowJob> list(StowJobListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/stowjobs");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-        if (request.facilityRef() != null) {
-            builder.queryParam("facilityRef", request.facilityRef());
-        }
-        if (request.status() != null) {
-            builder.queryParam("status", request.status());
-        }
-
-        SdkHttpResponse response = execute(builder.build());
+        SdkHttpResponse response = execute(buildListRequest(request).build());
         StowJobListResponse body = responseHandler.handle(response, StowJobListResponse.class);
-        return new Page<>(
-                body.stowJobs() != null ? body.stowJobs() : List.of(),
-                body.nextCursor());
+        return new Page<>(body.stowJobs() != null ? body.stowJobs() : List.of(), body.nextCursor());
     }
 
     @Override
@@ -77,7 +58,10 @@ public final class InboundClientImpl implements InboundClient {
 
     @Override
     public StowJob create(CreateStowJobRequest request) {
-        CreateStowJobBody body = new CreateStowJobBody(request.facilityRef());
+        CreateStowJobBody body = new CreateStowJobBody(
+                request.facilityRef(), request.status(), request.stowLineItems(),
+                request.assignedUsers(), request.customAttributes(),
+                request.priority(), request.shortId(), request.targetTime());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/stowjobs")
@@ -88,13 +72,40 @@ public final class InboundClientImpl implements InboundClient {
 
     @Override
     public StowJob update(String stowJobId, UpdateStowJobRequest request) {
-        UpdateStowJobBody body = new UpdateStowJobBody(request.status());
+        UpdateStowJobBody body = new UpdateStowJobBody(
+                request.version(), request.priority(), request.targetTime(),
+                request.assignedUsers(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/stowjobs/" + stowJobId)
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), StowJob.class);
+    }
+
+    @Override
+    public StowJob start(String stowJobId, int version) {
+        return action(stowJobId, "START_STOW_JOB", version);
+    }
+
+    @Override
+    public StowJob pause(String stowJobId, int version) {
+        return action(stowJobId, "PAUSE_STOW_JOB", version);
+    }
+
+    @Override
+    public StowJob cancel(String stowJobId, int version) {
+        return action(stowJobId, "CANCEL_STOW_JOB", version);
+    }
+
+    @Override
+    public StowJob reopen(String stowJobId, int version) {
+        return action(stowJobId, "OPEN_STOW_JOB", version);
+    }
+
+    @Override
+    public StowJob close(String stowJobId, int version) {
+        return action(stowJobId, "CLOSE_STOW_JOB", version);
     }
 
     @Override
@@ -109,24 +120,7 @@ public final class InboundClientImpl implements InboundClient {
 
     @Override
     public CompletableFuture<Page<StowJob>> listAsync(StowJobListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/stowjobs");
-
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
-        if (request.facilityRef() != null) {
-            builder.queryParam("facilityRef", request.facilityRef());
-        }
-        if (request.status() != null) {
-            builder.queryParam("status", request.status());
-        }
-
-        return transport.executeAsync(builder.build()).thenApply(response -> {
+        return transport.executeAsync(buildListRequest(request).build()).thenApply(response -> {
             StowJobListResponse body = responseHandler.handle(response, StowJobListResponse.class);
             return new Page<>(body.stowJobs() != null ? body.stowJobs() : List.of(), body.nextCursor());
         });
@@ -134,7 +128,10 @@ public final class InboundClientImpl implements InboundClient {
 
     @Override
     public CompletableFuture<StowJob> createAsync(CreateStowJobRequest request) {
-        CreateStowJobBody body = new CreateStowJobBody(request.facilityRef());
+        CreateStowJobBody body = new CreateStowJobBody(
+                request.facilityRef(), request.status(), request.stowLineItems(),
+                request.assignedUsers(), request.customAttributes(),
+                request.priority(), request.shortId(), request.targetTime());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/stowjobs")
@@ -146,7 +143,9 @@ public final class InboundClientImpl implements InboundClient {
 
     @Override
     public CompletableFuture<StowJob> updateAsync(String stowJobId, UpdateStowJobRequest request) {
-        UpdateStowJobBody body = new UpdateStowJobBody(request.status());
+        UpdateStowJobBody body = new UpdateStowJobBody(
+                request.version(), request.priority(), request.targetTime(),
+                request.assignedUsers(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/stowjobs/" + stowJobId)
@@ -154,6 +153,69 @@ public final class InboundClientImpl implements InboundClient {
                 .build();
         return transport.executeAsync(httpRequest)
                 .thenApply(response -> responseHandler.handle(response, StowJob.class));
+    }
+
+    @Override
+    public CompletableFuture<StowJob> startAsync(String stowJobId, int version) {
+        return actionAsync(stowJobId, "START_STOW_JOB", version);
+    }
+
+    @Override
+    public CompletableFuture<StowJob> pauseAsync(String stowJobId, int version) {
+        return actionAsync(stowJobId, "PAUSE_STOW_JOB", version);
+    }
+
+    @Override
+    public CompletableFuture<StowJob> cancelAsync(String stowJobId, int version) {
+        return actionAsync(stowJobId, "CANCEL_STOW_JOB", version);
+    }
+
+    @Override
+    public CompletableFuture<StowJob> reopenAsync(String stowJobId, int version) {
+        return actionAsync(stowJobId, "OPEN_STOW_JOB", version);
+    }
+
+    @Override
+    public CompletableFuture<StowJob> closeAsync(String stowJobId, int version) {
+        return actionAsync(stowJobId, "CLOSE_STOW_JOB", version);
+    }
+
+    private StowJob action(String stowJobId, String name, int version) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/stowjobs/" + stowJobId + "/actions")
+                .body(responseHandler.encode(new StowJobActionBody(name, version)))
+                .build();
+        return responseHandler.handle(execute(httpRequest), StowJob.class);
+    }
+
+    private CompletableFuture<StowJob> actionAsync(String stowJobId, String name, int version) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/stowjobs/" + stowJobId + "/actions")
+                .body(responseHandler.encode(new StowJobActionBody(name, version)))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, StowJob.class));
+    }
+
+    private SdkHttpRequest.Builder buildListRequest(StowJobListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/stowjobs");
+
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.sort() != null) builder.queryParam("sort", request.sort());
+        if (request.facilityRef() != null) request.facilityRef().forEach(v -> builder.queryParam("facilityRef", v));
+        if (request.status() != null) request.status().forEach(v -> builder.queryParam("status", v));
+        if (request.tenantArticleId() != null) request.tenantArticleId().forEach(v -> builder.queryParam("tenantArticleId", v));
+        if (request.locationRef() != null) request.locationRef().forEach(v -> builder.queryParam("locationRef", v));
+        if (request.stockRef() != null) request.stockRef().forEach(v -> builder.queryParam("stockRef", v));
+        if (request.shortId() != null) request.shortId().forEach(v -> builder.queryParam("shortId", v));
+        if (request.priority() != null) request.priority().forEach(v -> builder.queryParam("priority", String.valueOf(v)));
+
+        return builder;
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {
