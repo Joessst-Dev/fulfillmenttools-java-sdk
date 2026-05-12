@@ -34,8 +34,10 @@ import de.joesst.dev.fulfillmenttools.internal.routingstrategies.RoutingStrategi
 import de.joesst.dev.fulfillmenttools.internal.sourcingoptions.SourcingOptionsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.stocks.StocksClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.storagelocations.StorageLocationsClientImpl;
+import de.joesst.dev.fulfillmenttools.internal.processes.OperativeProcessClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.users.UserManagementClientImpl;
 import de.joesst.dev.fulfillmenttools.orders.OrdersClient;
+import de.joesst.dev.fulfillmenttools.processes.OperativeProcessClient;
 import de.joesst.dev.fulfillmenttools.packjobs.PackingClient;
 import de.joesst.dev.fulfillmenttools.pickjobs.PickJobsClient;
 import de.joesst.dev.fulfillmenttools.reservations.ReservationsClient;
@@ -73,6 +75,7 @@ public final class FulfillmenttoolsClient {
     private volatile SourcingOptionsClient sourcingOptionsClient;
     private volatile CheckoutOptionsClient checkoutOptionsClient;
     private volatile StorageLocationsClient storageLocationsClient;
+    private volatile OperativeProcessClient operativeProcessClient;
 
     private FulfillmenttoolsClient(HttpTransport transport, ResponseHandler responseHandler,
                                    String baseUrl) {
@@ -309,6 +312,19 @@ public final class FulfillmenttoolsClient {
                 local = storageLocationsClient;
                 if (local == null) {
                     local = storageLocationsClient = new StorageLocationsClientImpl(transport, responseHandler, baseUrl);
+                }
+            }
+        }
+        return local;
+    }
+
+    public OperativeProcessClient processes() {
+        OperativeProcessClient local = operativeProcessClient;
+        if (local == null) {
+            synchronized (this) {
+                local = operativeProcessClient;
+                if (local == null) {
+                    local = operativeProcessClient = new OperativeProcessClientImpl(transport, responseHandler, baseUrl);
                 }
             }
         }
