@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.facilities.CreateFacilityRequest;
 import de.joesst.dev.fulfillmenttools.facilities.FacilitiesClient;
 import de.joesst.dev.fulfillmenttools.facilities.Facility;
 import de.joesst.dev.fulfillmenttools.facilities.FacilityListRequest;
+import de.joesst.dev.fulfillmenttools.facilities.FacilitySearchRequest;
 import de.joesst.dev.fulfillmenttools.facilities.UpdateFacilityRequest;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
@@ -45,12 +46,12 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/facilities");
 
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.tenantFacilityId() != null) builder.queryParam("tenantFacilityId", request.tenantFacilityId());
+        if (request.orderBy() != null) builder.queryParam("orderBy", request.orderBy());
+        if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
+        if (request.type() != null) request.type().forEach(t -> builder.queryParam("type", t));
 
         SdkHttpResponse response = execute(builder.build());
         FacilityListResponse body = responseHandler.handle(response, FacilityListResponse.class);
@@ -70,47 +71,61 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     }
 
     @Override
+    public Page<Facility> search(FacilitySearchRequest request) {
+        FacilitySearchBody body = new FacilitySearchBody(
+                request.query(), request.size(), request.after(), request.before());
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/facilities/search")
+                .body(responseHandler.encode(body))
+                .build();
+        FacilitySearchResponse resp = responseHandler.handle(execute(httpRequest), FacilitySearchResponse.class);
+        String cursor = resp.pageInfo() != null ? resp.pageInfo().endCursor() : null;
+        return new Page<>(resp.facilities() != null ? resp.facilities() : List.of(), cursor);
+    }
+
+    @Override
     public Facility create(CreateFacilityRequest request) {
-        CreateFacilityBody body = new CreateFacilityBody(
-                request.name(), request.tenantFacilityId(), request.status(), request.type(),
-                request.locationType(), request.address(), request.contact(),
-                request.pickingMethods(), request.pickingTimes(), request.closingDays(),
-                request.scanningRule(), request.capacityEnabled(), request.capacityPlanningTimeframe(),
-                request.fulfillmentProcessBuffer(), request.operativeCosts(), request.tags(),
-                request.customAttributes()
-        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/facilities")
-                .body(responseHandler.encode(body))
+                .body(responseHandler.encode(toCreateBody(request)))
                 .build();
         return responseHandler.handle(execute(httpRequest), Facility.class);
     }
 
     @Override
     public Facility update(String facilityId, UpdateFacilityRequest request) {
-        UpdateFacilityBody body = new UpdateFacilityBody(
-                request.name(), request.tenantFacilityId(), request.status(), request.type(),
-                request.locationType(), request.address(), request.contact(),
-                request.pickingMethods(), request.pickingTimes(), request.closingDays(),
-                request.scanningRule(), request.capacityEnabled(), request.capacityPlanningTimeframe(),
-                request.fulfillmentProcessBuffer(), request.operativeCosts(), request.tags(),
-                request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/facilities/" + facilityId)
-                .body(responseHandler.encode(body))
+                .body(responseHandler.encode(toUpdateBody(request)))
+                .build();
+        return responseHandler.handle(execute(httpRequest), Facility.class);
+    }
+
+    @Override
+    public Facility replace(String facilityId, CreateFacilityRequest request) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.PUT)
+                .url(baseUrl + "/api/facilities/" + facilityId)
+                .body(responseHandler.encode(toCreateBody(request)))
                 .build();
         return responseHandler.handle(execute(httpRequest), Facility.class);
     }
 
     @Override
     public void delete(String facilityId) {
-        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+        delete(facilityId, false);
+    }
+
+    @Override
+    public void delete(String facilityId, boolean forceDeletion) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/facilities/" + facilityId)
-                .build();
-        responseHandler.handleVoid(execute(httpRequest));
+                .url(baseUrl + "/api/facilities/" + facilityId);
+        if (forceDeletion) builder.queryParam("forceDeletion", "true");
+        responseHandler.handleVoid(execute(builder.build()));
     }
 
     @Override
@@ -129,12 +144,12 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/facilities");
 
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.tenantFacilityId() != null) builder.queryParam("tenantFacilityId", request.tenantFacilityId());
+        if (request.orderBy() != null) builder.queryParam("orderBy", request.orderBy());
+        if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
+        if (request.type() != null) request.type().forEach(t -> builder.queryParam("type", t));
 
         return transport.executeAsync(builder.build()).thenApply(response -> {
             FacilityListResponse body = responseHandler.handle(response, FacilityListResponse.class);
@@ -143,19 +158,27 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     }
 
     @Override
+    public CompletableFuture<Page<Facility>> searchAsync(FacilitySearchRequest request) {
+        FacilitySearchBody body = new FacilitySearchBody(
+                request.query(), request.size(), request.after(), request.before());
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/facilities/search")
+                .body(responseHandler.encode(body))
+                .build();
+        return transport.executeAsync(httpRequest).thenApply(response -> {
+            FacilitySearchResponse resp = responseHandler.handle(response, FacilitySearchResponse.class);
+            String cursor = resp.pageInfo() != null ? resp.pageInfo().endCursor() : null;
+            return new Page<>(resp.facilities() != null ? resp.facilities() : List.of(), cursor);
+        });
+    }
+
+    @Override
     public CompletableFuture<Facility> createAsync(CreateFacilityRequest request) {
-        CreateFacilityBody body = new CreateFacilityBody(
-                request.name(), request.tenantFacilityId(), request.status(), request.type(),
-                request.locationType(), request.address(), request.contact(),
-                request.pickingMethods(), request.pickingTimes(), request.closingDays(),
-                request.scanningRule(), request.capacityEnabled(), request.capacityPlanningTimeframe(),
-                request.fulfillmentProcessBuffer(), request.operativeCosts(), request.tags(),
-                request.customAttributes()
-        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/facilities")
-                .body(responseHandler.encode(body))
+                .body(responseHandler.encode(toCreateBody(request)))
                 .build();
         return transport.executeAsync(httpRequest)
                 .thenApply(response -> responseHandler.handle(response, Facility.class));
@@ -163,17 +186,21 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
     @Override
     public CompletableFuture<Facility> updateAsync(String facilityId, UpdateFacilityRequest request) {
-        UpdateFacilityBody body = new UpdateFacilityBody(
-                request.name(), request.tenantFacilityId(), request.status(), request.type(),
-                request.locationType(), request.address(), request.contact(),
-                request.pickingMethods(), request.pickingTimes(), request.closingDays(),
-                request.scanningRule(), request.capacityEnabled(), request.capacityPlanningTimeframe(),
-                request.fulfillmentProcessBuffer(), request.operativeCosts(), request.tags(),
-                request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/facilities/" + facilityId)
-                .body(responseHandler.encode(body))
+                .body(responseHandler.encode(toUpdateBody(request)))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, Facility.class));
+    }
+
+    @Override
+    public CompletableFuture<Facility> replaceAsync(String facilityId, CreateFacilityRequest request) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.PUT)
+                .url(baseUrl + "/api/facilities/" + facilityId)
+                .body(responseHandler.encode(toCreateBody(request)))
                 .build();
         return transport.executeAsync(httpRequest)
                 .thenApply(response -> responseHandler.handle(response, Facility.class));
@@ -181,14 +208,39 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
     @Override
     public CompletableFuture<Void> deleteAsync(String facilityId) {
-        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+        return deleteAsync(facilityId, false);
+    }
+
+    @Override
+    public CompletableFuture<Void> deleteAsync(String facilityId, boolean forceDeletion) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/facilities/" + facilityId)
-                .build();
-        return transport.executeAsync(httpRequest).thenApply(response -> {
+                .url(baseUrl + "/api/facilities/" + facilityId);
+        if (forceDeletion) builder.queryParam("forceDeletion", "true");
+        return transport.executeAsync(builder.build()).thenApply(response -> {
             responseHandler.handleVoid(response);
             return null;
         });
+    }
+
+    private CreateFacilityBody toCreateBody(CreateFacilityRequest r) {
+        return new CreateFacilityBody(
+                r.name(), r.tenantFacilityId(), r.status(), r.type(),
+                r.locationType(), r.address(), r.contact(),
+                r.pickingMethods(), r.pickingTimes(), r.closingDays(),
+                r.scanningRule(), r.capacityEnabled(), r.capacityPlanningTimeframe(),
+                r.fulfillmentProcessBuffer(), r.operativeCosts(), r.tags(),
+                r.customAttributes());
+    }
+
+    private UpdateFacilityBody toUpdateBody(UpdateFacilityRequest r) {
+        return new UpdateFacilityBody(
+                r.name(), r.tenantFacilityId(), r.status(), r.type(),
+                r.locationType(), r.address(), r.contact(),
+                r.pickingMethods(), r.pickingTimes(), r.closingDays(),
+                r.scanningRule(), r.capacityEnabled(), r.capacityPlanningTimeframe(),
+                r.fulfillmentProcessBuffer(), r.operativeCosts(), r.tags(),
+                r.customAttributes());
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

@@ -145,6 +145,84 @@ class FacilitiesWriteTest {
                 .hasMessage("Facility not found");
     }
 
+    // --- replace ---
+
+    @Test
+    void replace_sendsPUT() {
+        // Given
+        server.stubFor(put(urlPathEqualTo("/api/facilities/fac-1"))
+                .willReturn(okJson("{\"id\":\"fac-1\",\"name\":\"Replaced\"}")));
+
+        // When
+        Facility facility = client.facilities().replace("fac-1",
+                CreateFacilityRequest.builder().name("Replaced").build());
+
+        // Then
+        assertThat(facility.name()).isEqualTo("Replaced");
+        server.verify(putRequestedFor(urlPathEqualTo("/api/facilities/fac-1"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("Replaced"))));
+    }
+
+    // --- delete with forceDeletion ---
+
+    @Test
+    void delete_withForceDeletion_sendsQueryParam() {
+        // Given
+        server.stubFor(delete(urlPathEqualTo("/api/facilities/fac-1"))
+                .withQueryParam("forceDeletion", equalTo("true"))
+                .willReturn(aResponse().withStatus(200)));
+
+        // When / Then
+        assertThatCode(() -> client.facilities().delete("fac-1", true)).doesNotThrowAnyException();
+        server.verify(deleteRequestedFor(urlPathEqualTo("/api/facilities/fac-1"))
+                .withQueryParam("forceDeletion", equalTo("true")));
+    }
+
+    // --- search ---
+
+    @Test
+    void search_sendsPostToSearchEndpoint() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/facilities/search"))
+                .willReturn(okJson("{\"facilities\":[{\"id\":\"fac-1\"}],\"pageInfo\":{\"endCursor\":\"c1\",\"startCursor\":\"s1\",\"hasNextPage\":true,\"hasPreviousPage\":false}}")));
+
+        // When
+        var page = client.facilities().search(
+                FacilitySearchRequest.builder().query(java.util.Map.of("status", "ONLINE")).size(10).build());
+
+        // Then
+        assertThat(page.items()).hasSize(1);
+        assertThat(page.items().get(0).id()).isEqualTo("fac-1");
+        assertThat(page.nextCursor()).isEqualTo("c1");
+        server.verify(postRequestedFor(urlPathEqualTo("/api/facilities/search"))
+                .withHeader("Authorization", equalTo("Bearer test-bearer")));
+    }
+
+    // --- list query params ---
+
+    @Test
+    void list_sendsStatusAndTypeQueryParams() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/facilities"))
+                .willReturn(okJson("{\"facilities\":[]}")));
+
+        // When
+        client.facilities().list(FacilityListRequest.builder()
+                .status(java.util.List.of("ONLINE", "SUSPENDED"))
+                .type(java.util.List.of("MANAGED_FACILITY"))
+                .tenantFacilityId("ext-1")
+                .orderBy("NAME")
+                .build());
+
+        // Then
+        server.verify(getRequestedFor(urlPathEqualTo("/api/facilities"))
+                .withQueryParam("status", equalTo("ONLINE"))
+                .withQueryParam("status", equalTo("SUSPENDED"))
+                .withQueryParam("type", equalTo("MANAGED_FACILITY"))
+                .withQueryParam("tenantFacilityId", equalTo("ext-1"))
+                .withQueryParam("orderBy", equalTo("NAME")));
+    }
+
     // --- Helpers ---
 
     private static TokenProvider fixedToken(String token) {
