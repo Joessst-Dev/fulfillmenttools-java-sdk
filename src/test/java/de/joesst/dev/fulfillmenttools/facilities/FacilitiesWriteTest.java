@@ -188,7 +188,10 @@ class FacilitiesWriteTest {
 
         // When
         var page = client.facilities().search(
-                FacilitySearchRequest.builder().query(java.util.Map.of("status", "ONLINE")).size(10).build());
+                FacilitySearchRequest.builder()
+                        .query(FacilitySearchQuery.builder().statusEq("ONLINE").build())
+                        .size(10)
+                        .build());
 
         // Then
         assertThat(page.items()).hasSize(1);
@@ -196,6 +199,34 @@ class FacilitiesWriteTest {
         assertThat(page.nextCursor()).isEqualTo("c1");
         server.verify(postRequestedFor(urlPathEqualTo("/api/facilities/search"))
                 .withHeader("Authorization", equalTo("Bearer test-bearer")));
+    }
+
+    @Test
+    void search_serializesQueryCorrectly() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/facilities/search"))
+                .willReturn(okJson("{\"facilities\":[],\"pageInfo\":{\"endCursor\":null,\"startCursor\":null,\"hasNextPage\":false,\"hasPreviousPage\":false}}")));
+
+        FacilitySearchQuery query = FacilitySearchQuery.builder()
+                .statusIn("ONLINE", "SUSPENDED")
+                .nameLike("Berlin*")
+                .cityEq("Berlin")
+                .countryEq("DE")
+                .typeEq("MANAGED_FACILITY")
+                .build();
+
+        // When
+        client.facilities().search(FacilitySearchRequest.builder().query(query).size(25).build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/facilities/search"))
+                .withRequestBody(matchingJsonPath("$.query.status.in[0]", equalTo("ONLINE")))
+                .withRequestBody(matchingJsonPath("$.query.status.in[1]", equalTo("SUSPENDED")))
+                .withRequestBody(matchingJsonPath("$.query.name.like", equalTo("Berlin*")))
+                .withRequestBody(matchingJsonPath("$.query.address.city.eq", equalTo("Berlin")))
+                .withRequestBody(matchingJsonPath("$.query.address.country.eq", equalTo("DE")))
+                .withRequestBody(matchingJsonPath("$.query.type.eq", equalTo("MANAGED_FACILITY")))
+                .withRequestBody(matchingJsonPath("$.size", equalTo("25"))));
     }
 
     // --- list query params ---

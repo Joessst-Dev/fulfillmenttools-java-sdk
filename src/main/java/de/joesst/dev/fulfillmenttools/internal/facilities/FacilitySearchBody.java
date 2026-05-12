@@ -1,5 +1,5 @@
 package de.joesst.dev.fulfillmenttools.internal.facilities;
 
-import java.util.Map;
+import de.joesst.dev.fulfillmenttools.facilities.FacilitySearchQuery;
 
-record FacilitySearchBody(Map<String, Object> query, Integer size, String after, String before) {}
+record FacilitySearchBody(FacilitySearchQuery query, Integer size, String after, String before) {}

@@ -1,11 +1,10 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
-import java.util.Map;
 import java.util.Objects;
 
 public final class FacilitySearchRequest {
 
-    private final Map<String, Object> query;
+    private final FacilitySearchQuery query;
     private final Integer size;
     private final String after;
     private final String before;
@@ -17,7 +16,7 @@ public final class FacilitySearchRequest {
         this.before = builder.before;
     }
 
-    public Map<String, Object> query() { return query; }
+    public FacilitySearchQuery query() { return query; }
     public Integer size() { return size; }
     public String after() { return after; }
     public String before() { return before; }
@@ -26,12 +25,12 @@ public final class FacilitySearchRequest {
 
     public static final class Builder {
 
-        private Map<String, Object> query;
+        private FacilitySearchQuery query;
         private Integer size;
         private String after;
         private String before;
 
-        public Builder query(Map<String, Object> query) { this.query = query; return this; }
+        public Builder query(FacilitySearchQuery query) { this.query = query; return this; }
         public Builder size(Integer size) { this.size = size; return this; }
         public Builder after(String after) { this.after = after; return this; }
         public Builder before(String before) { this.before = before; return this; }
