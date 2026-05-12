@@ -39,6 +39,8 @@ import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionsCli
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupsClient;
 import de.joesst.dev.fulfillmenttools.internal.facilityconnections.FacilityConnectionsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.facilitygroups.FacilityGroupsClientImpl;
+import de.joesst.dev.fulfillmenttools.internal.tags.TagsClientImpl;
+import de.joesst.dev.fulfillmenttools.tags.TagsClient;
 import de.joesst.dev.fulfillmenttools.internal.listings.ListingsClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.processes.OperativeProcessClientImpl;
 import de.joesst.dev.fulfillmenttools.internal.users.UserManagementClientImpl;
@@ -86,6 +88,7 @@ public final class FulfillmenttoolsClient {
     private volatile ListingsClient listingsClient;
     private volatile FacilityGroupsClient facilityGroupsClient;
     private volatile FacilityConnectionsClient facilityConnectionsClient;
+    private volatile TagsClient tagsClient;
 
     private FulfillmenttoolsClient(HttpTransport transport, ResponseHandler responseHandler,
                                    String baseUrl) {
@@ -361,6 +364,19 @@ public final class FulfillmenttoolsClient {
                 local = facilityGroupsClient;
                 if (local == null) {
                     local = facilityGroupsClient = new FacilityGroupsClientImpl(transport, responseHandler, baseUrl);
+                }
+            }
+        }
+        return local;
+    }
+
+    public TagsClient tags() {
+        TagsClient local = tagsClient;
+        if (local == null) {
+            synchronized (this) {
+                local = tagsClient;
+                if (local == null) {
+                    local = tagsClient = new TagsClientImpl(transport, responseHandler, baseUrl);
                 }
             }
         }
