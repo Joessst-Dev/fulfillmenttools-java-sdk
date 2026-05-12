@@ -6,6 +6,8 @@ import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -39,7 +41,7 @@ class OperativeProcessAsyncTest {
     void getAsync_returnsProcess() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/processes/proc-1"))
-                .willReturn(okJson("{\"id\":\"proc-1\",\"status\":\"OPEN\"}")));
+                .willReturn(okJson("{\"id\":\"proc-1\",\"status\":\"OPEN\",\"gdprCleanupDate\":\"2025-01-01T00:00:00Z\"}")));
 
         // When
         Process process = client.processes().getAsync("proc-1").get();
@@ -53,7 +55,7 @@ class OperativeProcessAsyncTest {
     void listAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/processes"))
-                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\"},{\"id\":\"proc-2\"}]}")));
+                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\"},{\"id\":\"proc-2\"}],\"total\":2}")));
 
         // When
         Page<Process> page = client.processes().listAsync(ProcessListRequest.builder().build()).get();
@@ -66,11 +68,14 @@ class OperativeProcessAsyncTest {
     void searchAsync_returnsMatchingProcesses() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/processes/search"))
-                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"status\":\"OPEN\",\"facilityRefs\":[\"fac-1\"]}]}")));
+                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"status\":\"OPEN\",\"facilityRefs\":[\"fac-1\"]}],\"total\":1}")));
 
         // When
         Page<Process> page = client.processes()
-                .searchAsync(ProcessSearchRequest.builder().facilityRef("fac-1").status("OPEN").build()).get();
+                .searchAsync(ProcessSearchRequest.builder()
+                        .facilityRefs(List.of("fac-1"))
+                        .status(List.of("OPEN"))
+                        .build()).get();
 
         // Then
         assertThat(page.items()).hasSize(1);

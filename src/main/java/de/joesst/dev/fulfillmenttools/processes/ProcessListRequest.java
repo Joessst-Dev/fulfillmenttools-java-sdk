@@ -1,30 +1,44 @@
 package de.joesst.dev.fulfillmenttools.processes;
 
+import java.util.List;
+
 public final class ProcessListRequest {
 
     private final Integer size;
     private final String startAfterId;
-    private final String facilityRef;
-    private final String status;
+    private final List<String> facilityRefs;
+    private final List<String> status;
+    private final List<String> operativeStatus;
+    private final String tenantOrderId;
+    private final String searchTerm;
 
     private ProcessListRequest(Builder builder) {
         this.size = builder.size;
         this.startAfterId = builder.startAfterId;
-        this.facilityRef = builder.facilityRef;
+        this.facilityRefs = builder.facilityRefs;
         this.status = builder.status;
+        this.operativeStatus = builder.operativeStatus;
+        this.tenantOrderId = builder.tenantOrderId;
+        this.searchTerm = builder.searchTerm;
     }
 
     public Integer size() { return size; }
     public String startAfterId() { return startAfterId; }
-    public String facilityRef() { return facilityRef; }
-    public String status() { return status; }
+    public List<String> facilityRefs() { return facilityRefs; }
+    public List<String> status() { return status; }
+    public List<String> operativeStatus() { return operativeStatus; }
+    public String tenantOrderId() { return tenantOrderId; }
+    public String searchTerm() { return searchTerm; }
 
     public Builder toBuilder() {
         Builder b = new Builder();
         b.size = this.size;
         b.startAfterId = this.startAfterId;
-        b.facilityRef = this.facilityRef;
+        b.facilityRefs = this.facilityRefs;
         b.status = this.status;
+        b.operativeStatus = this.operativeStatus;
+        b.tenantOrderId = this.tenantOrderId;
+        b.searchTerm = this.searchTerm;
         return b;
     }
 
@@ -34,13 +48,19 @@ public final class ProcessListRequest {
 
         private Integer size;
         private String startAfterId;
-        private String facilityRef;
-        private String status;
+        private List<String> facilityRefs;
+        private List<String> status;
+        private List<String> operativeStatus;
+        private String tenantOrderId;
+        private String searchTerm;
 
         public Builder size(Integer size) { this.size = size; return this; }
         public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
-        public Builder status(String status) { this.status = status; return this; }
+        public Builder facilityRefs(List<String> facilityRefs) { this.facilityRefs = facilityRefs; return this; }
+        public Builder status(List<String> status) { this.status = status; return this; }
+        public Builder operativeStatus(List<String> operativeStatus) { this.operativeStatus = operativeStatus; return this; }
+        public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder searchTerm(String searchTerm) { this.searchTerm = searchTerm; return this; }
 
         public ProcessListRequest build() { return new ProcessListRequest(this); }
     }

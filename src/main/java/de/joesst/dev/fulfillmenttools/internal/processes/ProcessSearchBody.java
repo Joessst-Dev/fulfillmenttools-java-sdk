@@ -1,3 +1,5 @@
 package de.joesst.dev.fulfillmenttools.internal.processes;
 
-record ProcessSearchBody(String facilityRef, String status, Integer size, String startAfterId) {}
+import java.util.List;
+
+record ProcessSearchBody(List<String> facilityRefs, List<String> status, Integer size, String startAfterId) {}

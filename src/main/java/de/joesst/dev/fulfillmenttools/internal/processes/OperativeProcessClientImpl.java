@@ -40,16 +40,8 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
 
     @Override
     public Page<Process> list(ProcessListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/processes");
-        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
-        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
-        if (request.status() != null) builder.queryParam("status", request.status());
-
-        ProcessListResponse body = responseHandler.handle(execute(builder.build()), ProcessListResponse.class);
-        return new Page<>(body.processes() != null ? body.processes() : List.of(), body.nextCursor());
+        ProcessListResponse body = responseHandler.handle(execute(buildListRequest(request)), ProcessListResponse.class);
+        return new Page<>(body.processes() != null ? body.processes() : List.of(), null);
     }
 
     @Override
@@ -63,14 +55,14 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
     @Override
     public Page<Process> search(ProcessSearchRequest request) {
         ProcessSearchBody body = new ProcessSearchBody(
-                request.facilityRef(), request.status(), request.size(), request.startAfterId());
+                request.facilityRefs(), request.status(), request.size(), request.startAfterId());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/processes/search")
                 .body(responseHandler.encode(body))
                 .build();
         ProcessListResponse response = responseHandler.handle(execute(httpRequest), ProcessListResponse.class);
-        return new Page<>(response.processes() != null ? response.processes() : List.of(), response.nextCursor());
+        return new Page<>(response.processes() != null ? response.processes() : List.of(), null);
     }
 
     @Override
@@ -85,24 +77,16 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
 
     @Override
     public CompletableFuture<Page<Process>> listAsync(ProcessListRequest request) {
-        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
-                .method(HttpMethod.GET)
-                .url(baseUrl + "/api/processes");
-        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
-        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
-        if (request.status() != null) builder.queryParam("status", request.status());
-
-        return transport.executeAsync(builder.build()).thenApply(response -> {
+        return transport.executeAsync(buildListRequest(request)).thenApply(response -> {
             ProcessListResponse body = responseHandler.handle(response, ProcessListResponse.class);
-            return new Page<>(body.processes() != null ? body.processes() : List.of(), body.nextCursor());
+            return new Page<>(body.processes() != null ? body.processes() : List.of(), null);
         });
     }
 
     @Override
     public CompletableFuture<Page<Process>> searchAsync(ProcessSearchRequest request) {
         ProcessSearchBody body = new ProcessSearchBody(
-                request.facilityRef(), request.status(), request.size(), request.startAfterId());
+                request.facilityRefs(), request.status(), request.size(), request.startAfterId());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/processes/search")
@@ -110,8 +94,30 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
                 .build();
         return transport.executeAsync(httpRequest).thenApply(response -> {
             ProcessListResponse r = responseHandler.handle(response, ProcessListResponse.class);
-            return new Page<>(r.processes() != null ? r.processes() : List.of(), r.nextCursor());
+            return new Page<>(r.processes() != null ? r.processes() : List.of(), null);
         });
+    }
+
+    private SdkHttpRequest buildListRequest(ProcessListRequest request) {
+        SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
+                .method(HttpMethod.GET)
+                .url(baseUrl + "/api/processes");
+
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.searchTerm() != null) builder.queryParam("searchTerm", request.searchTerm());
+        if (request.facilityRefs() != null) {
+            request.facilityRefs().forEach(r -> builder.queryParam("facilityRefs", r));
+        }
+        if (request.status() != null) {
+            request.status().forEach(s -> builder.queryParam("status", s));
+        }
+        if (request.operativeStatus() != null) {
+            request.operativeStatus().forEach(s -> builder.queryParam("operativeStatus", s));
+        }
+
+        return builder.build();
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {
