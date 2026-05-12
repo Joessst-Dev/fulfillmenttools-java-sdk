@@ -4,6 +4,6 @@ import java.util.concurrent.CompletableFuture;
 
 public interface SourcingOptionsClient {
 
-    SourcingOptionsResult evaluate(EvaluateSourcingOptionsRequest request);
-    CompletableFuture<SourcingOptionsResult> evaluateAsync(EvaluateSourcingOptionsRequest request);
+    SourcingOptionsResult evaluate(SourcingOptionsRequest request);
+    CompletableFuture<SourcingOptionsResult> evaluateAsync(SourcingOptionsRequest request);
 }

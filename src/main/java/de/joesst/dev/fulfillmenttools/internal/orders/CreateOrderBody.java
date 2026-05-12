@@ -1,5 +1,16 @@
 package de.joesst.dev.fulfillmenttools.internal.orders;
 
-import java.time.Instant;
+import de.joesst.dev.fulfillmenttools.orders.OrderForCreationConsumer;
+import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 
-record CreateOrderBody(String tenantOrderId, Instant orderDate) {}
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+
+record CreateOrderBody(
+        Instant orderDate,
+        List<OrderLineItemForCreation> orderLineItems,
+        String tenantOrderId,
+        OrderForCreationConsumer consumer,
+        Map<String, Object> customAttributes
+) {}

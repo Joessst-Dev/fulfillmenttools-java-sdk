@@ -1,3 +1,11 @@
 package de.joesst.dev.fulfillmenttools.internal.facilities;
 
-record CreateFacilityBody(String name, String tenantFacilityId) {}
+import java.util.Map;
+
+record CreateFacilityBody(
+        String name,
+        String tenantFacilityId,
+        String status,
+        String type,
+        Map<String, Object> customAttributes
+) {}

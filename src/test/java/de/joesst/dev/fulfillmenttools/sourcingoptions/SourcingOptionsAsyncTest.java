@@ -5,6 +5,8 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -38,15 +40,44 @@ class SourcingOptionsAsyncTest {
     void evaluateAsync_returnsResult() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/sourcingoptions"))
-                .willReturn(okJson("{\"orderId\":\"o-1\",\"facilityRefs\":[\"fac-1\",\"fac-2\"]}")));
+                .willReturn(okJson("{\"id\":\"run-1\",\"options\":[]}")));
+
+        SourcingOptionsRequest request = SourcingOptionsRequest.builder()
+                .order(OrderForSourcingOptionsRequest.builder()
+                        .orderLineItems(List.of(new SourcingOrderLineItem("article-1", 2)))
+                        .build())
+                .build();
 
         // When
-        SourcingOptionsResult result = client.sourcingOptions()
-                .evaluateAsync(EvaluateSourcingOptionsRequest.builder().orderId("o-1").build()).get();
+        SourcingOptionsResult result = client.sourcingOptions().evaluateAsync(request).get();
 
         // Then
-        assertThat(result.orderId()).isEqualTo("o-1");
-        assertThat(result.facilityRefs()).containsExactly("fac-1", "fac-2");
+        assertThat(result.id()).isEqualTo("run-1");
+        assertThat(result.options()).isEmpty();
+    }
+
+    @Test
+    void evaluateAsync_sendsOrderInBody() throws Exception {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/sourcingoptions"))
+                .willReturn(okJson("{\"id\":\"run-2\",\"options\":[]}")));
+
+        SourcingOptionsRequest request = SourcingOptionsRequest.builder()
+                .order(OrderForSourcingOptionsRequest.builder()
+                        .orderLineItems(List.of(new SourcingOrderLineItem("art-42", 1)))
+                        .tenantOrderId("tenant-ord-1")
+                        .build())
+                .includeListingCustomAttributes(true)
+                .build();
+
+        // When
+        client.sourcingOptions().evaluateAsync(request).get();
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/sourcingoptions"))
+                .withHeader("Authorization", equalTo("Bearer test-bearer"))
+                .withRequestBody(matchingJsonPath("$.order.tenantOrderId", equalTo("tenant-ord-1")))
+                .withRequestBody(matchingJsonPath("$.includeListingCustomAttributes", equalTo("true"))));
     }
 
     // --- Helpers ---

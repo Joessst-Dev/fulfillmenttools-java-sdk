@@ -71,7 +71,13 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
     @Override
     public Facility create(CreateFacilityRequest request) {
-        CreateFacilityBody body = new CreateFacilityBody(request.name(), request.tenantFacilityId());
+        CreateFacilityBody body = new CreateFacilityBody(
+                request.name(),
+                request.tenantFacilityId(),
+                request.status(),
+                request.type(),
+                request.customAttributes()
+        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/facilities")
@@ -131,7 +137,13 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
     @Override
     public CompletableFuture<Facility> createAsync(CreateFacilityRequest request) {
-        CreateFacilityBody body = new CreateFacilityBody(request.name(), request.tenantFacilityId());
+        CreateFacilityBody body = new CreateFacilityBody(
+                request.name(),
+                request.tenantFacilityId(),
+                request.status(),
+                request.type(),
+                request.customAttributes()
+        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/facilities")

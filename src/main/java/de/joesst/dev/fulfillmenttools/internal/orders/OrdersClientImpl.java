@@ -71,7 +71,13 @@ public final class OrdersClientImpl implements OrdersClient {
 
     @Override
     public Order create(CreateOrderRequest request) {
-        CreateOrderBody body = new CreateOrderBody(request.tenantOrderId(), request.orderDate());
+        CreateOrderBody body = new CreateOrderBody(
+                request.orderDate(),
+                request.orderLineItems(),
+                request.tenantOrderId(),
+                request.consumer(),
+                request.customAttributes()
+        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/orders")
@@ -131,7 +137,13 @@ public final class OrdersClientImpl implements OrdersClient {
 
     @Override
     public CompletableFuture<Order> createAsync(CreateOrderRequest request) {
-        CreateOrderBody body = new CreateOrderBody(request.tenantOrderId(), request.orderDate());
+        CreateOrderBody body = new CreateOrderBody(
+                request.orderDate(),
+                request.orderLineItems(),
+                request.tenantOrderId(),
+                request.consumer(),
+                request.customAttributes()
+        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/orders")

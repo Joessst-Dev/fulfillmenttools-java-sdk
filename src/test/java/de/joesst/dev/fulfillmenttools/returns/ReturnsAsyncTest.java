@@ -65,7 +65,7 @@ class ReturnsAsyncTest {
     void createAsync_returnsCreatedReturn() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/returns"))
-                .willReturn(okJson("{\"id\":\"ret-new\",\"facilityRef\":\"fac-1\",\"status\":\"OPEN\"}")));
+                .willReturn(okJson("{\"id\":\"ret-new\",\"status\":\"OPEN\"}")));
 
         // When
         Return ret = client.returns()
@@ -73,7 +73,7 @@ class ReturnsAsyncTest {
 
         // Then
         assertThat(ret.id()).isEqualTo("ret-new");
-        assertThat(ret.facilityRef()).isEqualTo("fac-1");
+        assertThat(ret.status()).isEqualTo("OPEN");
     }
 
     // --- Helpers ---

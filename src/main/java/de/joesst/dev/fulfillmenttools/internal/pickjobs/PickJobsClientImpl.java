@@ -76,7 +76,7 @@ public final class PickJobsClientImpl implements PickJobsClient {
 
     @Override
     public PickJob update(String pickJobId, UpdatePickJobRequest request) {
-        UpdatePickJobBody body = new UpdatePickJobBody(request.status());
+        UpdatePickJobBody body = new UpdatePickJobBody(request.status(), request.customAttributes(), request.preferredPickingMethods());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/pickjobs/" + pickJobId)
@@ -122,7 +122,7 @@ public final class PickJobsClientImpl implements PickJobsClient {
 
     @Override
     public CompletableFuture<PickJob> updateAsync(String pickJobId, UpdatePickJobRequest request) {
-        UpdatePickJobBody body = new UpdatePickJobBody(request.status());
+        UpdatePickJobBody body = new UpdatePickJobBody(request.status(), request.customAttributes(), request.preferredPickingMethods());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/pickjobs/" + pickJobId)

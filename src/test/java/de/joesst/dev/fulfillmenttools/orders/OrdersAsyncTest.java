@@ -7,6 +7,8 @@ import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -79,7 +81,15 @@ class OrdersAsyncTest {
 
         // When
         Order order = client.orders()
-                .createAsync(CreateOrderRequest.builder().tenantOrderId("ext-1").build()).get();
+                .createAsync(CreateOrderRequest.builder()
+                        .orderDate(Instant.parse("2024-03-01T10:00:00Z"))
+                        .orderLineItems(List.of(
+                                OrderLineItemForCreation.builder()
+                                        .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                        .quantity(1)
+                                        .build()))
+                        .tenantOrderId("ext-1")
+                        .build()).get();
 
         // Then
         assertThat(order.id()).isEqualTo("ord-new");

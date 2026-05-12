@@ -6,8 +6,8 @@ import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
-import de.joesst.dev.fulfillmenttools.sourcingoptions.EvaluateSourcingOptionsRequest;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsClient;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsRequest;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsResult;
 
 import java.io.IOException;
@@ -26,8 +26,8 @@ public final class SourcingOptionsClientImpl implements SourcingOptionsClient {
     }
 
     @Override
-    public SourcingOptionsResult evaluate(EvaluateSourcingOptionsRequest request) {
-        EvaluateSourcingOptionsBody body = new EvaluateSourcingOptionsBody(request.orderId());
+    public SourcingOptionsResult evaluate(SourcingOptionsRequest request) {
+        SourcingOptionsBody body = new SourcingOptionsBody(request.order(), request.includeListingCustomAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/sourcingoptions")
@@ -37,8 +37,8 @@ public final class SourcingOptionsClientImpl implements SourcingOptionsClient {
     }
 
     @Override
-    public CompletableFuture<SourcingOptionsResult> evaluateAsync(EvaluateSourcingOptionsRequest request) {
-        EvaluateSourcingOptionsBody body = new EvaluateSourcingOptionsBody(request.orderId());
+    public CompletableFuture<SourcingOptionsResult> evaluateAsync(SourcingOptionsRequest request) {
+        SourcingOptionsBody body = new SourcingOptionsBody(request.order(), request.includeListingCustomAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/sourcingoptions")

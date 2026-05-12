@@ -1,3 +1,14 @@
 package de.joesst.dev.fulfillmenttools.internal.checkoutoptions;
 
-record EvaluateCheckoutOptionsBody(String orderId) {}
+import de.joesst.dev.fulfillmenttools.checkoutoptions.CheckoutOrderLineItem;
+
+import java.util.List;
+import java.util.Map;
+
+record EvaluateCheckoutOptionsBody(
+        Map<String, Object> deliveryPreferences,
+        List<CheckoutOrderLineItem> orderLineItems,
+        Map<String, Object> consumerAddress,
+        Map<String, Object> customAttributes,
+        Boolean filterDuplicates
+) {}

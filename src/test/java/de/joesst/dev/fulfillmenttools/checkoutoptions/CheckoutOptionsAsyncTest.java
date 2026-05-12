@@ -5,6 +5,9 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+import java.util.Map;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -54,9 +57,13 @@ class CheckoutOptionsAsyncTest {
         server.stubFor(post(urlPathEqualTo("/api/promises/checkoutoptions"))
                 .willReturn(okJson("{\"id\":\"co-new\",\"status\":\"AVAILABLE\"}")));
 
+        EvaluateCheckoutOptionsRequest request = EvaluateCheckoutOptionsRequest.builder()
+                .deliveryPreferences(Map.of("type", "HOME_DELIVERY"))
+                .orderLineItems(List.of(new CheckoutOrderLineItem("article-1", 1)))
+                .build();
+
         // When
-        CheckoutOption option = client.checkoutOptions()
-                .evaluateAsync(EvaluateCheckoutOptionsRequest.builder().orderId("o-1").build()).get();
+        CheckoutOption option = client.checkoutOptions().evaluateAsync(request).get();
 
         // Then
         assertThat(option.id()).isEqualTo("co-new");

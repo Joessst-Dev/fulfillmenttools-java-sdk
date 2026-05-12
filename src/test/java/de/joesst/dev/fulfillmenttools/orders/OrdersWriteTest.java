@@ -6,6 +6,9 @@ import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import org.junit.jupiter.api.*;
 
+import java.time.Instant;
+import java.util.List;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -47,7 +50,15 @@ class OrdersWriteTest {
 
         // When
         Order order = client.orders().create(
-                CreateOrderRequest.builder().tenantOrderId("ext-new").build());
+                CreateOrderRequest.builder()
+                        .orderDate(Instant.parse("2024-03-01T10:00:00Z"))
+                        .orderLineItems(List.of(
+                                OrderLineItemForCreation.builder()
+                                        .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                        .quantity(1)
+                                        .build()))
+                        .tenantOrderId("ext-new")
+                        .build());
 
         // Then
         assertThat(order.id()).isEqualTo("ord-new");
@@ -63,7 +74,15 @@ class OrdersWriteTest {
                         .withBody("{\"id\":\"ord-1\",\"tenantOrderId\":\"ext-1\",\"status\":\"OPEN\"}")));
 
         // When
-        client.orders().create(CreateOrderRequest.builder().tenantOrderId("ext-1").build());
+        client.orders().create(CreateOrderRequest.builder()
+                .orderDate(Instant.parse("2024-03-01T10:00:00Z"))
+                .orderLineItems(List.of(
+                        OrderLineItemForCreation.builder()
+                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                .quantity(1)
+                                .build()))
+                .tenantOrderId("ext-1")
+                .build());
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/orders"))
@@ -73,11 +92,27 @@ class OrdersWriteTest {
     }
 
     @Test
-    void create_requiresTenantOrderId() {
+    void create_requiresOrderDate() {
         // When / Then
-        assertThatThrownBy(() -> CreateOrderRequest.builder().build())
+        assertThatThrownBy(() -> CreateOrderRequest.builder()
+                .orderLineItems(List.of(
+                        OrderLineItemForCreation.builder()
+                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                .quantity(1)
+                                .build()))
+                .build())
                 .isInstanceOf(NullPointerException.class)
-                .hasMessageContaining("tenantOrderId");
+                .hasMessageContaining("orderDate");
+    }
+
+    @Test
+    void create_requiresOrderLineItems() {
+        // When / Then
+        assertThatThrownBy(() -> CreateOrderRequest.builder()
+                .orderDate(Instant.parse("2024-03-01T10:00:00Z"))
+                .build())
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("orderLineItems");
     }
 
     // --- update ---
