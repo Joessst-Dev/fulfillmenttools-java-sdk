@@ -16,6 +16,7 @@ public interface FacilitiesClient {
 
     Page<Facility> search(FacilitySearchRequest request);
     CompletableFuture<Page<Facility>> searchAsync(FacilitySearchRequest request);
+    Iterable<Facility> searchAll(FacilitySearchRequest request);
 
     Facility create(CreateFacilityRequest request);
     CompletableFuture<Facility> createAsync(CreateFacilityRequest request);

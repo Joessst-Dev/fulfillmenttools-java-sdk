@@ -11,6 +11,10 @@ public final class OrderSearchQuery {
     private final Map<String, Object> tenantOrderId;
     private final Map<String, Object> orderDate;
     private final Map<String, Object> consumer;
+    private final Map<String, Object> deliveryPreferences;
+    private final Map<String, Object> orderLineItems;
+    private final Map<String, Object> paymentInfo;
+    private final Map<String, Object> tags;
     private final List<OrderSearchQuery> and;
     private final List<OrderSearchQuery> or;
 
@@ -19,6 +23,10 @@ public final class OrderSearchQuery {
         this.tenantOrderId = b.tenantOrderId;
         this.orderDate = b.orderDate;
         this.consumer = b.consumer;
+        this.deliveryPreferences = b.deliveryPreferences;
+        this.orderLineItems = b.orderLineItems;
+        this.paymentInfo = b.paymentInfo;
+        this.tags = b.tags;
         this.and = b.and;
         this.or = b.or;
     }
@@ -27,6 +35,10 @@ public final class OrderSearchQuery {
     public Map<String, Object> tenantOrderId() { return tenantOrderId; }
     public Map<String, Object> orderDate() { return orderDate; }
     public Map<String, Object> consumer() { return consumer; }
+    public Map<String, Object> deliveryPreferences() { return deliveryPreferences; }
+    public Map<String, Object> orderLineItems() { return orderLineItems; }
+    public Map<String, Object> paymentInfo() { return paymentInfo; }
+    public Map<String, Object> tags() { return tags; }
     public List<OrderSearchQuery> and() { return and; }
     public List<OrderSearchQuery> or() { return or; }
 
@@ -38,6 +50,10 @@ public final class OrderSearchQuery {
         private Map<String, Object> tenantOrderId;
         private Map<String, Object> orderDate;
         private Map<String, Object> consumer;
+        private Map<String, Object> deliveryPreferences;
+        private Map<String, Object> orderLineItems;
+        private Map<String, Object> paymentInfo;
+        private Map<String, Object> tags;
         private List<OrderSearchQuery> and;
         private List<OrderSearchQuery> or;
 
@@ -63,6 +79,18 @@ public final class OrderSearchQuery {
 
         // --- consumer ---
         public Builder consumerIdEq(String consumerId) { consumer = Map.of("consumerId", Map.of("eq", consumerId)); return this; }
+
+        // --- deliveryPreferences (pass-through nested filter) ---
+        public Builder deliveryPreferences(Map<String, Object> filter) { deliveryPreferences = filter; return this; }
+
+        // --- orderLineItems (pass-through nested list filter) ---
+        public Builder orderLineItems(Map<String, Object> filter) { orderLineItems = filter; return this; }
+
+        // --- paymentInfo (pass-through nested filter) ---
+        public Builder paymentInfo(Map<String, Object> filter) { paymentInfo = filter; return this; }
+
+        // --- tags (pass-through nested list filter) ---
+        public Builder tags(Map<String, Object> filter) { tags = filter; return this; }
 
         // --- logical combinators ---
         public Builder and(OrderSearchQuery... queries) { and = Arrays.asList(queries); return this; }

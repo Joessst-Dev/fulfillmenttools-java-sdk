@@ -73,7 +73,7 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     @Override
     public Page<Facility> search(FacilitySearchRequest request) {
         FacilitySearchBody body = new FacilitySearchBody(
-                request.query(), request.size(), request.after(), request.before());
+                request.query(), request.size(), request.after(), request.before(), request.last());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/facilities/search")
@@ -82,6 +82,16 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
         FacilitySearchResponse resp = responseHandler.handle(execute(httpRequest), FacilitySearchResponse.class);
         String cursor = resp.pageInfo() != null ? resp.pageInfo().endCursor() : null;
         return new Page<>(resp.facilities() != null ? resp.facilities() : List.of(), cursor);
+    }
+
+    @Override
+    public Iterable<Facility> searchAll(FacilitySearchRequest request) {
+        return Pages.all(cursor -> {
+            FacilitySearchRequest r = cursor == null
+                    ? request
+                    : request.toBuilder().after(cursor).build();
+            return search(r);
+        });
     }
 
     @Override
@@ -160,7 +170,7 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     @Override
     public CompletableFuture<Page<Facility>> searchAsync(FacilitySearchRequest request) {
         FacilitySearchBody body = new FacilitySearchBody(
-                request.query(), request.size(), request.after(), request.before());
+                request.query(), request.size(), request.after(), request.before(), request.last());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/facilities/search")

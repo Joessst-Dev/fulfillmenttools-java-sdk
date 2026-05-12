@@ -26,6 +26,10 @@ public final class FacilitySearchQuery {
     private final Map<String, Object> locationType;
     private final Map<String, Object> tenantFacilityId;
     private final Map<String, Object> address;
+    private final Map<String, Object> contact;
+    private final Map<String, Object> referenced;
+    private final Map<String, Object> services;
+    private final Map<String, Object> tags;
     private final List<FacilitySearchQuery> and;
     private final List<FacilitySearchQuery> or;
 
@@ -37,6 +41,10 @@ public final class FacilitySearchQuery {
         this.locationType = b.locationType;
         this.tenantFacilityId = b.tenantFacilityId;
         this.address = b.address;
+        this.contact = b.contact;
+        this.referenced = b.referenced;
+        this.services = b.services;
+        this.tags = b.tags;
         this.and = b.and;
         this.or = b.or;
     }
@@ -48,6 +56,10 @@ public final class FacilitySearchQuery {
     public Map<String, Object> locationType() { return locationType; }
     public Map<String, Object> tenantFacilityId() { return tenantFacilityId; }
     public Map<String, Object> address() { return address; }
+    public Map<String, Object> contact() { return contact; }
+    public Map<String, Object> referenced() { return referenced; }
+    public Map<String, Object> services() { return services; }
+    public Map<String, Object> tags() { return tags; }
     public List<FacilitySearchQuery> and() { return and; }
     public List<FacilitySearchQuery> or() { return or; }
 
@@ -62,6 +74,10 @@ public final class FacilitySearchQuery {
         private Map<String, Object> locationType;
         private Map<String, Object> tenantFacilityId;
         private Map<String, Object> address;
+        private Map<String, Object> contact;
+        private Map<String, Object> referenced;
+        private Map<String, Object> services;
+        private Map<String, Object> tags;
         private List<FacilitySearchQuery> and;
         private List<FacilitySearchQuery> or;
 
@@ -119,6 +135,13 @@ public final class FacilitySearchQuery {
         public Builder streetEq(String value) { return addr("street", Map.of("eq", value)); }
         public Builder companyNameEq(String value) { return addr("companyName", Map.of("eq", value)); }
         public Builder provinceEq(String value) { return addr("province", Map.of("eq", value)); }
+
+        // --- contact, referenced, services, tags (pass-through nested filters) ---
+
+        public Builder contact(Map<String, Object> filter) { contact = filter; return this; }
+        public Builder referenced(Map<String, Object> filter) { referenced = filter; return this; }
+        public Builder services(Map<String, Object> filter) { services = filter; return this; }
+        public Builder tags(Map<String, Object> filter) { tags = filter; return this; }
 
         // --- logical combinators ---
 

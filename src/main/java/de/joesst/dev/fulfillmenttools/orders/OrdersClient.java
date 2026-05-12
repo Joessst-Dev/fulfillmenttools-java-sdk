@@ -16,6 +16,7 @@ public interface OrdersClient {
 
     Page<Order> search(OrderSearchRequest request);
     CompletableFuture<Page<Order>> searchAsync(OrderSearchRequest request);
+    Iterable<Order> searchAll(OrderSearchRequest request);
 
     Order create(CreateOrderRequest request);
     CompletableFuture<Order> createAsync(CreateOrderRequest request);

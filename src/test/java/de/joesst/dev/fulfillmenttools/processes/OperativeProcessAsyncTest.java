@@ -68,13 +68,15 @@ class OperativeProcessAsyncTest {
     void searchAsync_returnsMatchingProcesses() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/processes/search"))
-                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"status\":\"OPEN\",\"facilityRefs\":[\"fac-1\"]}],\"total\":1}")));
+                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"status\":\"OPEN\",\"facilityRefs\":[\"fac-1\"]}]}")));
 
         // When
         Page<Process> page = client.processes()
                 .searchAsync(ProcessSearchRequest.builder()
-                        .facilityRefs(List.of("fac-1"))
-                        .status(List.of("OPEN"))
+                        .query(ProcessSearchQuery.builder()
+                                .facilityRefsHasAny("fac-1")
+                                .statusIn("OPEN")
+                                .build())
                         .build()).get();
 
         // Then

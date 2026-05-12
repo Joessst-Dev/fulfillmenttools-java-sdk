@@ -181,12 +181,14 @@ class OperativeProcessClientTest {
     void search_returnsMatchingProcesses() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/processes/search"))
-                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"facilityRefs\":[\"fac-1\"]}],\"total\":1}")));
+                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"facilityRefs\":[\"fac-1\"]}],\"pageInfo\":null}")));
 
         // When
         Page<Process> page = client.processes().search(ProcessSearchRequest.builder()
-                .facilityRefs(List.of("fac-1"))
-                .status(List.of("OPEN"))
+                .query(ProcessSearchQuery.builder()
+                        .facilityRefsHasAny("fac-1")
+                        .statusIn("OPEN")
+                        .build())
                 .build());
 
         // Then
@@ -198,20 +200,22 @@ class OperativeProcessClientTest {
     void search_sendsFacilityRefsAndStatus() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/processes/search"))
-                .willReturn(okJson("{\"processes\":[], \"total\":0}")));
+                .willReturn(okJson("{\"processes\":[]}")));
 
         // When
         client.processes().search(ProcessSearchRequest.builder()
-                .facilityRefs(List.of("fac-1"))
-                .status(List.of("OPEN"))
+                .query(ProcessSearchQuery.builder()
+                        .facilityRefsHasAny("fac-1")
+                        .statusIn("OPEN")
+                        .build())
                 .size(5)
                 .build());
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/processes/search"))
                 .withHeader("Content-Type", containing("application/json"))
-                .withRequestBody(matchingJsonPath("$.facilityRefs[0]", equalTo("fac-1")))
-                .withRequestBody(matchingJsonPath("$.status[0]", equalTo("OPEN")))
+                .withRequestBody(matchingJsonPath("$.query.facilityRefs.hasAny[0]", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.query.status.in[0]", equalTo("OPEN")))
                 .withRequestBody(matchingJsonPath("$.size", equalTo("5"))));
     }
 

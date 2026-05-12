@@ -1,39 +1,47 @@
 package de.joesst.dev.fulfillmenttools.processes;
 
-import java.util.List;
+import java.util.Objects;
 
 public final class ProcessSearchRequest {
 
-    private final List<String> facilityRefs;
-    private final List<String> status;
+    private final ProcessSearchQuery query;
     private final Integer size;
-    private final String startAfterId;
+    private final String after;
+    private final String before;
+    private final Integer last;
 
     private ProcessSearchRequest(Builder builder) {
-        this.facilityRefs = builder.facilityRefs;
-        this.status = builder.status;
+        this.query = Objects.requireNonNull(builder.query, "query must not be null");
         this.size = builder.size;
-        this.startAfterId = builder.startAfterId;
+        this.after = builder.after;
+        this.before = builder.before;
+        this.last = builder.last;
     }
 
-    public List<String> facilityRefs() { return facilityRefs; }
-    public List<String> status() { return status; }
+    public ProcessSearchQuery query() { return query; }
     public Integer size() { return size; }
-    public String startAfterId() { return startAfterId; }
+    public String after() { return after; }
+    public String before() { return before; }
+    public Integer last() { return last; }
+
+    public Builder toBuilder() {
+        return new Builder().query(query).size(size).after(after).before(before).last(last);
+    }
 
     public static Builder builder() { return new Builder(); }
 
     public static final class Builder {
-
-        private List<String> facilityRefs;
-        private List<String> status;
+        private ProcessSearchQuery query;
         private Integer size;
-        private String startAfterId;
+        private String after;
+        private String before;
+        private Integer last;
 
-        public Builder facilityRefs(List<String> facilityRefs) { this.facilityRefs = facilityRefs; return this; }
-        public Builder status(List<String> status) { this.status = status; return this; }
+        public Builder query(ProcessSearchQuery query) { this.query = query; return this; }
         public Builder size(Integer size) { this.size = size; return this; }
-        public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
+        public Builder after(String after) { this.after = after; return this; }
+        public Builder before(String before) { this.before = before; return this; }
+        public Builder last(Integer last) { this.last = last; return this; }
 
         public ProcessSearchRequest build() { return new ProcessSearchRequest(this); }
     }

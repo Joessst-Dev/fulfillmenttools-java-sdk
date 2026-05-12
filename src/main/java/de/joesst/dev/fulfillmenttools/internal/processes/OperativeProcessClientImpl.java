@@ -54,15 +54,15 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
 
     @Override
     public Page<Process> search(ProcessSearchRequest request) {
-        ProcessSearchBody body = new ProcessSearchBody(
-                request.facilityRefs(), request.status(), request.size(), request.startAfterId());
-        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
-                .method(HttpMethod.POST)
-                .url(baseUrl + "/api/processes/search")
-                .body(responseHandler.encode(body))
-                .build();
-        ProcessListResponse response = responseHandler.handle(execute(httpRequest), ProcessListResponse.class);
-        return new Page<>(response.processes() != null ? response.processes() : List.of(), null);
+        return toSearchPage(responseHandler.handle(execute(buildSearchRequest(request)), ProcessSearchResponse.class));
+    }
+
+    @Override
+    public Iterable<Process> searchAll(ProcessSearchRequest request) {
+        return Pages.all(cursor -> {
+            ProcessSearchRequest r = cursor == null ? request : request.toBuilder().after(cursor).build();
+            return search(r);
+        });
     }
 
     @Override
@@ -85,17 +85,24 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
 
     @Override
     public CompletableFuture<Page<Process>> searchAsync(ProcessSearchRequest request) {
-        ProcessSearchBody body = new ProcessSearchBody(
-                request.facilityRefs(), request.status(), request.size(), request.startAfterId());
-        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+        return transport.executeAsync(buildSearchRequest(request))
+                .thenApply(r -> toSearchPage(responseHandler.handle(r, ProcessSearchResponse.class)));
+    }
+
+    private SdkHttpRequest buildSearchRequest(ProcessSearchRequest request) {
+        var body = new ProcessSearchBody(
+                request.query(), request.size(), request.after(), request.before(), request.last());
+        return SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/processes/search")
                 .body(responseHandler.encode(body))
                 .build();
-        return transport.executeAsync(httpRequest).thenApply(response -> {
-            ProcessListResponse r = responseHandler.handle(response, ProcessListResponse.class);
-            return new Page<>(r.processes() != null ? r.processes() : List.of(), null);
-        });
+    }
+
+    private Page<Process> toSearchPage(ProcessSearchResponse resp) {
+        List<Process> items = resp.processes() != null ? resp.processes() : List.of();
+        String cursor = resp.pageInfo() != null ? resp.pageInfo().endCursor() : null;
+        return new Page<>(items, cursor);
     }
 
     private SdkHttpRequest buildListRequest(ProcessListRequest request) {

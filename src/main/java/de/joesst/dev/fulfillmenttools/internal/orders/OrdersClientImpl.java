@@ -73,7 +73,7 @@ public final class OrdersClientImpl implements OrdersClient {
     @Override
     public Page<Order> search(OrderSearchRequest request) {
         OrderSearchBody body = new OrderSearchBody(
-                request.query(), request.size(), request.after(), request.before());
+                request.query(), request.size(), request.after(), request.before(), request.last());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/orders/search")
@@ -82,6 +82,16 @@ public final class OrdersClientImpl implements OrdersClient {
         OrderSearchResponse resp = responseHandler.handle(execute(httpRequest), OrderSearchResponse.class);
         String cursor = resp.pageInfo() != null ? resp.pageInfo().endCursor() : null;
         return new Page<>(resp.orders() != null ? resp.orders() : List.of(), cursor);
+    }
+
+    @Override
+    public Iterable<Order> searchAll(OrderSearchRequest request) {
+        return Pages.all(cursor -> {
+            OrderSearchRequest r = cursor == null
+                    ? request
+                    : request.toBuilder().after(cursor).build();
+            return search(r);
+        });
     }
 
     @Override
@@ -164,7 +174,7 @@ public final class OrdersClientImpl implements OrdersClient {
     @Override
     public CompletableFuture<Page<Order>> searchAsync(OrderSearchRequest request) {
         OrderSearchBody body = new OrderSearchBody(
-                request.query(), request.size(), request.after(), request.before());
+                request.query(), request.size(), request.after(), request.before(), request.last());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/orders/search")

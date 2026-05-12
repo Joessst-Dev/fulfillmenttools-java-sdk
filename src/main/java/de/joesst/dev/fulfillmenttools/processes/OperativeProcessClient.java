@@ -15,5 +15,6 @@ public interface OperativeProcessClient {
     Iterable<Process> listAll(ProcessListRequest request);
 
     Page<Process> search(ProcessSearchRequest request);
+    Iterable<Process> searchAll(ProcessSearchRequest request);
     CompletableFuture<Page<Process>> searchAsync(ProcessSearchRequest request);
 }
