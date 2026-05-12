@@ -5,6 +5,8 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -37,7 +39,7 @@ class ReturnsAsyncTest {
     @Test
     void getAsync_returnsReturn() throws Exception {
         // Given
-        server.stubFor(get(urlPathEqualTo("/api/returns/ret-1"))
+        server.stubFor(get(urlPathEqualTo("/api/itemreturnjobs/ret-1"))
                 .willReturn(okJson("{\"id\":\"ret-1\",\"status\":\"OPEN\"}")));
 
         // When
@@ -51,8 +53,8 @@ class ReturnsAsyncTest {
     @Test
     void listAsync_returnsPage() throws Exception {
         // Given
-        server.stubFor(get(urlPathEqualTo("/api/returns"))
-                .willReturn(okJson("{\"returns\":[{\"id\":\"ret-1\"},{\"id\":\"ret-2\"}]}")));
+        server.stubFor(get(urlPathEqualTo("/api/itemreturnjobs"))
+                .willReturn(okJson("[{\"id\":\"ret-1\"},{\"id\":\"ret-2\"}]")));
 
         // When
         var page = client.returns().listAsync(ReturnListRequest.builder().build()).get();
@@ -64,12 +66,15 @@ class ReturnsAsyncTest {
     @Test
     void createAsync_returnsCreatedReturn() throws Exception {
         // Given
-        server.stubFor(post(urlPathEqualTo("/api/returns"))
+        server.stubFor(post(urlPathEqualTo("/api/itemreturnjobs"))
                 .willReturn(okJson("{\"id\":\"ret-new\",\"status\":\"OPEN\"}")));
 
         // When
         Return ret = client.returns()
-                .createAsync(CreateReturnRequest.builder().facilityRef("fac-1").build()).get();
+                .createAsync(CreateReturnRequest.builder()
+                        .originFacilityRefs(List.of("fac-1"))
+                        .status("OPEN")
+                        .build()).get();
 
         // Then
         assertThat(ret.id()).isEqualTo("ret-new");

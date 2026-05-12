@@ -17,6 +17,12 @@ public interface ReturnsClient {
     Return create(CreateReturnRequest request);
     CompletableFuture<Return> createAsync(CreateReturnRequest request);
 
-    Return update(String returnId, UpdateReturnRequest request);
-    CompletableFuture<Return> updateAsync(String returnId, UpdateReturnRequest request);
+    Return start(String returnId, int version);
+    CompletableFuture<Return> startAsync(String returnId, int version);
+
+    Return finish(String returnId, int version);
+    CompletableFuture<Return> finishAsync(String returnId, int version);
+
+    Return restart(String returnId, int version);
+    CompletableFuture<Return> restartAsync(String returnId, int version);
 }
