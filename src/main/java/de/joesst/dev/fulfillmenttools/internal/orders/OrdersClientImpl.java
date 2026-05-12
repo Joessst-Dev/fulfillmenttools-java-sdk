@@ -8,13 +8,16 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.orders.CancelOrderRequest;
 import de.joesst.dev.fulfillmenttools.orders.CreateOrderRequest;
 import de.joesst.dev.fulfillmenttools.orders.Order;
 import de.joesst.dev.fulfillmenttools.orders.OrderListRequest;
+import de.joesst.dev.fulfillmenttools.orders.OrderSearchRequest;
 import de.joesst.dev.fulfillmenttools.orders.OrdersClient;
 import de.joesst.dev.fulfillmenttools.orders.UpdateOrderRequest;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -45,12 +48,10 @@ public final class OrdersClientImpl implements OrdersClient {
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/orders");
 
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.consumerId() != null) builder.queryParam("consumerId", request.consumerId());
 
         SdkHttpResponse response = execute(builder.build());
         OrderListResponse body = responseHandler.handle(response, OrderListResponse.class);
@@ -70,12 +71,32 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
+    public Page<Order> search(OrderSearchRequest request) {
+        OrderSearchBody body = new OrderSearchBody(
+                request.query(), request.size(), request.after(), request.before());
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/orders/search")
+                .body(responseHandler.encode(body))
+                .build();
+        OrderSearchResponse resp = responseHandler.handle(execute(httpRequest), OrderSearchResponse.class);
+        String cursor = resp.pageInfo() != null ? resp.pageInfo().endCursor() : null;
+        return new Page<>(resp.orders() != null ? resp.orders() : List.of(), cursor);
+    }
+
+    @Override
     public Order create(CreateOrderRequest request) {
         CreateOrderBody body = new CreateOrderBody(
                 request.orderDate(),
                 request.orderLineItems(),
-                request.tenantOrderId(),
                 request.consumer(),
+                request.tenantOrderId(),
+                request.deliveryPreferences(),
+                request.paymentInfo(),
+                request.tags(),
+                request.stickers(),
+                request.statusReasons(),
+                request.source(),
                 request.customAttributes()
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
@@ -88,7 +109,14 @@ public final class OrdersClientImpl implements OrdersClient {
 
     @Override
     public Order update(String orderId, UpdateOrderRequest request) {
-        UpdateOrderBody body = new UpdateOrderBody(request.tenantOrderId(), request.status());
+        UpdateOrderBody body = new UpdateOrderBody(
+                request.version(),
+                request.comment(),
+                request.consumer(),
+                request.customAttributes(),
+                request.orderLineItems(),
+                request.preferredHandlingTime()
+        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/orders/" + orderId)
@@ -122,12 +150,10 @@ public final class OrdersClientImpl implements OrdersClient {
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/orders");
 
-        if (request.size() != null) {
-            builder.queryParam("size", String.valueOf(request.size()));
-        }
-        if (request.startAfterId() != null) {
-            builder.queryParam("startAfterId", request.startAfterId());
-        }
+        if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
+        if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.consumerId() != null) builder.queryParam("consumerId", request.consumerId());
 
         return transport.executeAsync(builder.build()).thenApply(response -> {
             OrderListResponse body = responseHandler.handle(response, OrderListResponse.class);
@@ -136,12 +162,34 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
+    public CompletableFuture<Page<Order>> searchAsync(OrderSearchRequest request) {
+        OrderSearchBody body = new OrderSearchBody(
+                request.query(), request.size(), request.after(), request.before());
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/orders/search")
+                .body(responseHandler.encode(body))
+                .build();
+        return transport.executeAsync(httpRequest).thenApply(response -> {
+            OrderSearchResponse resp = responseHandler.handle(response, OrderSearchResponse.class);
+            String cursor = resp.pageInfo() != null ? resp.pageInfo().endCursor() : null;
+            return new Page<>(resp.orders() != null ? resp.orders() : List.of(), cursor);
+        });
+    }
+
+    @Override
     public CompletableFuture<Order> createAsync(CreateOrderRequest request) {
         CreateOrderBody body = new CreateOrderBody(
                 request.orderDate(),
                 request.orderLineItems(),
-                request.tenantOrderId(),
                 request.consumer(),
+                request.tenantOrderId(),
+                request.deliveryPreferences(),
+                request.paymentInfo(),
+                request.tags(),
+                request.stickers(),
+                request.statusReasons(),
+                request.source(),
                 request.customAttributes()
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
@@ -155,7 +203,14 @@ public final class OrdersClientImpl implements OrdersClient {
 
     @Override
     public CompletableFuture<Order> updateAsync(String orderId, UpdateOrderRequest request) {
-        UpdateOrderBody body = new UpdateOrderBody(request.tenantOrderId(), request.status());
+        UpdateOrderBody body = new UpdateOrderBody(
+                request.version(),
+                request.comment(),
+                request.consumer(),
+                request.customAttributes(),
+                request.orderLineItems(),
+                request.preferredHandlingTime()
+        );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
                 .url(baseUrl + "/api/orders/" + orderId)
@@ -175,6 +230,79 @@ public final class OrdersClientImpl implements OrdersClient {
             responseHandler.handleVoid(response);
             return null;
         });
+    }
+
+    @Override
+    public Order cancel(String orderId, CancelOrderRequest request) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .body(responseHandler.encode(new OrderCancelActionBody(request.version(), request.cancelationReasonId())))
+                .build();
+        return responseHandler.handle(execute(httpRequest), Order.class);
+    }
+
+    @Override
+    public CompletableFuture<Order> cancelAsync(String orderId, CancelOrderRequest request) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .body(responseHandler.encode(new OrderCancelActionBody(request.version(), request.cancelationReasonId())))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, Order.class));
+    }
+
+    @Override
+    public Order forceCancel(String orderId, int version) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .body(responseHandler.encode(new OrderForceCancelActionBody(version)))
+                .build();
+        return responseHandler.handle(execute(httpRequest), Order.class);
+    }
+
+    @Override
+    public CompletableFuture<Order> forceCancelAsync(String orderId, int version) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .body(responseHandler.encode(new OrderForceCancelActionBody(version)))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, Order.class));
+    }
+
+    @Override
+    public Order unlock(String orderId, int version) {
+        return unlock(orderId, version, null);
+    }
+
+    @Override
+    public Order unlock(String orderId, int version, Instant targetTime) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .body(responseHandler.encode(new OrderUnlockActionBody(version, targetTime)))
+                .build();
+        return responseHandler.handle(execute(httpRequest), Order.class);
+    }
+
+    @Override
+    public CompletableFuture<Order> unlockAsync(String orderId, int version) {
+        return unlockAsync(orderId, version, null);
+    }
+
+    @Override
+    public CompletableFuture<Order> unlockAsync(String orderId, int version, Instant targetTime) {
+        SdkHttpRequest httpRequest = SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .body(responseHandler.encode(new OrderUnlockActionBody(version, targetTime)))
+                .build();
+        return transport.executeAsync(httpRequest)
+                .thenApply(response -> responseHandler.handle(response, Order.class));
     }
 
     private SdkHttpResponse execute(SdkHttpRequest request) {

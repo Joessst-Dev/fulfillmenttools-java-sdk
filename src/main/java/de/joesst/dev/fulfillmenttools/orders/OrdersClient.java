@@ -14,6 +14,9 @@ public interface OrdersClient {
 
     Iterable<Order> listAll(OrderListRequest request);
 
+    Page<Order> search(OrderSearchRequest request);
+    CompletableFuture<Page<Order>> searchAsync(OrderSearchRequest request);
+
     Order create(CreateOrderRequest request);
     CompletableFuture<Order> createAsync(CreateOrderRequest request);
 
@@ -22,4 +25,15 @@ public interface OrdersClient {
 
     void delete(String orderId);
     CompletableFuture<Void> deleteAsync(String orderId);
+
+    Order cancel(String orderId, CancelOrderRequest request);
+    CompletableFuture<Order> cancelAsync(String orderId, CancelOrderRequest request);
+
+    Order forceCancel(String orderId, int version);
+    CompletableFuture<Order> forceCancelAsync(String orderId, int version);
+
+    Order unlock(String orderId, int version);
+    Order unlock(String orderId, int version, java.time.Instant targetTime);
+    CompletableFuture<Order> unlockAsync(String orderId, int version);
+    CompletableFuture<Order> unlockAsync(String orderId, int version, java.time.Instant targetTime);
 }

@@ -88,6 +88,7 @@ class OrdersAsyncTest {
                                         .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
                                         .quantity(1)
                                         .build()))
+                        .consumer(OrderForCreationConsumer.builder().consumerId("con-1").build())
                         .tenantOrderId("ext-1")
                         .build()).get();
 
@@ -103,7 +104,7 @@ class OrdersAsyncTest {
 
         // When
         Order order = client.orders()
-                .updateAsync("ord-1", UpdateOrderRequest.builder().status("LOCKED").build()).get();
+                .updateAsync("ord-1", UpdateOrderRequest.builder().version(1).comment("reroute").build()).get();
 
         // Then
         assertThat(order.status()).isEqualTo("LOCKED");

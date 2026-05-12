@@ -57,6 +57,7 @@ class OrdersWriteTest {
                                         .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
                                         .quantity(1)
                                         .build()))
+                        .consumer(minimalConsumer())
                         .tenantOrderId("ext-new")
                         .build());
 
@@ -81,6 +82,7 @@ class OrdersWriteTest {
                                 .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
                                 .quantity(1)
                                 .build()))
+                .consumer(minimalConsumer())
                 .tenantOrderId("ext-1")
                 .build());
 
@@ -115,6 +117,21 @@ class OrdersWriteTest {
                 .hasMessageContaining("orderLineItems");
     }
 
+    @Test
+    void create_requiresConsumer() {
+        // When / Then
+        assertThatThrownBy(() -> CreateOrderRequest.builder()
+                .orderDate(Instant.parse("2024-03-01T10:00:00Z"))
+                .orderLineItems(List.of(
+                        OrderLineItemForCreation.builder()
+                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                .quantity(1)
+                                .build()))
+                .build())
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("consumer");
+    }
+
     // --- update ---
 
     @Test
@@ -122,32 +139,40 @@ class OrdersWriteTest {
         // Given
         server.stubFor(patch(urlPathEqualTo("/api/orders/ord-1"))
                 .willReturn(okJson("""
-                        {"id":"ord-1","tenantOrderId":"ext-updated","status":"LOCKED"}
+                        {"id":"ord-1","status":"LOCKED"}
                         """)));
 
         // When
         Order order = client.orders().update("ord-1",
-                UpdateOrderRequest.builder().tenantOrderId("ext-updated").status("LOCKED").build());
+                UpdateOrderRequest.builder().version(1).comment("routing change").build());
 
         // Then
         assertThat(order.id()).isEqualTo("ord-1");
-        assertThat(order.tenantOrderId()).isEqualTo("ext-updated");
         assertThat(order.status()).isEqualTo("LOCKED");
     }
 
     @Test
-    void update_sendsJsonBodyWithPatch() {
+    void update_sendsVersionAndCommentInBody() {
         // Given
         server.stubFor(patch(urlPathEqualTo("/api/orders/ord-1"))
-                .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"LOCKED\"}")));
+                .willReturn(okJson("{\"id\":\"ord-1\"}")));
 
         // When
-        client.orders().update("ord-1", UpdateOrderRequest.builder().status("LOCKED").build());
+        client.orders().update("ord-1", UpdateOrderRequest.builder().version(3).comment("reroute").build());
 
         // Then
         server.verify(patchRequestedFor(urlPathEqualTo("/api/orders/ord-1"))
                 .withHeader("Content-Type", containing("application/json"))
-                .withRequestBody(matchingJsonPath("$.status", equalTo("LOCKED"))));
+                .withRequestBody(matchingJsonPath("$.version", equalTo("3")))
+                .withRequestBody(matchingJsonPath("$.comment", equalTo("reroute"))));
+    }
+
+    @Test
+    void update_requiresVersion() {
+        // When / Then
+        assertThatThrownBy(() -> UpdateOrderRequest.builder().build())
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("version");
     }
 
     @Test
@@ -160,7 +185,7 @@ class OrdersWriteTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.orders().update("missing", UpdateOrderRequest.builder().build()))
+        assertThatThrownBy(() -> client.orders().update("missing", UpdateOrderRequest.builder().version(1).build()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Order not found");
     }
@@ -206,7 +231,164 @@ class OrdersWriteTest {
                 .hasMessage("Order not found");
     }
 
+    // --- cancel ---
+
+    @Test
+    void cancel_sendsActionWithNameCancel() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"CANCELLED\"}")));
+
+        // When
+        Order order = client.orders().cancel("ord-1", CancelOrderRequest.builder().version(2).build());
+
+        // Then
+        assertThat(order.status()).isEqualTo("CANCELLED");
+        server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("CANCEL")))
+                .withRequestBody(matchingJsonPath("$.version", equalTo("2"))));
+    }
+
+    @Test
+    void cancel_withReasonId_includesReasonInBody() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"CANCELLED\"}")));
+
+        // When
+        client.orders().cancel("ord-1", CancelOrderRequest.builder().version(1).cancelationReasonId("reason-abc").build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .withRequestBody(matchingJsonPath("$.cancelationReasonId", equalTo("reason-abc"))));
+    }
+
+    @Test
+    void cancel_requiresVersion() {
+        assertThatThrownBy(() -> CancelOrderRequest.builder().build())
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("version");
+    }
+
+    // --- forceCancel ---
+
+    @Test
+    void forceCancel_sendsActionWithNameForceCancel() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"CANCELLED\"}")));
+
+        // When
+        client.orders().forceCancel("ord-1", 3);
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("FORCE_CANCEL")))
+                .withRequestBody(matchingJsonPath("$.version", equalTo("3"))));
+    }
+
+    // --- unlock ---
+
+    @Test
+    void unlock_sendsActionWithNameUnlock() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"OPEN\"}")));
+
+        // When
+        client.orders().unlock("ord-1", 5);
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("UNLOCK")))
+                .withRequestBody(matchingJsonPath("$.version", equalTo("5"))));
+    }
+
+    @Test
+    void unlock_withTargetTime_includesTargetTimeInBody() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .willReturn(okJson("{\"id\":\"ord-1\"}")));
+
+        // When
+        client.orders().unlock("ord-1", 1, Instant.parse("2025-01-15T00:00:00Z"));
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))
+                .withRequestBody(matchingJsonPath("$.targetTime", equalTo("2025-01-15T00:00:00Z"))));
+    }
+
+    // --- search ---
+
+    @Test
+    void search_sendsPostToSearchEndpoint() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/orders/search"))
+                .willReturn(okJson("{\"orders\":[{\"id\":\"ord-1\"}],\"pageInfo\":{\"endCursor\":\"c1\",\"startCursor\":\"s1\",\"hasNextPage\":true,\"hasPreviousPage\":false}}")));
+
+        // When
+        var page = client.orders().search(
+                OrderSearchRequest.builder()
+                        .query(OrderSearchQuery.builder().statusEq("OPEN").build())
+                        .size(10)
+                        .build());
+
+        // Then
+        assertThat(page.items()).hasSize(1);
+        assertThat(page.items().get(0).id()).isEqualTo("ord-1");
+        assertThat(page.nextCursor()).isEqualTo("c1");
+        server.verify(postRequestedFor(urlPathEqualTo("/api/orders/search"))
+                .withHeader("Authorization", equalTo("Bearer test-bearer")));
+    }
+
+    @Test
+    void search_serializesQueryCorrectly() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/orders/search"))
+                .willReturn(okJson("{\"orders\":[],\"pageInfo\":{\"endCursor\":null,\"startCursor\":null,\"hasNextPage\":false,\"hasPreviousPage\":false}}")));
+
+        // When
+        client.orders().search(OrderSearchRequest.builder()
+                .query(OrderSearchQuery.builder()
+                        .statusIn("OPEN", "LOCKED")
+                        .tenantOrderIdEq("ext-001")
+                        .build())
+                .size(25)
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/orders/search"))
+                .withRequestBody(matchingJsonPath("$.query.status.in[0]", equalTo("OPEN")))
+                .withRequestBody(matchingJsonPath("$.query.status.in[1]", equalTo("LOCKED")))
+                .withRequestBody(matchingJsonPath("$.query.tenantOrderId.eq", equalTo("ext-001")))
+                .withRequestBody(matchingJsonPath("$.size", equalTo("25"))));
+    }
+
+    // --- list query params ---
+
+    @Test
+    void list_sendsTenantOrderIdAndConsumerIdQueryParams() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/orders"))
+                .willReturn(okJson("{\"orders\":[]}")));
+
+        // When
+        client.orders().list(OrderListRequest.builder()
+                .tenantOrderId("ext-001")
+                .consumerId("con-1")
+                .build());
+
+        // Then
+        server.verify(getRequestedFor(urlPathEqualTo("/api/orders"))
+                .withQueryParam("tenantOrderId", equalTo("ext-001"))
+                .withQueryParam("consumerId", equalTo("con-1")));
+    }
+
     // --- Helpers ---
+
+    private static OrderForCreationConsumer minimalConsumer() {
+        return OrderForCreationConsumer.builder().consumerId("con-1").build();
+    }
 
     private static TokenProvider fixedToken(String token) {
         return new TokenProvider() {
