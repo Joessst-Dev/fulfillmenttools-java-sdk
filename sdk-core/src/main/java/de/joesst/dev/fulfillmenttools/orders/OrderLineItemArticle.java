@@ -31,4 +31,111 @@ public record OrderLineItemArticle(
         Map<String, String> titleLocalized,
         List<ArticleAttribute> attributes,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    /**
+     * Returns a builder for constructing an {@code OrderLineItemArticle}.
+     *
+     * @return a new {@link Builder}.
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    /**
+     * Builder for {@link OrderLineItemArticle}.
+     */
+    public static final class Builder {
+
+        private TenantArticleId tenantArticleId;
+        private String title;
+        private String imageUrl;
+        private Double weight;
+        private Map<String, String> titleLocalized;
+        private List<ArticleAttribute> attributes;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        /**
+         * Sets the tenant's article reference number.
+         * @param tenantArticleId the tenant article identifier
+         * @return this builder
+         */
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) {
+            this.tenantArticleId = tenantArticleId;
+            return this;
+        }
+
+        /**
+         * Sets the article display title.
+         * @param title the display title
+         * @return this builder
+         */
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        /**
+         * Sets the URL of the product image.
+         * @param imageUrl the image URL
+         * @return this builder
+         */
+        public Builder imageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        /**
+         * Sets the article weight in grams.
+         * @param weight the weight in grams
+         * @return this builder
+         */
+        public Builder weight(Double weight) {
+            this.weight = weight;
+            return this;
+        }
+
+        /**
+         * Sets the localized translations for the title, keyed by locale.
+         * @param titleLocalized map of locale to localized title
+         * @return this builder
+         */
+        public Builder titleLocalized(Map<String, String> titleLocalized) {
+            this.titleLocalized = titleLocalized;
+            return this;
+        }
+
+        /**
+         * Sets the article attributes used for display and customization.
+         * @param attributes the article attributes
+         * @return this builder
+         */
+        public Builder attributes(List<ArticleAttribute> attributes) {
+            this.attributes = attributes;
+            return this;
+        }
+
+        /**
+         * Sets free-form custom attributes.
+         * @param customAttributes the custom attributes map
+         * @return this builder
+         */
+        public Builder customAttributes(Map<String, Object> customAttributes) {
+            this.customAttributes = customAttributes;
+            return this;
+        }
+
+        /**
+         * Builds an {@link OrderLineItemArticle}.
+         *
+         * @return a new instance.
+         */
+        public OrderLineItemArticle build() {
+            return new OrderLineItemArticle(
+                    tenantArticleId, title, imageUrl, weight, titleLocalized,
+                    attributes, customAttributes);
+        }
+    }
+}

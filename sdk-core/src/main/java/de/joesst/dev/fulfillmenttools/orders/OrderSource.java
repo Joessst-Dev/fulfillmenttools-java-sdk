@@ -29,7 +29,46 @@ public sealed interface OrderSource
      * @param sourceRef The fulfillmenttools source reference identifier.
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    record BySourceRef(String sourceRef) implements OrderSource {}
+    record BySourceRef(String sourceRef) implements OrderSource {
+
+        /**
+         * Returns a builder for constructing a {@code BySourceRef}.
+         *
+         * @return a new {@link Builder}.
+         */
+        static Builder builder() {
+            return new Builder();
+        }
+
+        /**
+         * Builder for {@link BySourceRef}.
+         */
+        static final class Builder {
+
+            private String sourceRef;
+
+            private Builder() {}
+
+            /**
+             * Sets the fulfillmenttools source reference identifier.
+             * @param sourceRef the source reference identifier
+             * @return this builder
+             */
+            public Builder sourceRef(String sourceRef) {
+                this.sourceRef = sourceRef;
+                return this;
+            }
+
+            /**
+             * Builds a {@link BySourceRef}.
+             *
+             * @return a new instance.
+             */
+            public BySourceRef build() {
+                return new BySourceRef(sourceRef);
+            }
+        }
+    }
 
     /**
      * Order source identified by a tenant-specific source identifier.
@@ -37,5 +76,44 @@ public sealed interface OrderSource
      * @param tenantSourceId The tenant's own source system identifier.
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    record ByTenantSourceId(String tenantSourceId) implements OrderSource {}
+    record ByTenantSourceId(String tenantSourceId) implements OrderSource {
+
+        /**
+         * Returns a builder for constructing a {@code ByTenantSourceId}.
+         *
+         * @return a new {@link Builder}.
+         */
+        static Builder builder() {
+            return new Builder();
+        }
+
+        /**
+         * Builder for {@link ByTenantSourceId}.
+         */
+        static final class Builder {
+
+            private String tenantSourceId;
+
+            private Builder() {}
+
+            /**
+             * Sets the tenant's own source system identifier.
+             * @param tenantSourceId the tenant source identifier
+             * @return this builder
+             */
+            public Builder tenantSourceId(String tenantSourceId) {
+                this.tenantSourceId = tenantSourceId;
+                return this;
+            }
+
+            /**
+             * Builds a {@link ByTenantSourceId}.
+             *
+             * @return a new instance.
+             */
+            public ByTenantSourceId build() {
+                return new ByTenantSourceId(tenantSourceId);
+            }
+        }
+    }
 }
