@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Java 17 or higher
+- Java 21 or higher
 - Gradle 8+ or Maven 3.8+
 
 ## GitHub Packages Repository

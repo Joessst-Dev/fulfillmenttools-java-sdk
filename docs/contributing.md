@@ -65,7 +65,7 @@ The built site is in `docs/.vitepress/dist/`.
 
 ### Requirements
 
-- Java 17 or higher
+- Java 21 or higher
 - Gradle 8 or higher
 - Node.js 18+ (for documentation)
 
@@ -80,7 +80,7 @@ cd fulfillmenttools-java-sdk
 ## Stack Overview
 
 - **Build tool**: Gradle 9 with Kotlin DSL
-- **Language**: Java 17+
+- **Language**: Java 21+
 - **Test framework**: JUnit Jupiter (JUnit 5)
 - **Documentation**: VitePress 1.3
 - **CI/CD**: GitHub Actions
