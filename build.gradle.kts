@@ -1,4 +1,7 @@
+group = "de.joesst.dev"
+version = "0.1.0-SNAPSHOT"
+
 subprojects {
-    group = "de.joesst.dev"
-    version = "0.1.0-SNAPSHOT"
+    group = rootProject.group.toString()
+    version = rootProject.version
 }

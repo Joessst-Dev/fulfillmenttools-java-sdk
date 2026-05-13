@@ -53,4 +53,5 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            build/libs/*.jar
+            sdk-core/build/libs/*.jar
+            sdk-spring-boot-starter/build/libs/*.jar
