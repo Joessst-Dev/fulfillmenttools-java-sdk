@@ -11,4 +11,21 @@ package de.joesst.dev.fulfillmenttools.pickjobs;
  */
 public record PickJobPaymentInformation(
         String currency
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String currency;
+
+        private Builder() {}
+
+        public Builder currency(String currency) { this.currency = currency; return this; }
+
+        public PickJobPaymentInformation build() {
+            return new PickJobPaymentInformation(currency);
+        }
+    }
+}

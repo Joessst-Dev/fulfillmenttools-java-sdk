@@ -64,4 +64,57 @@ public record TargetAddress(
         Map<String, Object> customAttributes,
         FacilityId facilityRef,
         TenantFacilityId tenantFacilityId
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String street;
+        private String houseNumber;
+        private String city;
+        private String postalCode;
+        private String country;
+        private String additionalAddressInfo;
+        private String province;
+        private String firstName;
+        private String lastName;
+        private String personalTitle;
+        private String salutation;
+        private String companyName;
+        private String email;
+        private String addressType;
+        private Coordinates coordinates;
+        private List<PhoneNumber> phoneNumbers;
+        private Map<String, Object> customAttributes;
+        private FacilityId facilityRef;
+        private TenantFacilityId tenantFacilityId;
+
+        private Builder() {}
+
+        public Builder street(String street) { this.street = street; return this; }
+        public Builder houseNumber(String houseNumber) { this.houseNumber = houseNumber; return this; }
+        public Builder city(String city) { this.city = city; return this; }
+        public Builder postalCode(String postalCode) { this.postalCode = postalCode; return this; }
+        public Builder country(String country) { this.country = country; return this; }
+        public Builder additionalAddressInfo(String additionalAddressInfo) { this.additionalAddressInfo = additionalAddressInfo; return this; }
+        public Builder province(String province) { this.province = province; return this; }
+        public Builder firstName(String firstName) { this.firstName = firstName; return this; }
+        public Builder lastName(String lastName) { this.lastName = lastName; return this; }
+        public Builder personalTitle(String personalTitle) { this.personalTitle = personalTitle; return this; }
+        public Builder salutation(String salutation) { this.salutation = salutation; return this; }
+        public Builder companyName(String companyName) { this.companyName = companyName; return this; }
+        public Builder email(String email) { this.email = email; return this; }
+        public Builder addressType(String addressType) { this.addressType = addressType; return this; }
+        public Builder coordinates(Coordinates coordinates) { this.coordinates = coordinates; return this; }
+        public Builder phoneNumbers(List<PhoneNumber> phoneNumbers) { this.phoneNumbers = phoneNumbers; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
+
+        public TargetAddress build() {
+            return new TargetAddress(street, houseNumber, city, postalCode, country, additionalAddressInfo, province, firstName, lastName, personalTitle, salutation, companyName, email, addressType, coordinates, phoneNumbers, customAttributes, facilityRef, tenantFacilityId);
+        }
+    }
+}

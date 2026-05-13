@@ -21,4 +21,23 @@ package de.joesst.dev.fulfillmenttools.routingplans;
 public record RoutingPlanStatusReason(
         String reason,
         String status
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String reason;
+        private String status;
+
+        private Builder() {}
+
+        public Builder reason(String reason) { this.reason = reason; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+
+        public RoutingPlanStatusReason build() {
+            return new RoutingPlanStatusReason(reason, status);
+        }
+    }
+}

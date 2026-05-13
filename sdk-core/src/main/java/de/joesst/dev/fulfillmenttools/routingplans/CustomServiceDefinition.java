@@ -22,4 +22,29 @@ public record CustomServiceDefinition(
         Boolean isBundled,
         List<CustomServiceAdditionalInformation> additionalInformation,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String customServiceRef;
+        private String tenantCustomServiceId;
+        private Boolean isBundled;
+        private List<CustomServiceAdditionalInformation> additionalInformation;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder customServiceRef(String customServiceRef) { this.customServiceRef = customServiceRef; return this; }
+        public Builder tenantCustomServiceId(String tenantCustomServiceId) { this.tenantCustomServiceId = tenantCustomServiceId; return this; }
+        public Builder isBundled(Boolean isBundled) { this.isBundled = isBundled; return this; }
+        public Builder additionalInformation(List<CustomServiceAdditionalInformation> additionalInformation) { this.additionalInformation = additionalInformation; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public CustomServiceDefinition build() {
+            return new CustomServiceDefinition(customServiceRef, tenantCustomServiceId, isBundled, additionalInformation, customAttributes);
+        }
+    }
+}

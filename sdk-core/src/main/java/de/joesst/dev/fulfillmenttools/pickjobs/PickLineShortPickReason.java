@@ -16,4 +16,23 @@ import java.util.Map;
 public record PickLineShortPickReason(
         Map<String, String> reasonLocalized,
         String reason
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Map<String, String> reasonLocalized;
+        private String reason;
+
+        private Builder() {}
+
+        public Builder reasonLocalized(Map<String, String> reasonLocalized) { this.reasonLocalized = reasonLocalized; return this; }
+        public Builder reason(String reason) { this.reason = reason; return this; }
+
+        public PickLineShortPickReason build() {
+            return new PickLineShortPickReason(reasonLocalized, reason);
+        }
+    }
+}

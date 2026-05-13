@@ -15,4 +15,23 @@ import java.time.Instant;
 public record RoutingPlanHistory(
         String status,
         Instant created
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String status;
+        private Instant created;
+
+        private Builder() {}
+
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder created(Instant created) { this.created = created; return this; }
+
+        public RoutingPlanHistory build() {
+            return new RoutingPlanHistory(status, created);
+        }
+    }
+}

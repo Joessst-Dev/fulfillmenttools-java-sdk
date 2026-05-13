@@ -18,4 +18,25 @@ public record WorkflowInformation(
         Boolean isAvailable,
         String instanceRef,
         String nodeRef
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Boolean isAvailable;
+        private String instanceRef;
+        private String nodeRef;
+
+        private Builder() {}
+
+        public Builder isAvailable(Boolean isAvailable) { this.isAvailable = isAvailable; return this; }
+        public Builder instanceRef(String instanceRef) { this.instanceRef = instanceRef; return this; }
+        public Builder nodeRef(String nodeRef) { this.nodeRef = nodeRef; return this; }
+
+        public WorkflowInformation build() {
+            return new WorkflowInformation(isAvailable, instanceRef, nodeRef);
+        }
+    }
+}

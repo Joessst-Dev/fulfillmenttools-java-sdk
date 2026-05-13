@@ -16,4 +16,23 @@ package de.joesst.dev.fulfillmenttools.routingplans;
 public record RoutingPlanTransfer(
         String transferId,
         String transferType
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String transferId;
+        private String transferType;
+
+        private Builder() {}
+
+        public Builder transferId(String transferId) { this.transferId = transferId; return this; }
+        public Builder transferType(String transferType) { this.transferType = transferType; return this; }
+
+        public RoutingPlanTransfer build() {
+            return new RoutingPlanTransfer(transferId, transferType);
+        }
+    }
+}

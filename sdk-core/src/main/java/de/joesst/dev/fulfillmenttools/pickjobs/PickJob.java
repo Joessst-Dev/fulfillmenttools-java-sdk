@@ -82,4 +82,79 @@ public record PickJob(
         List<UserModificationHistory> usersModificationHistory,
         List<TagReference> tags,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private PickJobId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityRef;
+        private String status;
+        private String subStatus;
+        private String shortId;
+        private OrderId orderRef;
+        private Instant orderDate;
+        private TenantOrderId tenantOrderId;
+        private ProcessId processId;
+        private RoutingPlanId routingPlanRef;
+        private ProcessId operativeProcessRef;
+        private String pickRunRef;
+        private String documentsRef;
+        private Boolean resetBlocked;
+        private Boolean anonymized;
+        private List<PickLineItem> pickLineItems;
+        private List<AssignedUser> assignedUsers;
+        private PickjobDeliveryInformation deliveryinformation;
+        private List<ExpectedPickLineItem> expectedPickLineItems;
+        private List<PickingZone> pickingZones;
+        private WorkflowInformation workflowInformation;
+        private DocumentHandling documentHandling;
+        private PickJobEditor editor;
+        private PickJobPaymentInformation paymentInformation;
+        private List<UserModificationHistory> usersModificationHistory;
+        private List<TagReference> tags;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder id(PickJobId id) { this.id = id; return this; }
+        public Builder version(Integer version) { this.version = version; return this; }
+        public Builder created(Instant created) { this.created = created; return this; }
+        public Builder lastModified(Instant lastModified) { this.lastModified = lastModified; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder subStatus(String subStatus) { this.subStatus = subStatus; return this; }
+        public Builder shortId(String shortId) { this.shortId = shortId; return this; }
+        public Builder orderRef(OrderId orderRef) { this.orderRef = orderRef; return this; }
+        public Builder orderDate(Instant orderDate) { this.orderDate = orderDate; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder processId(ProcessId processId) { this.processId = processId; return this; }
+        public Builder routingPlanRef(RoutingPlanId routingPlanRef) { this.routingPlanRef = routingPlanRef; return this; }
+        public Builder operativeProcessRef(ProcessId operativeProcessRef) { this.operativeProcessRef = operativeProcessRef; return this; }
+        public Builder pickRunRef(String pickRunRef) { this.pickRunRef = pickRunRef; return this; }
+        public Builder documentsRef(String documentsRef) { this.documentsRef = documentsRef; return this; }
+        public Builder resetBlocked(Boolean resetBlocked) { this.resetBlocked = resetBlocked; return this; }
+        public Builder anonymized(Boolean anonymized) { this.anonymized = anonymized; return this; }
+        public Builder pickLineItems(List<PickLineItem> pickLineItems) { this.pickLineItems = pickLineItems; return this; }
+        public Builder assignedUsers(List<AssignedUser> assignedUsers) { this.assignedUsers = assignedUsers; return this; }
+        public Builder deliveryinformation(PickjobDeliveryInformation deliveryinformation) { this.deliveryinformation = deliveryinformation; return this; }
+        public Builder expectedPickLineItems(List<ExpectedPickLineItem> expectedPickLineItems) { this.expectedPickLineItems = expectedPickLineItems; return this; }
+        public Builder pickingZones(List<PickingZone> pickingZones) { this.pickingZones = pickingZones; return this; }
+        public Builder workflowInformation(WorkflowInformation workflowInformation) { this.workflowInformation = workflowInformation; return this; }
+        public Builder documentHandling(DocumentHandling documentHandling) { this.documentHandling = documentHandling; return this; }
+        public Builder editor(PickJobEditor editor) { this.editor = editor; return this; }
+        public Builder paymentInformation(PickJobPaymentInformation paymentInformation) { this.paymentInformation = paymentInformation; return this; }
+        public Builder usersModificationHistory(List<UserModificationHistory> usersModificationHistory) { this.usersModificationHistory = usersModificationHistory; return this; }
+        public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public PickJob build() {
+            return new PickJob(id, version, created, lastModified, facilityRef, status, subStatus, shortId, orderRef, orderDate, tenantOrderId, processId, routingPlanRef, operativeProcessRef, pickRunRef, documentsRef, resetBlocked, anonymized, pickLineItems, assignedUsers, deliveryinformation, expectedPickLineItems, pickingZones, workflowInformation, documentHandling, editor, paymentInformation, usersModificationHistory, tags, customAttributes);
+        }
+    }
+}

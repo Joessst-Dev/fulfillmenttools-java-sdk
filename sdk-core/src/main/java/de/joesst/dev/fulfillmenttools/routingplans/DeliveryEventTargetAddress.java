@@ -17,4 +17,25 @@ public record DeliveryEventTargetAddress(
         FacilityId facilityRef,
         TargetAddress targetAddress,
         String deliveryEvent
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private FacilityId facilityRef;
+        private TargetAddress targetAddress;
+        private String deliveryEvent;
+
+        private Builder() {}
+
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder targetAddress(TargetAddress targetAddress) { this.targetAddress = targetAddress; return this; }
+        public Builder deliveryEvent(String deliveryEvent) { this.deliveryEvent = deliveryEvent; return this; }
+
+        public DeliveryEventTargetAddress build() {
+            return new DeliveryEventTargetAddress(facilityRef, targetAddress, deliveryEvent);
+        }
+    }
+}
