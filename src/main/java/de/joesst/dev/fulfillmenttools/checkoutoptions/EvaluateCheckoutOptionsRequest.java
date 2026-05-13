@@ -38,28 +38,60 @@ public final class EvaluateCheckoutOptionsRequest {
         this.tags = builder.tags;
     }
 
-    /** @return typed delivery preferences; never {@code null}. */
+    /**
+     * Returns the delivery preferences for this request.
+     *
+     * @return typed delivery preferences; never {@code null}.
+     */
     public DeliveryPreferences deliveryPreferences() { return deliveryPreferences; }
 
-    /** @return line items to evaluate; never {@code null}. */
+    /**
+     * Returns the line items to evaluate.
+     *
+     * @return line items to evaluate; never {@code null}.
+     */
     public List<Map<String, Object>> orderLineItems() { return orderLineItems; }
 
-    /** @return consumer address, or {@code null} if not provided. */
+    /**
+     * Returns the consumer address.
+     *
+     * @return consumer address, or {@code null} if not provided.
+     */
     public CheckoutOptionsConsumerAddress consumerAddress() { return consumerAddress; }
 
-    /** @return custom attributes map, or {@code null} if not provided. */
+    /**
+     * Returns custom attributes.
+     *
+     * @return custom attributes map, or {@code null} if not provided.
+     */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
-    /** @return whether duplicate facilities should be filtered, or {@code null} if not set. */
+    /**
+     * Returns whether duplicate facilities should be filtered.
+     *
+     * @return whether duplicate facilities should be filtered, or {@code null} if not set.
+     */
     public Boolean filterDuplicates() { return filterDuplicates; }
 
-    /** @return custom service references, or {@code null} if not provided. */
+    /**
+     * Returns custom service references.
+     *
+     * @return custom service references, or {@code null} if not provided.
+     */
     public List<Map<String, Object>> customServices() { return customServices; }
 
-    /** @return geographic fence constraint, or {@code null} if not provided. */
+    /**
+     * Returns the geographic fence constraint.
+     *
+     * @return geographic fence constraint, or {@code null} if not provided.
+     */
     public GeoFence geoFence() { return geoFence; }
 
-    /** @return tags to filter results, or {@code null} if not provided. */
+    /**
+     * Returns the tags to filter results.
+     *
+     * @return tags to filter results, or {@code null} if not provided.
+     */
     public List<Map<String, Object>> tags() { return tags; }
 
     /**
@@ -83,12 +115,14 @@ public final class EvaluateCheckoutOptionsRequest {
         private GeoFence geoFence;
         private List<Map<String, Object>> tags;
 
+        /** Creates a new Builder. */
         private Builder() {}
 
         /**
          * Sets the delivery preferences (required).
          *
          * @param deliveryPreferences must not be {@code null}.
+         * @return this builder
          */
         public Builder deliveryPreferences(DeliveryPreferences deliveryPreferences) {
             this.deliveryPreferences = deliveryPreferences;
@@ -99,43 +133,68 @@ public final class EvaluateCheckoutOptionsRequest {
          * Sets the order line items to evaluate (required).
          *
          * @param orderLineItems must not be {@code null}.
+         * @return this builder
          */
         public Builder orderLineItems(List<Map<String, Object>> orderLineItems) {
             this.orderLineItems = orderLineItems;
             return this;
         }
 
-        /** Sets the consumer address. */
+        /**
+         * Sets the consumer address.
+         * @param consumerAddress the consumer address
+         * @return this builder
+         */
         public Builder consumerAddress(CheckoutOptionsConsumerAddress consumerAddress) {
             this.consumerAddress = consumerAddress;
             return this;
         }
 
-        /** Sets custom attributes to include in the request. */
+        /**
+         * Sets custom attributes to include in the request.
+         * @param customAttributes the custom attributes map
+         * @return this builder
+         */
         public Builder customAttributes(Map<String, Object> customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }
 
-        /** Sets whether duplicate facilities should be filtered from results. */
+        /**
+         * Sets whether duplicate facilities should be filtered from results.
+         * @param filterDuplicates whether to filter duplicates
+         * @return this builder
+         */
         public Builder filterDuplicates(Boolean filterDuplicates) {
             this.filterDuplicates = filterDuplicates;
             return this;
         }
 
-        /** Sets custom service references. */
+        /**
+         * Sets custom service references.
+         * @param customServices the list of custom service references
+         * @return this builder
+         */
         public Builder customServices(List<Map<String, Object>> customServices) {
             this.customServices = customServices;
             return this;
         }
 
-        /** Sets the geographic fence used to restrict facility results. */
+        /**
+         * Sets the geographic fence used to restrict facility results.
+         * @param geoFence the geographic fence
+         * @return this builder
+         */
         public Builder geoFence(GeoFence geoFence) {
             this.geoFence = geoFence;
             return this;
         }
 
-        /** Sets tag filters to narrow facility results. */
+        /**
+         * Sets tag filters to narrow facility results.
+         * @param tags the list of tags
+         * @return this builder
+         */
         public Builder tags(List<Map<String, Object>> tags) {
             this.tags = tags;
             return this;

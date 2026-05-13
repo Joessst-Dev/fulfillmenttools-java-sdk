@@ -5,5 +5,6 @@ package de.joesst.dev.fulfillmenttools.facilityconnections;
  * {@link PackagingUnitContext} to negate the context match.
  */
 public enum ContextOperator {
+    /** Negates the context match. */
     NOT
 }

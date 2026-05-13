@@ -74,6 +74,11 @@ public final class UpdateRoutingStrategyRequest {
         private RoutingStrategyGlobalConfiguration globalConfiguration;
 
         /**
+         * Creates a new Builder.
+         */
+        public Builder() {}
+
+        /**
          * Sets the optimistic-locking version.
          *
          * @param version version of the strategy to update; must not be {@code null}

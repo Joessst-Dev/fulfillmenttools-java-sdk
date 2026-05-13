@@ -69,40 +69,71 @@ public record CheckoutOptionsConsumerAddress(
 
         private Builder() {}
 
-        /** @param country ISO 3166-1 alpha-2 country code (required). */
+        /**
+         * Sets the ISO 3166-1 alpha-2 country code (required).
+         * @param country the country code
+         * @return this builder
+         */
         public Builder country(String country) {
             this.country = country;
             return this;
         }
 
+        /**
+         * Sets the city name.
+         * @param city the city name
+         * @return this builder
+         */
         public Builder city(String city) {
             this.city = city;
             return this;
         }
 
+        /**
+         * Sets the house or building number.
+         * @param houseNumber the house number
+         * @return this builder
+         */
         public Builder houseNumber(String houseNumber) {
             this.houseNumber = houseNumber;
             return this;
         }
 
+        /**
+         * Sets the postal or ZIP code.
+         * @param postalCode the postal code
+         * @return this builder
+         */
         public Builder postalCode(String postalCode) {
             this.postalCode = postalCode;
             return this;
         }
 
+        /**
+         * Sets the province, state, or region.
+         * @param province the province name
+         * @return this builder
+         */
         public Builder province(String province) {
             this.province = province;
             return this;
         }
 
+        /**
+         * Sets the street name.
+         * @param street the street name
+         * @return this builder
+         */
         public Builder street(String street) {
             this.street = street;
             return this;
         }
 
         /**
+         * Sets the address type.
          * @param addressType one of {@code POSTAL_ADDRESS}, {@code PARCEL_LOCKER},
-         *                    or {@code INVOICE_ADDRESS}.
+         *                    or {@code INVOICE_ADDRESS}
+         * @return this builder
          */
         public Builder addressType(String addressType) {
             this.addressType = addressType;

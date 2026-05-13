@@ -38,25 +38,55 @@ public final class DeliveryPreferences {
         this.reservationPreferences = builder.reservationPreferences;
     }
 
-    /** The time by which the delivery result is expected. */
+    /**
+     * Returns the target time for delivery.
+     * @return the target time, or {@code null} if not set
+     */
     public Instant targetTime() { return targetTime; }
-    /** Optional references to pre-computed sourcing options. */
+
+    /**
+     * Returns references to pre-computed sourcing options.
+     * @return the sourcing option refs, or {@code null} if not set
+     */
     public List<String> sourcingOptionRefs() { return sourcingOptionRefs; }
-    /** Deprecated: supply facilities at the collect level instead. */
+
+    /**
+     * Returns the supplying facilities.
+     * @return the supplying facilities, or {@code null} if not set
+     */
     public List<String> supplyingFacilities() { return supplyingFacilities; }
-    /** Configuration for ship-to-customer delivery. */
+
+    /**
+     * Returns the shipping delivery configuration.
+     * @return the shipping preferences, or {@code null} if not set
+     */
     public DeliveryPreferencesShipping shipping() { return shipping; }
-    /** Configuration for click-and-collect delivery. At most one entry. */
+
+    /**
+     * Returns the click-and-collect delivery configuration.
+     * @return the collect delivery options, or {@code null} if not set
+     */
     public List<CollectDelivery> collect() { return collect; }
-    /** Preferences controlling how stock reservations are scheduled. */
+
+    /**
+     * Returns the stock reservation preferences.
+     * @return the reservation preferences, or {@code null} if not set
+     */
     public DeliveryReservationPreferences reservationPreferences() { return reservationPreferences; }
 
+    /**
+     * Creates a new builder for constructing a {@link DeliveryPreferences}.
+     * @return a new builder instance
+     */
     public static Builder builder() { return new Builder(); }
 
     /**
      * Builder for {@link DeliveryPreferences}.
      */
     public static final class Builder {
+
+        /** Creates a new Builder instance. */
+        public Builder() {}
 
         private Instant targetTime;
         private List<String> sourcingOptionRefs;
@@ -65,13 +95,52 @@ public final class DeliveryPreferences {
         private List<CollectDelivery> collect;
         private DeliveryReservationPreferences reservationPreferences;
 
+        /**
+         * Sets the target time for delivery.
+         * @param targetTime the target delivery time
+         * @return this builder
+         */
         public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
+
+        /**
+         * Sets references to pre-computed sourcing options.
+         * @param sourcingOptionRefs the sourcing option refs
+         * @return this builder
+         */
         public Builder sourcingOptionRefs(List<String> sourcingOptionRefs) { this.sourcingOptionRefs = sourcingOptionRefs; return this; }
+
+        /**
+         * Sets the supplying facilities.
+         * @param supplyingFacilities the supplying facilities
+         * @return this builder
+         */
         public Builder supplyingFacilities(List<String> supplyingFacilities) { this.supplyingFacilities = supplyingFacilities; return this; }
+
+        /**
+         * Sets the shipping delivery configuration.
+         * @param shipping the shipping preferences
+         * @return this builder
+         */
         public Builder shipping(DeliveryPreferencesShipping shipping) { this.shipping = shipping; return this; }
+
+        /**
+         * Sets the click-and-collect delivery configuration.
+         * @param collect the collect delivery options
+         * @return this builder
+         */
         public Builder collect(List<CollectDelivery> collect) { this.collect = collect; return this; }
+
+        /**
+         * Sets the stock reservation preferences.
+         * @param reservationPreferences the reservation preferences
+         * @return this builder
+         */
         public Builder reservationPreferences(DeliveryReservationPreferences reservationPreferences) { this.reservationPreferences = reservationPreferences; return this; }
 
+        /**
+         * Builds and returns a new {@link DeliveryPreferences}.
+         * @return a new instance
+         */
         public DeliveryPreferences build() { return new DeliveryPreferences(this); }
     }
 }

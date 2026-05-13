@@ -35,19 +35,69 @@ public final class OrderLineItemArticleForCreation {
         this.customAttributes = builder.customAttributes;
     }
 
+    /**
+     * Returns the tenant article ID.
+     *
+     * @return the tenant article ID (never null)
+     */
     public String tenantArticleId() { return tenantArticleId; }
+
+    /**
+     * Returns the article title.
+     *
+     * @return the title, or null if not set
+     */
     public String title() { return title; }
+
+    /**
+     * Returns the article image URL.
+     *
+     * @return the image URL, or null if not set
+     */
     public String imageUrl() { return imageUrl; }
+
+    /**
+     * Returns the article weight.
+     *
+     * @return the weight, or null if not set
+     */
     public Double weight() { return weight; }
-    /** Localized translations for the article title, keyed by locale (e.g. {@code en_US}). */
+
+    /**
+     * Returns localized translations for the article title, keyed by locale (e.g. {@code en_US}).
+     *
+     * @return the localized titles map, or null if not set
+     */
     public Map<String, String> titleLocalized() { return titleLocalized; }
-    /** Article attributes for display and platform customization. */
+
+    /**
+     * Returns article attributes for display and platform customization.
+     *
+     * @return the attributes list, or null if not set
+     */
     public List<ArticleAttribute> attributes() { return attributes; }
+
+    /**
+     * Returns custom attributes for this article.
+     *
+     * @return the custom attributes map, or null if not set
+     */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
+    /**
+     * Creates a new builder for constructing an {@code OrderLineItemArticleForCreation}.
+     *
+     * @return a new builder
+     */
     public static Builder builder() { return new Builder(); }
 
+    /**
+     * Builder for {@link OrderLineItemArticleForCreation}.
+     */
     public static final class Builder {
+
+        /** Creates a new Builder. */
+        public Builder() {}
 
         private String tenantArticleId;
         private String title;
@@ -57,14 +107,68 @@ public final class OrderLineItemArticleForCreation {
         private List<ArticleAttribute> attributes;
         private Map<String, Object> customAttributes;
 
+        /**
+         * Sets the tenant article ID (required).
+         *
+         * @param tenantArticleId the article ID
+         * @return this builder
+         */
         public Builder tenantArticleId(String tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+
+        /**
+         * Sets the article title.
+         *
+         * @param title the title
+         * @return this builder
+         */
         public Builder title(String title) { this.title = title; return this; }
+
+        /**
+         * Sets the article image URL.
+         *
+         * @param imageUrl the image URL
+         * @return this builder
+         */
         public Builder imageUrl(String imageUrl) { this.imageUrl = imageUrl; return this; }
+
+        /**
+         * Sets the article weight.
+         *
+         * @param weight the weight
+         * @return this builder
+         */
         public Builder weight(Double weight) { this.weight = weight; return this; }
+
+        /**
+         * Sets localized translations for the article title.
+         *
+         * @param titleLocalized the localized titles map
+         * @return this builder
+         */
         public Builder titleLocalized(Map<String, String> titleLocalized) { this.titleLocalized = titleLocalized; return this; }
+
+        /**
+         * Sets article attributes.
+         *
+         * @param attributes the attributes list
+         * @return this builder
+         */
         public Builder attributes(List<ArticleAttribute> attributes) { this.attributes = attributes; return this; }
+
+        /**
+         * Sets custom attributes for this article.
+         *
+         * @param customAttributes the custom attributes map
+         * @return this builder
+         */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
+        /**
+         * Builds the {@link OrderLineItemArticleForCreation}.
+         *
+         * @return a new article
+         * @throws NullPointerException if tenantArticleId has not been set
+         */
         public OrderLineItemArticleForCreation build() { return new OrderLineItemArticleForCreation(this); }
     }
 }

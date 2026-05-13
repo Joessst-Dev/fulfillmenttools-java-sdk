@@ -64,6 +64,17 @@ import de.joesst.dev.fulfillmenttools.users.UserManagementClient;
 
 import java.util.Objects;
 
+/**
+ * Main entry point for the fulfillmenttools Java SDK.
+ *
+ * <p>Provides access to all fulfillmenttools API endpoints through dedicated domain client objects.
+ * Create instances using {@link #builder()} and configure the base URL and credentials before
+ * building.
+ *
+ * <p>Thread-safety: All client accessor methods use lazy initialization with double-checked
+ * locking to ensure a single instance of each domain client exists per FulfillmenttoolsClient.
+ * Instances are safe for concurrent use.
+ */
 public final class FulfillmenttoolsClient {
 
     private final HttpTransport transport;
@@ -96,6 +107,13 @@ public final class FulfillmenttoolsClient {
     private volatile HealthClient healthClient;
     private volatile FacilityDiscountsClient facilityDiscountsClient;
 
+    /**
+     * Constructs a new FulfillmenttoolsClient with the given transport and configuration.
+     *
+     * @param transport the underlying HTTP transport
+     * @param responseHandler the response handler
+     * @param baseUrl the API base URL
+     */
     private FulfillmenttoolsClient(HttpTransport transport, ResponseHandler responseHandler,
                                    String baseUrl) {
         this.transport = transport;
@@ -103,6 +121,11 @@ public final class FulfillmenttoolsClient {
         this.baseUrl = baseUrl;
     }
 
+    /**
+     * Returns the Orders client for order-related operations.
+     *
+     * @return the Orders client
+     */
     public OrdersClient orders() {
         OrdersClient local = ordersClient;
         if (local == null) {
@@ -116,6 +139,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Facilities client for facility-related operations.
+     *
+     * @return the Facilities client
+     */
     public FacilitiesClient facilities() {
         FacilitiesClient local = facilitiesClient;
         if (local == null) {
@@ -129,6 +157,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Stocks client for stock-related operations.
+     *
+     * @return the Stocks client
+     */
     public StocksClient stocks() {
         StocksClient local = stocksClient;
         if (local == null) {
@@ -142,6 +175,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the PickJobs client for pick-job-related operations.
+     *
+     * @return the PickJobs client
+     */
     public PickJobsClient pickJobs() {
         PickJobsClient local = pickJobsClient;
         if (local == null) {
@@ -155,6 +193,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Reservations client for reservation-related operations.
+     *
+     * @return the Reservations client
+     */
     public ReservationsClient reservations() {
         ReservationsClient local = reservationsClient;
         if (local == null) {
@@ -168,6 +211,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Packing client for packing-related operations.
+     *
+     * @return the Packing client
+     */
     public PackingClient packing() {
         PackingClient local = packingClient;
         if (local == null) {
@@ -181,6 +229,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the HandoverJobs client for handover-job-related operations.
+     *
+     * @return the HandoverJobs client
+     */
     public HandoverJobsClient handoverJobs() {
         HandoverJobsClient local = handoverJobsClient;
         if (local == null) {
@@ -194,6 +247,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Returns client for return-related operations.
+     *
+     * @return the Returns client
+     */
     public ReturnsClient returns() {
         ReturnsClient local = returnsClient;
         if (local == null) {
@@ -207,6 +265,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Carriers client for carrier-related operations.
+     *
+     * @return the Carriers client
+     */
     public CarriersClient carriers() {
         CarriersClient local = carriersClient;
         if (local == null) {
@@ -220,6 +283,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Inbound client for inbound-related operations.
+     *
+     * @return the Inbound client
+     */
     public InboundClient inbound() {
         InboundClient local = inboundClient;
         if (local == null) {
@@ -233,6 +301,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the UserManagement client for user-management-related operations.
+     *
+     * @return the UserManagement client
+     */
     public UserManagementClient users() {
         UserManagementClient local = userManagementClient;
         if (local == null) {
@@ -246,6 +319,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Eventing client for event-related operations.
+     *
+     * @return the Eventing client
+     */
     public EventingClient eventing() {
         EventingClient local = eventingClient;
         if (local == null) {
@@ -259,6 +337,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the ExternalActions client for external-action-related operations.
+     *
+     * @return the ExternalActions client
+     */
     public ExternalActionsClient externalActions() {
         ExternalActionsClient local = externalActionsClient;
         if (local == null) {
@@ -272,6 +355,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the RoutingPlans client for routing-plan-related operations.
+     *
+     * @return the RoutingPlans client
+     */
     public RoutingPlansClient routingPlans() {
         RoutingPlansClient local = routingPlansClient;
         if (local == null) {
@@ -285,6 +373,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the RoutingStrategies client for routing-strategy-related operations.
+     *
+     * @return the RoutingStrategies client
+     */
     public RoutingStrategiesClient routingStrategies() {
         RoutingStrategiesClient local = routingStrategiesClient;
         if (local == null) {
@@ -298,6 +391,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the SourcingOptions client for sourcing-option-related operations.
+     *
+     * @return the SourcingOptions client
+     */
     public SourcingOptionsClient sourcingOptions() {
         SourcingOptionsClient local = sourcingOptionsClient;
         if (local == null) {
@@ -311,6 +409,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the CheckoutOptions client for checkout-option-related operations.
+     *
+     * @return the CheckoutOptions client
+     */
     public CheckoutOptionsClient checkoutOptions() {
         CheckoutOptionsClient local = checkoutOptionsClient;
         if (local == null) {
@@ -324,6 +427,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the StorageLocations client for storage-location-related operations.
+     *
+     * @return the StorageLocations client
+     */
     public StorageLocationsClient storageLocations() {
         StorageLocationsClient local = storageLocationsClient;
         if (local == null) {
@@ -337,6 +445,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the OperativeProcess client for process-related operations.
+     *
+     * @return the OperativeProcess client
+     */
     public OperativeProcessClient processes() {
         OperativeProcessClient local = operativeProcessClient;
         if (local == null) {
@@ -350,6 +463,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Listings client for listing-related operations.
+     *
+     * @return the Listings client
+     */
     public ListingsClient listings() {
         ListingsClient local = listingsClient;
         if (local == null) {
@@ -363,6 +481,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the FacilityGroups client for facility-group-related operations.
+     *
+     * @return the FacilityGroups client
+     */
     public FacilityGroupsClient facilityGroups() {
         FacilityGroupsClient local = facilityGroupsClient;
         if (local == null) {
@@ -376,6 +499,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Tags client for tag-related operations.
+     *
+     * @return the Tags client
+     */
     public TagsClient tags() {
         TagsClient local = tagsClient;
         if (local == null) {
@@ -389,6 +517,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the FacilityDiscounts client for facility-discount-related operations.
+     *
+     * @return the FacilityDiscounts client
+     */
     public FacilityDiscountsClient facilityDiscounts() {
         FacilityDiscountsClient local = facilityDiscountsClient;
         if (local == null) {
@@ -402,6 +535,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the Health client for health-check operations.
+     *
+     * @return the Health client
+     */
     public HealthClient health() {
         HealthClient local = healthClient;
         if (local == null) {
@@ -415,6 +553,11 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns the FacilityConnections client for facility-connection-related operations.
+     *
+     * @return the FacilityConnections client
+     */
     public FacilityConnectionsClient facilityConnections() {
         FacilityConnectionsClient local = facilityConnectionsClient;
         if (local == null) {
@@ -428,11 +571,22 @@ public final class FulfillmenttoolsClient {
         return local;
     }
 
+    /**
+     * Returns a new builder for constructing a FulfillmenttoolsClient.
+     *
+     * @return a new builder instance
+     */
     public static Builder builder() {
         return new Builder();
     }
 
+    /**
+     * Builder for constructing {@link FulfillmenttoolsClient} instances.
+     */
     public static final class Builder {
+
+        /** Creates a new Builder. */
+        public Builder() {}
 
         private String baseUrl;
         private Credentials credentials;
@@ -441,40 +595,78 @@ public final class FulfillmenttoolsClient {
         private ObjectMapper objectMapper;
         private int retryMaxAttempts = RetryingTransport.DEFAULT_MAX_ATTEMPTS;
 
+        /**
+         * Sets the base URL of the fulfillmenttools API.
+         *
+         * @param baseUrl the API base URL; must not be null
+         * @return this builder
+         */
         public Builder baseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
             return this;
         }
 
+        /**
+         * Sets the credentials for authentication.
+         *
+         * @param credentials the credentials; must not be null
+         * @return this builder
+         */
         public Builder credentials(Credentials credentials) {
             this.credentials = credentials;
             return this;
         }
 
-        /** Overrides the default {@link GoogleIdentityToolkitTokenProvider}. Useful for testing. */
+        /**
+         * Overrides the default {@link GoogleIdentityToolkitTokenProvider}. Useful for testing.
+         *
+         * @param tokenProvider the token provider implementation
+         * @return this builder
+         */
         public Builder tokenProvider(TokenProvider tokenProvider) {
             this.tokenProvider = tokenProvider;
             return this;
         }
 
-        /** Overrides the default {@link JdkHttpTransport}. Useful for testing or custom interceptors. */
+        /**
+         * Overrides the default {@link JdkHttpTransport}. Useful for testing or custom interceptors.
+         *
+         * @param httpTransport the HTTP transport implementation
+         * @return this builder
+         */
         public Builder httpTransport(HttpTransport httpTransport) {
             this.httpTransport = httpTransport;
             return this;
         }
 
-        /** Overrides the default Jackson {@link ObjectMapper}. */
+        /**
+         * Overrides the default Jackson {@link ObjectMapper}.
+         *
+         * @param objectMapper the Jackson object mapper
+         * @return this builder
+         */
         public Builder objectMapper(ObjectMapper objectMapper) {
             this.objectMapper = objectMapper;
             return this;
         }
 
-        /** Sets the maximum number of total attempts (1 = no retries). Default is 3. */
+        /**
+         * Sets the maximum number of total attempts (1 = no retries). Default is 3.
+         *
+         * @param retryMaxAttempts the maximum number of attempts
+         * @return this builder
+         */
         public Builder retryMaxAttempts(int retryMaxAttempts) {
             this.retryMaxAttempts = retryMaxAttempts;
             return this;
         }
 
+        /**
+         * Builds and returns a new {@link FulfillmenttoolsClient}.
+         *
+         * @return a new FulfillmenttoolsClient
+         * @throws NullPointerException if baseUrl is not set or if neither credentials nor tokenProvider is set
+         */
         public FulfillmenttoolsClient build() {
             Objects.requireNonNull(baseUrl, "baseUrl must not be null");
 

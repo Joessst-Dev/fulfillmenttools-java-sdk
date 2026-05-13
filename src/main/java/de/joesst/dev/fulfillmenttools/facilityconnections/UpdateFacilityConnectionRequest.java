@@ -47,96 +47,115 @@ public final class UpdateFacilityConnectionRequest {
         this.customAttributes = builder.customAttributes;
     }
 
-    /** Returns the optimistic-locking version; never {@code null}. */
+    /** Returns the optimistic-locking version; never {@code null}. @return the version */
     public Integer version() { return version; }
 
-    /** Returns the typed connection target; never {@code null}. */
+    /** Returns the typed connection target; never {@code null}. @return the target */
     public ConnectionTarget target() { return target; }
 
-    /** Returns the optional carrier key. */
+    /** Returns the optional carrier key. @return the carrier key */
     public String carrierKey() { return carrierKey; }
 
-    /** Returns the optional human-readable carrier name. */
+    /** Returns the optional human-readable carrier name. @return the carrier name */
     public String carrierName() { return carrierName; }
 
-    /** Returns the optional scoping contexts. */
+    /** Returns the optional scoping contexts. @return the contexts */
     public List<ConnectionContext> context() { return context; }
 
-    /** Returns the optional fallback delivery costs. */
+    /** Returns the optional fallback delivery costs. @return the delivery costs */
     public List<DeliveryCost> fallbackCosts() { return fallbackCosts; }
 
-    /** Returns the optional non-delivery day configuration. */
+    /** Returns the optional non-delivery day configuration. @return the non-delivery days */
     public List<NonDeliveryDaysPerCountry> nonDeliveryDays() { return nonDeliveryDays; }
 
-    /** Returns the optional context-dependent packaging unit mappings. */
+    /** Returns the optional context-dependent packaging unit mappings. @return the packaging units by context */
     public List<PackagingUnitsByContext> packagingUnitsByContexts() { return packagingUnitsByContexts; }
 
-    /** Returns the optional cutoff schedule. */
+    /** Returns the optional cutoff schedule. @return the cutoff times */
     public CutoffTimes cutoffTimes() { return cutoffTimes; }
 
-    /** Returns the optional fallback transit time. */
+    /** Returns the optional fallback transit time. @return the transit time */
     public CarrierTransitTime fallbackTransitTime() { return fallbackTransitTime; }
 
-    /** Returns the optional free-form custom attributes. */
+    /** Returns the optional free-form custom attributes. @return the custom attributes */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
     /** Returns a new builder for constructing an {@code UpdateFacilityConnectionRequest}. */
     public static Builder builder() { return new Builder(); }
 
-    /**
-     * Fluent builder for {@link UpdateFacilityConnectionRequest}.
-     */
+    /** Builder for UpdateFacilityConnectionRequest. */
     public static final class Builder {
+
+        /** The optimistic-locking version. */
         private Integer version;
+
+        /** The connection target. */
         private ConnectionTarget target;
+
+        /** The carrier key. */
         private String carrierKey;
+
+        /** The human-readable carrier name. */
         private String carrierName;
+
+        /** The scoping contexts. */
         private List<ConnectionContext> context;
+
+        /** The fallback delivery costs. */
         private List<DeliveryCost> fallbackCosts;
+
+        /** The non-delivery day configuration. */
         private List<NonDeliveryDaysPerCountry> nonDeliveryDays;
+
+        /** The context-dependent packaging unit mappings. */
         private List<PackagingUnitsByContext> packagingUnitsByContexts;
+
+        /** The cutoff schedule. */
         private CutoffTimes cutoffTimes;
+
+        /** The fallback transit time. */
         private CarrierTransitTime fallbackTransitTime;
+
+        /** The free-form custom attributes. */
         private Map<String, Object> customAttributes;
 
-        /** Sets the optimistic-locking version; required. */
+        /** Creates a new Builder. */
+        public Builder() {}
+
+        /** Sets the optimistic-locking version; required. @param version the version. @return this builder */
         public Builder version(Integer version) { this.version = version; return this; }
 
-        /** Sets the target of the connection; required. */
+        /** Sets the target of the connection; required. @param target the target. @return this builder */
         public Builder target(ConnectionTarget target) { this.target = target; return this; }
 
-        /** Sets the carrier key. */
+        /** Sets the carrier key. @param carrierKey the carrier key. @return this builder */
         public Builder carrierKey(String carrierKey) { this.carrierKey = carrierKey; return this; }
 
-        /** Sets the human-readable carrier name. */
+        /** Sets the human-readable carrier name. @param carrierName the carrier name. @return this builder */
         public Builder carrierName(String carrierName) { this.carrierName = carrierName; return this; }
 
-        /** Sets the scoping contexts. */
+        /** Sets the scoping contexts. @param context the contexts. @return this builder */
         public Builder context(List<ConnectionContext> context) { this.context = context; return this; }
 
-        /** Sets the fallback delivery costs. */
+        /** Sets the fallback delivery costs. @param fallbackCosts the delivery costs. @return this builder */
         public Builder fallbackCosts(List<DeliveryCost> fallbackCosts) { this.fallbackCosts = fallbackCosts; return this; }
 
-        /** Sets the non-delivery day configuration. */
+        /** Sets the non-delivery day configuration. @param nonDeliveryDays the non-delivery days. @return this builder */
         public Builder nonDeliveryDays(List<NonDeliveryDaysPerCountry> nonDeliveryDays) { this.nonDeliveryDays = nonDeliveryDays; return this; }
 
-        /** Sets the context-dependent packaging unit mappings. */
+        /** Sets the context-dependent packaging unit mappings. @param packagingUnitsByContexts the packaging units by context. @return this builder */
         public Builder packagingUnitsByContexts(List<PackagingUnitsByContext> packagingUnitsByContexts) { this.packagingUnitsByContexts = packagingUnitsByContexts; return this; }
 
-        /** Sets the cutoff schedule. */
+        /** Sets the cutoff schedule. @param cutoffTimes the cutoff times. @return this builder */
         public Builder cutoffTimes(CutoffTimes cutoffTimes) { this.cutoffTimes = cutoffTimes; return this; }
 
-        /** Sets the fallback transit time. */
+        /** Sets the fallback transit time. @param fallbackTransitTime the transit time. @return this builder */
         public Builder fallbackTransitTime(CarrierTransitTime fallbackTransitTime) { this.fallbackTransitTime = fallbackTransitTime; return this; }
 
-        /** Sets the free-form custom attributes. */
+        /** Sets the free-form custom attributes. @param customAttributes the custom attributes. @return this builder */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
-        /**
-         * Builds and returns a new {@code UpdateFacilityConnectionRequest}.
-         *
-         * @throws NullPointerException if {@code version} or {@code target} has not been set
-         */
+        /** Builds and returns a new UpdateFacilityConnectionRequest. @return the built request @throws NullPointerException if version or target has not been set */
         public UpdateFacilityConnectionRequest build() { return new UpdateFacilityConnectionRequest(this); }
     }
 }

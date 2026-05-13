@@ -40,32 +40,73 @@ public final class CreateReturnRequest {
         this.customAttributes = builder.customAttributes;
     }
 
-    /** @return The origin facility references. Required. */
+    /**
+     * Returns the origin facility references.
+     * @return the origin facility references; never {@code null}
+     */
     public List<String> originFacilityRefs() { return originFacilityRefs; }
-    /** @return The return job status (e.g. {@code OPEN}). Required. */
+
+    /**
+     * Returns the return job status.
+     * @return the status (e.g. {@code OPEN}); never {@code null}
+     */
     public String status() { return status; }
-    /** @return Optional consumer addresses for this return job. */
+
+    /**
+     * Returns the consumer addresses for this return job.
+     * @return the consumer addresses, or {@code null} if not set
+     */
     public List<ConsumerAddress> consumerAddresses() { return consumerAddresses; }
-    /** @return Typed line items that are returnable. */
+
+    /**
+     * Returns the returnable line items.
+     * @return the returnable line items, or {@code null} if not set
+     */
     public List<ReturnJobLineItemForCreation> returnableLineItems() { return returnableLineItems; }
-    /** @return Typed line items that are not returnable. */
+
+    /**
+     * Returns the non-returnable line items.
+     * @return the non-returnable line items, or {@code null} if not set
+     */
     public List<ReturnJobLineItemForCreation> notReturnableLineItems() { return notReturnableLineItems; }
-    /** @return Optional scannable codes for this return job. */
+
+    /**
+     * Returns the scannable codes for this return job.
+     * @return the scannable codes, or {@code null} if not set
+     */
     public List<String> scannableCodes() { return scannableCodes; }
-    /** @return Optional short identifier for customer assignment. */
+
+    /**
+     * Returns the short identifier for customer assignment.
+     * @return the short ID, or {@code null} if not set
+     */
     public String shortId() { return shortId; }
-    /** @return Optional tenant order identifier. */
+
+    /**
+     * Returns the tenant order identifier.
+     * @return the tenant order ID, or {@code null} if not set
+     */
     public String tenantOrderId() { return tenantOrderId; }
-    /** @return Free-form custom attributes. */
+
+    /**
+     * Returns the free-form custom attributes.
+     * @return the custom attributes, or {@code null} if not set
+     */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
-    /** @return A new {@link Builder} instance. */
+    /**
+     * Creates a new builder for constructing a {@link CreateReturnRequest}.
+     * @return a new builder instance
+     */
     public static Builder builder() { return new Builder(); }
 
     /**
      * Fluent builder for {@link CreateReturnRequest}.
      */
     public static final class Builder {
+
+        /** Creates a new Builder instance. */
+        public Builder() {}
 
         private List<String> originFacilityRefs;
         private String status;
@@ -77,26 +118,74 @@ public final class CreateReturnRequest {
         private String tenantOrderId;
         private Map<String, Object> customAttributes;
 
-        /** @param originFacilityRefs The origin facility references. Required. */
+        /**
+         * Sets the origin facility references (required).
+         * @param originFacilityRefs the origin facility references
+         * @return this builder
+         */
         public Builder originFacilityRefs(List<String> originFacilityRefs) { this.originFacilityRefs = originFacilityRefs; return this; }
-        /** @param status The return job status. Required. */
+
+        /**
+         * Sets the return job status (required).
+         * @param status the return job status
+         * @return this builder
+         */
         public Builder status(String status) { this.status = status; return this; }
-        /** @param consumerAddresses Consumer addresses for this return job. */
+
+        /**
+         * Sets the consumer addresses for this return job.
+         * @param consumerAddresses the consumer addresses
+         * @return this builder
+         */
         public Builder consumerAddresses(List<ConsumerAddress> consumerAddresses) { this.consumerAddresses = consumerAddresses; return this; }
-        /** @param returnableLineItems Typed line items that can be returned. */
+
+        /**
+         * Sets the returnable line items.
+         * @param returnableLineItems typed line items that can be returned
+         * @return this builder
+         */
         public Builder returnableLineItems(List<ReturnJobLineItemForCreation> returnableLineItems) { this.returnableLineItems = returnableLineItems; return this; }
-        /** @param notReturnableLineItems Typed line items that cannot be returned. */
+
+        /**
+         * Sets the non-returnable line items.
+         * @param notReturnableLineItems typed line items that cannot be returned
+         * @return this builder
+         */
         public Builder notReturnableLineItems(List<ReturnJobLineItemForCreation> notReturnableLineItems) { this.notReturnableLineItems = notReturnableLineItems; return this; }
-        /** @param scannableCodes Scannable codes for this return job. */
+
+        /**
+         * Sets the scannable codes for this return job.
+         * @param scannableCodes the scannable codes
+         * @return this builder
+         */
         public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
-        /** @param shortId Short identifier for customer assignment. */
+
+        /**
+         * Sets the short identifier for customer assignment.
+         * @param shortId the short ID
+         * @return this builder
+         */
         public Builder shortId(String shortId) { this.shortId = shortId; return this; }
-        /** @param tenantOrderId Tenant order identifier. */
+
+        /**
+         * Sets the tenant order identifier.
+         * @param tenantOrderId the tenant order ID
+         * @return this builder
+         */
         public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
-        /** @param customAttributes Free-form custom attributes. */
+
+        /**
+         * Sets the free-form custom attributes.
+         * @param customAttributes the custom attributes
+         * @return this builder
+         */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
-        /** @return A new {@link CreateReturnRequest} with the configured values. */
+        /**
+         * Builds and returns a new {@link CreateReturnRequest}.
+         * @return a new request instance
+         * @throws NullPointerException if any required field is not set
+         */
         public CreateReturnRequest build() { return new CreateReturnRequest(this); }
     }
 }

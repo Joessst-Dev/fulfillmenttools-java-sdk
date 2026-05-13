@@ -5,6 +5,8 @@ package de.joesst.dev.fulfillmenttools.routingstrategies;
  * or per line item.
  */
 public enum ToolkitRuleScope {
+    /** Scope is the whole entity. */
     WHOLE_ENTITY,
+    /** Scope is per line item. */
     LINE_ITEM
 }

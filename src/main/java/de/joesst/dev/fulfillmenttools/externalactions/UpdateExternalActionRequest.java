@@ -40,31 +40,56 @@ public final class UpdateExternalActionRequest {
         this.customAttributes = builder.customAttributes;
     }
 
-    /** @return the optimistic-locking version; never {@code null} */
+    /**
+     * Returns the optimistic-locking version of the entity.
+     *
+     * @return the optimistic-locking version; never {@code null}
+     */
     public Integer version() { return version; }
 
     /**
+     * Returns the localized names for this action.
+     *
      * @return localized names; key is locale (e.g. {@code "en_US"}), value is translation;
      *         never {@code null}
      */
     public Map<String, String> nameLocalized() { return nameLocalized; }
 
-    /** @return grouping tags; never {@code null} */
+    /**
+     * Returns the grouping tags.
+     *
+     * @return grouping tags; never {@code null}
+     */
     public List<String> groups() { return groups; }
 
-    /** @return the typed action definition; never {@code null} */
+    /**
+     * Returns the typed action definition.
+     *
+     * @return the typed action definition; never {@code null}
+     */
     public ExternalActionDefinition action() { return action; }
 
-    /** @return free-form custom attributes, or {@code null} if not set */
+    /**
+     * Returns free-form custom attributes.
+     *
+     * @return free-form custom attributes, or {@code null} if not set
+     */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
-    /** @return a new builder instance */
+    /**
+     * Returns a new builder for constructing an {@link UpdateExternalActionRequest}.
+     *
+     * @return a new builder instance
+     */
     public static Builder builder() { return new Builder(); }
 
     /**
      * Builder for {@link UpdateExternalActionRequest}.
      */
     public static final class Builder {
+
+        /** Creates a new Builder. */
+        public Builder() {}
 
         private Integer version;
         private Map<String, String> nameLocalized;
@@ -73,7 +98,9 @@ public final class UpdateExternalActionRequest {
         private Map<String, Object> customAttributes;
 
         /**
-         * @param version optimistic-locking version of the entity to update (required)
+         * Sets the optimistic-locking version of the entity to update (required).
+         *
+         * @param version the version
          * @return this builder
          */
         public Builder version(Integer version) {
@@ -82,7 +109,9 @@ public final class UpdateExternalActionRequest {
         }
 
         /**
-         * @param nameLocalized localized names map; key is locale, value is translation (required)
+         * Sets the localized names map (required).
+         *
+         * @param nameLocalized localized names map; key is locale, value is translation
          * @return this builder
          */
         public Builder nameLocalized(Map<String, String> nameLocalized) {
@@ -91,7 +120,9 @@ public final class UpdateExternalActionRequest {
         }
 
         /**
-         * @param groups grouping tags (required)
+         * Sets the grouping tags (required).
+         *
+         * @param groups the grouping tags
          * @return this builder
          */
         public Builder groups(List<String> groups) {
@@ -100,7 +131,9 @@ public final class UpdateExternalActionRequest {
         }
 
         /**
-         * @param action the typed action definition (required)
+         * Sets the typed action definition (required).
+         *
+         * @param action the action definition
          * @return this builder
          */
         public Builder action(ExternalActionDefinition action) {
@@ -109,7 +142,9 @@ public final class UpdateExternalActionRequest {
         }
 
         /**
-         * @param customAttributes free-form custom attributes (optional)
+         * Sets free-form custom attributes (optional).
+         *
+         * @param customAttributes the custom attributes
          * @return this builder
          */
         public Builder customAttributes(Map<String, Object> customAttributes) {

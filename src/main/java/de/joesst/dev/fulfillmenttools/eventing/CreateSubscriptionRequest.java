@@ -35,39 +35,59 @@ public final class CreateSubscriptionRequest {
         this.target = builder.target;
     }
 
-    /** @return human-readable name of the subscription */
+    /**
+     * Returns the human-readable name of the subscription.
+     * @return the subscription name; never {@code null}
+     */
     public String name() { return name; }
 
-    /** @return event type to subscribe to (e.g. {@code ORDER_CREATED}) */
+    /**
+     * Returns the event type to subscribe to.
+     * @return the event type (e.g. {@code ORDER_CREATED}); never {@code null}
+     */
     public String event() { return event; }
 
     /**
-     * @return deprecated callback URL; prefer supplying a {@link WebhookTarget} via {@link #target()}
+     * Returns the deprecated callback URL.
+     * @return the callback URL, or {@code null} if not set
      * @deprecated use {@link WebhookTarget} via {@link #target()} instead
      */
     @Deprecated
     public String callbackUrl() { return callbackUrl; }
 
-    /** @return optional list of facility/facility-group scoping contexts */
+    /**
+     * Returns the optional list of facility/facility-group scoping contexts.
+     * @return the contexts, or {@code null} if not set
+     */
     public List<SubscriptionContext> contexts() { return contexts; }
 
     /**
-     * @return deprecated list of callback headers; prefer {@link WebhookTarget#headers()}
+     * Returns the deprecated list of callback headers.
+     * @return the headers, or {@code null} if not set
      * @deprecated use {@link WebhookTarget#headers()} instead
      */
     @Deprecated
     public List<CallbackHeader> headers() { return headers; }
 
-    /** @return the typed delivery target, or {@code null} when using deprecated callback fields */
+    /**
+     * Returns the typed delivery target.
+     * @return the delivery target, or {@code null} when using deprecated callback fields
+     */
     public SubscriptionTarget target() { return target; }
 
-    /** @return a new {@link Builder} */
+    /**
+     * Creates a new builder for constructing a {@link CreateSubscriptionRequest}.
+     * @return a new builder instance
+     */
     public static Builder builder() { return new Builder(); }
 
     /**
      * Fluent builder for {@link CreateSubscriptionRequest}.
      */
     public static final class Builder {
+
+        /** Creates a new Builder instance. */
+        public Builder() {}
 
         private String name;
         private String event;
@@ -76,24 +96,40 @@ public final class CreateSubscriptionRequest {
         private List<CallbackHeader> headers;
         private SubscriptionTarget target;
 
-        /** @param name human-readable subscription name (required) */
+        /**
+         * Sets the subscription name (required).
+         * @param name human-readable subscription name
+         * @return this builder
+         */
         public Builder name(String name) { this.name = name; return this; }
 
-        /** @param event event type to subscribe to (required) */
+        /**
+         * Sets the event type to subscribe to (required).
+         * @param event the event type
+         * @return this builder
+         */
         public Builder event(String event) { this.event = event; return this; }
 
         /**
-         * @param callbackUrl deprecated HTTP callback URL
+         * Sets the deprecated HTTP callback URL.
+         * @param callbackUrl the callback URL
+         * @return this builder
          * @deprecated use {@link #target(SubscriptionTarget)} with a {@link WebhookTarget} instead
          */
         @Deprecated
         public Builder callbackUrl(String callbackUrl) { this.callbackUrl = callbackUrl; return this; }
 
-        /** @param contexts optional facility/facility-group scoping contexts */
+        /**
+         * Sets the optional facility/facility-group scoping contexts.
+         * @param contexts the scoping contexts
+         * @return this builder
+         */
         public Builder contexts(List<SubscriptionContext> contexts) { this.contexts = contexts; return this; }
 
         /**
-         * @param headers deprecated list of callback headers
+         * Sets the deprecated list of callback headers.
+         * @param headers the callback headers
+         * @return this builder
          * @deprecated use {@link WebhookTarget#headers()} instead
          */
         @Deprecated
@@ -104,10 +140,15 @@ public final class CreateSubscriptionRequest {
          *
          * @param target one of {@link WebhookTarget}, {@link AzureServiceBusTarget},
          *               or {@link GoogleCloudPubSubTarget}
+         * @return this builder
          */
         public Builder target(SubscriptionTarget target) { this.target = target; return this; }
 
-        /** @return the constructed {@link CreateSubscriptionRequest} */
+        /**
+         * Builds and returns the {@link CreateSubscriptionRequest}.
+         * @return a new request instance
+         * @throws NullPointerException if any required field is not set
+         */
         public CreateSubscriptionRequest build() { return new CreateSubscriptionRequest(this); }
     }
 }

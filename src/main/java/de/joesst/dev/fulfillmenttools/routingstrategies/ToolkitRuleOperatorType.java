@@ -5,5 +5,6 @@ package de.joesst.dev.fulfillmenttools.routingstrategies;
  * {@link ToolkitRule}.
  */
 public enum ToolkitRuleOperatorType {
+    /** Equals operator. */
     EQUALS
 }

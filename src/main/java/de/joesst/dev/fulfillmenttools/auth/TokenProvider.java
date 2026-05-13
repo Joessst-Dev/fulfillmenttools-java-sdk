@@ -2,11 +2,18 @@ package de.joesst.dev.fulfillmenttools.auth;
 
 import de.joesst.dev.fulfillmenttools.AuthenticationException;
 
+/**
+ * Provides bearer tokens for authenticating requests to the fulfillmenttools API.
+ *
+ * <p>Implementations must handle token refresh lifecycle, including expiry detection and automatic
+ * refresh. Tokens returned by {@link #getAccessToken()} should be valid for use immediately.
+ */
 public interface TokenProvider {
 
     /**
      * Returns a valid bearer token, refreshing it if near expiry.
      *
+     * @return a valid bearer token.
      * @throws AuthenticationException if a token cannot be obtained
      */
     String getAccessToken();

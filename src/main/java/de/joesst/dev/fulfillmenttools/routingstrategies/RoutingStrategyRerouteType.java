@@ -10,6 +10,12 @@ package de.joesst.dev.fulfillmenttools.routingstrategies;
  * </ul>
  */
 public enum RoutingStrategyRerouteType {
+    /**
+     * The complete routing plan is rerouted.
+     */
     REROUTE,
+    /**
+     * The order is split; the split line items are moved to a new routing plan and rerouted.
+     */
     ORDERSPLIT
 }

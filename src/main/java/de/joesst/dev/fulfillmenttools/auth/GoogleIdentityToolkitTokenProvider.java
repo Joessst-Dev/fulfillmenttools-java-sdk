@@ -15,6 +15,10 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 
+/**
+ * Token provider that authenticates with Google Identity Toolkit using email and password credentials.
+ * Handles automatic token refresh when the current token is near expiration.
+ */
 public final class GoogleIdentityToolkitTokenProvider implements TokenProvider {
 
     static final String DEFAULT_SIGN_IN_URL =
@@ -35,12 +39,29 @@ public final class GoogleIdentityToolkitTokenProvider implements TokenProvider {
     private String refreshToken;
     private Instant expiresAt;
 
+    /**
+     * Constructs a token provider with the given credentials and HTTP transport.
+     * Uses default Google Identity Toolkit endpoints.
+     *
+     * @param credentials the email and password credentials for sign-in.
+     * @param transport the HTTP transport to use for authentication requests.
+     */
     public GoogleIdentityToolkitTokenProvider(EmailPasswordCredentials credentials,
                                               HttpTransport transport) {
         this(credentials, transport, new JsonCodec(), Clock.systemUTC(),
                 DEFAULT_SIGN_IN_URL, DEFAULT_REFRESH_URL);
     }
 
+    /**
+     * Constructs a token provider with custom endpoints and codec (for testing).
+     *
+     * @param credentials the email and password credentials for sign-in.
+     * @param transport the HTTP transport to use for authentication requests.
+     * @param codec the JSON codec for parsing authentication responses.
+     * @param clock the clock to use for determining token expiration.
+     * @param signInUrl the URL for the sign-in endpoint.
+     * @param refreshUrl the URL for the token refresh endpoint.
+     */
     GoogleIdentityToolkitTokenProvider(EmailPasswordCredentials credentials,
                                        HttpTransport transport,
                                        JsonCodec codec,
@@ -55,6 +76,13 @@ public final class GoogleIdentityToolkitTokenProvider implements TokenProvider {
         this.refreshUrl = refreshUrl;
     }
 
+    /**
+     * Returns a valid access token, refreshing if necessary.
+     * Automatically performs sign-in on first call or token refresh when the current token is near expiration.
+     *
+     * @return a valid access token for authenticating API requests.
+     * @throws AuthenticationException if sign-in or token refresh fails.
+     */
     @Override
     public synchronized String getAccessToken() {
         if (needsRefresh()) {
@@ -71,6 +99,10 @@ public final class GoogleIdentityToolkitTokenProvider implements TokenProvider {
         return idToken;
     }
 
+    /**
+     * Invalidates the current access token, forcing a refresh on the next call to {@link #getAccessToken()}.
+     * The refresh token is preserved so the next refresh can reuse it without signing in again.
+     */
     @Override
     public synchronized void invalidate() {
         idToken = null;

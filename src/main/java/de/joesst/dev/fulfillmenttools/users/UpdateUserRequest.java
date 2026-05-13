@@ -37,32 +37,71 @@ public final class UpdateUserRequest {
         this.assignedRoles = builder.assignedRoles;
     }
 
-    /** @return the optimistic-locking version number; required */
+    /**
+     * Returns the optimistic-locking version number; required.
+     *
+     * @return the optimistic-locking version number
+     */
     public Integer version() { return version; }
 
-    /** @return the new given name, or {@code null} if not being updated */
+    /**
+     * Returns the new given name.
+     *
+     * @return the new given name, or {@code null} if not being updated
+     */
     public String firstName() { return firstName; }
 
-    /** @return the new family name, or {@code null} if not being updated */
+    /**
+     * Returns the new family name.
+     *
+     * @return the new family name, or {@code null} if not being updated
+     */
     public String lastName() { return lastName; }
 
-    /** @return the new email address, or {@code null} if not being updated */
+    /**
+     * Returns the new email address.
+     *
+     * @return the new email address, or {@code null} if not being updated
+     */
     public String email() { return email; }
 
-    /** @return the new password, or {@code null} if not being updated */
+    /**
+     * Returns the new password.
+     *
+     * @return the new password, or {@code null} if not being updated
+     */
     public String password() { return password; }
 
-    /** @return the new preferred locale, or {@code null} if not being updated */
+    /**
+     * Returns the new preferred locale.
+     *
+     * @return the new preferred locale, or {@code null} if not being updated
+     */
     public String locale() { return locale; }
 
-    /** @return the new role assignments, or {@code null} if not being updated */
+    /**
+     * Returns the new role assignments.
+     *
+     * @return the new role assignments, or {@code null} if not being updated
+     */
     public List<AssignedRole> assignedRoles() { return assignedRoles; }
 
-    /** @return a new {@link Builder} */
+    /**
+     * Returns a new builder for constructing {@code UpdateUserRequest} instances.
+     *
+     * @return a new {@link Builder}
+     */
     public static Builder builder() { return new Builder(); }
 
-    /** Fluent builder for {@link UpdateUserRequest}. */
+    /**
+     * Fluent builder for {@link UpdateUserRequest}.
+     */
     public static final class Builder {
+
+        /**
+         * Creates a new Builder.
+         */
+        public Builder() {}
 
         private Integer version;
         private String firstName;
@@ -72,28 +111,65 @@ public final class UpdateUserRequest {
         private String locale;
         private List<AssignedRole> assignedRoles;
 
-        /** @param version the optimistic-locking version; required */
+        /**
+         * Sets the optimistic-locking version; required.
+         *
+         * @param version the optimistic-locking version
+         * @return this builder
+         */
         public Builder version(Integer version) { this.version = version; return this; }
 
-        /** @param firstName the new given name */
+        /**
+         * Sets the new given name.
+         *
+         * @param firstName the new given name
+         * @return this builder
+         */
         public Builder firstName(String firstName) { this.firstName = firstName; return this; }
 
-        /** @param lastName the new family name */
+        /**
+         * Sets the new family name.
+         *
+         * @param lastName the new family name
+         * @return this builder
+         */
         public Builder lastName(String lastName) { this.lastName = lastName; return this; }
 
-        /** @param email the new email address */
+        /**
+         * Sets the new email address.
+         *
+         * @param email the new email address
+         * @return this builder
+         */
         public Builder email(String email) { this.email = email; return this; }
 
-        /** @param password the new password */
+        /**
+         * Sets the new password.
+         *
+         * @param password the new password
+         * @return this builder
+         */
         public Builder password(String password) { this.password = password; return this; }
 
-        /** @param locale the new preferred locale */
+        /**
+         * Sets the new preferred locale.
+         *
+         * @param locale the new preferred locale
+         * @return this builder
+         */
         public Builder locale(String locale) { this.locale = locale; return this; }
 
-        /** @param assignedRoles the new role assignments */
+        /**
+         * Sets the new role assignments.
+         *
+         * @param assignedRoles the new role assignments
+         * @return this builder
+         */
         public Builder assignedRoles(List<AssignedRole> assignedRoles) { this.assignedRoles = assignedRoles; return this; }
 
         /**
+         * Builds a validated {@link UpdateUserRequest}.
+         *
          * @return a validated {@link UpdateUserRequest}
          * @throws NullPointerException if {@code version} is not set
          */

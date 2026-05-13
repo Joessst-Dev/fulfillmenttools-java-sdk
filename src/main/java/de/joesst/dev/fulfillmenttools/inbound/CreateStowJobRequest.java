@@ -42,37 +42,67 @@ public final class CreateStowJobRequest {
         this.targetTime = builder.targetTime;
     }
 
-    /** Reference to the facility where the stow job will be executed. */
+    /**
+     * Returns the facility reference.
+     * @return the facility ref; never {@code null}
+     */
     public String facilityRef() { return facilityRef; }
 
-    /** Initial status of the stow job (e.g. {@code OPEN}). */
+    /**
+     * Returns the initial status of the stow job.
+     * @return the status (e.g. {@code OPEN}); never {@code null}
+     */
     public String status() { return status; }
 
-    /** The stow line items that should be processed. */
+    /**
+     * Returns the stow line items to process.
+     * @return the stow line items; never {@code null}
+     */
     public List<StowLineItemForCreation> stowLineItems() { return stowLineItems; }
 
-    /** Users to assign to the stow job (at most 20). */
+    /**
+     * Returns the users assigned to the stow job.
+     * @return the assigned users, or {@code null} if not set
+     */
     public List<AssignedUserInput> assignedUsers() { return assignedUsers; }
 
-    /** Free-form custom attributes. */
+    /**
+     * Returns the free-form custom attributes.
+     * @return the custom attributes, or {@code null} if not set
+     */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
-    /** Priority level of the job. */
+    /**
+     * Returns the priority level of the job.
+     * @return the priority, or {@code null} if not set
+     */
     public Integer priority() { return priority; }
 
-    /** Human-readable short identifier for display purposes. */
+    /**
+     * Returns the human-readable short identifier.
+     * @return the short ID, or {@code null} if not set
+     */
     public String shortId() { return shortId; }
 
-    /** The time by which the job should be completed. */
+    /**
+     * Returns the time by which the job should be completed.
+     * @return the target time, or {@code null} if not set
+     */
     public Instant targetTime() { return targetTime; }
 
-    /** Returns a new {@link Builder} for constructing a {@code CreateStowJobRequest}. */
+    /**
+     * Creates a new builder for constructing a {@link CreateStowJobRequest}.
+     * @return a new builder instance
+     */
     public static Builder builder() { return new Builder(); }
 
     /**
      * Fluent builder for {@link CreateStowJobRequest}.
      */
     public static final class Builder {
+
+        /** Creates a new Builder instance. */
+        public Builder() {}
 
         private String facilityRef;
         private String status;
@@ -83,31 +113,67 @@ public final class CreateStowJobRequest {
         private String shortId;
         private Instant targetTime;
 
-        /** @see CreateStowJobRequest#facilityRef() */
+        /**
+         * Sets the facility reference (required).
+         * @param facilityRef the facility ref
+         * @return this builder
+         */
         public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
 
-        /** @see CreateStowJobRequest#status() */
+        /**
+         * Sets the initial status (required).
+         * @param status the initial status
+         * @return this builder
+         */
         public Builder status(String status) { this.status = status; return this; }
 
-        /** @see CreateStowJobRequest#stowLineItems() */
+        /**
+         * Sets the stow line items (required).
+         * @param stowLineItems the stow line items
+         * @return this builder
+         */
         public Builder stowLineItems(List<StowLineItemForCreation> stowLineItems) { this.stowLineItems = stowLineItems; return this; }
 
-        /** @see CreateStowJobRequest#assignedUsers() */
+        /**
+         * Sets the users assigned to the job.
+         * @param assignedUsers the assigned users
+         * @return this builder
+         */
         public Builder assignedUsers(List<AssignedUserInput> assignedUsers) { this.assignedUsers = assignedUsers; return this; }
 
-        /** @see CreateStowJobRequest#customAttributes() */
+        /**
+         * Sets the free-form custom attributes.
+         * @param customAttributes the custom attributes
+         * @return this builder
+         */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
-        /** @see CreateStowJobRequest#priority() */
+        /**
+         * Sets the priority level.
+         * @param priority the priority
+         * @return this builder
+         */
         public Builder priority(Integer priority) { this.priority = priority; return this; }
 
-        /** @see CreateStowJobRequest#shortId() */
+        /**
+         * Sets the short identifier.
+         * @param shortId the short ID
+         * @return this builder
+         */
         public Builder shortId(String shortId) { this.shortId = shortId; return this; }
 
-        /** @see CreateStowJobRequest#targetTime() */
+        /**
+         * Sets the target completion time.
+         * @param targetTime the target time
+         * @return this builder
+         */
         public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
 
-        /** Builds the {@link CreateStowJobRequest}. Throws {@link NullPointerException} if any required field is absent. */
+        /**
+         * Builds and returns a new {@link CreateStowJobRequest}.
+         * @return a new request instance
+         * @throws NullPointerException if any required field is not set
+         */
         public CreateStowJobRequest build() { return new CreateStowJobRequest(this); }
     }
 }

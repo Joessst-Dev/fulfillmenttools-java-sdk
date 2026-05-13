@@ -38,32 +38,61 @@ public final class CreateUserRequest {
         this.assignedRoles = builder.assignedRoles;
     }
 
-    /** @return the login username */
+    /**
+     * Returns the login username.
+     * @return the username; never {@code null}
+     */
     public String username() { return username; }
 
-    /** @return the initial password */
+    /**
+     * Returns the initial password.
+     * @return the password; never {@code null}
+     */
     public String password() { return password; }
 
-    /** @return the user's given name */
+    /**
+     * Returns the user's given name.
+     * @return the first name; never {@code null}
+     */
     public String firstName() { return firstName; }
 
-    /** @return the user's family name */
+    /**
+     * Returns the user's family name.
+     * @return the last name; never {@code null}
+     */
     public String lastName() { return lastName; }
 
-    /** @return the user's email address, or {@code null} if not provided */
+    /**
+     * Returns the user's email address.
+     * @return the email, or {@code null} if not provided
+     */
     public String email() { return email; }
 
-    /** @return the user's preferred locale, or {@code null} if not provided */
+    /**
+     * Returns the user's preferred locale.
+     * @return the locale, or {@code null} if not provided
+     */
     public String locale() { return locale; }
 
-    /** @return the role assignments for the new user, or {@code null} if not provided */
+    /**
+     * Returns the role assignments for the new user.
+     * @return the assigned roles, or {@code null} if not provided
+     */
     public List<AssignedRole> assignedRoles() { return assignedRoles; }
 
-    /** @return a new {@link Builder} */
+    /**
+     * Creates a new builder for constructing a {@link CreateUserRequest}.
+     * @return a new builder instance
+     */
     public static Builder builder() { return new Builder(); }
 
-    /** Fluent builder for {@link CreateUserRequest}. */
+    /**
+     * Fluent builder for {@link CreateUserRequest}.
+     */
     public static final class Builder {
+
+        /** Creates a new Builder instance. */
+        public Builder() {}
 
         private String username;
         private String password;
@@ -73,29 +102,58 @@ public final class CreateUserRequest {
         private String locale;
         private List<AssignedRole> assignedRoles;
 
-        /** @param username the login username; required */
+        /**
+         * Sets the login username (required).
+         * @param username the login username
+         * @return this builder
+         */
         public Builder username(String username) { this.username = username; return this; }
 
-        /** @param password the initial password; required */
+        /**
+         * Sets the initial password (required).
+         * @param password the initial password
+         * @return this builder
+         */
         public Builder password(String password) { this.password = password; return this; }
 
-        /** @param firstName the user's given name; required */
+        /**
+         * Sets the user's given name (required).
+         * @param firstName the given name
+         * @return this builder
+         */
         public Builder firstName(String firstName) { this.firstName = firstName; return this; }
 
-        /** @param lastName the user's family name; required */
+        /**
+         * Sets the user's family name (required).
+         * @param lastName the family name
+         * @return this builder
+         */
         public Builder lastName(String lastName) { this.lastName = lastName; return this; }
 
-        /** @param email the user's email address */
+        /**
+         * Sets the user's email address.
+         * @param email the email address
+         * @return this builder
+         */
         public Builder email(String email) { this.email = email; return this; }
 
-        /** @param locale the user's preferred locale */
+        /**
+         * Sets the user's preferred locale.
+         * @param locale the preferred locale
+         * @return this builder
+         */
         public Builder locale(String locale) { this.locale = locale; return this; }
 
-        /** @param assignedRoles the role assignments for the new user */
+        /**
+         * Sets the role assignments for the new user.
+         * @param assignedRoles the role assignments
+         * @return this builder
+         */
         public Builder assignedRoles(List<AssignedRole> assignedRoles) { this.assignedRoles = assignedRoles; return this; }
 
         /**
-         * @return a validated {@link CreateUserRequest}
+         * Builds and returns a validated {@link CreateUserRequest}.
+         * @return a new request instance
          * @throws NullPointerException if any required field is not set
          */
         public CreateUserRequest build() { return new CreateUserRequest(this); }

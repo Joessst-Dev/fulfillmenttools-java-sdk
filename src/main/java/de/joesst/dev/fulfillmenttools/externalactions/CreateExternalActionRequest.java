@@ -40,31 +40,50 @@ public final class CreateExternalActionRequest {
         this.customAttributes = builder.customAttributes;
     }
 
-    /** @return the process reference; never {@code null} */
+    /**
+     * Returns the process reference.
+     * @return the process reference; never {@code null}
+     */
     public String processRef() { return processRef; }
 
     /**
+     * Returns the localized names map.
      * @return localized names; key is locale (e.g. {@code "en_US"}), value is translation;
      *         never {@code null}
      */
     public Map<String, String> nameLocalized() { return nameLocalized; }
 
-    /** @return grouping tags; never {@code null} */
+    /**
+     * Returns the grouping tags.
+     * @return grouping tags; never {@code null}
+     */
     public List<String> groups() { return groups; }
 
-    /** @return the typed action definition; never {@code null} */
+    /**
+     * Returns the typed action definition.
+     * @return the typed action definition; never {@code null}
+     */
     public ExternalActionDefinition action() { return action; }
 
-    /** @return free-form custom attributes, or {@code null} if not set */
+    /**
+     * Returns the free-form custom attributes.
+     * @return free-form custom attributes, or {@code null} if not set
+     */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
-    /** @return a new builder instance */
+    /**
+     * Creates a new builder instance.
+     * @return a new builder instance
+     */
     public static Builder builder() { return new Builder(); }
 
     /**
      * Builder for {@link CreateExternalActionRequest}.
      */
     public static final class Builder {
+
+        /** Creates a new Builder instance. */
+        public Builder() {}
 
         private String processRef;
         private Map<String, String> nameLocalized;
@@ -73,6 +92,7 @@ public final class CreateExternalActionRequest {
         private Map<String, Object> customAttributes;
 
         /**
+         * Sets the ID of the global process.
          * @param processRef ID of the global process (required)
          * @return this builder
          */
@@ -82,6 +102,7 @@ public final class CreateExternalActionRequest {
         }
 
         /**
+         * Sets the localized names map.
          * @param nameLocalized localized names map; key is locale, value is translation (required)
          * @return this builder
          */
@@ -91,6 +112,7 @@ public final class CreateExternalActionRequest {
         }
 
         /**
+         * Sets the grouping tags.
          * @param groups grouping tags (required)
          * @return this builder
          */
@@ -100,6 +122,7 @@ public final class CreateExternalActionRequest {
         }
 
         /**
+         * Sets the typed action definition.
          * @param action the typed action definition (required)
          * @return this builder
          */
@@ -109,6 +132,7 @@ public final class CreateExternalActionRequest {
         }
 
         /**
+         * Sets the free-form custom attributes.
          * @param customAttributes free-form custom attributes (optional)
          * @return this builder
          */

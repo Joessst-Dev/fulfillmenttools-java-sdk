@@ -38,6 +38,9 @@ public final class CreateRoutingStrategyRequest {
     /** Builder for {@link CreateRoutingStrategyRequest}. */
     public static final class Builder {
 
+        /** Creates a new Builder instance. */
+        public Builder() {}
+
         private Map<String, String> nameLocalized;
 
         /**

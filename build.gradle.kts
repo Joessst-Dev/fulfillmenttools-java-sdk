@@ -38,6 +38,10 @@ tasks.test {
 
 tasks.javadoc {
     exclude("**/internal/**")
+    (options as StandardJavadocDocletOptions).apply {
+        addStringOption("Xdoclint:all", "-quiet")
+        addStringOption("Xmaxwarns", "9999")
+    }
 }
 
 publishing {
