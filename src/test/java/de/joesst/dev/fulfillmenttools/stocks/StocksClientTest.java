@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -184,6 +185,93 @@ class StocksClientTest {
         // Then
         assertThat(items).hasSize(1);
         server.verify(1, getRequestedFor(urlPathEqualTo("/api/stocks")));
+    }
+
+    // --- typed field deserialization ---
+
+    @Test
+    void list_deserializesTypedPropertiesAsMapOfStrings() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("""
+                        {"stocks":[{
+                          "id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":3,
+                          "properties":{"expiryDate":"2025-12-31","batchId":"B42"}
+                        }]}
+                        """)));
+
+        // When
+        StockItem item = client.stocks().list(StockListRequest.builder().build()).items().get(0);
+
+        // Then
+        assertThat(item.properties())
+                .isInstanceOf(Map.class)
+                .containsEntry("expiryDate", "2025-12-31")
+                .containsEntry("batchId", "B42");
+    }
+
+    @Test
+    void list_deserializesTraitConfigAsTypedList() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("""
+                        {"stocks":[{
+                          "id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":3,
+                          "traitConfig":[
+                            {"trait":"PICKABLE","enabled":true},
+                            {"trait":"ACCESSIBLE","enabled":false}
+                          ]
+                        }]}
+                        """)));
+
+        // When
+        StockItem item = client.stocks().list(StockListRequest.builder().build()).items().get(0);
+
+        // Then
+        assertThat(item.traitConfig()).hasSize(2);
+        assertThat(item.traitConfig().get(0).trait()).isEqualTo("PICKABLE");
+        assertThat(item.traitConfig().get(0).enabled()).isTrue();
+        assertThat(item.traitConfig().get(1).trait()).isEqualTo("ACCESSIBLE");
+        assertThat(item.traitConfig().get(1).enabled()).isFalse();
+    }
+
+    @Test
+    void list_deserializesFacilityAsStockFacilityReferences() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("""
+                        {"stocks":[{
+                          "id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":3,
+                          "facility":{"facilityRef":"fac-1","tenantFacilityId":"tenant-fac-1"}
+                        }]}
+                        """)));
+
+        // When
+        StockItem item = client.stocks().list(StockListRequest.builder().build()).items().get(0);
+
+        // Then
+        assertThat(item.facility()).isNotNull();
+        assertThat(item.facility().facilityRef()).isEqualTo("fac-1");
+        assertThat(item.facility().tenantFacilityId()).isEqualTo("tenant-fac-1");
+    }
+
+    @Test
+    void list_handlesNullFacilityAndPropertiesAndTraitConfig() {
+        // Given — stock item with none of the new typed fields present
+        server.stubFor(get(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("""
+                        {"stocks":[{
+                          "id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":3
+                        }]}
+                        """)));
+
+        // When
+        StockItem item = client.stocks().list(StockListRequest.builder().build()).items().get(0);
+
+        // Then
+        assertThat(item.facility()).isNull();
+        assertThat(item.properties()).isNull();
+        assertThat(item.traitConfig()).isNull();
     }
 
     // --- Helpers ---
