@@ -10,6 +10,6 @@ record UpdateFacilityGroupBody(
         Integer version,
         String tenantFacilityGroupId,
         List<String> facilityRefs,
-        Map<String, Object> nameLocalized,
+        Map<String, String> nameLocalized,
         Map<String, Object> customAttributes
 ) {}

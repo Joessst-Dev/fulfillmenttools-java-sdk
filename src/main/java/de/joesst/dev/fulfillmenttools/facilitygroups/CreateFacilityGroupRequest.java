@@ -8,7 +8,7 @@ public final class CreateFacilityGroupRequest {
 
     private final String tenantFacilityGroupId;
     private final List<String> facilityRefs;
-    private final Map<String, Object> nameLocalized;
+    private final Map<String, String> nameLocalized;
     private final Map<String, Object> customAttributes;
 
     private CreateFacilityGroupRequest(Builder builder) {
@@ -20,7 +20,7 @@ public final class CreateFacilityGroupRequest {
 
     public String tenantFacilityGroupId() { return tenantFacilityGroupId; }
     public List<String> facilityRefs() { return facilityRefs; }
-    public Map<String, Object> nameLocalized() { return nameLocalized; }
+    public Map<String, String> nameLocalized() { return nameLocalized; }
     public Map<String, Object> customAttributes() { return customAttributes; }
 
     public static Builder builder() { return new Builder(); }
@@ -28,12 +28,12 @@ public final class CreateFacilityGroupRequest {
     public static final class Builder {
         private String tenantFacilityGroupId;
         private List<String> facilityRefs;
-        private Map<String, Object> nameLocalized;
+        private Map<String, String> nameLocalized;
         private Map<String, Object> customAttributes;
 
         public Builder tenantFacilityGroupId(String tenantFacilityGroupId) { this.tenantFacilityGroupId = tenantFacilityGroupId; return this; }
         public Builder facilityRefs(List<String> facilityRefs) { this.facilityRefs = facilityRefs; return this; }
-        public Builder nameLocalized(Map<String, Object> nameLocalized) { this.nameLocalized = nameLocalized; return this; }
+        public Builder nameLocalized(Map<String, String> nameLocalized) { this.nameLocalized = nameLocalized; return this; }
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public CreateFacilityGroupRequest build() { return new CreateFacilityGroupRequest(this); }

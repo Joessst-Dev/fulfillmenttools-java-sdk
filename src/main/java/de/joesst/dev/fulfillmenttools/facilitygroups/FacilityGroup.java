@@ -11,7 +11,7 @@ public record FacilityGroup(
         Instant lastModified,
         String tenantFacilityGroupId,
         List<String> facilityRefs,
-        Map<String, Object> nameLocalized,
+        Map<String, String> nameLocalized,
         String name,
         Map<String, Object> customAttributes
 ) {}
