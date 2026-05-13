@@ -43,7 +43,7 @@ Add the SDK to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("de.joesst.dev:fulfillmenttools-java-sdk:0.1.0-SNAPSHOT")
+    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk:0.1.0-SNAPSHOT")
 }
 ```
 
@@ -53,7 +53,7 @@ Add to your `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>de.joesst.dev</groupId>
+    <groupId>io.github.joessst-dev</groupId>
     <artifactId>fulfillmenttools-java-sdk</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -65,7 +65,7 @@ If you are using Spring Boot 3.x, you can use the starter module for automatic c
 
 ```kotlin
 dependencies {
-    implementation("de.joesst.dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0-SNAPSHOT")
+    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0-SNAPSHOT")
 }
 ```
 
