@@ -9,6 +9,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -96,6 +97,48 @@ class CarriersClientTest {
         assertThatThrownBy(() -> client.carriers().get("missing"))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Carrier not found");
+    }
+
+    @Test
+    void get_deserializesParcelLabelClassifications() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/carriers/c-1"))
+                .willReturn(okJson("""
+                        {
+                          "id": "c-1",
+                          "parcelLabelClassifications": [
+                            {
+                              "name": "Standard",
+                              "nameLocalized": { "en": "Standard", "de": "Standard" },
+                              "dimensions": {
+                                "height": 30.0,
+                                "length": 60.0,
+                                "width": 40.0,
+                                "weight": 5000.0,
+                                "customWeight": 4800.0
+                              },
+                              "services": { "bulkyGoods": false }
+                            }
+                          ]
+                        }
+                        """)));
+
+        // When
+        Carrier carrier = client.carriers().get("c-1");
+
+        // Then
+        assertThat(carrier.parcelLabelClassifications()).hasSize(1);
+        ParcelLabelClassification classification = carrier.parcelLabelClassifications().get(0);
+        assertThat(classification.name()).isEqualTo("Standard");
+        assertThat(classification.nameLocalized()).containsEntry("en", "Standard").containsEntry("de", "Standard");
+        assertThat(classification.dimensions()).isNotNull();
+        assertThat(classification.dimensions().height()).isEqualTo(30.0);
+        assertThat(classification.dimensions().length()).isEqualTo(60.0);
+        assertThat(classification.dimensions().width()).isEqualTo(40.0);
+        assertThat(classification.dimensions().weight()).isEqualTo(5000.0);
+        assertThat(classification.dimensions().customWeight()).isEqualTo(4800.0);
+        assertThat(classification.services()).isNotNull();
+        assertThat(classification.services().bulkyGoods()).isFalse();
     }
 
     // --- list ---
@@ -197,6 +240,34 @@ class CarriersClientTest {
                 .withRequestBody(matchingJsonPath("$.key", equalTo("dhl")))
                 .withRequestBody(matchingJsonPath("$.name", equalTo("DHL")))
                 .withRequestBody(matchingJsonPath("$.status", equalTo("ACTIVE"))));
+    }
+
+    @Test
+    void create_sendsTypedParcelLabelClassificationsInBody() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/carriers"))
+                .willReturn(okJson("{\"id\":\"c-new\"}")));
+
+        ParcelLabelClassificationForCreation classification = new ParcelLabelClassificationForCreation(
+                Map.of("en", "Standard", "de", "Standard"),
+                new ParcelDimensions(4800.0, 30.0, 60.0, 5000.0, 40.0),
+                new ParcelLabelClassificationServices(false)
+        );
+
+        // When
+        client.carriers().create(CreateCarrierRequest.builder()
+                .key("dhl")
+                .name("DHL")
+                .parcelLabelClassifications(List.of(classification))
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/carriers"))
+                .withHeader("Content-Type", containing("application/json"))
+                .withRequestBody(matchingJsonPath("$.parcelLabelClassifications[0].nameLocalized.en", equalTo("Standard")))
+                .withRequestBody(matchingJsonPath("$.parcelLabelClassifications[0].dimensions.height", equalTo("30.0")))
+                .withRequestBody(matchingJsonPath("$.parcelLabelClassifications[0].dimensions.weight", equalTo("5000.0")))
+                .withRequestBody(matchingJsonPath("$.parcelLabelClassifications[0].services.bulkyGoods", equalTo("false"))));
     }
 
     @Test

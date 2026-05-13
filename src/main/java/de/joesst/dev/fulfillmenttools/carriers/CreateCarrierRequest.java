@@ -18,7 +18,7 @@ public final class CreateCarrierRequest {
     private final Double defaultParcelWeightInGram;
     private final Boolean productValueNeeded;
     private final Map<String, Object> credentials;
-    private final List<Map<String, Object>> parcelLabelClassifications;
+    private final List<ParcelLabelClassificationForCreation> parcelLabelClassifications;
 
     private CreateCarrierRequest(Builder builder) {
         this.key = Objects.requireNonNull(builder.key, "key must not be null");
@@ -48,7 +48,7 @@ public final class CreateCarrierRequest {
     public Double defaultParcelWeightInGram() { return defaultParcelWeightInGram; }
     public Boolean productValueNeeded() { return productValueNeeded; }
     public Map<String, Object> credentials() { return credentials; }
-    public List<Map<String, Object>> parcelLabelClassifications() { return parcelLabelClassifications; }
+    public List<ParcelLabelClassificationForCreation> parcelLabelClassifications() { return parcelLabelClassifications; }
 
     public static Builder builder() { return new Builder(); }
 
@@ -66,7 +66,7 @@ public final class CreateCarrierRequest {
         private Double defaultParcelWeightInGram;
         private Boolean productValueNeeded;
         private Map<String, Object> credentials;
-        private List<Map<String, Object>> parcelLabelClassifications;
+        private List<ParcelLabelClassificationForCreation> parcelLabelClassifications;
 
         public Builder key(String key) { this.key = key; return this; }
         public Builder name(String name) { this.name = name; return this; }
@@ -80,7 +80,7 @@ public final class CreateCarrierRequest {
         public Builder defaultParcelWeightInGram(Double v) { this.defaultParcelWeightInGram = v; return this; }
         public Builder productValueNeeded(Boolean v) { this.productValueNeeded = v; return this; }
         public Builder credentials(Map<String, Object> credentials) { this.credentials = credentials; return this; }
-        public Builder parcelLabelClassifications(List<Map<String, Object>> v) { this.parcelLabelClassifications = v; return this; }
+        public Builder parcelLabelClassifications(List<ParcelLabelClassificationForCreation> v) { this.parcelLabelClassifications = v; return this; }
 
         public CreateCarrierRequest build() { return new CreateCarrierRequest(this); }
     }

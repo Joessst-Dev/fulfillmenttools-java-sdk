@@ -21,5 +21,5 @@ public record Carrier(
         String logoUrl,
         Boolean productValueNeeded,
         Map<String, Object> credentials,
-        List<Map<String, Object>> parcelLabelClassifications
+        List<ParcelLabelClassification> parcelLabelClassifications
 ) {}

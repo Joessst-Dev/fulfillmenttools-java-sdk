@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.internal.carriers;
 
+import de.joesst.dev.fulfillmenttools.carriers.ParcelLabelClassificationForCreation;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,5 +18,5 @@ record CreateCarrierBody(
         Double defaultParcelWeightInGram,
         Boolean productValueNeeded,
         Map<String, Object> credentials,
-        List<Map<String, Object>> parcelLabelClassifications
+        List<ParcelLabelClassificationForCreation> parcelLabelClassifications
 ) {}
