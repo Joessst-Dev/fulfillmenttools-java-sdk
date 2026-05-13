@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRequestId;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -37,7 +38,7 @@ public interface SourcingOptionsClient {
      * @return the sourcing options result
      * @throws FulfillmenttoolsException if the request fails or the result is not found
      */
-    SourcingOptionsResult get(String sourcingOptionsRequestId);
+    SourcingOptionsResult get(SourcingOptionsRequestId sourcingOptionsRequestId);
 
     /**
      * Asynchronously retrieves a previously computed sourcing options result by ID.
@@ -46,5 +47,5 @@ public interface SourcingOptionsClient {
      * @return a future that completes with the sourcing options result
      * @throws FulfillmenttoolsException if the request fails or the result is not found
      */
-    CompletableFuture<SourcingOptionsResult> getAsync(String sourcingOptionsRequestId);
+    CompletableFuture<SourcingOptionsResult> getAsync(SourcingOptionsRequestId sourcingOptionsRequestId);
 }

@@ -1,6 +1,8 @@
 package de.joesst.dev.fulfillmenttools.facilityconnections;
 
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -22,7 +24,7 @@ public interface FacilityConnectionsClient {
      * @return the facility connection
      * @throws FulfillmenttoolsException if the connection is not found or a request error occurs
      */
-    FacilityConnection get(String facilityId, String connectionId);
+    FacilityConnection get(FacilityId facilityId, ConnectionId connectionId);
 
     /**
      * Asynchronously retrieves a single facility connection by ID.
@@ -31,7 +33,7 @@ public interface FacilityConnectionsClient {
      * @param connectionId unique identifier of the connection
      * @return a future that completes with the facility connection
      */
-    CompletableFuture<FacilityConnection> getAsync(String facilityId, String connectionId);
+    CompletableFuture<FacilityConnection> getAsync(FacilityId facilityId, ConnectionId connectionId);
 
     /**
      * Lists facility connections with optional filtering and pagination.
@@ -41,7 +43,7 @@ public interface FacilityConnectionsClient {
      * @return a single page of connections
      * @throws FulfillmenttoolsException if a request error occurs
      */
-    Page<FacilityConnection> list(String facilityId, FacilityConnectionListRequest request);
+    Page<FacilityConnection> list(FacilityId facilityId, FacilityConnectionListRequest request);
 
     /**
      * Iterates through all facility connections, automatically handling pagination.
@@ -50,7 +52,7 @@ public interface FacilityConnectionsClient {
      * @param request the list request parameters
      * @return an iterable over all matching connections
      */
-    Iterable<FacilityConnection> listAll(String facilityId, FacilityConnectionListRequest request);
+    Iterable<FacilityConnection> listAll(FacilityId facilityId, FacilityConnectionListRequest request);
 
     /**
      * Asynchronously lists facility connections with optional filtering and pagination.
@@ -59,7 +61,7 @@ public interface FacilityConnectionsClient {
      * @param request the list request parameters
      * @return a future that completes with a single page of connections
      */
-    CompletableFuture<Page<FacilityConnection>> listAsync(String facilityId, FacilityConnectionListRequest request);
+    CompletableFuture<Page<FacilityConnection>> listAsync(FacilityId facilityId, FacilityConnectionListRequest request);
 
     /**
      * Creates a new facility connection.
@@ -69,7 +71,7 @@ public interface FacilityConnectionsClient {
      * @return the created connection with assigned ID and metadata
      * @throws FulfillmenttoolsException if validation fails or a request error occurs
      */
-    FacilityConnection create(String facilityId, CreateFacilityConnectionRequest request);
+    FacilityConnection create(FacilityId facilityId, CreateFacilityConnectionRequest request);
 
     /**
      * Asynchronously creates a new facility connection.
@@ -78,7 +80,7 @@ public interface FacilityConnectionsClient {
      * @param request the connection creation payload
      * @return a future that completes with the created connection
      */
-    CompletableFuture<FacilityConnection> createAsync(String facilityId, CreateFacilityConnectionRequest request);
+    CompletableFuture<FacilityConnection> createAsync(FacilityId facilityId, CreateFacilityConnectionRequest request);
 
     /**
      * Updates an existing facility connection with partial changes.
@@ -89,7 +91,7 @@ public interface FacilityConnectionsClient {
      * @return the updated connection
      * @throws FulfillmenttoolsException if the connection is not found or a request error occurs
      */
-    FacilityConnection update(String facilityId, String connectionId, UpdateFacilityConnectionRequest request);
+    FacilityConnection update(FacilityId facilityId, ConnectionId connectionId, UpdateFacilityConnectionRequest request);
 
     /**
      * Asynchronously updates an existing facility connection.
@@ -99,7 +101,7 @@ public interface FacilityConnectionsClient {
      * @param request the update payload with new field values
      * @return a future that completes with the updated connection
      */
-    CompletableFuture<FacilityConnection> updateAsync(String facilityId, String connectionId, UpdateFacilityConnectionRequest request);
+    CompletableFuture<FacilityConnection> updateAsync(FacilityId facilityId, ConnectionId connectionId, UpdateFacilityConnectionRequest request);
 
     /**
      * Deletes a facility connection.
@@ -108,7 +110,7 @@ public interface FacilityConnectionsClient {
      * @param connectionId unique identifier of the connection to delete
      * @throws FulfillmenttoolsException if the connection is not found or a request error occurs
      */
-    void delete(String facilityId, String connectionId);
+    void delete(FacilityId facilityId, ConnectionId connectionId);
 
     /**
      * Asynchronously deletes a facility connection.
@@ -117,5 +119,5 @@ public interface FacilityConnectionsClient {
      * @param connectionId unique identifier of the connection to delete
      * @return a future that completes when the deletion is done
      */
-    CompletableFuture<Void> deleteAsync(String facilityId, String connectionId);
+    CompletableFuture<Void> deleteAsync(FacilityId facilityId, ConnectionId connectionId);
 }

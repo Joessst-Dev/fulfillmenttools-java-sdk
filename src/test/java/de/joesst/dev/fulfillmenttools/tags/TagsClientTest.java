@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.TagId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import org.junit.jupiter.api.*;
@@ -49,7 +50,7 @@ class TagsClientTest {
                         """)));
 
         // When
-        Tag tag = client.tags().get("color");
+        Tag tag = client.tags().get(new TagId("color"));
 
         // Then
         assertThat(tag.id()).isEqualTo("color");
@@ -64,7 +65,7 @@ class TagsClientTest {
                 .willReturn(okJson("{\"id\":\"color\",\"version\":1,\"allowedValues\":[]}")));
 
         // When
-        client.tags().get("color");
+        client.tags().get(new TagId("color"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/tags/color"))
@@ -78,7 +79,7 @@ class TagsClientTest {
                 .willReturn(aResponse().withStatus(404)));
 
         // Then
-        assertThatThrownBy(() -> client.tags().get("missing"))
+        assertThatThrownBy(() -> client.tags().get(new TagId("missing")))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -216,7 +217,7 @@ class TagsClientTest {
                 .willReturn(okJson("{\"id\":\"color\",\"version\":2,\"allowedValues\":[\"red\",\"blue\"]}")));
 
         // When
-        Tag tag = client.tags().addAllowedValue("color", "blue", 1);
+        Tag tag = client.tags().addAllowedValue(new TagId("color"), "blue", 1);
 
         // Then
         server.verify(patchRequestedFor(urlPathEqualTo("/api/tags/color"))

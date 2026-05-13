@@ -6,10 +6,13 @@ import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
 import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionListRequest;
 import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionsClient;
 import de.joesst.dev.fulfillmenttools.facilityconnections.UpdateFacilityConnectionRequest;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
+import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.io.IOException;
@@ -29,28 +32,28 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
     }
 
     @Override
-    public FacilityConnection get(String facilityId, String connectionId) {
+    public FacilityConnection get(FacilityId facilityId, ConnectionId connectionId) {
         return responseHandler.handle(execute(SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(connectionsUrl(facilityId) + "/" + connectionId)
+                .url(connectionsUrl(facilityId) + "/" + connectionId.value())
                 .build()), FacilityConnection.class);
     }
 
     @Override
-    public CompletableFuture<FacilityConnection> getAsync(String facilityId, String connectionId) {
+    public CompletableFuture<FacilityConnection> getAsync(FacilityId facilityId, ConnectionId connectionId) {
         return transport.executeAsync(SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(connectionsUrl(facilityId) + "/" + connectionId)
+                .url(connectionsUrl(facilityId) + "/" + connectionId.value())
                 .build()).thenApply(r -> responseHandler.handle(r, FacilityConnection.class));
     }
 
     @Override
-    public Page<FacilityConnection> list(String facilityId, FacilityConnectionListRequest request) {
+    public Page<FacilityConnection> list(FacilityId facilityId, FacilityConnectionListRequest request) {
         return toPage(responseHandler.handle(execute(buildListRequest(facilityId, request)), FacilityConnectionListResponse.class));
     }
 
     @Override
-    public Iterable<FacilityConnection> listAll(String facilityId, FacilityConnectionListRequest request) {
+    public Iterable<FacilityConnection> listAll(FacilityId facilityId, FacilityConnectionListRequest request) {
         return () -> {
             final FacilityConnectionListRequest[] current = {request};
             return new java.util.Iterator<>() {
@@ -92,50 +95,50 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
     }
 
     @Override
-    public CompletableFuture<Page<FacilityConnection>> listAsync(String facilityId, FacilityConnectionListRequest request) {
+    public CompletableFuture<Page<FacilityConnection>> listAsync(FacilityId facilityId, FacilityConnectionListRequest request) {
         return transport.executeAsync(buildListRequest(facilityId, request))
                 .thenApply(r -> toPage(responseHandler.handle(r, FacilityConnectionListResponse.class)));
     }
 
     @Override
-    public FacilityConnection create(String facilityId, CreateFacilityConnectionRequest request) {
+    public FacilityConnection create(FacilityId facilityId, CreateFacilityConnectionRequest request) {
         return responseHandler.handle(execute(buildCreateRequest(facilityId, request)), FacilityConnection.class);
     }
 
     @Override
-    public CompletableFuture<FacilityConnection> createAsync(String facilityId, CreateFacilityConnectionRequest request) {
+    public CompletableFuture<FacilityConnection> createAsync(FacilityId facilityId, CreateFacilityConnectionRequest request) {
         return transport.executeAsync(buildCreateRequest(facilityId, request))
                 .thenApply(r -> responseHandler.handle(r, FacilityConnection.class));
     }
 
     @Override
-    public FacilityConnection update(String facilityId, String connectionId, UpdateFacilityConnectionRequest request) {
+    public FacilityConnection update(FacilityId facilityId, ConnectionId connectionId, UpdateFacilityConnectionRequest request) {
         return responseHandler.handle(execute(buildUpdateRequest(facilityId, connectionId, request)), FacilityConnection.class);
     }
 
     @Override
-    public CompletableFuture<FacilityConnection> updateAsync(String facilityId, String connectionId, UpdateFacilityConnectionRequest request) {
+    public CompletableFuture<FacilityConnection> updateAsync(FacilityId facilityId, ConnectionId connectionId, UpdateFacilityConnectionRequest request) {
         return transport.executeAsync(buildUpdateRequest(facilityId, connectionId, request))
                 .thenApply(r -> responseHandler.handle(r, FacilityConnection.class));
     }
 
     @Override
-    public void delete(String facilityId, String connectionId) {
+    public void delete(FacilityId facilityId, ConnectionId connectionId) {
         responseHandler.handleVoid(execute(SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(connectionsUrl(facilityId) + "/" + connectionId)
+                .url(connectionsUrl(facilityId) + "/" + connectionId.value())
                 .build()));
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String facilityId, String connectionId) {
+    public CompletableFuture<Void> deleteAsync(FacilityId facilityId, ConnectionId connectionId) {
         return transport.executeAsync(SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(connectionsUrl(facilityId) + "/" + connectionId)
+                .url(connectionsUrl(facilityId) + "/" + connectionId.value())
                 .build()).thenApply(r -> { responseHandler.handleVoid(r); return null; });
     }
 
-    private SdkHttpRequest buildListRequest(String facilityId, FacilityConnectionListRequest request) {
+    private SdkHttpRequest buildListRequest(FacilityId facilityId, FacilityConnectionListRequest request) {
         SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
                 .url(connectionsUrl(facilityId));
@@ -145,7 +148,7 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
         return builder.build();
     }
 
-    private SdkHttpRequest buildCreateRequest(String facilityId, CreateFacilityConnectionRequest request) {
+    private SdkHttpRequest buildCreateRequest(FacilityId facilityId, CreateFacilityConnectionRequest request) {
         return SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(connectionsUrl(facilityId))
@@ -164,10 +167,10 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
                 .build();
     }
 
-    private SdkHttpRequest buildUpdateRequest(String facilityId, String connectionId, UpdateFacilityConnectionRequest request) {
+    private SdkHttpRequest buildUpdateRequest(FacilityId facilityId, ConnectionId connectionId, UpdateFacilityConnectionRequest request) {
         return SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(connectionsUrl(facilityId) + "/" + connectionId)
+                .url(connectionsUrl(facilityId) + "/" + connectionId.value())
                 .body(responseHandler.encode(new UpdateFacilityConnectionBody(
                         request.version(),
                         request.target().type(),
@@ -193,11 +196,11 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
         return new Page<>(items, cursor);
     }
 
-    private String connectionsUrl(String facilityId) {
-        return baseUrl + "/api/facilities/" + facilityId + "/connections";
+    private String connectionsUrl(FacilityId facilityId) {
+        return baseUrl + "/api/facilities/" + facilityId.value() + "/connections";
     }
 
-    private de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse execute(SdkHttpRequest request) {
+    private SdkHttpResponse execute(SdkHttpRequest request) {
         try {
             return transport.execute(request);
         } catch (IOException e) {

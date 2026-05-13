@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.externalactions.ExternalAction;
 import de.joesst.dev.fulfillmenttools.externalactions.ExternalActionListRequest;
 import de.joesst.dev.fulfillmenttools.externalactions.ExternalActionsClient;
 import de.joesst.dev.fulfillmenttools.externalactions.UpdateExternalActionRequest;
+import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
@@ -34,10 +35,10 @@ public final class ExternalActionsClientImpl implements ExternalActionsClient {
     }
 
     @Override
-    public ExternalAction get(String externalActionId) {
+    public ExternalAction get(ExternalActionId externalActionId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/externalactions/" + externalActionId)
+                .url(baseUrl + "/api/externalactions/" + externalActionId.value())
                 .build();
         return responseHandler.handle(execute(request), ExternalAction.class);
     }
@@ -73,23 +74,23 @@ public final class ExternalActionsClientImpl implements ExternalActionsClient {
     }
 
     @Override
-    public ExternalAction update(String externalActionId, UpdateExternalActionRequest request) {
+    public ExternalAction update(ExternalActionId externalActionId, UpdateExternalActionRequest request) {
         UpdateExternalActionBody body = new UpdateExternalActionBody(
                 request.version(), request.nameLocalized(), request.groups(),
                 request.action(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/externalactions/" + externalActionId)
+                .url(baseUrl + "/api/externalactions/" + externalActionId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), ExternalAction.class);
     }
 
     @Override
-    public CompletableFuture<ExternalAction> getAsync(String externalActionId) {
+    public CompletableFuture<ExternalAction> getAsync(ExternalActionId externalActionId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/externalactions/" + externalActionId)
+                .url(baseUrl + "/api/externalactions/" + externalActionId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, ExternalAction.class));
@@ -118,13 +119,13 @@ public final class ExternalActionsClientImpl implements ExternalActionsClient {
     }
 
     @Override
-    public CompletableFuture<ExternalAction> updateAsync(String externalActionId, UpdateExternalActionRequest request) {
+    public CompletableFuture<ExternalAction> updateAsync(ExternalActionId externalActionId, UpdateExternalActionRequest request) {
         UpdateExternalActionBody body = new UpdateExternalActionBody(
                 request.version(), request.nameLocalized(), request.groups(),
                 request.action(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/externalactions/" + externalActionId)
+                .url(baseUrl + "/api/externalactions/" + externalActionId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)

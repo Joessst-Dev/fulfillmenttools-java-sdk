@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -48,7 +49,7 @@ class OrdersAsyncTest {
                 .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"OPEN\"}")));
 
         // When
-        Order order = client.orders().getAsync("ord-1").get();
+        Order order = client.orders().getAsync(new OrderId("ord-1")).get();
 
         // Then
         assertThat(order.id()).isEqualTo("ord-1");
@@ -104,7 +105,7 @@ class OrdersAsyncTest {
 
         // When
         Order order = client.orders()
-                .updateAsync("ord-1", UpdateOrderRequest.builder().version(1).comment("reroute").build()).get();
+                .updateAsync(new OrderId("ord-1"), UpdateOrderRequest.builder().version(1).comment("reroute").build()).get();
 
         // Then
         assertThat(order.status()).isEqualTo("LOCKED");
@@ -117,7 +118,7 @@ class OrdersAsyncTest {
                 .willReturn(aResponse().withStatus(200)));
 
         // When / Then
-        assertThatCode(() -> client.orders().deleteAsync("ord-1").get())
+        assertThatCode(() -> client.orders().deleteAsync(new OrderId("ord-1")).get())
                 .doesNotThrowAnyException();
     }
 
@@ -130,7 +131,7 @@ class OrdersAsyncTest {
                         """)));
 
         // When
-        CompletableFuture<Order> future = client.orders().getAsync("missing");
+        CompletableFuture<Order> future = client.orders().getAsync(new OrderId("missing"));
 
         // Then
         assertThatThrownBy(future::get)

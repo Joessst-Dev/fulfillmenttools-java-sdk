@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -58,7 +59,7 @@ class InboundClientTest {
                         """)));
 
         // When
-        StowJob job = client.inbound().get("sj-1");
+        StowJob job = client.inbound().get(new StowJobId("sj-1"));
 
         // Then
         assertThat(job.id()).isEqualTo("sj-1");
@@ -75,7 +76,7 @@ class InboundClientTest {
                 .willReturn(okJson("{\"id\":\"sj-1\"}")));
 
         // When
-        client.inbound().get("sj-1");
+        client.inbound().get(new StowJobId("sj-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/stowjobs/sj-1"))
@@ -92,7 +93,7 @@ class InboundClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.inbound().get("missing"))
+        assertThatThrownBy(() -> client.inbound().get(new StowJobId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Stow job not found");
     }
@@ -240,7 +241,7 @@ class InboundClientTest {
                 .willReturn(okJson("{\"id\":\"sj-1\",\"status\":\"OPEN\",\"priority\":5}")));
 
         // When
-        StowJob job = client.inbound().update("sj-1", UpdateStowJobRequest.builder()
+        StowJob job = client.inbound().update(new StowJobId("sj-1"), UpdateStowJobRequest.builder()
                 .version(2)
                 .priority(5)
                 .build());
@@ -269,7 +270,7 @@ class InboundClientTest {
                 .willReturn(okJson("{\"id\":\"sj-1\",\"status\":\"IN_PROGRESS\"}")));
 
         // When
-        StowJob job = client.inbound().start("sj-1", 1);
+        StowJob job = client.inbound().start(new StowJobId("sj-1"), 1);
 
         // Then
         assertThat(job.status()).isEqualTo("IN_PROGRESS");
@@ -285,7 +286,7 @@ class InboundClientTest {
                 .willReturn(okJson("{\"id\":\"sj-1\",\"status\":\"CANCELED\"}")));
 
         // When
-        client.inbound().cancel("sj-1", 2);
+        client.inbound().cancel(new StowJobId("sj-1"), 2);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/stowjobs/sj-1/actions"))
@@ -299,7 +300,7 @@ class InboundClientTest {
                 .willReturn(okJson("{\"id\":\"sj-1\",\"status\":\"CLOSED\"}")));
 
         // When
-        client.inbound().close("sj-1", 3);
+        client.inbound().close(new StowJobId("sj-1"), 3);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/stowjobs/sj-1/actions"))

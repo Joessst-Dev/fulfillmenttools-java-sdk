@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -59,7 +60,7 @@ class ExternalActionsClientTest {
                         """)));
 
         // When
-        ExternalAction action = client.externalActions().get("ea-1");
+        ExternalAction action = client.externalActions().get(new ExternalActionId("ea-1"));
 
         // Then
         assertThat(action.id()).isEqualTo("ea-1");
@@ -98,7 +99,7 @@ class ExternalActionsClientTest {
                         """)));
 
         // When
-        ExternalAction action = client.externalActions().get("ea-2");
+        ExternalAction action = client.externalActions().get(new ExternalActionId("ea-2"));
 
         // Then
         assertThat(action.action()).isInstanceOf(ExternalFormActionDefinition.class);
@@ -125,7 +126,7 @@ class ExternalActionsClientTest {
                         """)));
 
         // When
-        ExternalAction action = client.externalActions().get("ea-3");
+        ExternalAction action = client.externalActions().get(new ExternalActionId("ea-3"));
 
         // Then
         assertThat(action.action()).isInstanceOf(ExternalCommentActionDefinition.class);
@@ -139,7 +140,7 @@ class ExternalActionsClientTest {
                 .willReturn(okJson("{\"id\":\"ea-1\"}")));
 
         // When
-        client.externalActions().get("ea-1");
+        client.externalActions().get(new ExternalActionId("ea-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/externalactions/ea-1"))
@@ -156,7 +157,7 @@ class ExternalActionsClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.externalActions().get("missing"))
+        assertThatThrownBy(() -> client.externalActions().get(new ExternalActionId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("External action not found");
     }
@@ -317,7 +318,7 @@ class ExternalActionsClientTest {
                 .willReturn(okJson("{\"id\":\"ea-1\",\"name\":\"Updated Action\",\"processRef\":\"proc-1\",\"groups\":[]}")));
 
         // When
-        ExternalAction action = client.externalActions().update("ea-1", UpdateExternalActionRequest.builder()
+        ExternalAction action = client.externalActions().update(new ExternalActionId("ea-1"), UpdateExternalActionRequest.builder()
                 .version(2)
                 .nameLocalized(Map.of("en_US", "Updated Action"))
                 .groups(List.of())

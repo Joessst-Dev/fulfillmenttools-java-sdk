@@ -3,6 +3,8 @@ package de.joesst.dev.fulfillmenttools.facilitygroups;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityGroupId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -45,7 +47,7 @@ class FacilityGroupsAsyncTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":1,\"tenantFacilityGroupId\":\"tg-1\",\"facilityRefs\":[\"fac-1\"],\"nameLocalized\":{\"en\":\"G1\"}}")));
 
         // When
-        FacilityGroup group = client.facilityGroups().getAsync("fg-1").get();
+        FacilityGroup group = client.facilityGroups().getAsync(new FacilityGroupId("fg-1")).get();
 
         // Then
         assertThat(group.id()).isEqualTo("fg-1");
@@ -94,7 +96,7 @@ class FacilityGroupsAsyncTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":2,\"tenantFacilityGroupId\":\"tg-1\",\"facilityRefs\":[],\"nameLocalized\":{\"en\":\"Updated\"}}")));
 
         // When
-        FacilityGroup group = client.facilityGroups().updateAsync("fg-1", UpdateFacilityGroupRequest.builder()
+        FacilityGroup group = client.facilityGroups().updateAsync(new FacilityGroupId("fg-1"), UpdateFacilityGroupRequest.builder()
                 .version(1)
                 .nameLocalized(Map.of("en", "Updated"))
                 .build()).get();
@@ -110,7 +112,7 @@ class FacilityGroupsAsyncTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatNoException().isThrownBy(() -> client.facilityGroups().deleteAsync("fg-1").get());
+        assertThatNoException().isThrownBy(() -> client.facilityGroups().deleteAsync(new FacilityGroupId("fg-1")).get());
     }
 
     @Test
@@ -120,7 +122,7 @@ class FacilityGroupsAsyncTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":2,\"tenantFacilityGroupId\":\"tg-1\",\"facilityRefs\":[\"fac-1\",\"fac-2\"],\"nameLocalized\":{}}")));
 
         // When
-        FacilityGroup group = client.facilityGroups().addFacilitiesAsync("fg-1", List.of("fac-2"), 1).get();
+        FacilityGroup group = client.facilityGroups().addFacilitiesAsync(new FacilityGroupId("fg-1"), List.of(new FacilityId("fac-2")), 1).get();
 
         // Then
         assertThat(group.version()).isEqualTo(2);

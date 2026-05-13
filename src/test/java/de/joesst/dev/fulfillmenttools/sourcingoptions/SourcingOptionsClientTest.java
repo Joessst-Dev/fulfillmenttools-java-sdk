@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRequestId;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticleForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 import org.junit.jupiter.api.*;
@@ -186,7 +187,7 @@ class SourcingOptionsClientTest {
                 .willReturn(okJson("{\"id\":\"run-42\",\"result\":{\"options\":[{\"id\":\"opt-1\",\"runId\":\"run-42\",\"totalPenalty\":10.0,\"nodes\":[],\"transfers\":[],\"ratingResults\":[]}]}}")));
 
         // When
-        SourcingOptionsResult result = client.sourcingOptions().get("run-42");
+        SourcingOptionsResult result = client.sourcingOptions().get(new SourcingOptionsRequestId("run-42"));
 
         // Then
         assertThat(result.id()).isEqualTo("run-42");
@@ -201,7 +202,7 @@ class SourcingOptionsClientTest {
                 .willReturn(okJson("{\"id\":\"run-1\",\"result\":{\"options\":[]}}")));
 
         // When
-        client.sourcingOptions().get("run-1");
+        client.sourcingOptions().get(new SourcingOptionsRequestId("run-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/routing/sourcingoptions/run-1"))

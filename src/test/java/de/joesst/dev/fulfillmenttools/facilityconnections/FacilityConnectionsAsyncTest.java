@@ -3,6 +3,8 @@ package de.joesst.dev.fulfillmenttools.facilityconnections;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -42,7 +44,7 @@ class FacilityConnectionsAsyncTest {
                 .willReturn(okJson("{\"id\":\"conn-1\",\"version\":1,\"sourceFacilityRef\":\"fac-1\",\"target\":{\"type\":\"CUSTOMER\"}}")));
 
         // When
-        FacilityConnection conn = client.facilityConnections().getAsync("fac-1", "conn-1").get();
+        FacilityConnection conn = client.facilityConnections().getAsync(new FacilityId("fac-1"), new ConnectionId("conn-1")).get();
 
         // Then
         assertThat(conn.id()).isEqualTo("conn-1");
@@ -63,7 +65,7 @@ class FacilityConnectionsAsyncTest {
 
         // When
         Page<FacilityConnection> page = client.facilityConnections()
-                .listAsync("fac-1", FacilityConnectionListRequest.builder().size(10).build()).get();
+                .listAsync(new FacilityId("fac-1"), FacilityConnectionListRequest.builder().size(10).build()).get();
 
         // Then
         assertThat(page.items()).hasSize(2);
@@ -79,7 +81,7 @@ class FacilityConnectionsAsyncTest {
                 .willReturn(okJson("{\"id\":\"conn-new\",\"version\":1,\"sourceFacilityRef\":\"fac-1\",\"target\":{\"type\":\"SUPPLIER\",\"facilityRef\":\"fac-3\"}}")));
 
         // When
-        FacilityConnection conn = client.facilityConnections().createAsync("fac-1",
+        FacilityConnection conn = client.facilityConnections().createAsync(new FacilityId("fac-1"),
                 CreateFacilityConnectionRequest.builder()
                         .target(ConnectionTarget.Supplier.of("fac-3"))
                         .build()).get();
@@ -97,7 +99,7 @@ class FacilityConnectionsAsyncTest {
                 .willReturn(okJson("{\"id\":\"conn-1\",\"version\":2,\"sourceFacilityRef\":\"fac-1\",\"target\":{\"type\":\"CUSTOMER\"}}")));
 
         // When
-        FacilityConnection conn = client.facilityConnections().updateAsync("fac-1", "conn-1",
+        FacilityConnection conn = client.facilityConnections().updateAsync(new FacilityId("fac-1"), new ConnectionId("conn-1"),
                 UpdateFacilityConnectionRequest.builder()
                         .version(1)
                         .target(ConnectionTarget.Customer.of())
@@ -115,7 +117,7 @@ class FacilityConnectionsAsyncTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When
-        client.facilityConnections().deleteAsync("fac-1", "conn-1").get();
+        client.facilityConnections().deleteAsync(new FacilityId("fac-1"), new ConnectionId("conn-1")).get();
 
         // Then
         server.verify(deleteRequestedFor(urlPathEqualTo("/api/facilities/fac-1/connections/conn-1")));

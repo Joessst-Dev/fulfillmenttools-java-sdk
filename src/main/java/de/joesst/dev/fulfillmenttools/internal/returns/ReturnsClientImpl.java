@@ -9,6 +9,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import de.joesst.dev.fulfillmenttools.returns.CreateReturnRequest;
 import de.joesst.dev.fulfillmenttools.returns.Return;
 import de.joesst.dev.fulfillmenttools.returns.ReturnListRequest;
@@ -33,10 +34,10 @@ public final class ReturnsClientImpl implements ReturnsClient {
     }
 
     @Override
-    public Return get(String returnId) {
+    public Return get(ReturnId returnId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/itemreturnjobs/" + returnId)
+                .url(baseUrl + "/api/itemreturnjobs/" + returnId.value())
                 .build();
         return responseHandler.handle(execute(request), Return.class);
     }
@@ -80,25 +81,25 @@ public final class ReturnsClientImpl implements ReturnsClient {
     }
 
     @Override
-    public Return start(String returnId, int version) {
+    public Return start(ReturnId returnId, int version) {
         return action(returnId, "StartItemReturnJob", version);
     }
 
     @Override
-    public Return finish(String returnId, int version) {
+    public Return finish(ReturnId returnId, int version) {
         return action(returnId, "FinishItemReturnJob", version);
     }
 
     @Override
-    public Return restart(String returnId, int version) {
+    public Return restart(ReturnId returnId, int version) {
         return action(returnId, "RestartItemReturnJob", version);
     }
 
     @Override
-    public CompletableFuture<Return> getAsync(String returnId) {
+    public CompletableFuture<Return> getAsync(ReturnId returnId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/itemreturnjobs/" + returnId)
+                .url(baseUrl + "/api/itemreturnjobs/" + returnId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, Return.class));
@@ -135,33 +136,33 @@ public final class ReturnsClientImpl implements ReturnsClient {
     }
 
     @Override
-    public CompletableFuture<Return> startAsync(String returnId, int version) {
+    public CompletableFuture<Return> startAsync(ReturnId returnId, int version) {
         return actionAsync(returnId, "StartItemReturnJob", version);
     }
 
     @Override
-    public CompletableFuture<Return> finishAsync(String returnId, int version) {
+    public CompletableFuture<Return> finishAsync(ReturnId returnId, int version) {
         return actionAsync(returnId, "FinishItemReturnJob", version);
     }
 
     @Override
-    public CompletableFuture<Return> restartAsync(String returnId, int version) {
+    public CompletableFuture<Return> restartAsync(ReturnId returnId, int version) {
         return actionAsync(returnId, "RestartItemReturnJob", version);
     }
 
-    private Return action(String returnId, String name, int version) {
+    private Return action(ReturnId returnId, String name, int version) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/itemreturnjobs/" + returnId + "/actions")
+                .url(baseUrl + "/api/itemreturnjobs/" + returnId.value() + "/actions")
                 .body(responseHandler.encode(new ReturnJobActionBody(name, version)))
                 .build();
         return responseHandler.handle(execute(httpRequest), Return.class);
     }
 
-    private CompletableFuture<Return> actionAsync(String returnId, String name, int version) {
+    private CompletableFuture<Return> actionAsync(ReturnId returnId, String name, int version) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/itemreturnjobs/" + returnId + "/actions")
+                .url(baseUrl + "/api/itemreturnjobs/" + returnId.value() + "/actions")
                 .body(responseHandler.encode(new ReturnJobActionBody(name, version)))
                 .build();
         return transport.executeAsync(httpRequest)

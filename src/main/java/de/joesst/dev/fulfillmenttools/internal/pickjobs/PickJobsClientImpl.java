@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.pickjobs.PickJob;
 import de.joesst.dev.fulfillmenttools.pickjobs.PickJobListRequest;
 import de.joesst.dev.fulfillmenttools.pickjobs.PickJobsClient;
@@ -30,10 +31,10 @@ public final class PickJobsClientImpl implements PickJobsClient {
     }
 
     @Override
-    public PickJob get(String pickJobId) {
+    public PickJob get(PickJobId pickJobId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/pickjobs/" + pickJobId)
+                .url(baseUrl + "/api/pickjobs/" + pickJobId.value())
                 .build();
         return responseHandler.handle(execute(request), PickJob.class);
     }
@@ -59,7 +60,7 @@ public final class PickJobsClientImpl implements PickJobsClient {
     }
 
     @Override
-    public PickJob update(String pickJobId, UpdatePickJobRequest request) {
+    public PickJob update(PickJobId pickJobId, UpdatePickJobRequest request) {
         UpdatePickJobBody body = new UpdatePickJobBody(
                 request.version(),
                 List.of(new UpdatePickJobBody.ModifyPickJobAction(
@@ -67,47 +68,47 @@ public final class PickJobsClientImpl implements PickJobsClient {
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/pickjobs/" + pickJobId)
+                .url(baseUrl + "/api/pickjobs/" + pickJobId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), PickJob.class);
     }
 
     @Override
-    public PickJob abort(String pickJobId, int version) {
+    public PickJob abort(PickJobId pickJobId, int version) {
         return action(pickJobId, "ABORT", version);
     }
 
     @Override
-    public PickJob restart(String pickJobId, int version) {
+    public PickJob restart(PickJobId pickJobId, int version) {
         return action(pickJobId, "RESTART", version);
     }
 
     @Override
-    public PickJob reset(String pickJobId, int version) {
+    public PickJob reset(PickJobId pickJobId, int version) {
         return action(pickJobId, "RESET", version);
     }
 
     @Override
-    public PickJob obsolete(String pickJobId, int version) {
+    public PickJob obsolete(PickJobId pickJobId, int version) {
         return action(pickJobId, "OBSOLETE", version);
     }
 
     @Override
-    public PickJob start(String pickJobId, int version) {
+    public PickJob start(PickJobId pickJobId, int version) {
         return action(pickJobId, "START", version);
     }
 
     @Override
-    public PickJob pause(String pickJobId, int version) {
+    public PickJob pause(PickJobId pickJobId, int version) {
         return action(pickJobId, "PAUSE", version);
     }
 
     @Override
-    public CompletableFuture<PickJob> getAsync(String pickJobId) {
+    public CompletableFuture<PickJob> getAsync(PickJobId pickJobId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/pickjobs/" + pickJobId)
+                .url(baseUrl + "/api/pickjobs/" + pickJobId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, PickJob.class));
@@ -123,7 +124,7 @@ public final class PickJobsClientImpl implements PickJobsClient {
     }
 
     @Override
-    public CompletableFuture<PickJob> updateAsync(String pickJobId, UpdatePickJobRequest request) {
+    public CompletableFuture<PickJob> updateAsync(PickJobId pickJobId, UpdatePickJobRequest request) {
         UpdatePickJobBody body = new UpdatePickJobBody(
                 request.version(),
                 List.of(new UpdatePickJobBody.ModifyPickJobAction(
@@ -131,7 +132,7 @@ public final class PickJobsClientImpl implements PickJobsClient {
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/pickjobs/" + pickJobId)
+                .url(baseUrl + "/api/pickjobs/" + pickJobId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -139,48 +140,48 @@ public final class PickJobsClientImpl implements PickJobsClient {
     }
 
     @Override
-    public CompletableFuture<PickJob> abortAsync(String pickJobId, int version) {
+    public CompletableFuture<PickJob> abortAsync(PickJobId pickJobId, int version) {
         return actionAsync(pickJobId, "ABORT", version);
     }
 
     @Override
-    public CompletableFuture<PickJob> restartAsync(String pickJobId, int version) {
+    public CompletableFuture<PickJob> restartAsync(PickJobId pickJobId, int version) {
         return actionAsync(pickJobId, "RESTART", version);
     }
 
     @Override
-    public CompletableFuture<PickJob> resetAsync(String pickJobId, int version) {
+    public CompletableFuture<PickJob> resetAsync(PickJobId pickJobId, int version) {
         return actionAsync(pickJobId, "RESET", version);
     }
 
     @Override
-    public CompletableFuture<PickJob> obsoleteAsync(String pickJobId, int version) {
+    public CompletableFuture<PickJob> obsoleteAsync(PickJobId pickJobId, int version) {
         return actionAsync(pickJobId, "OBSOLETE", version);
     }
 
     @Override
-    public CompletableFuture<PickJob> startAsync(String pickJobId, int version) {
+    public CompletableFuture<PickJob> startAsync(PickJobId pickJobId, int version) {
         return actionAsync(pickJobId, "START", version);
     }
 
     @Override
-    public CompletableFuture<PickJob> pauseAsync(String pickJobId, int version) {
+    public CompletableFuture<PickJob> pauseAsync(PickJobId pickJobId, int version) {
         return actionAsync(pickJobId, "PAUSE", version);
     }
 
-    private PickJob action(String pickJobId, String name, int version) {
+    private PickJob action(PickJobId pickJobId, String name, int version) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/pickjobs/" + pickJobId + "/actions")
+                .url(baseUrl + "/api/pickjobs/" + pickJobId.value() + "/actions")
                 .body(responseHandler.encode(new PickJobActionBody(name, version)))
                 .build();
         return responseHandler.handle(execute(httpRequest), PickJob.class);
     }
 
-    private CompletableFuture<PickJob> actionAsync(String pickJobId, String name, int version) {
+    private CompletableFuture<PickJob> actionAsync(PickJobId pickJobId, String name, int version) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/pickjobs/" + pickJobId + "/actions")
+                .url(baseUrl + "/api/pickjobs/" + pickJobId.value() + "/actions")
                 .body(responseHandler.encode(new PickJobActionBody(name, version)))
                 .build();
         return transport.executeAsync(httpRequest)

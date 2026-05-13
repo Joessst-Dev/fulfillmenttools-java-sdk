@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -56,7 +57,7 @@ class ReturnsClientTest {
                         """)));
 
         // When
-        Return ret = client.returns().get("ret-1");
+        Return ret = client.returns().get(new ReturnId("ret-1"));
 
         // Then
         assertThat(ret.id()).isEqualTo("ret-1");
@@ -72,7 +73,7 @@ class ReturnsClientTest {
                 .willReturn(okJson("{\"id\":\"ret-1\"}")));
 
         // When
-        client.returns().get("ret-1");
+        client.returns().get(new ReturnId("ret-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/itemreturnjobs/ret-1"))
@@ -89,7 +90,7 @@ class ReturnsClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.returns().get("missing"))
+        assertThatThrownBy(() -> client.returns().get(new ReturnId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Return job not found");
     }
@@ -224,7 +225,7 @@ class ReturnsClientTest {
                 .willReturn(okJson("{\"id\":\"ret-1\",\"status\":\"IN_PROGRESS\"}")));
 
         // When
-        Return ret = client.returns().start("ret-1", 1);
+        Return ret = client.returns().start(new ReturnId("ret-1"), 1);
 
         // Then
         assertThat(ret.status()).isEqualTo("IN_PROGRESS");
@@ -240,7 +241,7 @@ class ReturnsClientTest {
                 .willReturn(okJson("{\"id\":\"ret-1\",\"status\":\"FINISHED\"}")));
 
         // When
-        client.returns().finish("ret-1", 2);
+        client.returns().finish(new ReturnId("ret-1"), 2);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/itemreturnjobs/ret-1/actions"))
@@ -254,7 +255,7 @@ class ReturnsClientTest {
                 .willReturn(okJson("{\"id\":\"ret-1\",\"status\":\"OPEN\"}")));
 
         // When
-        client.returns().restart("ret-1", 3);
+        client.returns().restart(new ReturnId("ret-1"), 3);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/itemreturnjobs/ret-1/actions"))

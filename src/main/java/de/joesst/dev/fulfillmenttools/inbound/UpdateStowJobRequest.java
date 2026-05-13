@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * Request parameters for updating an existing stow job via
- * {@link InboundClient#update(String, UpdateStowJobRequest)}.
+ * {@link InboundClient#update(de.joesst.dev.fulfillmenttools.id.StowJobId, UpdateStowJobRequest)}.
  *
  * <p>Use the fluent {@link Builder} to construct instances:
  * <pre>{@code

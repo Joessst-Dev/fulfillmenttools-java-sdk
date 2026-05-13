@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -52,7 +54,7 @@ class FacilityConnectionsClientTest {
                         """)));
 
         // When
-        FacilityConnection conn = client.facilityConnections().get("fac-1", "conn-1");
+        FacilityConnection conn = client.facilityConnections().get(new FacilityId("fac-1"), new ConnectionId("conn-1"));
 
         // Then
         assertThat(conn.id()).isEqualTo("conn-1");
@@ -70,7 +72,7 @@ class FacilityConnectionsClientTest {
                 .willReturn(okJson("{\"id\":\"conn-1\",\"version\":1,\"sourceFacilityRef\":\"fac-1\",\"target\":{\"type\":\"CUSTOMER\"}}")));
 
         // When
-        client.facilityConnections().get("fac-1", "conn-1");
+        client.facilityConnections().get(new FacilityId("fac-1"), new ConnectionId("conn-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/facilities/fac-1/connections/conn-1"))
@@ -84,7 +86,7 @@ class FacilityConnectionsClientTest {
                 .willReturn(aResponse().withStatus(404)));
 
         // Then
-        assertThatThrownBy(() -> client.facilityConnections().get("fac-1", "missing"))
+        assertThatThrownBy(() -> client.facilityConnections().get(new FacilityId("fac-1"), new ConnectionId("missing")))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -105,7 +107,7 @@ class FacilityConnectionsClientTest {
                         """)));
 
         // When
-        Page<FacilityConnection> page = client.facilityConnections().list("fac-1",
+        Page<FacilityConnection> page = client.facilityConnections().list(new FacilityId("fac-1"),
                 FacilityConnectionListRequest.builder().size(2).build());
 
         // Then
@@ -130,7 +132,7 @@ class FacilityConnectionsClientTest {
                         """)));
 
         // When
-        Page<FacilityConnection> page = client.facilityConnections().list("fac-1",
+        Page<FacilityConnection> page = client.facilityConnections().list(new FacilityId("fac-1"),
                 FacilityConnectionListRequest.builder().build());
 
         // Then
@@ -145,7 +147,7 @@ class FacilityConnectionsClientTest {
                 .willReturn(okJson("{\"interFacilityConnections\":[]}")));
 
         // When
-        client.facilityConnections().list("fac-1",
+        client.facilityConnections().list(new FacilityId("fac-1"),
                 FacilityConnectionListRequest.builder()
                         .size(10)
                         .startAfterId("cur-abc")
@@ -182,7 +184,7 @@ class FacilityConnectionsClientTest {
 
         // When
         List<String> ids = new ArrayList<>();
-        client.facilityConnections().listAll("fac-1",
+        client.facilityConnections().listAll(new FacilityId("fac-1"),
                 FacilityConnectionListRequest.builder().size(2).build()).forEach(c -> ids.add(c.id()));
 
         // Then
@@ -202,7 +204,7 @@ class FacilityConnectionsClientTest {
                         """)));
 
         // When
-        FacilityConnection conn = client.facilityConnections().create("fac-1",
+        FacilityConnection conn = client.facilityConnections().create(new FacilityId("fac-1"),
                 CreateFacilityConnectionRequest.builder()
                         .target(ConnectionTarget.Customer.of())
                         .carrierKey("DHL")
@@ -222,7 +224,7 @@ class FacilityConnectionsClientTest {
                         "\"target\":{\"type\":\"MANAGED_FACILITY\",\"facilityRef\":\"fac-2\"}}")));
 
         // When
-        client.facilityConnections().create("fac-1",
+        client.facilityConnections().create(new FacilityId("fac-1"),
                 CreateFacilityConnectionRequest.builder()
                         .target(ConnectionTarget.ManagedFacility.of("fac-2"))
                         .carrierKey("UPS")
@@ -256,7 +258,7 @@ class FacilityConnectionsClientTest {
                         """)));
 
         // When
-        FacilityConnection conn = client.facilityConnections().update("fac-1", "conn-1",
+        FacilityConnection conn = client.facilityConnections().update(new FacilityId("fac-1"), new ConnectionId("conn-1"),
                 UpdateFacilityConnectionRequest.builder()
                         .version(1)
                         .target(ConnectionTarget.Customer.of())
@@ -301,7 +303,7 @@ class FacilityConnectionsClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When
-        client.facilityConnections().delete("fac-1", "conn-1");
+        client.facilityConnections().delete(new FacilityId("fac-1"), new ConnectionId("conn-1"));
 
         // Then
         server.verify(deleteRequestedFor(urlPathEqualTo("/api/facilities/fac-1/connections/conn-1")));

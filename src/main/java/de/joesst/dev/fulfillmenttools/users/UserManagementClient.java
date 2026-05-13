@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.users;
 
+import de.joesst.dev.fulfillmenttools.id.UserId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public interface UserManagementClient {
      * @return the user
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    User get(String userId);
+    User get(UserId userId);
 
     /**
      * Retrieves a single user by ID asynchronously.
@@ -27,7 +28,7 @@ public interface UserManagementClient {
      * @param userId the user ID
      * @return a {@code CompletableFuture} that resolves to the user
      */
-    CompletableFuture<User> getAsync(String userId);
+    CompletableFuture<User> getAsync(UserId userId);
 
     /**
      * Lists users, returning one page of results.
@@ -79,7 +80,7 @@ public interface UserManagementClient {
      * @return the updated user
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    User update(String userId, UpdateUserRequest request);
+    User update(UserId userId, UpdateUserRequest request);
 
     /**
      * Updates an existing user asynchronously.
@@ -88,7 +89,7 @@ public interface UserManagementClient {
      * @param request the update request
      * @return a {@code CompletableFuture} that resolves to the updated user
      */
-    CompletableFuture<User> updateAsync(String userId, UpdateUserRequest request);
+    CompletableFuture<User> updateAsync(UserId userId, UpdateUserRequest request);
 
     /**
      * Deletes a user.
@@ -96,7 +97,7 @@ public interface UserManagementClient {
      * @param userId the user ID to delete
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    void delete(String userId);
+    void delete(UserId userId);
 
     /**
      * Deletes a user asynchronously.
@@ -104,5 +105,5 @@ public interface UserManagementClient {
      * @param userId the user ID to delete
      * @return a {@code CompletableFuture} that completes when the deletion is done
      */
-    CompletableFuture<Void> deleteAsync(String userId);
+    CompletableFuture<Void> deleteAsync(UserId userId);
 }

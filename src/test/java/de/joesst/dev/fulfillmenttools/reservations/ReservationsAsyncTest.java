@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.reservations;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ReservationId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -41,7 +42,7 @@ class ReservationsAsyncTest {
                 .willReturn(okJson("{\"id\":\"res-1\",\"quantity\":3}")));
 
         // When
-        Reservation reservation = client.reservations().getAsync("res-1").get();
+        Reservation reservation = client.reservations().getAsync(new ReservationId("res-1")).get();
 
         // Then
         assertThat(reservation.id()).isEqualTo("res-1");

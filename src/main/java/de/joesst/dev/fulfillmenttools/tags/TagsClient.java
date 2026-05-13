@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.tags;
 
+import de.joesst.dev.fulfillmenttools.id.TagId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
@@ -21,7 +22,7 @@ public interface TagsClient {
      * @return the tag
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    Tag get(String tagId);
+    Tag get(TagId tagId);
 
     /**
      * Retrieves a single tag by ID asynchronously.
@@ -29,7 +30,7 @@ public interface TagsClient {
      * @param tagId the tag ID
      * @return a {@code CompletableFuture} that resolves to the tag
      */
-    CompletableFuture<Tag> getAsync(String tagId);
+    CompletableFuture<Tag> getAsync(TagId tagId);
 
     /**
      * Lists tags, returning one page of results.
@@ -82,7 +83,7 @@ public interface TagsClient {
      * @return the updated tag
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    Tag addAllowedValue(String tagId, String allowedValue, Integer version);
+    Tag addAllowedValue(TagId tagId, String allowedValue, Integer version);
 
     /**
      * Adds an allowed value to an existing tag asynchronously.
@@ -92,7 +93,7 @@ public interface TagsClient {
      * @param version      the current optimistic lock version of the tag
      * @return a {@code CompletableFuture} that resolves to the updated tag
      */
-    CompletableFuture<Tag> addAllowedValueAsync(String tagId, String allowedValue, Integer version);
+    CompletableFuture<Tag> addAllowedValueAsync(TagId tagId, String allowedValue, Integer version);
 
     /**
      * Searches for tags matching the specified criteria, returning one page of results.

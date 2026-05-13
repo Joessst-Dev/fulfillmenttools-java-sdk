@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.carriers;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.CarrierId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -41,7 +42,7 @@ class CarriersAsyncTest {
                 .willReturn(okJson("{\"id\":\"c-1\",\"name\":\"DHL\",\"status\":\"ACTIVE\"}")));
 
         // When
-        Carrier carrier = client.carriers().getAsync("c-1").get();
+        Carrier carrier = client.carriers().getAsync(new CarrierId("c-1")).get();
 
         // Then
         assertThat(carrier.id()).isEqualTo("c-1");
@@ -83,7 +84,7 @@ class CarriersAsyncTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatCode(() -> client.carriers().deleteAsync("c-1").get())
+        assertThatCode(() -> client.carriers().deleteAsync(new CarrierId("c-1")).get())
                 .doesNotThrowAnyException();
     }
 

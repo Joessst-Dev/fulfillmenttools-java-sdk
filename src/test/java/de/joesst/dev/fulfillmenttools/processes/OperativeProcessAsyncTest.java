@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.processes;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -44,7 +45,7 @@ class OperativeProcessAsyncTest {
                 .willReturn(okJson("{\"id\":\"proc-1\",\"status\":\"OPEN\",\"gdprCleanupDate\":\"2025-01-01T00:00:00Z\"}")));
 
         // When
-        Process process = client.processes().getAsync("proc-1").get();
+        Process process = client.processes().getAsync(new ProcessId("proc-1")).get();
 
         // Then
         assertThat(process.id()).isEqualTo("proc-1");
@@ -68,14 +69,14 @@ class OperativeProcessAsyncTest {
     void searchAsync_returnsMatchingProcesses() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/processes/search"))
-                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"status\":\"OPEN\",\"facilityRefs\":[\"fac-1\"]}]}")));
+                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"status\":\"OPEN\",\"facilityRefs\":[\"fac-1\"]}],\"total\":1}")));
 
         // When
         Page<Process> page = client.processes()
                 .searchAsync(ProcessSearchRequest.builder()
                         .query(ProcessSearchQuery.builder()
-                                .facilityRefsHasAny("fac-1")
-                                .statusIn("OPEN")
+                                .facilityRefsHasAny(List.of("fac-1"))
+                                .statusIn(List.of("OPEN"))
                                 .build())
                         .build()).get();
 

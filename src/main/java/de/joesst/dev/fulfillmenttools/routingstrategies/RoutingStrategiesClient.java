@@ -1,7 +1,8 @@
 package de.joesst.dev.fulfillmenttools.routingstrategies;
 
-import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.RoutingStrategyId;
+import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +22,7 @@ public interface RoutingStrategiesClient {
      * @return the routing strategy
      * @throws FulfillmenttoolsException if the request fails or the routing strategy is not found
      */
-    RoutingStrategy get(String routingStrategyId);
+    RoutingStrategy get(RoutingStrategyId routingStrategyId);
 
     /**
      * Asynchronously retrieves a single routing strategy by ID.
@@ -30,7 +31,7 @@ public interface RoutingStrategiesClient {
      * @return a future that completes with the routing strategy
      * @throws FulfillmenttoolsException if the request fails or the routing strategy is not found
      */
-    CompletableFuture<RoutingStrategy> getAsync(String routingStrategyId);
+    CompletableFuture<RoutingStrategy> getAsync(RoutingStrategyId routingStrategyId);
 
     /**
      * Retrieves a page of routing strategies with optional pagination.
@@ -90,7 +91,7 @@ public interface RoutingStrategiesClient {
      * @return the updated routing strategy
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    RoutingStrategy update(String routingStrategyId, UpdateRoutingStrategyRequest request);
+    RoutingStrategy update(RoutingStrategyId routingStrategyId, UpdateRoutingStrategyRequest request);
 
     /**
      * Asynchronously updates an existing routing strategy.
@@ -100,5 +101,5 @@ public interface RoutingStrategiesClient {
      * @return a future that completes with the updated routing strategy
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<RoutingStrategy> updateAsync(String routingStrategyId, UpdateRoutingStrategyRequest request);
+    CompletableFuture<RoutingStrategy> updateAsync(RoutingStrategyId routingStrategyId, UpdateRoutingStrategyRequest request);
 }

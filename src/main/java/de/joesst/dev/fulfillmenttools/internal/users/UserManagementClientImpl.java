@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
+import de.joesst.dev.fulfillmenttools.id.UserId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.users.CreateUserRequest;
 import de.joesst.dev.fulfillmenttools.users.UpdateUserRequest;
@@ -31,10 +32,10 @@ public final class UserManagementClientImpl implements UserManagementClient {
     }
 
     @Override
-    public User get(String userId) {
+    public User get(UserId userId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/users/" + userId)
+                .url(baseUrl + "/api/users/" + userId.value())
                 .build();
         return responseHandler.handle(execute(request), User.class);
     }
@@ -72,30 +73,30 @@ public final class UserManagementClientImpl implements UserManagementClient {
     }
 
     @Override
-    public User update(String userId, UpdateUserRequest request) {
+    public User update(UserId userId, UpdateUserRequest request) {
         UpdateUserBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/users/" + userId)
+                .url(baseUrl + "/api/users/" + userId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), User.class);
     }
 
     @Override
-    public void delete(String userId) {
+    public void delete(UserId userId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/users/" + userId)
+                .url(baseUrl + "/api/users/" + userId.value())
                 .build();
         responseHandler.handleVoid(execute(request));
     }
 
     @Override
-    public CompletableFuture<User> getAsync(String userId) {
+    public CompletableFuture<User> getAsync(UserId userId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/users/" + userId)
+                .url(baseUrl + "/api/users/" + userId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, User.class));
@@ -126,11 +127,11 @@ public final class UserManagementClientImpl implements UserManagementClient {
     }
 
     @Override
-    public CompletableFuture<User> updateAsync(String userId, UpdateUserRequest request) {
+    public CompletableFuture<User> updateAsync(UserId userId, UpdateUserRequest request) {
         UpdateUserBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/users/" + userId)
+                .url(baseUrl + "/api/users/" + userId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -138,10 +139,10 @@ public final class UserManagementClientImpl implements UserManagementClient {
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String userId) {
+    public CompletableFuture<Void> deleteAsync(UserId userId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/users/" + userId)
+                .url(baseUrl + "/api/users/" + userId.value())
                 .build();
         return transport.executeAsync(request).thenApply(response -> {
             responseHandler.handleVoid(response);

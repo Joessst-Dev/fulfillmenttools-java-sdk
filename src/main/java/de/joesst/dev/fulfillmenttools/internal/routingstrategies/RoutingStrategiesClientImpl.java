@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.id.RoutingStrategyId;
 import de.joesst.dev.fulfillmenttools.routingstrategies.CreateRoutingStrategyRequest;
 import de.joesst.dev.fulfillmenttools.routingstrategies.RoutingStrategiesClient;
 import de.joesst.dev.fulfillmenttools.routingstrategies.RoutingStrategy;
@@ -31,10 +32,10 @@ public final class RoutingStrategiesClientImpl implements RoutingStrategiesClien
     }
 
     @Override
-    public RoutingStrategy get(String routingStrategyId) {
+    public RoutingStrategy get(RoutingStrategyId routingStrategyId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId)
+                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId.value())
                 .build();
         return responseHandler.handle(execute(request), RoutingStrategy.class);
     }
@@ -62,21 +63,21 @@ public final class RoutingStrategiesClientImpl implements RoutingStrategiesClien
     }
 
     @Override
-    public RoutingStrategy update(String routingStrategyId, UpdateRoutingStrategyRequest request) {
+    public RoutingStrategy update(RoutingStrategyId routingStrategyId, UpdateRoutingStrategyRequest request) {
         UpdateRoutingStrategyBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId)
+                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), RoutingStrategy.class);
     }
 
     @Override
-    public CompletableFuture<RoutingStrategy> getAsync(String routingStrategyId) {
+    public CompletableFuture<RoutingStrategy> getAsync(RoutingStrategyId routingStrategyId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId)
+                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, RoutingStrategy.class));
@@ -103,11 +104,11 @@ public final class RoutingStrategiesClientImpl implements RoutingStrategiesClien
     }
 
     @Override
-    public CompletableFuture<RoutingStrategy> updateAsync(String routingStrategyId, UpdateRoutingStrategyRequest request) {
+    public CompletableFuture<RoutingStrategy> updateAsync(RoutingStrategyId routingStrategyId, UpdateRoutingStrategyRequest request) {
         UpdateRoutingStrategyBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId)
+                .url(baseUrl + "/api/routing/strategies/" + routingStrategyId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)

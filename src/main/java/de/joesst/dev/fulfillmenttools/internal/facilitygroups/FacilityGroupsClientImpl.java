@@ -7,6 +7,8 @@ import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupListRequest;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupSearchRequest;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupsClient;
 import de.joesst.dev.fulfillmenttools.facilitygroups.UpdateFacilityGroupRequest;
+import de.joesst.dev.fulfillmenttools.id.FacilityGroupId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
@@ -32,18 +34,18 @@ public final class FacilityGroupsClientImpl implements FacilityGroupsClient {
     }
 
     @Override
-    public FacilityGroup get(String facilityGroupId) {
+    public FacilityGroup get(FacilityGroupId facilityGroupId) {
         return responseHandler.handle(execute(SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId)
+                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId.value())
                 .build()), FacilityGroup.class);
     }
 
     @Override
-    public CompletableFuture<FacilityGroup> getAsync(String facilityGroupId) {
+    public CompletableFuture<FacilityGroup> getAsync(FacilityGroupId facilityGroupId) {
         return transport.executeAsync(SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId)
+                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId.value())
                 .build()).thenApply(r -> responseHandler.handle(r, FacilityGroup.class));
     }
 
@@ -80,51 +82,51 @@ public final class FacilityGroupsClientImpl implements FacilityGroupsClient {
     }
 
     @Override
-    public FacilityGroup update(String facilityGroupId, UpdateFacilityGroupRequest request) {
+    public FacilityGroup update(FacilityGroupId facilityGroupId, UpdateFacilityGroupRequest request) {
         return responseHandler.handle(execute(buildUpdateRequest(facilityGroupId, request)), FacilityGroup.class);
     }
 
     @Override
-    public CompletableFuture<FacilityGroup> updateAsync(String facilityGroupId, UpdateFacilityGroupRequest request) {
+    public CompletableFuture<FacilityGroup> updateAsync(FacilityGroupId facilityGroupId, UpdateFacilityGroupRequest request) {
         return transport.executeAsync(buildUpdateRequest(facilityGroupId, request))
                 .thenApply(r -> responseHandler.handle(r, FacilityGroup.class));
     }
 
     @Override
-    public void delete(String facilityGroupId) {
+    public void delete(FacilityGroupId facilityGroupId) {
         responseHandler.handleVoid(execute(SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId)
+                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId.value())
                 .build()));
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String facilityGroupId) {
+    public CompletableFuture<Void> deleteAsync(FacilityGroupId facilityGroupId) {
         return transport.executeAsync(SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId)
+                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId.value())
                 .build()).thenApply(r -> { responseHandler.handleVoid(r); return null; });
     }
 
     @Override
-    public FacilityGroup addFacilities(String facilityGroupId, List<String> facilityRefs, Integer version) {
-        return responseHandler.handle(execute(buildAddFacilitiesRequest(facilityGroupId, facilityRefs, version)), FacilityGroup.class);
+    public FacilityGroup addFacilities(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version) {
+        return responseHandler.handle(execute(buildAddFacilitiesRequest(facilityGroupId, facilityIds, version)), FacilityGroup.class);
     }
 
     @Override
-    public CompletableFuture<FacilityGroup> addFacilitiesAsync(String facilityGroupId, List<String> facilityRefs, Integer version) {
-        return transport.executeAsync(buildAddFacilitiesRequest(facilityGroupId, facilityRefs, version))
+    public CompletableFuture<FacilityGroup> addFacilitiesAsync(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version) {
+        return transport.executeAsync(buildAddFacilitiesRequest(facilityGroupId, facilityIds, version))
                 .thenApply(r -> responseHandler.handle(r, FacilityGroup.class));
     }
 
     @Override
-    public FacilityGroup removeFacilities(String facilityGroupId, List<String> facilityRefs, Integer version) {
-        return responseHandler.handle(execute(buildRemoveFacilitiesRequest(facilityGroupId, facilityRefs, version)), FacilityGroup.class);
+    public FacilityGroup removeFacilities(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version) {
+        return responseHandler.handle(execute(buildRemoveFacilitiesRequest(facilityGroupId, facilityIds, version)), FacilityGroup.class);
     }
 
     @Override
-    public CompletableFuture<FacilityGroup> removeFacilitiesAsync(String facilityGroupId, List<String> facilityRefs, Integer version) {
-        return transport.executeAsync(buildRemoveFacilitiesRequest(facilityGroupId, facilityRefs, version))
+    public CompletableFuture<FacilityGroup> removeFacilitiesAsync(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version) {
+        return transport.executeAsync(buildRemoveFacilitiesRequest(facilityGroupId, facilityIds, version))
                 .thenApply(r -> responseHandler.handle(r, FacilityGroup.class));
     }
 
@@ -170,10 +172,10 @@ public final class FacilityGroupsClientImpl implements FacilityGroupsClient {
                 .build();
     }
 
-    private SdkHttpRequest buildUpdateRequest(String facilityGroupId, UpdateFacilityGroupRequest request) {
+    private SdkHttpRequest buildUpdateRequest(FacilityGroupId facilityGroupId, UpdateFacilityGroupRequest request) {
         return SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId)
+                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId.value())
                 .body(responseHandler.encode(new UpdateFacilityGroupBody(
                         request.version(),
                         request.tenantFacilityGroupId(),
@@ -183,20 +185,22 @@ public final class FacilityGroupsClientImpl implements FacilityGroupsClient {
                 .build();
     }
 
-    private SdkHttpRequest buildAddFacilitiesRequest(String facilityGroupId, List<String> facilityRefs, Integer version) {
+    private SdkHttpRequest buildAddFacilitiesRequest(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version) {
         String actionName = version == null ? "VERSIONLESS_ADD_FACILITIES_TO_GROUP" : "ADD_FACILITIES_TO_GROUP";
+        List<String> facilityRefs = facilityIds.stream().map(FacilityId::value).toList();
         return SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId + "/actions")
+                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId.value() + "/actions")
                 .body(responseHandler.encode(new AddFacilitiesToGroupBody(actionName, facilityRefs, version)))
                 .build();
     }
 
-    private SdkHttpRequest buildRemoveFacilitiesRequest(String facilityGroupId, List<String> facilityRefs, Integer version) {
+    private SdkHttpRequest buildRemoveFacilitiesRequest(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version) {
         String actionName = version == null ? "VERSIONLESS_REMOVE_FACILITIES_FROM_GROUP" : "REMOVE_FACILITIES_FROM_GROUP";
+        List<String> facilityRefs = facilityIds.stream().map(FacilityId::value).toList();
         return SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId + "/actions")
+                .url(baseUrl + "/api/facilitygroups/" + facilityGroupId.value() + "/actions")
                 .body(responseHandler.encode(new RemoveFacilitiesFromGroupBody(actionName, facilityRefs, version)))
                 .build();
     }

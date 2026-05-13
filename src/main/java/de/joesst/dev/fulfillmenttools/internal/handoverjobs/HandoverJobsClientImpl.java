@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.internal.handoverjobs;
 
 import de.joesst.dev.fulfillmenttools.TransportException;
 import de.joesst.dev.fulfillmenttools.handoverjobs.HandoverJob;
+import de.joesst.dev.fulfillmenttools.id.HandoverJobId;
 import de.joesst.dev.fulfillmenttools.handoverjobs.HandoverJobListRequest;
 import de.joesst.dev.fulfillmenttools.handoverjobs.HandoverJobsClient;
 import de.joesst.dev.fulfillmenttools.handoverjobs.UpdateHandoverJobRequest;
@@ -30,10 +31,10 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
     }
 
     @Override
-    public HandoverJob get(String handoverJobId) {
+    public HandoverJob get(HandoverJobId handoverJobId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/handoverjobs/" + handoverJobId)
+                .url(baseUrl + "/api/handoverjobs/" + handoverJobId.value())
                 .build();
         return responseHandler.handle(execute(request), HandoverJob.class);
     }
@@ -58,34 +59,34 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
     }
 
     @Override
-    public HandoverJob update(String handoverJobId, UpdateHandoverJobRequest request) {
+    public HandoverJob update(HandoverJobId handoverJobId, UpdateHandoverJobRequest request) {
         UpdateHandoverJobBody body = new UpdateHandoverJobBody(
                 request.version(),
                 List.of(new UpdateHandoverJobBody.ModifyHandoverjobAction(request.status(), request.customAttributes()))
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/handoverjobs/" + handoverJobId)
+                .url(baseUrl + "/api/handoverjobs/" + handoverJobId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), HandoverJob.class);
     }
 
     @Override
-    public HandoverJob cancel(String handoverJobId, int version, String cancelReason) {
+    public HandoverJob cancel(HandoverJobId handoverJobId, int version, String cancelReason) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/handoverjobs/" + handoverJobId + "/actions")
+                .url(baseUrl + "/api/handoverjobs/" + handoverJobId.value() + "/actions")
                 .body(responseHandler.encode(new HandoverJobCancelBody(version, cancelReason)))
                 .build();
         return responseHandler.handle(execute(httpRequest), HandoverJob.class);
     }
 
     @Override
-    public CompletableFuture<HandoverJob> getAsync(String handoverJobId) {
+    public CompletableFuture<HandoverJob> getAsync(HandoverJobId handoverJobId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/handoverjobs/" + handoverJobId)
+                .url(baseUrl + "/api/handoverjobs/" + handoverJobId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, HandoverJob.class));
@@ -100,14 +101,14 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
     }
 
     @Override
-    public CompletableFuture<HandoverJob> updateAsync(String handoverJobId, UpdateHandoverJobRequest request) {
+    public CompletableFuture<HandoverJob> updateAsync(HandoverJobId handoverJobId, UpdateHandoverJobRequest request) {
         UpdateHandoverJobBody body = new UpdateHandoverJobBody(
                 request.version(),
                 List.of(new UpdateHandoverJobBody.ModifyHandoverjobAction(request.status(), request.customAttributes()))
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/handoverjobs/" + handoverJobId)
+                .url(baseUrl + "/api/handoverjobs/" + handoverJobId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -115,10 +116,10 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
     }
 
     @Override
-    public CompletableFuture<HandoverJob> cancelAsync(String handoverJobId, int version, String cancelReason) {
+    public CompletableFuture<HandoverJob> cancelAsync(HandoverJobId handoverJobId, int version, String cancelReason) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/handoverjobs/" + handoverJobId + "/actions")
+                .url(baseUrl + "/api/handoverjobs/" + handoverJobId.value() + "/actions")
                 .body(responseHandler.encode(new HandoverJobCancelBody(version, cancelReason)))
                 .build();
         return transport.executeAsync(httpRequest)

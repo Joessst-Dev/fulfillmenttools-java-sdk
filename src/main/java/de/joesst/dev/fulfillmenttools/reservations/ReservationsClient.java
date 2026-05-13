@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.reservations;
 
+import de.joesst.dev.fulfillmenttools.id.ReservationId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public interface ReservationsClient {
      * @return the reservation
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    Reservation get(String reservationId);
+    Reservation get(ReservationId reservationId);
 
     /**
      * Retrieves a single reservation by ID asynchronously.
@@ -27,7 +28,7 @@ public interface ReservationsClient {
      * @param reservationId the reservation ID
      * @return a {@code CompletableFuture} that resolves to the reservation
      */
-    CompletableFuture<Reservation> getAsync(String reservationId);
+    CompletableFuture<Reservation> getAsync(ReservationId reservationId);
 
     /**
      * Lists reservations, returning one page of results.

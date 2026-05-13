@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.internal.orders;
 
 import de.joesst.dev.fulfillmenttools.TransportException;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
@@ -34,10 +35,10 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
-    public Order get(String orderId) {
+    public Order get(OrderId orderId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/orders/" + orderId)
+                .url(baseUrl + "/api/orders/" + orderId.value())
                 .build();
         return responseHandler.handle(execute(request), Order.class);
     }
@@ -118,7 +119,7 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
-    public Order update(String orderId, UpdateOrderRequest request) {
+    public Order update(OrderId orderId, UpdateOrderRequest request) {
         UpdateOrderBody body = new UpdateOrderBody(
                 request.version(),
                 request.comment(),
@@ -129,26 +130,26 @@ public final class OrdersClientImpl implements OrdersClient {
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/orders/" + orderId)
+                .url(baseUrl + "/api/orders/" + orderId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), Order.class);
     }
 
     @Override
-    public void delete(String orderId) {
+    public void delete(OrderId orderId) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/orders/" + orderId)
+                .url(baseUrl + "/api/orders/" + orderId.value())
                 .build();
         responseHandler.handleVoid(execute(httpRequest));
     }
 
     @Override
-    public CompletableFuture<Order> getAsync(String orderId) {
+    public CompletableFuture<Order> getAsync(OrderId orderId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/orders/" + orderId)
+                .url(baseUrl + "/api/orders/" + orderId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, Order.class));
@@ -212,7 +213,7 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
-    public CompletableFuture<Order> updateAsync(String orderId, UpdateOrderRequest request) {
+    public CompletableFuture<Order> updateAsync(OrderId orderId, UpdateOrderRequest request) {
         UpdateOrderBody body = new UpdateOrderBody(
                 request.version(),
                 request.comment(),
@@ -223,7 +224,7 @@ public final class OrdersClientImpl implements OrdersClient {
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/orders/" + orderId)
+                .url(baseUrl + "/api/orders/" + orderId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -231,10 +232,10 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String orderId) {
+    public CompletableFuture<Void> deleteAsync(OrderId orderId) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/orders/" + orderId)
+                .url(baseUrl + "/api/orders/" + orderId.value())
                 .build();
         return transport.executeAsync(httpRequest).thenApply(response -> {
             responseHandler.handleVoid(response);
@@ -243,20 +244,20 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
-    public Order cancel(String orderId, CancelOrderRequest request) {
+    public Order cancel(OrderId orderId, CancelOrderRequest request) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .url(baseUrl + "/api/orders/" + orderId.value() + "/actions")
                 .body(responseHandler.encode(new OrderCancelActionBody(request.version(), request.cancelationReasonId())))
                 .build();
         return responseHandler.handle(execute(httpRequest), Order.class);
     }
 
     @Override
-    public CompletableFuture<Order> cancelAsync(String orderId, CancelOrderRequest request) {
+    public CompletableFuture<Order> cancelAsync(OrderId orderId, CancelOrderRequest request) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .url(baseUrl + "/api/orders/" + orderId.value() + "/actions")
                 .body(responseHandler.encode(new OrderCancelActionBody(request.version(), request.cancelationReasonId())))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -264,20 +265,20 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
-    public Order forceCancel(String orderId, int version) {
+    public Order forceCancel(OrderId orderId, int version) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .url(baseUrl + "/api/orders/" + orderId.value() + "/actions")
                 .body(responseHandler.encode(new OrderForceCancelActionBody(version)))
                 .build();
         return responseHandler.handle(execute(httpRequest), Order.class);
     }
 
     @Override
-    public CompletableFuture<Order> forceCancelAsync(String orderId, int version) {
+    public CompletableFuture<Order> forceCancelAsync(OrderId orderId, int version) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .url(baseUrl + "/api/orders/" + orderId.value() + "/actions")
                 .body(responseHandler.encode(new OrderForceCancelActionBody(version)))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -285,30 +286,30 @@ public final class OrdersClientImpl implements OrdersClient {
     }
 
     @Override
-    public Order unlock(String orderId, int version) {
+    public Order unlock(OrderId orderId, int version) {
         return unlock(orderId, version, null);
     }
 
     @Override
-    public Order unlock(String orderId, int version, Instant targetTime) {
+    public Order unlock(OrderId orderId, int version, Instant targetTime) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .url(baseUrl + "/api/orders/" + orderId.value() + "/actions")
                 .body(responseHandler.encode(new OrderUnlockActionBody(version, targetTime)))
                 .build();
         return responseHandler.handle(execute(httpRequest), Order.class);
     }
 
     @Override
-    public CompletableFuture<Order> unlockAsync(String orderId, int version) {
+    public CompletableFuture<Order> unlockAsync(OrderId orderId, int version) {
         return unlockAsync(orderId, version, null);
     }
 
     @Override
-    public CompletableFuture<Order> unlockAsync(String orderId, int version, Instant targetTime) {
+    public CompletableFuture<Order> unlockAsync(OrderId orderId, int version, Instant targetTime) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/orders/" + orderId + "/actions")
+                .url(baseUrl + "/api/orders/" + orderId.value() + "/actions")
                 .body(responseHandler.encode(new OrderUnlockActionBody(version, targetTime)))
                 .build();
         return transport.executeAsync(httpRequest)

@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import org.junit.jupiter.api.*;
 
 import java.time.Instant;
@@ -143,7 +144,7 @@ class OrdersWriteTest {
                         """)));
 
         // When
-        Order order = client.orders().update("ord-1",
+        Order order = client.orders().update(new OrderId("ord-1"),
                 UpdateOrderRequest.builder().version(1).comment("routing change").build());
 
         // Then
@@ -158,7 +159,7 @@ class OrdersWriteTest {
                 .willReturn(okJson("{\"id\":\"ord-1\"}")));
 
         // When
-        client.orders().update("ord-1", UpdateOrderRequest.builder().version(3).comment("reroute").build());
+        client.orders().update(new OrderId("ord-1"), UpdateOrderRequest.builder().version(3).comment("reroute").build());
 
         // Then
         server.verify(patchRequestedFor(urlPathEqualTo("/api/orders/ord-1"))
@@ -185,7 +186,7 @@ class OrdersWriteTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.orders().update("missing", UpdateOrderRequest.builder().version(1).build()))
+        assertThatThrownBy(() -> client.orders().update(new OrderId("missing"), UpdateOrderRequest.builder().version(1).build()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Order not found");
     }
@@ -199,7 +200,7 @@ class OrdersWriteTest {
                 .willReturn(aResponse().withStatus(200)));
 
         // When / Then — no exception
-        assertThatCode(() -> client.orders().delete("ord-1")).doesNotThrowAnyException();
+        assertThatCode(() -> client.orders().delete(new OrderId("ord-1"))).doesNotThrowAnyException();
     }
 
     @Test
@@ -209,7 +210,7 @@ class OrdersWriteTest {
                 .willReturn(aResponse().withStatus(200)));
 
         // When
-        client.orders().delete("ord-1");
+        client.orders().delete(new OrderId("ord-1"));
 
         // Then
         server.verify(deleteRequestedFor(urlPathEqualTo("/api/orders/ord-1"))
@@ -226,7 +227,7 @@ class OrdersWriteTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.orders().delete("missing"))
+        assertThatThrownBy(() -> client.orders().delete(new OrderId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Order not found");
     }
@@ -240,7 +241,7 @@ class OrdersWriteTest {
                 .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"CANCELLED\"}")));
 
         // When
-        Order order = client.orders().cancel("ord-1", CancelOrderRequest.builder().version(2).build());
+        Order order = client.orders().cancel(new OrderId("ord-1"), CancelOrderRequest.builder().version(2).build());
 
         // Then
         assertThat(order.status()).isEqualTo("CANCELLED");
@@ -256,7 +257,7 @@ class OrdersWriteTest {
                 .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"CANCELLED\"}")));
 
         // When
-        client.orders().cancel("ord-1", CancelOrderRequest.builder().version(1).cancelationReasonId("reason-abc").build());
+        client.orders().cancel(new OrderId("ord-1"), CancelOrderRequest.builder().version(1).cancelationReasonId("reason-abc").build());
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))
@@ -279,7 +280,7 @@ class OrdersWriteTest {
                 .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"CANCELLED\"}")));
 
         // When
-        client.orders().forceCancel("ord-1", 3);
+        client.orders().forceCancel(new OrderId("ord-1"), 3);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))
@@ -296,7 +297,7 @@ class OrdersWriteTest {
                 .willReturn(okJson("{\"id\":\"ord-1\",\"status\":\"OPEN\"}")));
 
         // When
-        client.orders().unlock("ord-1", 5);
+        client.orders().unlock(new OrderId("ord-1"), 5);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))
@@ -311,7 +312,7 @@ class OrdersWriteTest {
                 .willReturn(okJson("{\"id\":\"ord-1\"}")));
 
         // When
-        client.orders().unlock("ord-1", 1, Instant.parse("2025-01-15T00:00:00Z"));
+        client.orders().unlock(new OrderId("ord-1"), 1, Instant.parse("2025-01-15T00:00:00Z"));
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/orders/ord-1/actions"))

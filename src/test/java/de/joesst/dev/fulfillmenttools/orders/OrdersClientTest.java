@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -56,7 +57,7 @@ class OrdersClientTest {
                         """)));
 
         // When
-        Order order = client.orders().get("ord-1");
+        Order order = client.orders().get(new OrderId("ord-1"));
 
         // Then
         assertThat(order.id()).isEqualTo("ord-1");
@@ -73,7 +74,7 @@ class OrdersClientTest {
                 .willReturn(okJson("{\"id\":\"ord-1\"}")));
 
         // When
-        client.orders().get("ord-1");
+        client.orders().get(new OrderId("ord-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/orders/ord-1"))
@@ -90,7 +91,7 @@ class OrdersClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.orders().get("missing"))
+        assertThatThrownBy(() -> client.orders().get(new OrderId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Order not found")
                 .satisfies(ex -> assertThat(((NotFoundException) ex).statusCode()).isEqualTo(404));

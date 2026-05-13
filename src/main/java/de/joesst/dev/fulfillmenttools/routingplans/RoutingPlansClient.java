@@ -1,7 +1,8 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
-import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
+import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +22,7 @@ public interface RoutingPlansClient {
      * @return the routing plan
      * @throws FulfillmenttoolsException if the request fails or the routing plan is not found
      */
-    RoutingPlan get(String routingPlanId);
+    RoutingPlan get(RoutingPlanId routingPlanId);
 
     /**
      * Asynchronously retrieves a single routing plan by ID.
@@ -30,7 +31,7 @@ public interface RoutingPlansClient {
      * @return a future that completes with the routing plan
      * @throws FulfillmenttoolsException if the request fails or the routing plan is not found
      */
-    CompletableFuture<RoutingPlan> getAsync(String routingPlanId);
+    CompletableFuture<RoutingPlan> getAsync(RoutingPlanId routingPlanId);
 
     /**
      * Retrieves a page of routing plans matching the given filter criteria.
@@ -90,7 +91,7 @@ public interface RoutingPlansClient {
      * @return the updated routing plan
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    RoutingPlan update(String routingPlanId, UpdateRoutingPlanRequest request);
+    RoutingPlan update(RoutingPlanId routingPlanId, UpdateRoutingPlanRequest request);
 
     /**
      * Asynchronously updates an existing routing plan.
@@ -100,7 +101,7 @@ public interface RoutingPlansClient {
      * @return a future that completes with the updated routing plan
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<RoutingPlan> updateAsync(String routingPlanId, UpdateRoutingPlanRequest request);
+    CompletableFuture<RoutingPlan> updateAsync(RoutingPlanId routingPlanId, UpdateRoutingPlanRequest request);
 
     /**
      * Deletes a routing plan.
@@ -108,7 +109,7 @@ public interface RoutingPlansClient {
      * @param routingPlanId the unique identifier of the routing plan to delete
      * @throws FulfillmenttoolsException if the request fails or the routing plan is not found
      */
-    void delete(String routingPlanId);
+    void delete(RoutingPlanId routingPlanId);
 
     /**
      * Asynchronously deletes a routing plan.
@@ -117,5 +118,5 @@ public interface RoutingPlansClient {
      * @return a future that completes when the routing plan is deleted
      * @throws FulfillmenttoolsException if the request fails or the routing plan is not found
      */
-    CompletableFuture<Void> deleteAsync(String routingPlanId);
+    CompletableFuture<Void> deleteAsync(RoutingPlanId routingPlanId);
 }

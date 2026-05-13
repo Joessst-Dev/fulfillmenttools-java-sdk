@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ReservationId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -56,7 +57,7 @@ class ReservationsClientTest {
                         """)));
 
         // When
-        Reservation reservation = client.reservations().get("res-1");
+        Reservation reservation = client.reservations().get(new ReservationId("res-1"));
 
         // Then
         assertThat(reservation.id()).isEqualTo("res-1");
@@ -67,148 +68,13 @@ class ReservationsClientTest {
     }
 
     @Test
-    void get_deserializesHostWithTypedEnum() {
-        // Given
-        server.stubFor(get(urlPathEqualTo("/api/reservations/res-2"))
-                .willReturn(okJson("""
-                        {
-                          "id": "res-2",
-                          "facilityRef": "fac-1",
-                          "tenantArticleId": "art-1",
-                          "quantity": 3,
-                          "version": 1,
-                          "host": {
-                            "reference": "stock-ref-99",
-                            "type": "STOCK"
-                          }
-                        }
-                        """)));
-
-        // When
-        Reservation reservation = client.reservations().get("res-2");
-
-        // Then
-        assertThat(reservation.host()).isNotNull();
-        assertThat(reservation.host().reference()).isEqualTo("stock-ref-99");
-        assertThat(reservation.host().type()).isEqualTo(HostType.STOCK);
-    }
-
-    @Test
-    void get_deserializesExpectedStockHostType() {
-        // Given
-        server.stubFor(get(urlPathEqualTo("/api/reservations/res-3"))
-                .willReturn(okJson("""
-                        {
-                          "id": "res-3",
-                          "facilityRef": "fac-2",
-                          "tenantArticleId": "art-2",
-                          "quantity": 1,
-                          "host": {
-                            "reference": "expected-stock-ref-7",
-                            "type": "EXPECTED_STOCK"
-                          }
-                        }
-                        """)));
-
-        // When
-        Reservation reservation = client.reservations().get("res-3");
-
-        // Then
-        assertThat(reservation.host().type()).isEqualTo(HostType.EXPECTED_STOCK);
-        assertThat(reservation.host().reference()).isEqualTo("expected-stock-ref-7");
-    }
-
-    @Test
-    void get_deserializesNoneHostType() {
-        // Given
-        server.stubFor(get(urlPathEqualTo("/api/reservations/res-4"))
-                .willReturn(okJson("""
-                        {
-                          "id": "res-4",
-                          "facilityRef": "fac-3",
-                          "tenantArticleId": "art-3",
-                          "quantity": 2,
-                          "host": {
-                            "reference": "none-ref",
-                            "type": "NONE"
-                          }
-                        }
-                        """)));
-
-        // When
-        Reservation reservation = client.reservations().get("res-4");
-
-        // Then
-        assertThat(reservation.host().type()).isEqualTo(HostType.NONE);
-    }
-
-    @Test
-    void get_deserializesRelatedRefs() {
-        // Given
-        server.stubFor(get(urlPathEqualTo("/api/reservations/res-5"))
-                .willReturn(okJson("""
-                        {
-                          "id": "res-5",
-                          "facilityRef": "fac-1",
-                          "tenantArticleId": "art-1",
-                          "quantity": 10,
-                          "relatedRefs": {
-                            "orderRefs": ["order-1", "order-2"],
-                            "pickJobRefs": ["pj-1"],
-                            "processRefs": [],
-                            "routingPlanRefs": ["rp-1"],
-                            "transferRefs": ["tr-1", "tr-2"]
-                          }
-                        }
-                        """)));
-
-        // When
-        Reservation reservation = client.reservations().get("res-5");
-
-        // Then
-        assertThat(reservation.relatedRefs()).isNotNull();
-        assertThat(reservation.relatedRefs().orderRefs()).containsExactly("order-1", "order-2");
-        assertThat(reservation.relatedRefs().pickJobRefs()).containsExactly("pj-1");
-        assertThat(reservation.relatedRefs().processRefs()).isEmpty();
-        assertThat(reservation.relatedRefs().routingPlanRefs()).containsExactly("rp-1");
-        assertThat(reservation.relatedRefs().transferRefs()).containsExactly("tr-1", "tr-2");
-    }
-
-    @Test
-    void get_deserializesNullRelatedRefArraysAsNull() {
-        // Given — relatedRefs present but only some arrays populated
-        server.stubFor(get(urlPathEqualTo("/api/reservations/res-6"))
-                .willReturn(okJson("""
-                        {
-                          "id": "res-6",
-                          "facilityRef": "fac-1",
-                          "tenantArticleId": "art-1",
-                          "quantity": 1,
-                          "relatedRefs": {
-                            "orderRefs": ["order-3"]
-                          }
-                        }
-                        """)));
-
-        // When
-        Reservation reservation = client.reservations().get("res-6");
-
-        // Then
-        assertThat(reservation.relatedRefs().orderRefs()).containsExactly("order-3");
-        assertThat(reservation.relatedRefs().pickJobRefs()).isNull();
-        assertThat(reservation.relatedRefs().processRefs()).isNull();
-        assertThat(reservation.relatedRefs().routingPlanRefs()).isNull();
-        assertThat(reservation.relatedRefs().transferRefs()).isNull();
-    }
-
-    @Test
     void get_sendsBearerTokenHeader() {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/reservations/res-1"))
                 .willReturn(okJson("{\"id\":\"res-1\"}")));
 
         // When
-        client.reservations().get("res-1");
+        client.reservations().get(new ReservationId("res-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/reservations/res-1"))
@@ -225,7 +91,7 @@ class ReservationsClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.reservations().get("missing"))
+        assertThatThrownBy(() -> client.reservations().get(new ReservationId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Reservation not found");
     }

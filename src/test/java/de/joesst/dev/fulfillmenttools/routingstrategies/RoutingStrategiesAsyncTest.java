@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.routingstrategies;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.RoutingStrategyId;
 import org.junit.jupiter.api.*;
 
 import java.util.Map;
@@ -43,7 +44,7 @@ class RoutingStrategiesAsyncTest {
                 .willReturn(okJson("{\"id\":\"rs-1\",\"name\":\"Nearest Facility\"}")));
 
         // When
-        RoutingStrategy strategy = client.routingStrategies().getAsync("rs-1").get();
+        RoutingStrategy strategy = client.routingStrategies().getAsync(new RoutingStrategyId("rs-1")).get();
 
         // Then
         assertThat(strategy.id()).isEqualTo("rs-1");

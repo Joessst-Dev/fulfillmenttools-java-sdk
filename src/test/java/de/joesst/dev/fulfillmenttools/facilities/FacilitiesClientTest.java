@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -57,7 +58,7 @@ class FacilitiesClientTest {
                         """)));
 
         // When
-        Facility facility = client.facilities().get("fac-1");
+        Facility facility = client.facilities().get(new FacilityId("fac-1"));
 
         // Then
         assertThat(facility.id()).isEqualTo("fac-1");
@@ -75,7 +76,7 @@ class FacilitiesClientTest {
                 .willReturn(okJson("{\"id\":\"fac-1\"}")));
 
         // When
-        client.facilities().get("fac-1");
+        client.facilities().get(new FacilityId("fac-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/facilities/fac-1"))
@@ -92,7 +93,7 @@ class FacilitiesClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.facilities().get("missing"))
+        assertThatThrownBy(() -> client.facilities().get(new FacilityId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Facility not found");
     }
@@ -249,7 +250,7 @@ class FacilitiesClientTest {
                         """)));
 
         // When
-        Facility facility = client.facilities().get("fac-rich");
+        Facility facility = client.facilities().get(new FacilityId("fac-rich"));
 
         // Then
         assertThat(facility.locationType()).isEqualTo("STORE");

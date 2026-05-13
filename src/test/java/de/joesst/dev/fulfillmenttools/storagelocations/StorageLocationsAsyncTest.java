@@ -3,6 +3,8 @@ package de.joesst.dev.fulfillmenttools.storagelocations;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -45,7 +47,7 @@ class StorageLocationsAsyncTest {
                 .willReturn(okJson("{\"id\":\"sl-1\",\"name\":\"Shelf A1\",\"type\":\"SHELF\",\"facilityRef\":\"fac-1\"}")));
 
         // When
-        StorageLocation location = client.storageLocations().getAsync(FACILITY_ID, "sl-1").get();
+        StorageLocation location = client.storageLocations().getAsync(new FacilityId(FACILITY_ID), new StorageLocationId("sl-1")).get();
 
         // Then
         assertThat(location.id()).isEqualTo("sl-1");
@@ -61,7 +63,7 @@ class StorageLocationsAsyncTest {
 
         // When
         var page = client.storageLocations()
-                .listAsync(FACILITY_ID, StorageLocationListRequest.builder().build()).get();
+                .listAsync(new FacilityId(FACILITY_ID), StorageLocationListRequest.builder().build()).get();
 
         // Then
         assertThat(page.items()).hasSize(2);
@@ -75,7 +77,7 @@ class StorageLocationsAsyncTest {
 
         // When
         StorageLocation location = client.storageLocations()
-                .createAsync(FACILITY_ID, CreateStorageLocationRequest.builder()
+                .createAsync(new FacilityId(FACILITY_ID), CreateStorageLocationRequest.builder()
                         .name("New Shelf").type("SHELF")
                         .scannableCodes(List.of()).runningSequences(List.of())
                         .build()).get();
@@ -92,7 +94,7 @@ class StorageLocationsAsyncTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatCode(() -> client.storageLocations().deleteAsync(FACILITY_ID, "sl-1").get())
+        assertThatCode(() -> client.storageLocations().deleteAsync(new FacilityId(FACILITY_ID), new StorageLocationId("sl-1")).get())
                 .doesNotThrowAnyException();
     }
 

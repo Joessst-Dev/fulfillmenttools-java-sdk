@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.internal.facilities;
 
 import de.joesst.dev.fulfillmenttools.TransportException;
 import de.joesst.dev.fulfillmenttools.facilities.CreateFacilityRequest;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.facilities.FacilitiesClient;
 import de.joesst.dev.fulfillmenttools.facilities.Facility;
 import de.joesst.dev.fulfillmenttools.facilities.FacilityListRequest;
@@ -32,10 +33,10 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     }
 
     @Override
-    public Facility get(String facilityId) {
+    public Facility get(FacilityId facilityId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/facilities/" + facilityId)
+                .url(baseUrl + "/api/facilities/" + facilityId.value())
                 .build();
         return responseHandler.handle(execute(request), Facility.class);
     }
@@ -105,44 +106,44 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     }
 
     @Override
-    public Facility update(String facilityId, UpdateFacilityRequest request) {
+    public Facility update(FacilityId facilityId, UpdateFacilityRequest request) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/facilities/" + facilityId)
+                .url(baseUrl + "/api/facilities/" + facilityId.value())
                 .body(responseHandler.encode(toUpdateBody(request)))
                 .build();
         return responseHandler.handle(execute(httpRequest), Facility.class);
     }
 
     @Override
-    public Facility replace(String facilityId, CreateFacilityRequest request) {
+    public Facility replace(FacilityId facilityId, CreateFacilityRequest request) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/facilities/" + facilityId)
+                .url(baseUrl + "/api/facilities/" + facilityId.value())
                 .body(responseHandler.encode(toCreateBody(request)))
                 .build();
         return responseHandler.handle(execute(httpRequest), Facility.class);
     }
 
     @Override
-    public void delete(String facilityId) {
+    public void delete(FacilityId facilityId) {
         delete(facilityId, false);
     }
 
     @Override
-    public void delete(String facilityId, boolean forceDeletion) {
+    public void delete(FacilityId facilityId, boolean forceDeletion) {
         SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/facilities/" + facilityId);
+                .url(baseUrl + "/api/facilities/" + facilityId.value());
         if (forceDeletion) builder.queryParam("forceDeletion", "true");
         responseHandler.handleVoid(execute(builder.build()));
     }
 
     @Override
-    public CompletableFuture<Facility> getAsync(String facilityId) {
+    public CompletableFuture<Facility> getAsync(FacilityId facilityId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/facilities/" + facilityId)
+                .url(baseUrl + "/api/facilities/" + facilityId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, Facility.class));
@@ -195,10 +196,10 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     }
 
     @Override
-    public CompletableFuture<Facility> updateAsync(String facilityId, UpdateFacilityRequest request) {
+    public CompletableFuture<Facility> updateAsync(FacilityId facilityId, UpdateFacilityRequest request) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/facilities/" + facilityId)
+                .url(baseUrl + "/api/facilities/" + facilityId.value())
                 .body(responseHandler.encode(toUpdateBody(request)))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -206,10 +207,10 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     }
 
     @Override
-    public CompletableFuture<Facility> replaceAsync(String facilityId, CreateFacilityRequest request) {
+    public CompletableFuture<Facility> replaceAsync(FacilityId facilityId, CreateFacilityRequest request) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/facilities/" + facilityId)
+                .url(baseUrl + "/api/facilities/" + facilityId.value())
                 .body(responseHandler.encode(toCreateBody(request)))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -217,15 +218,15 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String facilityId) {
+    public CompletableFuture<Void> deleteAsync(FacilityId facilityId) {
         return deleteAsync(facilityId, false);
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String facilityId, boolean forceDeletion) {
+    public CompletableFuture<Void> deleteAsync(FacilityId facilityId, boolean forceDeletion) {
         SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/facilities/" + facilityId);
+                .url(baseUrl + "/api/facilities/" + facilityId.value());
         if (forceDeletion) builder.queryParam("forceDeletion", "true");
         return transport.executeAsync(builder.build()).thenApply(response -> {
             responseHandler.handleVoid(response);

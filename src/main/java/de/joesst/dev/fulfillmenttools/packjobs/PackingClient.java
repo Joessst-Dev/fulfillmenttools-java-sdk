@@ -1,7 +1,8 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
 
-import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.PackJobId;
+import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +22,7 @@ public interface PackingClient {
      * @return the pack job
      * @throws FulfillmenttoolsException if the request fails or the pack job is not found
      */
-    PackJob get(String packJobId);
+    PackJob get(PackJobId packJobId);
 
     /**
      * Asynchronously retrieves a single pack job by ID.
@@ -30,7 +31,7 @@ public interface PackingClient {
      * @return a future that completes with the pack job
      * @throws FulfillmenttoolsException if the request fails or the pack job is not found
      */
-    CompletableFuture<PackJob> getAsync(String packJobId);
+    CompletableFuture<PackJob> getAsync(PackJobId packJobId);
 
     /**
      * Retrieves a page of pack jobs matching the given filter criteria.
@@ -72,7 +73,7 @@ public interface PackingClient {
      * @return the updated pack job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    PackJob update(String packJobId, UpdatePackJobRequest request);
+    PackJob update(PackJobId packJobId, UpdatePackJobRequest request);
 
     /**
      * Asynchronously updates a pack job with new values.
@@ -82,5 +83,5 @@ public interface PackingClient {
      * @return a future that completes with the updated pack job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<PackJob> updateAsync(String packJobId, UpdatePackJobRequest request);
+    CompletableFuture<PackJob> updateAsync(PackJobId packJobId, UpdatePackJobRequest request);
 }

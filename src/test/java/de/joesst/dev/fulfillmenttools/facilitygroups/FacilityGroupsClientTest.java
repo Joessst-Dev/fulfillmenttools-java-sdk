@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityGroupId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -52,7 +54,7 @@ class FacilityGroupsClientTest {
                         """)));
 
         // When
-        FacilityGroup group = client.facilityGroups().get("fg-1");
+        FacilityGroup group = client.facilityGroups().get(new FacilityGroupId("fg-1"));
 
         // Then
         assertThat(group.id()).isEqualTo("fg-1");
@@ -69,7 +71,7 @@ class FacilityGroupsClientTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":1,\"tenantFacilityGroupId\":\"t\",\"facilityRefs\":[],\"nameLocalized\":{}}")));
 
         // When
-        client.facilityGroups().get("fg-1");
+        client.facilityGroups().get(new FacilityGroupId("fg-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/facilitygroups/fg-1"))
@@ -83,7 +85,7 @@ class FacilityGroupsClientTest {
                 .willReturn(aResponse().withStatus(404)));
 
         // Then
-        assertThatThrownBy(() -> client.facilityGroups().get("missing"))
+        assertThatThrownBy(() -> client.facilityGroups().get(new FacilityGroupId("missing")))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -241,7 +243,7 @@ class FacilityGroupsClientTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":2,\"tenantFacilityGroupId\":\"tg-1\",\"facilityRefs\":[\"fac-1\"],\"nameLocalized\":{\"en\":\"Updated\"}}")));
 
         // When
-        FacilityGroup group = client.facilityGroups().update("fg-1", UpdateFacilityGroupRequest.builder()
+        FacilityGroup group = client.facilityGroups().update(new FacilityGroupId("fg-1"), UpdateFacilityGroupRequest.builder()
                 .version(1)
                 .nameLocalized(Map.of("en", "Updated"))
                 .build());
@@ -269,7 +271,7 @@ class FacilityGroupsClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When
-        client.facilityGroups().delete("fg-1");
+        client.facilityGroups().delete(new FacilityGroupId("fg-1"));
 
         // Then
         server.verify(deleteRequestedFor(urlPathEqualTo("/api/facilitygroups/fg-1")));
@@ -284,7 +286,7 @@ class FacilityGroupsClientTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":2,\"tenantFacilityGroupId\":\"tg-1\",\"facilityRefs\":[\"fac-1\",\"fac-2\"],\"nameLocalized\":{}}")));
 
         // When
-        client.facilityGroups().addFacilities("fg-1", List.of("fac-2"), 1);
+        client.facilityGroups().addFacilities(new FacilityGroupId("fg-1"), List.of(new FacilityId("fac-2")), 1);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/facilitygroups/fg-1/actions"))
@@ -300,7 +302,7 @@ class FacilityGroupsClientTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":1,\"tenantFacilityGroupId\":\"tg-1\",\"facilityRefs\":[\"fac-1\"],\"nameLocalized\":{}}")));
 
         // When
-        client.facilityGroups().addFacilities("fg-1", List.of("fac-1"), null);
+        client.facilityGroups().addFacilities(new FacilityGroupId("fg-1"), List.of(new FacilityId("fac-1")), null);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/facilitygroups/fg-1/actions"))
@@ -316,7 +318,7 @@ class FacilityGroupsClientTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":2,\"tenantFacilityGroupId\":\"tg-1\",\"facilityRefs\":[],\"nameLocalized\":{}}")));
 
         // When
-        client.facilityGroups().removeFacilities("fg-1", List.of("fac-1"), 1);
+        client.facilityGroups().removeFacilities(new FacilityGroupId("fg-1"), List.of(new FacilityId("fac-1")), 1);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/facilitygroups/fg-1/actions"))
@@ -332,7 +334,7 @@ class FacilityGroupsClientTest {
                 .willReturn(okJson("{\"id\":\"fg-1\",\"version\":1,\"tenantFacilityGroupId\":\"tg-1\",\"facilityRefs\":[],\"nameLocalized\":{}}")));
 
         // When
-        client.facilityGroups().removeFacilities("fg-1", List.of("fac-1"), null);
+        client.facilityGroups().removeFacilities(new FacilityGroupId("fg-1"), List.of(new FacilityId("fac-1")), null);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/facilitygroups/fg-1/actions"))

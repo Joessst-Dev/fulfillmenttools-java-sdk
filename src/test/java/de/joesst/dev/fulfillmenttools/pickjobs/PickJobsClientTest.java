@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -57,7 +58,7 @@ class PickJobsClientTest {
                         """)));
 
         // When
-        PickJob job = client.pickJobs().get("pj-1");
+        PickJob job = client.pickJobs().get(new PickJobId("pj-1"));
 
         // Then
         assertThat(job.id()).isEqualTo("pj-1");
@@ -74,7 +75,7 @@ class PickJobsClientTest {
                 .willReturn(okJson("{\"id\":\"pj-1\"}")));
 
         // When
-        client.pickJobs().get("pj-1");
+        client.pickJobs().get(new PickJobId("pj-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1"))
@@ -91,7 +92,7 @@ class PickJobsClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.pickJobs().get("missing"))
+        assertThatThrownBy(() -> client.pickJobs().get(new PickJobId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Pick job not found");
     }
@@ -189,7 +190,7 @@ class PickJobsClientTest {
                         """)));
 
         // When
-        PickJob job = client.pickJobs().update("pj-1",
+        PickJob job = client.pickJobs().update(new PickJobId("pj-1"),
                 UpdatePickJobRequest.builder().version(2).status("IN_PROGRESS").build());
 
         // Then
@@ -204,7 +205,7 @@ class PickJobsClientTest {
                 .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"IN_PROGRESS\"}")));
 
         // When
-        client.pickJobs().update("pj-1", UpdatePickJobRequest.builder().version(3).status("IN_PROGRESS").build());
+        client.pickJobs().update(new PickJobId("pj-1"), UpdatePickJobRequest.builder().version(3).status("IN_PROGRESS").build());
 
         // Then
         server.verify(patchRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1"))
@@ -230,7 +231,7 @@ class PickJobsClientTest {
                 .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"ABORTED\"}")));
 
         // When
-        PickJob job = client.pickJobs().abort("pj-1", 2);
+        PickJob job = client.pickJobs().abort(new PickJobId("pj-1"), 2);
 
         // Then
         assertThat(job.status()).isEqualTo("ABORTED");
@@ -246,7 +247,7 @@ class PickJobsClientTest {
                 .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"IN_PROGRESS\"}")));
 
         // When
-        client.pickJobs().start("pj-1", 1);
+        client.pickJobs().start(new PickJobId("pj-1"), 1);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
@@ -260,7 +261,7 @@ class PickJobsClientTest {
                 .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"PAUSED\"}")));
 
         // When
-        client.pickJobs().pause("pj-1", 1);
+        client.pickJobs().pause(new PickJobId("pj-1"), 1);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1/actions"))
@@ -274,7 +275,7 @@ class PickJobsClientTest {
                 .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"OPEN\"}")));
 
         // When
-        client.pickJobs().restart("pj-1", 1);
+        client.pickJobs().restart(new PickJobId("pj-1"), 1);
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/pickjobs/pj-1/actions"))

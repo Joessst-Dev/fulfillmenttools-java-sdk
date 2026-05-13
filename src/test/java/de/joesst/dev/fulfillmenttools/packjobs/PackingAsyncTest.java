@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.packjobs;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.PackJobId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -41,7 +42,7 @@ class PackingAsyncTest {
                 .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"OPEN\"}")));
 
         // When
-        PackJob job = client.packing().getAsync("pj-1").get();
+        PackJob job = client.packing().getAsync(new PackJobId("pj-1")).get();
 
         // Then
         assertThat(job.id()).isEqualTo("pj-1");
@@ -69,7 +70,7 @@ class PackingAsyncTest {
 
         // When
         PackJob job = client.packing()
-                .updateAsync("pj-1", UpdatePackJobRequest.builder().version(1).status("IN_PROGRESS").build()).get();
+                .updateAsync(new PackJobId("pj-1"), UpdatePackJobRequest.builder().version(1).status("IN_PROGRESS").build()).get();
 
         // Then
         assertThat(job.status()).isEqualTo("IN_PROGRESS");

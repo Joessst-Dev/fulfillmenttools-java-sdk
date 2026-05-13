@@ -1,7 +1,8 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
-import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
+import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +22,7 @@ public interface PickJobsClient {
      * @return the pick job
      * @throws FulfillmenttoolsException if the request fails or the pick job is not found
      */
-    PickJob get(String pickJobId);
+    PickJob get(PickJobId pickJobId);
 
     /**
      * Asynchronously retrieves a single pick job by ID.
@@ -30,7 +31,7 @@ public interface PickJobsClient {
      * @return a future that completes with the pick job
      * @throws FulfillmenttoolsException if the request fails or the pick job is not found
      */
-    CompletableFuture<PickJob> getAsync(String pickJobId);
+    CompletableFuture<PickJob> getAsync(PickJobId pickJobId);
 
     /**
      * Retrieves a page of pick jobs matching the given filter criteria.
@@ -72,7 +73,7 @@ public interface PickJobsClient {
      * @return the updated pick job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    PickJob update(String pickJobId, UpdatePickJobRequest request);
+    PickJob update(PickJobId pickJobId, UpdatePickJobRequest request);
 
     /**
      * Asynchronously updates a pick job with new values.
@@ -82,7 +83,7 @@ public interface PickJobsClient {
      * @return a future that completes with the updated pick job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<PickJob> updateAsync(String pickJobId, UpdatePickJobRequest request);
+    CompletableFuture<PickJob> updateAsync(PickJobId pickJobId, UpdatePickJobRequest request);
 
     /**
      * Transitions a pick job to the aborted state.
@@ -94,7 +95,7 @@ public interface PickJobsClient {
      * @return the updated pick job in aborted state
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    PickJob abort(String pickJobId, int version);
+    PickJob abort(PickJobId pickJobId, int version);
 
     /**
      * Asynchronously transitions a pick job to the aborted state.
@@ -104,7 +105,7 @@ public interface PickJobsClient {
      * @return a future that completes with the updated pick job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<PickJob> abortAsync(String pickJobId, int version);
+    CompletableFuture<PickJob> abortAsync(PickJobId pickJobId, int version);
 
     /**
      * Transitions a pick job to the restarted state.
@@ -114,7 +115,7 @@ public interface PickJobsClient {
      * @return the updated pick job in restarted state
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    PickJob restart(String pickJobId, int version);
+    PickJob restart(PickJobId pickJobId, int version);
 
     /**
      * Asynchronously transitions a pick job to the restarted state.
@@ -124,7 +125,7 @@ public interface PickJobsClient {
      * @return a future that completes with the updated pick job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<PickJob> restartAsync(String pickJobId, int version);
+    CompletableFuture<PickJob> restartAsync(PickJobId pickJobId, int version);
 
     /**
      * Transitions a pick job to the reset state.
@@ -136,7 +137,7 @@ public interface PickJobsClient {
      * @return the updated pick job in reset state
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    PickJob reset(String pickJobId, int version);
+    PickJob reset(PickJobId pickJobId, int version);
 
     /**
      * Asynchronously transitions a pick job to the reset state.
@@ -146,7 +147,7 @@ public interface PickJobsClient {
      * @return a future that completes with the updated pick job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<PickJob> resetAsync(String pickJobId, int version);
+    CompletableFuture<PickJob> resetAsync(PickJobId pickJobId, int version);
 
     /**
      * Transitions a pick job to the obsolete state.
@@ -156,7 +157,7 @@ public interface PickJobsClient {
      * @return the updated pick job in obsolete state
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    PickJob obsolete(String pickJobId, int version);
+    PickJob obsolete(PickJobId pickJobId, int version);
 
     /**
      * Asynchronously transitions a pick job to the obsolete state.
@@ -166,7 +167,7 @@ public interface PickJobsClient {
      * @return a future that completes with the updated pick job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<PickJob> obsoleteAsync(String pickJobId, int version);
+    CompletableFuture<PickJob> obsoleteAsync(PickJobId pickJobId, int version);
 
     /**
      * Transitions a pick job to the started state.
@@ -176,7 +177,7 @@ public interface PickJobsClient {
      * @return the updated pick job in started state
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    PickJob start(String pickJobId, int version);
+    PickJob start(PickJobId pickJobId, int version);
 
     /**
      * Asynchronously transitions a pick job to the started state.
@@ -186,7 +187,7 @@ public interface PickJobsClient {
      * @return a future that completes with the updated pick job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<PickJob> startAsync(String pickJobId, int version);
+    CompletableFuture<PickJob> startAsync(PickJobId pickJobId, int version);
 
     /**
      * Transitions a pick job to the paused state.
@@ -196,7 +197,7 @@ public interface PickJobsClient {
      * @return the updated pick job in paused state
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    PickJob pause(String pickJobId, int version);
+    PickJob pause(PickJobId pickJobId, int version);
 
     /**
      * Asynchronously transitions a pick job to the paused state.
@@ -206,5 +207,5 @@ public interface PickJobsClient {
      * @return a future that completes with the updated pick job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<PickJob> pauseAsync(String pickJobId, int version);
+    CompletableFuture<PickJob> pauseAsync(PickJobId pickJobId, int version);
 }

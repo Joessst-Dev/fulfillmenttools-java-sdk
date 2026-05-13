@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilitygroups;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityGroupId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public interface FacilityGroupsClient {
      * @return the facility group
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    FacilityGroup get(String facilityGroupId);
+    FacilityGroup get(FacilityGroupId facilityGroupId);
 
     /**
      * Asynchronously retrieves a facility group by its ID.
@@ -26,7 +28,7 @@ public interface FacilityGroupsClient {
      * @param facilityGroupId the facility group ID
      * @return a CompletableFuture containing the facility group
      */
-    CompletableFuture<FacilityGroup> getAsync(String facilityGroupId);
+    CompletableFuture<FacilityGroup> getAsync(FacilityGroupId facilityGroupId);
 
     /**
      * Lists facility groups with pagination.
@@ -79,7 +81,7 @@ public interface FacilityGroupsClient {
      * @return the updated facility group
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    FacilityGroup update(String facilityGroupId, UpdateFacilityGroupRequest request);
+    FacilityGroup update(FacilityGroupId facilityGroupId, UpdateFacilityGroupRequest request);
 
     /**
      * Asynchronously updates an existing facility group.
@@ -88,7 +90,7 @@ public interface FacilityGroupsClient {
      * @param request the update request containing the new values
      * @return a CompletableFuture containing the updated facility group
      */
-    CompletableFuture<FacilityGroup> updateAsync(String facilityGroupId, UpdateFacilityGroupRequest request);
+    CompletableFuture<FacilityGroup> updateAsync(FacilityGroupId facilityGroupId, UpdateFacilityGroupRequest request);
 
     /**
      * Deletes a facility group.
@@ -96,7 +98,7 @@ public interface FacilityGroupsClient {
      * @param facilityGroupId the facility group ID to delete
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    void delete(String facilityGroupId);
+    void delete(FacilityGroupId facilityGroupId);
 
     /**
      * Asynchronously deletes a facility group.
@@ -104,49 +106,49 @@ public interface FacilityGroupsClient {
      * @param facilityGroupId the facility group ID to delete
      * @return a CompletableFuture that completes when the deletion is done
      */
-    CompletableFuture<Void> deleteAsync(String facilityGroupId);
+    CompletableFuture<Void> deleteAsync(FacilityGroupId facilityGroupId);
 
     /**
      * Adds facilities to a facility group.
      *
      * @param facilityGroupId the facility group ID
-     * @param facilityRefs the facility IDs to add
+     * @param facilityIds the facility IDs to add
      * @param version the current version for optimistic locking
      * @return the updated facility group
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    FacilityGroup addFacilities(String facilityGroupId, List<String> facilityRefs, Integer version);
+    FacilityGroup addFacilities(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version);
 
     /**
      * Asynchronously adds facilities to a facility group.
      *
      * @param facilityGroupId the facility group ID
-     * @param facilityRefs the facility IDs to add
+     * @param facilityIds the facility IDs to add
      * @param version the current version for optimistic locking
      * @return a CompletableFuture containing the updated facility group
      */
-    CompletableFuture<FacilityGroup> addFacilitiesAsync(String facilityGroupId, List<String> facilityRefs, Integer version);
+    CompletableFuture<FacilityGroup> addFacilitiesAsync(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version);
 
     /**
      * Removes facilities from a facility group.
      *
      * @param facilityGroupId the facility group ID
-     * @param facilityRefs the facility IDs to remove
+     * @param facilityIds the facility IDs to remove
      * @param version the current version for optimistic locking
      * @return the updated facility group
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    FacilityGroup removeFacilities(String facilityGroupId, List<String> facilityRefs, Integer version);
+    FacilityGroup removeFacilities(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version);
 
     /**
      * Asynchronously removes facilities from a facility group.
      *
      * @param facilityGroupId the facility group ID
-     * @param facilityRefs the facility IDs to remove
+     * @param facilityIds the facility IDs to remove
      * @param version the current version for optimistic locking
      * @return a CompletableFuture containing the updated facility group
      */
-    CompletableFuture<FacilityGroup> removeFacilitiesAsync(String facilityGroupId, List<String> facilityRefs, Integer version);
+    CompletableFuture<FacilityGroup> removeFacilitiesAsync(FacilityGroupId facilityGroupId, List<FacilityId> facilityIds, Integer version);
 
     /**
      * Searches for facility groups matching the given query.

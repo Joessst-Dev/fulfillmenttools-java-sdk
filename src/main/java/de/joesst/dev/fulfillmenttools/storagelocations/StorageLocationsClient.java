@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.storagelocations;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +22,7 @@ public interface StorageLocationsClient {
      * @return the storage location
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StorageLocation get(String facilityId, String storageLocationId);
+    StorageLocation get(FacilityId facilityId, StorageLocationId storageLocationId);
 
     /**
      * Retrieves a single storage location by ID asynchronously.
@@ -29,7 +31,7 @@ public interface StorageLocationsClient {
      * @param storageLocationId the storage location ID
      * @return a {@code CompletableFuture} that resolves to the storage location
      */
-    CompletableFuture<StorageLocation> getAsync(String facilityId, String storageLocationId);
+    CompletableFuture<StorageLocation> getAsync(FacilityId facilityId, StorageLocationId storageLocationId);
 
     /**
      * Lists storage locations for a facility, returning one page of results.
@@ -39,7 +41,7 @@ public interface StorageLocationsClient {
      * @return a page of storage locations
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    Page<StorageLocation> list(String facilityId, StorageLocationListRequest request);
+    Page<StorageLocation> list(FacilityId facilityId, StorageLocationListRequest request);
 
     /**
      * Lists storage locations for a facility asynchronously, returning one page of results.
@@ -48,7 +50,7 @@ public interface StorageLocationsClient {
      * @param request    the list request with filters and pagination
      * @return a {@code CompletableFuture} that resolves to a page of storage locations
      */
-    CompletableFuture<Page<StorageLocation>> listAsync(String facilityId, StorageLocationListRequest request);
+    CompletableFuture<Page<StorageLocation>> listAsync(FacilityId facilityId, StorageLocationListRequest request);
 
     /**
      * Lists all storage locations for a facility by automatically iterating through pages.
@@ -57,7 +59,7 @@ public interface StorageLocationsClient {
      * @param request    the list request with filters
      * @return an {@code Iterable} over all matching storage locations
      */
-    Iterable<StorageLocation> listAll(String facilityId, StorageLocationListRequest request);
+    Iterable<StorageLocation> listAll(FacilityId facilityId, StorageLocationListRequest request);
 
     /**
      * Creates a new storage location in a facility.
@@ -67,7 +69,7 @@ public interface StorageLocationsClient {
      * @return the created storage location
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StorageLocation create(String facilityId, CreateStorageLocationRequest request);
+    StorageLocation create(FacilityId facilityId, CreateStorageLocationRequest request);
 
     /**
      * Creates a new storage location in a facility asynchronously.
@@ -76,7 +78,7 @@ public interface StorageLocationsClient {
      * @param request    the creation request
      * @return a {@code CompletableFuture} that resolves to the created storage location
      */
-    CompletableFuture<StorageLocation> createAsync(String facilityId, CreateStorageLocationRequest request);
+    CompletableFuture<StorageLocation> createAsync(FacilityId facilityId, CreateStorageLocationRequest request);
 
     /**
      * Updates an existing storage location.
@@ -87,7 +89,7 @@ public interface StorageLocationsClient {
      * @return the updated storage location
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StorageLocation update(String facilityId, String storageLocationId, UpdateStorageLocationRequest request);
+    StorageLocation update(FacilityId facilityId, StorageLocationId storageLocationId, UpdateStorageLocationRequest request);
 
     /**
      * Updates an existing storage location asynchronously.
@@ -97,7 +99,7 @@ public interface StorageLocationsClient {
      * @param request           the update request
      * @return a {@code CompletableFuture} that resolves to the updated storage location
      */
-    CompletableFuture<StorageLocation> updateAsync(String facilityId, String storageLocationId, UpdateStorageLocationRequest request);
+    CompletableFuture<StorageLocation> updateAsync(FacilityId facilityId, StorageLocationId storageLocationId, UpdateStorageLocationRequest request);
 
     /**
      * Deletes a storage location.
@@ -106,7 +108,7 @@ public interface StorageLocationsClient {
      * @param storageLocationId the storage location ID to delete
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    void delete(String facilityId, String storageLocationId);
+    void delete(FacilityId facilityId, StorageLocationId storageLocationId);
 
     /**
      * Deletes a storage location asynchronously.
@@ -115,5 +117,5 @@ public interface StorageLocationsClient {
      * @param storageLocationId the storage location ID to delete
      * @return a {@code CompletableFuture} that completes when the deletion is done
      */
-    CompletableFuture<Void> deleteAsync(String facilityId, String storageLocationId);
+    CompletableFuture<Void> deleteAsync(FacilityId facilityId, StorageLocationId storageLocationId);
 }

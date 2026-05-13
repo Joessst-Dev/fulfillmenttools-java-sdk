@@ -6,6 +6,8 @@ import de.joesst.dev.fulfillmenttools.facilitydiscounts.FacilityDiscount;
 import de.joesst.dev.fulfillmenttools.facilitydiscounts.FacilityDiscountListRequest;
 import de.joesst.dev.fulfillmenttools.facilitydiscounts.FacilityDiscountsClient;
 import de.joesst.dev.fulfillmenttools.facilitydiscounts.UpdateFacilityDiscountRequest;
+import de.joesst.dev.fulfillmenttools.id.FacilityDiscountId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
@@ -32,25 +34,25 @@ public final class FacilityDiscountsClientImpl implements FacilityDiscountsClien
     }
 
     @Override
-    public FacilityDiscount get(String facilityRef, String discountRef) {
-        return responseHandler.handle(execute(buildGetRequest(facilityRef, discountRef)), FacilityDiscount.class);
+    public FacilityDiscount get(FacilityId facilityId, FacilityDiscountId discountId) {
+        return responseHandler.handle(execute(buildGetRequest(facilityId, discountId)), FacilityDiscount.class);
     }
 
     @Override
-    public CompletableFuture<FacilityDiscount> getAsync(String facilityRef, String discountRef) {
-        return transport.executeAsync(buildGetRequest(facilityRef, discountRef))
+    public CompletableFuture<FacilityDiscount> getAsync(FacilityId facilityId, FacilityDiscountId discountId) {
+        return transport.executeAsync(buildGetRequest(facilityId, discountId))
                 .thenApply(r -> responseHandler.handle(r, FacilityDiscount.class));
     }
 
     @Override
-    public Page<FacilityDiscount> list(String facilityRef, FacilityDiscountListRequest request) {
+    public Page<FacilityDiscount> list(FacilityId facilityId, FacilityDiscountListRequest request) {
         FacilityDiscountListResponse resp = responseHandler.handle(
-                execute(buildListRequest(facilityRef, request)), FacilityDiscountListResponse.class);
+                execute(buildListRequest(facilityId, request)), FacilityDiscountListResponse.class);
         return toPage(resp);
     }
 
     @Override
-    public Iterable<FacilityDiscount> listAll(String facilityRef, FacilityDiscountListRequest request) {
+    public Iterable<FacilityDiscount> listAll(FacilityId facilityId, FacilityDiscountListRequest request) {
         return () -> new java.util.Iterator<>() {
             private final ArrayDeque<FacilityDiscount> buffer = new ArrayDeque<>();
             private String cursor = null;
@@ -62,7 +64,7 @@ public final class FacilityDiscountsClientImpl implements FacilityDiscountsClien
                         ? request
                         : request.toBuilder().startAfterId(cursor).build();
                 FacilityDiscountListResponse resp = responseHandler.handle(
-                        execute(buildListRequest(facilityRef, r)), FacilityDiscountListResponse.class);
+                        execute(buildListRequest(facilityId, r)), FacilityDiscountListResponse.class);
                 List<FacilityDiscount> items = resp.items() != null ? resp.items() : List.of();
                 buffer.addAll(items);
                 accumulated += items.size();
@@ -85,84 +87,84 @@ public final class FacilityDiscountsClientImpl implements FacilityDiscountsClien
     }
 
     @Override
-    public CompletableFuture<Page<FacilityDiscount>> listAsync(String facilityRef, FacilityDiscountListRequest request) {
-        return transport.executeAsync(buildListRequest(facilityRef, request))
+    public CompletableFuture<Page<FacilityDiscount>> listAsync(FacilityId facilityId, FacilityDiscountListRequest request) {
+        return transport.executeAsync(buildListRequest(facilityId, request))
                 .thenApply(r -> toPage(responseHandler.handle(r, FacilityDiscountListResponse.class)));
     }
 
     @Override
-    public FacilityDiscount create(String facilityRef, CreateFacilityDiscountRequest request) {
-        return responseHandler.handle(execute(buildCreateRequest(facilityRef, request)), FacilityDiscount.class);
+    public FacilityDiscount create(FacilityId facilityId, CreateFacilityDiscountRequest request) {
+        return responseHandler.handle(execute(buildCreateRequest(facilityId, request)), FacilityDiscount.class);
     }
 
     @Override
-    public CompletableFuture<FacilityDiscount> createAsync(String facilityRef, CreateFacilityDiscountRequest request) {
-        return transport.executeAsync(buildCreateRequest(facilityRef, request))
+    public CompletableFuture<FacilityDiscount> createAsync(FacilityId facilityId, CreateFacilityDiscountRequest request) {
+        return transport.executeAsync(buildCreateRequest(facilityId, request))
                 .thenApply(r -> responseHandler.handle(r, FacilityDiscount.class));
     }
 
     @Override
-    public FacilityDiscount update(String facilityRef, String discountRef, UpdateFacilityDiscountRequest request) {
-        return responseHandler.handle(execute(buildUpdateRequest(facilityRef, discountRef, request)), FacilityDiscount.class);
+    public FacilityDiscount update(FacilityId facilityId, FacilityDiscountId discountId, UpdateFacilityDiscountRequest request) {
+        return responseHandler.handle(execute(buildUpdateRequest(facilityId, discountId, request)), FacilityDiscount.class);
     }
 
     @Override
-    public CompletableFuture<FacilityDiscount> updateAsync(String facilityRef, String discountRef, UpdateFacilityDiscountRequest request) {
-        return transport.executeAsync(buildUpdateRequest(facilityRef, discountRef, request))
+    public CompletableFuture<FacilityDiscount> updateAsync(FacilityId facilityId, FacilityDiscountId discountId, UpdateFacilityDiscountRequest request) {
+        return transport.executeAsync(buildUpdateRequest(facilityId, discountId, request))
                 .thenApply(r -> responseHandler.handle(r, FacilityDiscount.class));
     }
 
     @Override
-    public void delete(String facilityRef, String discountRef) {
-        responseHandler.handleVoid(execute(buildDeleteRequest(facilityRef, discountRef)));
+    public void delete(FacilityId facilityId, FacilityDiscountId discountId) {
+        responseHandler.handleVoid(execute(buildDeleteRequest(facilityId, discountId)));
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String facilityRef, String discountRef) {
-        return transport.executeAsync(buildDeleteRequest(facilityRef, discountRef))
+    public CompletableFuture<Void> deleteAsync(FacilityId facilityId, FacilityDiscountId discountId) {
+        return transport.executeAsync(buildDeleteRequest(facilityId, discountId))
                 .thenApply(r -> { responseHandler.handleVoid(r); return null; });
     }
 
-    private SdkHttpRequest buildGetRequest(String facilityRef, String discountRef) {
+    private SdkHttpRequest buildGetRequest(FacilityId facilityId, FacilityDiscountId discountId) {
         return SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/facilities/" + facilityRef + "/discounts/" + discountRef)
+                .url(baseUrl + "/api/facilities/" + facilityId.value() + "/discounts/" + discountId.value())
                 .build();
     }
 
-    private SdkHttpRequest buildListRequest(String facilityRef, FacilityDiscountListRequest request) {
+    private SdkHttpRequest buildListRequest(FacilityId facilityId, FacilityDiscountListRequest request) {
         SdkHttpRequest.Builder builder = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/facilities/" + facilityRef + "/discounts");
+                .url(baseUrl + "/api/facilities/" + facilityId.value() + "/discounts");
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
         return builder.build();
     }
 
-    private SdkHttpRequest buildCreateRequest(String facilityRef, CreateFacilityDiscountRequest request) {
+    private SdkHttpRequest buildCreateRequest(FacilityId facilityId, CreateFacilityDiscountRequest request) {
         var body = new CreateFacilityDiscountBody(
                 request.type(), request.priority(), request.discount(), request.context());
         return SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/facilities/" + facilityRef + "/discounts")
+                .url(baseUrl + "/api/facilities/" + facilityId.value() + "/discounts")
                 .body(responseHandler.encode(body))
                 .build();
     }
 
-    private SdkHttpRequest buildUpdateRequest(String facilityRef, String discountRef, UpdateFacilityDiscountRequest request) {
+    private SdkHttpRequest buildUpdateRequest(FacilityId facilityId, FacilityDiscountId discountId, UpdateFacilityDiscountRequest request) {
         var body = new UpdateFacilityDiscountBody(
                 request.version(), request.type(), request.priority(), request.discount(), request.context());
         return SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/facilities/" + facilityRef + "/discounts/" + discountRef)
+                .url(baseUrl + "/api/facilities/" + facilityId.value() + "/discounts/" + discountId.value())
                 .body(responseHandler.encode(body))
                 .build();
     }
 
-    private SdkHttpRequest buildDeleteRequest(String facilityRef, String discountRef) {
+    private SdkHttpRequest buildDeleteRequest(FacilityId facilityId, FacilityDiscountId discountId) {
         return SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/facilities/" + facilityRef + "/discounts/" + discountRef)
+                .url(baseUrl + "/api/facilities/" + facilityId.value() + "/discounts/" + discountId.value())
                 .build();
     }
 

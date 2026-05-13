@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -62,7 +63,7 @@ class OperativeProcessClientTest {
                         """)));
 
         // When
-        Process process = client.processes().get("proc-1");
+        Process process = client.processes().get(new ProcessId("proc-1"));
 
         // Then
         assertThat(process.id()).isEqualTo("proc-1");
@@ -83,7 +84,7 @@ class OperativeProcessClientTest {
                 .willReturn(okJson("{\"id\":\"proc-1\"}")));
 
         // When
-        client.processes().get("proc-1");
+        client.processes().get(new ProcessId("proc-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/processes/proc-1"))
@@ -100,7 +101,7 @@ class OperativeProcessClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.processes().get("missing"))
+        assertThatThrownBy(() -> client.processes().get(new ProcessId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Process not found");
     }
@@ -181,13 +182,13 @@ class OperativeProcessClientTest {
     void search_returnsMatchingProcesses() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/processes/search"))
-                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"facilityRefs\":[\"fac-1\"]}],\"pageInfo\":null}")));
+                .willReturn(okJson("{\"processes\":[{\"id\":\"proc-1\",\"facilityRefs\":[\"fac-1\"]}],\"total\":1}")));
 
         // When
         Page<Process> page = client.processes().search(ProcessSearchRequest.builder()
                 .query(ProcessSearchQuery.builder()
-                        .facilityRefsHasAny("fac-1")
-                        .statusIn("OPEN")
+                        .facilityRefsHasAny(List.of("fac-1"))
+                        .statusIn(List.of("OPEN"))
                         .build())
                 .build());
 
@@ -200,13 +201,13 @@ class OperativeProcessClientTest {
     void search_sendsFacilityRefsAndStatus() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/processes/search"))
-                .willReturn(okJson("{\"processes\":[]}")));
+                .willReturn(okJson("{\"processes\":[], \"total\":0}")));
 
         // When
         client.processes().search(ProcessSearchRequest.builder()
                 .query(ProcessSearchQuery.builder()
-                        .facilityRefsHasAny("fac-1")
-                        .statusIn("OPEN")
+                        .facilityRefsHasAny(List.of("fac-1"))
+                        .statusIn(List.of("OPEN"))
                         .build())
                 .size(5)
                 .build());

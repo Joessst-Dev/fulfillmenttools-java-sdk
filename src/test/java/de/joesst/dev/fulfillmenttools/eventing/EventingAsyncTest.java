@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.eventing;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.SubscriptionId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -41,7 +42,7 @@ class EventingAsyncTest {
                 .willReturn(okJson("{\"id\":\"s-1\",\"event\":\"ORDER_CREATED\",\"callbackUrl\":\"https://example.com/hook\",\"status\":\"ACTIVE\"}")));
 
         // When
-        Subscription subscription = client.eventing().getAsync("s-1").get();
+        Subscription subscription = client.eventing().getAsync(new SubscriptionId("s-1")).get();
 
         // Then
         assertThat(subscription.id()).isEqualTo("s-1");
@@ -88,7 +89,7 @@ class EventingAsyncTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatCode(() -> client.eventing().deleteAsync("s-1").get())
+        assertThatCode(() -> client.eventing().deleteAsync(new SubscriptionId("s-1")).get())
                 .doesNotThrowAnyException();
     }
 

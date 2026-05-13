@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.returns;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -43,7 +44,7 @@ class ReturnsAsyncTest {
                 .willReturn(okJson("{\"id\":\"ret-1\",\"status\":\"OPEN\"}")));
 
         // When
-        Return ret = client.returns().getAsync("ret-1").get();
+        Return ret = client.returns().getAsync(new ReturnId("ret-1")).get();
 
         // Then
         assertThat(ret.id()).isEqualTo("ret-1");

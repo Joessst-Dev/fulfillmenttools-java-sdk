@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.handoverjobs;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
+import de.joesst.dev.fulfillmenttools.id.HandoverJobId;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -58,7 +59,7 @@ class HandoverJobsClientTest {
                         """)));
 
         // When
-        HandoverJob job = client.handoverJobs().get("hj-1");
+        HandoverJob job = client.handoverJobs().get(new HandoverJobId("hj-1"));
 
         // Then
         assertThat(job.id()).isEqualTo("hj-1");
@@ -76,7 +77,7 @@ class HandoverJobsClientTest {
                 .willReturn(okJson("{\"id\":\"hj-1\"}")));
 
         // When
-        client.handoverJobs().get("hj-1");
+        client.handoverJobs().get(new HandoverJobId("hj-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/handoverjobs/hj-1"))
@@ -93,7 +94,7 @@ class HandoverJobsClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.handoverJobs().get("missing"))
+        assertThatThrownBy(() -> client.handoverJobs().get(new HandoverJobId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Handover job not found");
     }
@@ -193,7 +194,7 @@ class HandoverJobsClientTest {
                         """)));
 
         // When
-        HandoverJob job = client.handoverJobs().update("hj-1",
+        HandoverJob job = client.handoverJobs().update(new HandoverJobId("hj-1"),
                 UpdateHandoverJobRequest.builder().version(2).status("HANDED_OVER").build());
 
         // Then
@@ -208,7 +209,7 @@ class HandoverJobsClientTest {
                 .willReturn(okJson("{\"id\":\"hj-1\",\"status\":\"HANDED_OVER\"}")));
 
         // When
-        client.handoverJobs().update("hj-1", UpdateHandoverJobRequest.builder().version(3).status("HANDED_OVER").build());
+        client.handoverJobs().update(new HandoverJobId("hj-1"), UpdateHandoverJobRequest.builder().version(3).status("HANDED_OVER").build());
 
         // Then
         server.verify(patchRequestedFor(urlPathEqualTo("/api/handoverjobs/hj-1"))
@@ -234,7 +235,7 @@ class HandoverJobsClientTest {
                 .willReturn(okJson("{\"id\":\"hj-1\",\"status\":\"CANCELED\"}")));
 
         // When
-        HandoverJob job = client.handoverJobs().cancel("hj-1", 2, "CONSUMER_NO_SHOW");
+        HandoverJob job = client.handoverJobs().cancel(new HandoverJobId("hj-1"), 2, "CONSUMER_NO_SHOW");
 
         // Then
         assertThat(job.status()).isEqualTo("CANCELED");

@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.SubscriptionId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -56,7 +57,7 @@ class EventingClientTest {
                         """)));
 
         // When
-        Subscription sub = client.eventing().get("s-1");
+        Subscription sub = client.eventing().get(new SubscriptionId("s-1"));
 
         // Then
         assertThat(sub.id()).isEqualTo("s-1");
@@ -82,7 +83,7 @@ class EventingClientTest {
                         """)));
 
         // When
-        Subscription sub = client.eventing().get("s-1");
+        Subscription sub = client.eventing().get(new SubscriptionId("s-1"));
 
         // Then
         assertThat(sub.contexts()).hasSize(1);
@@ -100,7 +101,7 @@ class EventingClientTest {
                 .willReturn(okJson("{\"id\":\"s-1\"}")));
 
         // When
-        client.eventing().get("s-1");
+        client.eventing().get(new SubscriptionId("s-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/subscriptions/s-1"))
@@ -117,7 +118,7 @@ class EventingClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.eventing().get("missing"))
+        assertThatThrownBy(() -> client.eventing().get(new SubscriptionId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Subscription not found");
     }
@@ -255,7 +256,7 @@ class EventingClientTest {
                         .withBody("{\"id\":\"s-1\"}")));
 
         // When / Then
-        assertThatCode(() -> client.eventing().delete("s-1"))
+        assertThatCode(() -> client.eventing().delete(new SubscriptionId("s-1")))
                 .doesNotThrowAnyException();
     }
 

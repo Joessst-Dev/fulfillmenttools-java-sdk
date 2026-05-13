@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +21,7 @@ public interface FacilitiesClient {
      * @return the facility
      * @throws FulfillmenttoolsException if the facility is not found or a request error occurs
      */
-    Facility get(String facilityId);
+    Facility get(FacilityId facilityId);
 
     /**
      * Asynchronously retrieves a single facility by ID.
@@ -28,7 +29,7 @@ public interface FacilitiesClient {
      * @param facilityId unique identifier of the facility
      * @return a future that completes with the facility
      */
-    CompletableFuture<Facility> getAsync(String facilityId);
+    CompletableFuture<Facility> getAsync(FacilityId facilityId);
 
     /**
      * Lists facilities with optional filtering and pagination.
@@ -105,7 +106,7 @@ public interface FacilitiesClient {
      * @return the updated facility
      * @throws FulfillmenttoolsException if the facility is not found or a request error occurs
      */
-    Facility update(String facilityId, UpdateFacilityRequest request);
+    Facility update(FacilityId facilityId, UpdateFacilityRequest request);
 
     /**
      * Asynchronously updates an existing facility.
@@ -114,7 +115,7 @@ public interface FacilitiesClient {
      * @param request the update payload with new field values
      * @return a future that completes with the updated facility
      */
-    CompletableFuture<Facility> updateAsync(String facilityId, UpdateFacilityRequest request);
+    CompletableFuture<Facility> updateAsync(FacilityId facilityId, UpdateFacilityRequest request);
 
     /**
      * Replaces an entire facility, overwriting all fields.
@@ -124,7 +125,7 @@ public interface FacilitiesClient {
      * @return the replaced facility
      * @throws FulfillmenttoolsException if the facility is not found or a request error occurs
      */
-    Facility replace(String facilityId, CreateFacilityRequest request);
+    Facility replace(FacilityId facilityId, CreateFacilityRequest request);
 
     /**
      * Asynchronously replaces an entire facility.
@@ -133,7 +134,7 @@ public interface FacilitiesClient {
      * @param request the replacement facility payload
      * @return a future that completes with the replaced facility
      */
-    CompletableFuture<Facility> replaceAsync(String facilityId, CreateFacilityRequest request);
+    CompletableFuture<Facility> replaceAsync(FacilityId facilityId, CreateFacilityRequest request);
 
     /**
      * Deletes a facility.
@@ -141,7 +142,7 @@ public interface FacilitiesClient {
      * @param facilityId unique identifier of the facility to delete
      * @throws FulfillmenttoolsException if the facility is not found or a request error occurs
      */
-    void delete(String facilityId);
+    void delete(FacilityId facilityId);
 
     /**
      * Deletes a facility, optionally forcing deletion even if it has associations.
@@ -150,7 +151,7 @@ public interface FacilitiesClient {
      * @param forceDeletion if {@code true}, bypasses soft-delete constraints
      * @throws FulfillmenttoolsException if a request error occurs
      */
-    void delete(String facilityId, boolean forceDeletion);
+    void delete(FacilityId facilityId, boolean forceDeletion);
 
     /**
      * Asynchronously deletes a facility.
@@ -158,7 +159,7 @@ public interface FacilitiesClient {
      * @param facilityId unique identifier of the facility to delete
      * @return a future that completes when the deletion is done
      */
-    CompletableFuture<Void> deleteAsync(String facilityId);
+    CompletableFuture<Void> deleteAsync(FacilityId facilityId);
 
     /**
      * Asynchronously deletes a facility, optionally forcing deletion.
@@ -167,5 +168,5 @@ public interface FacilitiesClient {
      * @param forceDeletion if {@code true}, bypasses soft-delete constraints
      * @return a future that completes when the deletion is done
      */
-    CompletableFuture<Void> deleteAsync(String facilityId, boolean forceDeletion);
+    CompletableFuture<Void> deleteAsync(FacilityId facilityId, boolean forceDeletion);
 }

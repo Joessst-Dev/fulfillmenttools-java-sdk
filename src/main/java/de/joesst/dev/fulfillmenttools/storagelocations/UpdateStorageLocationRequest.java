@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * Request parameters for updating an existing storage location via
- * {@link StorageLocationsClient#update(String, String, UpdateStorageLocationRequest)}.
+ * {@link StorageLocationsClient#update(de.joesst.dev.fulfillmenttools.id.FacilityId, de.joesst.dev.fulfillmenttools.id.StorageLocationId, UpdateStorageLocationRequest)}.
  *
  * <p>Use the fluent {@link Builder} to construct instances:
  * <pre>{@code

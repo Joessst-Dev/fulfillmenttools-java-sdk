@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.UserId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -65,7 +66,7 @@ class UserManagementClientTest {
                         """)));
 
         // When
-        User user = client.users().get("u-typed");
+        User user = client.users().get(new UserId("u-typed"));
 
         // Then
         assertThat(user.authenticationProvider()).isNotNull();
@@ -125,7 +126,7 @@ class UserManagementClientTest {
                         """)));
 
         // When
-        User user = client.users().get("u-1");
+        User user = client.users().get(new UserId("u-1"));
 
         // Then
         assertThat(user.id()).isEqualTo("u-1");
@@ -145,7 +146,7 @@ class UserManagementClientTest {
                 .willReturn(okJson("{\"id\":\"u-1\"}")));
 
         // When
-        client.users().get("u-1");
+        client.users().get(new UserId("u-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/users/u-1"))
@@ -162,7 +163,7 @@ class UserManagementClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.users().get("missing"))
+        assertThatThrownBy(() -> client.users().get(new UserId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("User not found");
     }
@@ -343,7 +344,7 @@ class UserManagementClientTest {
                 .willReturn(okJson("{\"id\":\"u-1\",\"firstname\":\"Bob\",\"lastname\":\"Smith\"}")));
 
         // When
-        User user = client.users().update("u-1", UpdateUserRequest.builder()
+        User user = client.users().update(new UserId("u-1"), UpdateUserRequest.builder()
                 .version(2)
                 .firstName("Bob")
                 .build());
@@ -373,7 +374,7 @@ class UserManagementClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatCode(() -> client.users().delete("u-1"))
+        assertThatCode(() -> client.users().delete(new UserId("u-1")))
                 .doesNotThrowAnyException();
     }
 

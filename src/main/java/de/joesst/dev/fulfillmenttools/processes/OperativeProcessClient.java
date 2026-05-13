@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.processes;
 
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public interface OperativeProcessClient {
      * @return the process
      * @throws FulfillmenttoolsException if the request fails
      */
-    Process get(String processId);
+    Process get(ProcessId processId);
 
     /**
      * Gets a process by ID asynchronously.
@@ -27,7 +28,7 @@ public interface OperativeProcessClient {
      * @param processId the process ID
      * @return a future resolving to the process
      */
-    CompletableFuture<Process> getAsync(String processId);
+    CompletableFuture<Process> getAsync(ProcessId processId);
 
     /**
      * Lists processes according to the given request parameters.

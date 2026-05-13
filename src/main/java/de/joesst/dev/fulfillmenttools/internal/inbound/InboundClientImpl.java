@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.internal.inbound;
 
 import de.joesst.dev.fulfillmenttools.TransportException;
+import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import de.joesst.dev.fulfillmenttools.inbound.CreateStowJobRequest;
 import de.joesst.dev.fulfillmenttools.inbound.InboundClient;
 import de.joesst.dev.fulfillmenttools.inbound.StowJob;
@@ -31,10 +32,10 @@ public final class InboundClientImpl implements InboundClient {
     }
 
     @Override
-    public StowJob get(String stowJobId) {
+    public StowJob get(StowJobId stowJobId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/stowjobs/" + stowJobId)
+                .url(baseUrl + "/api/stowjobs/" + stowJobId.value())
                 .build();
         return responseHandler.handle(execute(request), StowJob.class);
     }
@@ -71,48 +72,48 @@ public final class InboundClientImpl implements InboundClient {
     }
 
     @Override
-    public StowJob update(String stowJobId, UpdateStowJobRequest request) {
+    public StowJob update(StowJobId stowJobId, UpdateStowJobRequest request) {
         UpdateStowJobBody body = new UpdateStowJobBody(
                 request.version(), request.priority(), request.targetTime(),
                 request.assignedUsers(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/stowjobs/" + stowJobId)
+                .url(baseUrl + "/api/stowjobs/" + stowJobId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), StowJob.class);
     }
 
     @Override
-    public StowJob start(String stowJobId, int version) {
+    public StowJob start(StowJobId stowJobId, int version) {
         return action(stowJobId, "START_STOW_JOB", version);
     }
 
     @Override
-    public StowJob pause(String stowJobId, int version) {
+    public StowJob pause(StowJobId stowJobId, int version) {
         return action(stowJobId, "PAUSE_STOW_JOB", version);
     }
 
     @Override
-    public StowJob cancel(String stowJobId, int version) {
+    public StowJob cancel(StowJobId stowJobId, int version) {
         return action(stowJobId, "CANCEL_STOW_JOB", version);
     }
 
     @Override
-    public StowJob reopen(String stowJobId, int version) {
+    public StowJob reopen(StowJobId stowJobId, int version) {
         return action(stowJobId, "OPEN_STOW_JOB", version);
     }
 
     @Override
-    public StowJob close(String stowJobId, int version) {
+    public StowJob close(StowJobId stowJobId, int version) {
         return action(stowJobId, "CLOSE_STOW_JOB", version);
     }
 
     @Override
-    public CompletableFuture<StowJob> getAsync(String stowJobId) {
+    public CompletableFuture<StowJob> getAsync(StowJobId stowJobId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/stowjobs/" + stowJobId)
+                .url(baseUrl + "/api/stowjobs/" + stowJobId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, StowJob.class));
@@ -142,13 +143,13 @@ public final class InboundClientImpl implements InboundClient {
     }
 
     @Override
-    public CompletableFuture<StowJob> updateAsync(String stowJobId, UpdateStowJobRequest request) {
+    public CompletableFuture<StowJob> updateAsync(StowJobId stowJobId, UpdateStowJobRequest request) {
         UpdateStowJobBody body = new UpdateStowJobBody(
                 request.version(), request.priority(), request.targetTime(),
                 request.assignedUsers(), request.customAttributes());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/stowjobs/" + stowJobId)
+                .url(baseUrl + "/api/stowjobs/" + stowJobId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -156,43 +157,43 @@ public final class InboundClientImpl implements InboundClient {
     }
 
     @Override
-    public CompletableFuture<StowJob> startAsync(String stowJobId, int version) {
+    public CompletableFuture<StowJob> startAsync(StowJobId stowJobId, int version) {
         return actionAsync(stowJobId, "START_STOW_JOB", version);
     }
 
     @Override
-    public CompletableFuture<StowJob> pauseAsync(String stowJobId, int version) {
+    public CompletableFuture<StowJob> pauseAsync(StowJobId stowJobId, int version) {
         return actionAsync(stowJobId, "PAUSE_STOW_JOB", version);
     }
 
     @Override
-    public CompletableFuture<StowJob> cancelAsync(String stowJobId, int version) {
+    public CompletableFuture<StowJob> cancelAsync(StowJobId stowJobId, int version) {
         return actionAsync(stowJobId, "CANCEL_STOW_JOB", version);
     }
 
     @Override
-    public CompletableFuture<StowJob> reopenAsync(String stowJobId, int version) {
+    public CompletableFuture<StowJob> reopenAsync(StowJobId stowJobId, int version) {
         return actionAsync(stowJobId, "OPEN_STOW_JOB", version);
     }
 
     @Override
-    public CompletableFuture<StowJob> closeAsync(String stowJobId, int version) {
+    public CompletableFuture<StowJob> closeAsync(StowJobId stowJobId, int version) {
         return actionAsync(stowJobId, "CLOSE_STOW_JOB", version);
     }
 
-    private StowJob action(String stowJobId, String name, int version) {
+    private StowJob action(StowJobId stowJobId, String name, int version) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/stowjobs/" + stowJobId + "/actions")
+                .url(baseUrl + "/api/stowjobs/" + stowJobId.value() + "/actions")
                 .body(responseHandler.encode(new StowJobActionBody(name, version)))
                 .build();
         return responseHandler.handle(execute(httpRequest), StowJob.class);
     }
 
-    private CompletableFuture<StowJob> actionAsync(String stowJobId, String name, int version) {
+    private CompletableFuture<StowJob> actionAsync(StowJobId stowJobId, String name, int version) {
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
-                .url(baseUrl + "/api/stowjobs/" + stowJobId + "/actions")
+                .url(baseUrl + "/api/stowjobs/" + stowJobId.value() + "/actions")
                 .body(responseHandler.encode(new StowJobActionBody(name, version)))
                 .build();
         return transport.executeAsync(httpRequest)

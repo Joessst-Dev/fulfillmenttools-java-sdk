@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityDiscountId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -46,7 +48,7 @@ class FacilityDiscountsClientTest {
                 .willReturn(okJson(relativeDiscountJson("disc-1", "fac-1", 1))));
 
         // When
-        FacilityDiscount discount = client.facilityDiscounts().get("fac-1", "disc-1");
+        FacilityDiscount discount = client.facilityDiscounts().get(new FacilityId("fac-1"), new FacilityDiscountId("disc-1"));
 
         // Then
         assertThat(discount.id()).isEqualTo("disc-1");
@@ -65,7 +67,7 @@ class FacilityDiscountsClientTest {
                 .willReturn(okJson(relativeDiscountJson("disc-1", "fac-1", 1))));
 
         // When
-        client.facilityDiscounts().get("fac-1", "disc-1");
+        client.facilityDiscounts().get(new FacilityId("fac-1"), new FacilityDiscountId("disc-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/facilities/fac-1/discounts/disc-1"))
@@ -79,7 +81,7 @@ class FacilityDiscountsClientTest {
                 .willReturn(aResponse().withStatus(404)));
 
         // Then
-        assertThatThrownBy(() -> client.facilityDiscounts().get("fac-1", "missing"))
+        assertThatThrownBy(() -> client.facilityDiscounts().get(new FacilityId("fac-1"), new FacilityDiscountId("missing")))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -90,7 +92,7 @@ class FacilityDiscountsClientTest {
                 .willReturn(okJson(absoluteDiscountJson("disc-abs", "fac-1", 1))));
 
         // When
-        FacilityDiscount discount = client.facilityDiscounts().get("fac-1", "disc-abs");
+        FacilityDiscount discount = client.facilityDiscounts().get(new FacilityId("fac-1"), new FacilityDiscountId("disc-abs"));
 
         // Then
         assertThat(discount.discount()).isInstanceOf(FacilityDiscountValue.Absolute.class);
@@ -114,7 +116,7 @@ class FacilityDiscountsClientTest {
 
         // When
         Page<FacilityDiscount> page = client.facilityDiscounts()
-                .list("fac-1", FacilityDiscountListRequest.builder().size(2).build());
+                .list(new FacilityId("fac-1"), FacilityDiscountListRequest.builder().size(2).build());
 
         // Then
         assertThat(page.items()).hasSize(2);
@@ -132,7 +134,7 @@ class FacilityDiscountsClientTest {
 
         // When
         Page<FacilityDiscount> page = client.facilityDiscounts()
-                .list("fac-1", FacilityDiscountListRequest.builder().size(10).build());
+                .list(new FacilityId("fac-1"), FacilityDiscountListRequest.builder().size(10).build());
 
         // Then
         assertThat(page.hasMore()).isFalse();
@@ -145,7 +147,7 @@ class FacilityDiscountsClientTest {
                 .willReturn(okJson("{\"items\":[],\"total\":0}")));
 
         // When
-        client.facilityDiscounts().list("fac-1",
+        client.facilityDiscounts().list(new FacilityId("fac-1"),
                 FacilityDiscountListRequest.builder().size(10).startAfterId("d0").build());
 
         // Then
@@ -174,7 +176,7 @@ class FacilityDiscountsClientTest {
         // When
         List<String> ids = new ArrayList<>();
         client.facilityDiscounts()
-                .listAll("fac-1", FacilityDiscountListRequest.builder().size(2).build())
+                .listAll(new FacilityId("fac-1"), FacilityDiscountListRequest.builder().size(2).build())
                 .forEach(d -> ids.add(d.id()));
 
         // Then
@@ -192,7 +194,7 @@ class FacilityDiscountsClientTest {
                         .withBody(relativeDiscountJson("disc-new", "fac-1", 1))));
 
         // When
-        FacilityDiscount discount = client.facilityDiscounts().create("fac-1",
+        FacilityDiscount discount = client.facilityDiscounts().create(new FacilityId("fac-1"),
                 CreateFacilityDiscountRequest.builder()
                         .type("SALES_PRICE")
                         .priority(1)
@@ -211,7 +213,7 @@ class FacilityDiscountsClientTest {
                         .withBody(relativeDiscountJson("disc-new", "fac-1", 1))));
 
         // When
-        client.facilityDiscounts().create("fac-1",
+        client.facilityDiscounts().create(new FacilityId("fac-1"),
                 CreateFacilityDiscountRequest.builder()
                         .type("SALES_PRICE")
                         .priority(2)
@@ -254,7 +256,7 @@ class FacilityDiscountsClientTest {
                         .withBody(absoluteDiscountJson("disc-abs", "fac-1", 1))));
 
         // When
-        client.facilityDiscounts().create("fac-1",
+        client.facilityDiscounts().create(new FacilityId("fac-1"),
                 CreateFacilityDiscountRequest.builder()
                         .type("SALES_PRICE")
                         .priority(1)
@@ -278,7 +280,7 @@ class FacilityDiscountsClientTest {
                 .willReturn(okJson(relativeDiscountJson("disc-1", "fac-1", 2))));
 
         // When
-        FacilityDiscount updated = client.facilityDiscounts().update("fac-1", "disc-1",
+        FacilityDiscount updated = client.facilityDiscounts().update(new FacilityId("fac-1"), new FacilityDiscountId("disc-1"),
                 UpdateFacilityDiscountRequest.builder()
                         .version(1)
                         .priority(3)
@@ -298,7 +300,7 @@ class FacilityDiscountsClientTest {
                 .willReturn(okJson(relativeDiscountJson("disc-1", "fac-1", 2))));
 
         // When
-        client.facilityDiscounts().update("fac-1", "disc-1",
+        client.facilityDiscounts().update(new FacilityId("fac-1"), new FacilityDiscountId("disc-1"),
                 UpdateFacilityDiscountRequest.builder().version(1).build());
 
         // Then
@@ -326,7 +328,7 @@ class FacilityDiscountsClientTest {
 
         // When / Then
         assertThatNoException().isThrownBy(() ->
-                client.facilityDiscounts().delete("fac-1", "disc-1"));
+                client.facilityDiscounts().delete(new FacilityId("fac-1"), new FacilityDiscountId("disc-1")));
         server.verify(deleteRequestedFor(urlPathEqualTo("/api/facilities/fac-1/discounts/disc-1")));
     }
 
@@ -339,7 +341,7 @@ class FacilityDiscountsClientTest {
                 .willReturn(okJson(relativeDiscountJson("disc-1", "fac-1", 1))));
 
         // When
-        FacilityDiscount discount = client.facilityDiscounts().getAsync("fac-1", "disc-1").get();
+        FacilityDiscount discount = client.facilityDiscounts().getAsync(new FacilityId("fac-1"), new FacilityDiscountId("disc-1")).get();
 
         // Then
         assertThat(discount.id()).isEqualTo("disc-1");
@@ -353,7 +355,7 @@ class FacilityDiscountsClientTest {
                         .withBody(relativeDiscountJson("disc-new", "fac-1", 1))));
 
         // When
-        FacilityDiscount discount = client.facilityDiscounts().createAsync("fac-1",
+        FacilityDiscount discount = client.facilityDiscounts().createAsync(new FacilityId("fac-1"),
                 CreateFacilityDiscountRequest.builder()
                         .type("SALES_PRICE").priority(1)
                         .discount(FacilityDiscountValue.Relative.of(5.0))
@@ -371,7 +373,7 @@ class FacilityDiscountsClientTest {
 
         // When / Then
         assertThatNoException().isThrownBy(() ->
-                client.facilityDiscounts().deleteAsync("fac-1", "disc-1").get());
+                client.facilityDiscounts().deleteAsync(new FacilityId("fac-1"), new FacilityDiscountId("disc-1")).get());
     }
 
     // --- Helpers ---

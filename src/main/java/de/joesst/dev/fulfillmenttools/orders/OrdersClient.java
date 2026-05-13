@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public interface OrdersClient {
      * @return the order
      * @throws FulfillmenttoolsException if the request fails
      */
-    Order get(String orderId);
+    Order get(OrderId orderId);
 
     /**
      * Gets an order by ID asynchronously.
@@ -27,7 +28,7 @@ public interface OrdersClient {
      * @param orderId the order ID
      * @return a future resolving to the order
      */
-    CompletableFuture<Order> getAsync(String orderId);
+    CompletableFuture<Order> getAsync(OrderId orderId);
 
     /**
      * Lists orders according to the given request parameters.
@@ -106,7 +107,7 @@ public interface OrdersClient {
      * @return the updated order
      * @throws FulfillmenttoolsException if the request fails
      */
-    Order update(String orderId, UpdateOrderRequest request);
+    Order update(OrderId orderId, UpdateOrderRequest request);
 
     /**
      * Updates an existing order asynchronously.
@@ -115,7 +116,7 @@ public interface OrdersClient {
      * @param request the update request
      * @return a future resolving to the updated order
      */
-    CompletableFuture<Order> updateAsync(String orderId, UpdateOrderRequest request);
+    CompletableFuture<Order> updateAsync(OrderId orderId, UpdateOrderRequest request);
 
     /**
      * Deletes an order by ID.
@@ -123,7 +124,7 @@ public interface OrdersClient {
      * @param orderId the order ID
      * @throws FulfillmenttoolsException if the request fails
      */
-    void delete(String orderId);
+    void delete(OrderId orderId);
 
     /**
      * Deletes an order by ID asynchronously.
@@ -131,7 +132,7 @@ public interface OrdersClient {
      * @param orderId the order ID
      * @return a future that completes when the delete is finished
      */
-    CompletableFuture<Void> deleteAsync(String orderId);
+    CompletableFuture<Void> deleteAsync(OrderId orderId);
 
     /**
      * Cancels an order with a cancellation reason.
@@ -141,7 +142,7 @@ public interface OrdersClient {
      * @return the cancelled order
      * @throws FulfillmenttoolsException if the request fails
      */
-    Order cancel(String orderId, CancelOrderRequest request);
+    Order cancel(OrderId orderId, CancelOrderRequest request);
 
     /**
      * Cancels an order asynchronously with a cancellation reason.
@@ -150,7 +151,7 @@ public interface OrdersClient {
      * @param request the cancellation request
      * @return a future resolving to the cancelled order
      */
-    CompletableFuture<Order> cancelAsync(String orderId, CancelOrderRequest request);
+    CompletableFuture<Order> cancelAsync(OrderId orderId, CancelOrderRequest request);
 
     /**
      * Forces cancellation of an order, bypassing normal validation.
@@ -160,7 +161,7 @@ public interface OrdersClient {
      * @return the cancelled order
      * @throws FulfillmenttoolsException if the request fails
      */
-    Order forceCancel(String orderId, int version);
+    Order forceCancel(OrderId orderId, int version);
 
     /**
      * Forces cancellation of an order asynchronously, bypassing normal validation.
@@ -169,7 +170,7 @@ public interface OrdersClient {
      * @param version the current version of the order
      * @return a future resolving to the cancelled order
      */
-    CompletableFuture<Order> forceCancelAsync(String orderId, int version);
+    CompletableFuture<Order> forceCancelAsync(OrderId orderId, int version);
 
     /**
      * Unlocks an order, releasing any locks held on it.
@@ -179,7 +180,7 @@ public interface OrdersClient {
      * @return the unlocked order
      * @throws FulfillmenttoolsException if the request fails
      */
-    Order unlock(String orderId, int version);
+    Order unlock(OrderId orderId, int version);
 
     /**
      * Unlocks an order at a specific target time.
@@ -190,7 +191,7 @@ public interface OrdersClient {
      * @return the unlocked order
      * @throws FulfillmenttoolsException if the request fails
      */
-    Order unlock(String orderId, int version, java.time.Instant targetTime);
+    Order unlock(OrderId orderId, int version, java.time.Instant targetTime);
 
     /**
      * Unlocks an order asynchronously.
@@ -199,7 +200,7 @@ public interface OrdersClient {
      * @param version the current version of the order
      * @return a future resolving to the unlocked order
      */
-    CompletableFuture<Order> unlockAsync(String orderId, int version);
+    CompletableFuture<Order> unlockAsync(OrderId orderId, int version);
 
     /**
      * Unlocks an order asynchronously at a specific target time.
@@ -209,5 +210,5 @@ public interface OrdersClient {
      * @param targetTime the time at which to unlock the order
      * @return a future resolving to the unlocked order
      */
-    CompletableFuture<Order> unlockAsync(String orderId, int version, java.time.Instant targetTime);
+    CompletableFuture<Order> unlockAsync(OrderId orderId, int version, java.time.Instant targetTime);
 }

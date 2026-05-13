@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 import de.joesst.dev.fulfillmenttools.routingplans.CreateRoutingPlanRequest;
 import de.joesst.dev.fulfillmenttools.routingplans.RoutingPlan;
 import de.joesst.dev.fulfillmenttools.routingplans.RoutingPlanListRequest;
@@ -31,10 +32,10 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
     }
 
     @Override
-    public RoutingPlan get(String routingPlanId) {
+    public RoutingPlan get(RoutingPlanId routingPlanId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routingplans/" + routingPlanId)
+                .url(baseUrl + "/api/routingplans/" + routingPlanId.value())
                 .build();
         return responseHandler.handle(execute(request), RoutingPlan.class);
     }
@@ -62,30 +63,30 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
     }
 
     @Override
-    public RoutingPlan update(String routingPlanId, UpdateRoutingPlanRequest request) {
+    public RoutingPlan update(RoutingPlanId routingPlanId, UpdateRoutingPlanRequest request) {
         UpdateRoutingPlanBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/routingplans/" + routingPlanId)
+                .url(baseUrl + "/api/routingplans/" + routingPlanId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), RoutingPlan.class);
     }
 
     @Override
-    public void delete(String routingPlanId) {
+    public void delete(RoutingPlanId routingPlanId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/routingplans/" + routingPlanId)
+                .url(baseUrl + "/api/routingplans/" + routingPlanId.value())
                 .build();
         responseHandler.handleVoid(execute(request));
     }
 
     @Override
-    public CompletableFuture<RoutingPlan> getAsync(String routingPlanId) {
+    public CompletableFuture<RoutingPlan> getAsync(RoutingPlanId routingPlanId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/routingplans/" + routingPlanId)
+                .url(baseUrl + "/api/routingplans/" + routingPlanId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, RoutingPlan.class));
@@ -112,11 +113,11 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
     }
 
     @Override
-    public CompletableFuture<RoutingPlan> updateAsync(String routingPlanId, UpdateRoutingPlanRequest request) {
+    public CompletableFuture<RoutingPlan> updateAsync(RoutingPlanId routingPlanId, UpdateRoutingPlanRequest request) {
         UpdateRoutingPlanBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/routingplans/" + routingPlanId)
+                .url(baseUrl + "/api/routingplans/" + routingPlanId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -124,10 +125,10 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String routingPlanId) {
+    public CompletableFuture<Void> deleteAsync(RoutingPlanId routingPlanId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/routingplans/" + routingPlanId)
+                .url(baseUrl + "/api/routingplans/" + routingPlanId.value())
                 .build();
         return transport.executeAsync(request).thenApply(response -> {
             responseHandler.handleVoid(response);

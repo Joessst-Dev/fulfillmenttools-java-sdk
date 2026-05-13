@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
+import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public interface InboundClient {
      * @return the stow job
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StowJob get(String stowJobId);
+    StowJob get(StowJobId stowJobId);
 
     /**
      * Retrieves a single stow job by ID asynchronously.
@@ -27,7 +28,7 @@ public interface InboundClient {
      * @param stowJobId the ID of the stow job
      * @return a {@code CompletableFuture} that resolves to the stow job
      */
-    CompletableFuture<StowJob> getAsync(String stowJobId);
+    CompletableFuture<StowJob> getAsync(StowJobId stowJobId);
 
     /**
      * Lists stow jobs matching the specified criteria, returning one page of results.
@@ -79,7 +80,7 @@ public interface InboundClient {
      * @return the updated stow job
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StowJob update(String stowJobId, UpdateStowJobRequest request);
+    StowJob update(StowJobId stowJobId, UpdateStowJobRequest request);
 
     /**
      * Updates an existing stow job asynchronously.
@@ -88,7 +89,7 @@ public interface InboundClient {
      * @param request   the update request
      * @return a {@code CompletableFuture} that resolves to the updated stow job
      */
-    CompletableFuture<StowJob> updateAsync(String stowJobId, UpdateStowJobRequest request);
+    CompletableFuture<StowJob> updateAsync(StowJobId stowJobId, UpdateStowJobRequest request);
 
     /**
      * Starts a stow job.
@@ -98,7 +99,7 @@ public interface InboundClient {
      * @return the updated stow job
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StowJob start(String stowJobId, int version);
+    StowJob start(StowJobId stowJobId, int version);
 
     /**
      * Starts a stow job asynchronously.
@@ -107,7 +108,7 @@ public interface InboundClient {
      * @param version   the current optimistic lock version of the stow job
      * @return a {@code CompletableFuture} that resolves to the updated stow job
      */
-    CompletableFuture<StowJob> startAsync(String stowJobId, int version);
+    CompletableFuture<StowJob> startAsync(StowJobId stowJobId, int version);
 
     /**
      * Pauses a stow job.
@@ -117,7 +118,7 @@ public interface InboundClient {
      * @return the updated stow job
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StowJob pause(String stowJobId, int version);
+    StowJob pause(StowJobId stowJobId, int version);
 
     /**
      * Pauses a stow job asynchronously.
@@ -126,7 +127,7 @@ public interface InboundClient {
      * @param version   the current optimistic lock version of the stow job
      * @return a {@code CompletableFuture} that resolves to the updated stow job
      */
-    CompletableFuture<StowJob> pauseAsync(String stowJobId, int version);
+    CompletableFuture<StowJob> pauseAsync(StowJobId stowJobId, int version);
 
     /**
      * Cancels a stow job.
@@ -136,7 +137,7 @@ public interface InboundClient {
      * @return the updated stow job
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StowJob cancel(String stowJobId, int version);
+    StowJob cancel(StowJobId stowJobId, int version);
 
     /**
      * Cancels a stow job asynchronously.
@@ -145,7 +146,7 @@ public interface InboundClient {
      * @param version   the current optimistic lock version of the stow job
      * @return a {@code CompletableFuture} that resolves to the updated stow job
      */
-    CompletableFuture<StowJob> cancelAsync(String stowJobId, int version);
+    CompletableFuture<StowJob> cancelAsync(StowJobId stowJobId, int version);
 
     /**
      * Reopens a stow job.
@@ -155,7 +156,7 @@ public interface InboundClient {
      * @return the updated stow job
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StowJob reopen(String stowJobId, int version);
+    StowJob reopen(StowJobId stowJobId, int version);
 
     /**
      * Reopens a stow job asynchronously.
@@ -164,7 +165,7 @@ public interface InboundClient {
      * @param version   the current optimistic lock version of the stow job
      * @return a {@code CompletableFuture} that resolves to the updated stow job
      */
-    CompletableFuture<StowJob> reopenAsync(String stowJobId, int version);
+    CompletableFuture<StowJob> reopenAsync(StowJobId stowJobId, int version);
 
     /**
      * Closes a stow job.
@@ -174,7 +175,7 @@ public interface InboundClient {
      * @return the updated stow job
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
-    StowJob close(String stowJobId, int version);
+    StowJob close(StowJobId stowJobId, int version);
 
     /**
      * Closes a stow job asynchronously.
@@ -183,5 +184,5 @@ public interface InboundClient {
      * @param version   the current optimistic lock version of the stow job
      * @return a {@code CompletableFuture} that resolves to the updated stow job
      */
-    CompletableFuture<StowJob> closeAsync(String stowJobId, int version);
+    CompletableFuture<StowJob> closeAsync(StowJobId stowJobId, int version);
 }

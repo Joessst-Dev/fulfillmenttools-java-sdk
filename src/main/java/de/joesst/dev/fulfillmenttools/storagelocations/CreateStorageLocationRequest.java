@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * Request parameters for creating a new storage location via
- * {@link StorageLocationsClient#create(String, CreateStorageLocationRequest)}.
+ * {@link StorageLocationsClient#create(de.joesst.dev.fulfillmenttools.id.FacilityId, CreateStorageLocationRequest)}.
  *
  * <p>Use the fluent {@link Builder} to construct instances:
  * <pre>{@code

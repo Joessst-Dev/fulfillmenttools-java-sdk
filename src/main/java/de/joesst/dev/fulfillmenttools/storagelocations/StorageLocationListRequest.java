@@ -2,7 +2,7 @@ package de.joesst.dev.fulfillmenttools.storagelocations;
 
 /**
  * Request parameters for listing storage locations via
- * {@link StorageLocationsClient#list(String, StorageLocationListRequest)}.
+ * {@link StorageLocationsClient#list(de.joesst.dev.fulfillmenttools.id.FacilityId, StorageLocationListRequest)}.
  *
  * <p>Use the fluent {@link Builder} to construct instances:
  * <pre>{@code

@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.inbound;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -44,7 +45,7 @@ class InboundAsyncTest {
                 .willReturn(okJson("{\"id\":\"sj-1\",\"status\":\"OPEN\"}")));
 
         // When
-        StowJob job = client.inbound().getAsync("sj-1").get();
+        StowJob job = client.inbound().getAsync(new StowJobId("sj-1")).get();
 
         // Then
         assertThat(job.id()).isEqualTo("sj-1");

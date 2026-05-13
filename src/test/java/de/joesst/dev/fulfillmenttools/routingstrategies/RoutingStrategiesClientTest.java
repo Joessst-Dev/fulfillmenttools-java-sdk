@@ -4,7 +4,9 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.RoutingStrategyId;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.routingstrategies.RoutingStrategyNode;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ class RoutingStrategiesClientTest {
                         """)));
 
         // When
-        RoutingStrategy strategy = client.routingStrategies().get("rs-1");
+        RoutingStrategy strategy = client.routingStrategies().get(new RoutingStrategyId("rs-1"));
 
         // Then
         assertThat(strategy.id()).isEqualTo("rs-1");
@@ -75,7 +77,7 @@ class RoutingStrategiesClientTest {
                 .willReturn(okJson("{\"id\":\"rs-1\"}")));
 
         // When
-        client.routingStrategies().get("rs-1");
+        client.routingStrategies().get(new RoutingStrategyId("rs-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/routing/strategies/rs-1"))
@@ -92,7 +94,7 @@ class RoutingStrategiesClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.routingStrategies().get("missing"))
+        assertThatThrownBy(() -> client.routingStrategies().get(new RoutingStrategyId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Routing strategy not found");
     }
@@ -202,11 +204,11 @@ class RoutingStrategiesClientTest {
                 .willReturn(okJson("{\"id\":\"rs-1\",\"version\":2}")));
 
         // When
-        RoutingStrategy strategy = client.routingStrategies().update("rs-1",
+        RoutingStrategy strategy = client.routingStrategies().update(new RoutingStrategyId("rs-1"),
                 UpdateRoutingStrategyRequest.builder()
                         .version(1)
                         .nameLocalized(Map.of("en_US", "Updated Strategy"))
-                        .rootNode(minimalNode(true))
+                        .rootNode(new RoutingStrategyNode(null, true, null, null, null, null, null, null, null, null))
                         .build());
 
         // Then
@@ -222,7 +224,7 @@ class RoutingStrategiesClientTest {
     void update_requiresVersion() {
         assertThatThrownBy(() -> UpdateRoutingStrategyRequest.builder()
                 .nameLocalized(Map.of("en_US", "x"))
-                .rootNode(minimalNode(true))
+                .rootNode(new RoutingStrategyNode(null, null, null, null, null, null, null, null, null, null))
                 .build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("version");
@@ -232,7 +234,7 @@ class RoutingStrategiesClientTest {
     void update_requiresNameLocalized() {
         assertThatThrownBy(() -> UpdateRoutingStrategyRequest.builder()
                 .version(1)
-                .rootNode(minimalNode(true))
+                .rootNode(new RoutingStrategyNode(null, null, null, null, null, null, null, null, null, null))
                 .build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("nameLocalized");
@@ -249,19 +251,6 @@ class RoutingStrategiesClientTest {
     }
 
     // --- Helpers ---
-
-    /**
-     * Builds a minimal {@link RoutingStrategyNode} suitable for use in tests that only care
-     * about the {@code active} flag being serialised correctly.
-     */
-    private static RoutingStrategyNode minimalNode(boolean active) {
-        RoutingStrategyNodeConfig config = new RoutingStrategyNodeConfig(
-                List.of(), List.of(), null, null, null);
-        return new RoutingStrategyNode(
-                null, active, config,
-                Map.of("en_US", "Test Node"),
-                null, null, null, null, null, null);
-    }
 
     private static TokenProvider fixedToken(String token) {
         return new TokenProvider() {

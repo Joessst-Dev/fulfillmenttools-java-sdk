@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.eventing.EventingClient;
 import de.joesst.dev.fulfillmenttools.eventing.Subscription;
 import de.joesst.dev.fulfillmenttools.eventing.SubscriptionListRequest;
 import de.joesst.dev.fulfillmenttools.eventing.UpdateSubscriptionRequest;
+import de.joesst.dev.fulfillmenttools.id.SubscriptionId;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
@@ -31,10 +32,10 @@ public final class EventingClientImpl implements EventingClient {
     }
 
     @Override
-    public Subscription get(String subscriptionId) {
+    public Subscription get(SubscriptionId subscriptionId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/subscriptions/" + subscriptionId)
+                .url(baseUrl + "/api/subscriptions/" + subscriptionId.value())
                 .build();
         return responseHandler.handle(execute(request), Subscription.class);
     }
@@ -83,30 +84,30 @@ public final class EventingClientImpl implements EventingClient {
     }
 
     @Override
-    public Subscription update(String subscriptionId, UpdateSubscriptionRequest request) {
+    public Subscription update(SubscriptionId subscriptionId, UpdateSubscriptionRequest request) {
         UpdateSubscriptionBody body = new UpdateSubscriptionBody(request.callbackUrl(), request.status());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/subscriptions/" + subscriptionId)
+                .url(baseUrl + "/api/subscriptions/" + subscriptionId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), Subscription.class);
     }
 
     @Override
-    public void delete(String subscriptionId) {
+    public void delete(SubscriptionId subscriptionId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/subscriptions/" + subscriptionId)
+                .url(baseUrl + "/api/subscriptions/" + subscriptionId.value())
                 .build();
         responseHandler.handleVoid(execute(request));
     }
 
     @Override
-    public CompletableFuture<Subscription> getAsync(String subscriptionId) {
+    public CompletableFuture<Subscription> getAsync(SubscriptionId subscriptionId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/subscriptions/" + subscriptionId)
+                .url(baseUrl + "/api/subscriptions/" + subscriptionId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, Subscription.class));
@@ -146,11 +147,11 @@ public final class EventingClientImpl implements EventingClient {
     }
 
     @Override
-    public CompletableFuture<Subscription> updateAsync(String subscriptionId, UpdateSubscriptionRequest request) {
+    public CompletableFuture<Subscription> updateAsync(SubscriptionId subscriptionId, UpdateSubscriptionRequest request) {
         UpdateSubscriptionBody body = new UpdateSubscriptionBody(request.callbackUrl(), request.status());
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
-                .url(baseUrl + "/api/subscriptions/" + subscriptionId)
+                .url(baseUrl + "/api/subscriptions/" + subscriptionId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -158,10 +159,10 @@ public final class EventingClientImpl implements EventingClient {
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String subscriptionId) {
+    public CompletableFuture<Void> deleteAsync(SubscriptionId subscriptionId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/subscriptions/" + subscriptionId)
+                .url(baseUrl + "/api/subscriptions/" + subscriptionId.value())
                 .build();
         return transport.executeAsync(request).thenApply(response -> {
             responseHandler.handleVoid(response);

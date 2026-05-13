@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.eventing;
 
+import de.joesst.dev.fulfillmenttools.id.SubscriptionId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -14,14 +15,14 @@ public interface EventingClient {
      * @param subscriptionId the subscription identifier
      * @return the subscription
      */
-    Subscription get(String subscriptionId);
+    Subscription get(SubscriptionId subscriptionId);
 
     /**
      * Asynchronously retrieves a subscription by ID.
      * @param subscriptionId the subscription identifier
      * @return a future containing the subscription
      */
-    CompletableFuture<Subscription> getAsync(String subscriptionId);
+    CompletableFuture<Subscription> getAsync(SubscriptionId subscriptionId);
 
     /**
      * Lists subscriptions with pagination.
@@ -64,7 +65,7 @@ public interface EventingClient {
      * @param request the subscription update request
      * @return the updated subscription
      */
-    Subscription update(String subscriptionId, UpdateSubscriptionRequest request);
+    Subscription update(SubscriptionId subscriptionId, UpdateSubscriptionRequest request);
 
     /**
      * Asynchronously updates an existing subscription.
@@ -72,18 +73,18 @@ public interface EventingClient {
      * @param request the subscription update request
      * @return a future containing the updated subscription
      */
-    CompletableFuture<Subscription> updateAsync(String subscriptionId, UpdateSubscriptionRequest request);
+    CompletableFuture<Subscription> updateAsync(SubscriptionId subscriptionId, UpdateSubscriptionRequest request);
 
     /**
      * Deletes a subscription.
      * @param subscriptionId the subscription identifier
      */
-    void delete(String subscriptionId);
+    void delete(SubscriptionId subscriptionId);
 
     /**
      * Asynchronously deletes a subscription.
      * @param subscriptionId the subscription identifier
      * @return a future that completes when the deletion is done
      */
-    CompletableFuture<Void> deleteAsync(String subscriptionId);
+    CompletableFuture<Void> deleteAsync(SubscriptionId subscriptionId);
 }

@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.ServerException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.orders.Order;
 import org.junit.jupiter.api.*;
 
@@ -47,7 +48,7 @@ class RetryingTransportTest {
                 .willReturn(okJson("{\"id\":\"order-1\",\"status\":\"OPEN\"}")));
 
         // When
-        Order order = client.orders().get("order-1");
+        Order order = client.orders().get(new OrderId("order-1"));
 
         // Then
         assertThat(order.id()).isEqualTo("order-1");
@@ -67,7 +68,7 @@ class RetryingTransportTest {
                 .willReturn(okJson("{\"id\":\"order-1\",\"status\":\"OPEN\"}")));
 
         // When
-        Order order = client.orders().get("order-1");
+        Order order = client.orders().get(new OrderId("order-1"));
 
         // Then
         assertThat(order.id()).isEqualTo("order-1");
@@ -87,7 +88,7 @@ class RetryingTransportTest {
                 .willReturn(okJson("{\"id\":\"order-1\",\"status\":\"OPEN\"}")));
 
         // When
-        Order order = client.orders().get("order-1");
+        Order order = client.orders().get(new OrderId("order-1"));
 
         // Then
         assertThat(order.id()).isEqualTo("order-1");
@@ -101,7 +102,7 @@ class RetryingTransportTest {
                 .willReturn(aResponse().withStatus(503)));
 
         // When / Then
-        assertThatThrownBy(() -> client.orders().get("order-1"))
+        assertThatThrownBy(() -> client.orders().get(new OrderId("order-1")))
                 .isInstanceOf(ServerException.class);
         server.verify(3, getRequestedFor(urlPathEqualTo("/api/orders/order-1")));
     }
@@ -113,7 +114,7 @@ class RetryingTransportTest {
                 .willReturn(aResponse().withStatus(404)));
 
         // When / Then
-        assertThatThrownBy(() -> client.orders().get("order-1"))
+        assertThatThrownBy(() -> client.orders().get(new OrderId("order-1")))
                 .isInstanceOf(de.joesst.dev.fulfillmenttools.NotFoundException.class);
         server.verify(1, getRequestedFor(urlPathEqualTo("/api/orders/order-1")));
     }
@@ -131,7 +132,7 @@ class RetryingTransportTest {
                 .willReturn(okJson("{\"id\":\"order-1\",\"status\":\"OPEN\"}")));
 
         // When
-        Order order = client.orders().getAsync("order-1").get();
+        Order order = client.orders().getAsync(new OrderId("order-1")).get();
 
         // Then
         assertThat(order.id()).isEqualTo("order-1");
@@ -145,7 +146,7 @@ class RetryingTransportTest {
                 .willReturn(aResponse().withStatus(503)));
 
         // When / Then
-        assertThatThrownBy(() -> client.orders().getAsync("order-1").get())
+        assertThatThrownBy(() -> client.orders().getAsync(new OrderId("order-1")).get())
                 .isInstanceOf(ExecutionException.class)
                 .hasCauseInstanceOf(ServerException.class);
         server.verify(3, getRequestedFor(urlPathEqualTo("/api/orders/order-1")));

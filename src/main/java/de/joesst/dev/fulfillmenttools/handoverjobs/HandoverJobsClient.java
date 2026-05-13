@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.handoverjobs;
 
+import de.joesst.dev.fulfillmenttools.id.HandoverJobId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
@@ -21,7 +22,7 @@ public interface HandoverJobsClient {
      * @return the handover job
      * @throws FulfillmenttoolsException if the request fails or the handover job is not found
      */
-    HandoverJob get(String handoverJobId);
+    HandoverJob get(HandoverJobId handoverJobId);
 
     /**
      * Asynchronously retrieves a single handover job by ID.
@@ -30,7 +31,7 @@ public interface HandoverJobsClient {
      * @return a future that completes with the handover job
      * @throws FulfillmenttoolsException if the request fails or the handover job is not found
      */
-    CompletableFuture<HandoverJob> getAsync(String handoverJobId);
+    CompletableFuture<HandoverJob> getAsync(HandoverJobId handoverJobId);
 
     /**
      * Retrieves a page of handover jobs matching the given filter criteria.
@@ -72,7 +73,7 @@ public interface HandoverJobsClient {
      * @return the updated handover job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    HandoverJob update(String handoverJobId, UpdateHandoverJobRequest request);
+    HandoverJob update(HandoverJobId handoverJobId, UpdateHandoverJobRequest request);
 
     /**
      * Asynchronously updates a handover job with new values.
@@ -82,7 +83,7 @@ public interface HandoverJobsClient {
      * @return a future that completes with the updated handover job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<HandoverJob> updateAsync(String handoverJobId, UpdateHandoverJobRequest request);
+    CompletableFuture<HandoverJob> updateAsync(HandoverJobId handoverJobId, UpdateHandoverJobRequest request);
 
     /**
      * Cancels a handover job with a reason.
@@ -95,7 +96,7 @@ public interface HandoverJobsClient {
      * @return the updated handover job in cancelled state
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    HandoverJob cancel(String handoverJobId, int version, String cancelReason);
+    HandoverJob cancel(HandoverJobId handoverJobId, int version, String cancelReason);
 
     /**
      * Asynchronously cancels a handover job with a reason.
@@ -106,5 +107,5 @@ public interface HandoverJobsClient {
      * @return a future that completes with the updated handover job
      * @throws FulfillmenttoolsException if the request fails or version conflict occurs
      */
-    CompletableFuture<HandoverJob> cancelAsync(String handoverJobId, int version, String cancelReason);
+    CompletableFuture<HandoverJob> cancelAsync(HandoverJobId handoverJobId, int version, String cancelReason);
 }

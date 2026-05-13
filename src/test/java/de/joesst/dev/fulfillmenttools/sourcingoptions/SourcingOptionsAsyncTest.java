@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRequestId;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticleForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 import org.junit.jupiter.api.*;
@@ -129,7 +130,7 @@ class SourcingOptionsAsyncTest {
                 .willReturn(okJson("{\"id\":\"run-1\",\"result\":{\"options\":[{\"id\":\"opt-1\",\"runId\":\"run-1\",\"totalPenalty\":5.0,\"nodes\":[],\"transfers\":[],\"ratingResults\":[]}]}}")));
 
         // When
-        SourcingOptionsResult result = client.sourcingOptions().getAsync("run-1").get();
+        SourcingOptionsResult result = client.sourcingOptions().getAsync(new SourcingOptionsRequestId("run-1")).get();
 
         // Then
         assertThat(result.id()).isEqualTo("run-1");

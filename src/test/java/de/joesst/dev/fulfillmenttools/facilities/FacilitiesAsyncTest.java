@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.facilities;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -41,7 +42,7 @@ class FacilitiesAsyncTest {
                 .willReturn(okJson("{\"id\":\"fac-1\",\"name\":\"Berlin\",\"status\":\"ACTIVE\"}")));
 
         // When
-        Facility facility = client.facilities().getAsync("fac-1").get();
+        Facility facility = client.facilities().getAsync(new FacilityId("fac-1")).get();
 
         // Then
         assertThat(facility.id()).isEqualTo("fac-1");
@@ -86,7 +87,7 @@ class FacilitiesAsyncTest {
 
         // When
         Facility facility = client.facilities()
-                .updateAsync("fac-1", UpdateFacilityRequest.builder().status("INACTIVE").build()).get();
+                .updateAsync(new FacilityId("fac-1"), UpdateFacilityRequest.builder().status("INACTIVE").build()).get();
 
         // Then
         assertThat(facility.status()).isEqualTo("INACTIVE");
@@ -99,7 +100,7 @@ class FacilitiesAsyncTest {
                 .willReturn(aResponse().withStatus(200)));
 
         // When / Then
-        assertThatCode(() -> client.facilities().deleteAsync("fac-1").get())
+        assertThatCode(() -> client.facilities().deleteAsync(new FacilityId("fac-1")).get())
                 .doesNotThrowAnyException();
     }
 

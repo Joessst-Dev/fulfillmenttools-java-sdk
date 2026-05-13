@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public interface ReturnsClient {
      * @return the return
      * @throws FulfillmenttoolsException if the request fails
      */
-    Return get(String returnId);
+    Return get(ReturnId returnId);
 
     /**
      * Gets a return by ID asynchronously.
@@ -27,7 +28,7 @@ public interface ReturnsClient {
      * @param returnId the return ID
      * @return a future resolving to the return
      */
-    CompletableFuture<Return> getAsync(String returnId);
+    CompletableFuture<Return> getAsync(ReturnId returnId);
 
     /**
      * Lists returns according to the given request parameters.
@@ -80,7 +81,7 @@ public interface ReturnsClient {
      * @return the updated return
      * @throws FulfillmenttoolsException if the request fails
      */
-    Return start(String returnId, int version);
+    Return start(ReturnId returnId, int version);
 
     /**
      * Starts a return process asynchronously.
@@ -89,7 +90,7 @@ public interface ReturnsClient {
      * @param version the current version of the return
      * @return a future resolving to the updated return
      */
-    CompletableFuture<Return> startAsync(String returnId, int version);
+    CompletableFuture<Return> startAsync(ReturnId returnId, int version);
 
     /**
      * Finishes a return process.
@@ -99,7 +100,7 @@ public interface ReturnsClient {
      * @return the updated return
      * @throws FulfillmenttoolsException if the request fails
      */
-    Return finish(String returnId, int version);
+    Return finish(ReturnId returnId, int version);
 
     /**
      * Finishes a return process asynchronously.
@@ -108,7 +109,7 @@ public interface ReturnsClient {
      * @param version the current version of the return
      * @return a future resolving to the updated return
      */
-    CompletableFuture<Return> finishAsync(String returnId, int version);
+    CompletableFuture<Return> finishAsync(ReturnId returnId, int version);
 
     /**
      * Restarts a return process.
@@ -118,7 +119,7 @@ public interface ReturnsClient {
      * @return the updated return
      * @throws FulfillmenttoolsException if the request fails
      */
-    Return restart(String returnId, int version);
+    Return restart(ReturnId returnId, int version);
 
     /**
      * Restarts a return process asynchronously.
@@ -127,5 +128,5 @@ public interface ReturnsClient {
      * @param version the current version of the return
      * @return a future resolving to the updated return
      */
-    CompletableFuture<Return> restartAsync(String returnId, int version);
+    CompletableFuture<Return> restartAsync(ReturnId returnId, int version);
 }

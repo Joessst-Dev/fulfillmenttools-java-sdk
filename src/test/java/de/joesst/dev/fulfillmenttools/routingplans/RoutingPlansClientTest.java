@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -64,7 +65,7 @@ class RoutingPlansClientTest {
                         """)));
 
         // When
-        RoutingPlan plan = client.routingPlans().get("rp-1");
+        RoutingPlan plan = client.routingPlans().get(new RoutingPlanId("rp-1"));
 
         // Then
         assertThat(plan.id()).isEqualTo("rp-1");
@@ -84,7 +85,7 @@ class RoutingPlansClientTest {
                 .willReturn(okJson("{\"id\":\"rp-1\"}")));
 
         // When
-        client.routingPlans().get("rp-1");
+        client.routingPlans().get(new RoutingPlanId("rp-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/routingplans/rp-1"))
@@ -101,7 +102,7 @@ class RoutingPlansClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.routingPlans().get("missing"))
+        assertThatThrownBy(() -> client.routingPlans().get(new RoutingPlanId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Routing plan not found");
     }
@@ -169,7 +170,7 @@ class RoutingPlansClientTest {
                 .willReturn(okJson("{\"id\":\"rp-1\",\"status\":\"CANCELED\"}")));
 
         // When
-        RoutingPlan plan = client.routingPlans().update("rp-1", UpdateRoutingPlanRequest.builder()
+        RoutingPlan plan = client.routingPlans().update(new RoutingPlanId("rp-1"), UpdateRoutingPlanRequest.builder()
                 .version(2)
                 .status("CANCELED")
                 .build());
@@ -199,7 +200,7 @@ class RoutingPlansClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatCode(() -> client.routingPlans().delete("rp-1"))
+        assertThatCode(() -> client.routingPlans().delete(new RoutingPlanId("rp-1")))
                 .doesNotThrowAnyException();
     }
 

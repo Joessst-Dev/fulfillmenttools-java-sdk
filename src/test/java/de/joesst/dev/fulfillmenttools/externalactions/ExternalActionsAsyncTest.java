@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.externalactions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -44,7 +45,7 @@ class ExternalActionsAsyncTest {
                 .willReturn(okJson("{\"id\":\"ea-1\",\"name\":\"Notify Warehouse\",\"processRef\":\"proc-1\",\"groups\":[]}")));
 
         // When
-        ExternalAction action = client.externalActions().getAsync("ea-1").get();
+        ExternalAction action = client.externalActions().getAsync(new ExternalActionId("ea-1")).get();
 
         // Then
         assertThat(action.id()).isEqualTo("ea-1");

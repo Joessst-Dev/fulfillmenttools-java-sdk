@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.PackJobId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -57,7 +58,7 @@ class PackingClientTest {
                         """)));
 
         // When
-        PackJob job = client.packing().get("pj-1");
+        PackJob job = client.packing().get(new PackJobId("pj-1"));
 
         // Then
         assertThat(job.id()).isEqualTo("pj-1");
@@ -74,7 +75,7 @@ class PackingClientTest {
                 .willReturn(okJson("{\"id\":\"pj-1\"}")));
 
         // When
-        client.packing().get("pj-1");
+        client.packing().get(new PackJobId("pj-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/packjobs/pj-1"))
@@ -91,7 +92,7 @@ class PackingClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.packing().get("missing"))
+        assertThatThrownBy(() -> client.packing().get(new PackJobId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Pack job not found");
     }
@@ -193,7 +194,7 @@ class PackingClientTest {
                         """)));
 
         // When
-        PackJob job = client.packing().update("pj-1",
+        PackJob job = client.packing().update(new PackJobId("pj-1"),
                 UpdatePackJobRequest.builder().version(2).status("IN_PROGRESS").build());
 
         // Then
@@ -208,7 +209,7 @@ class PackingClientTest {
                 .willReturn(okJson("{\"id\":\"pj-1\",\"status\":\"IN_PROGRESS\"}")));
 
         // When
-        client.packing().update("pj-1", UpdatePackJobRequest.builder().version(3).status("IN_PROGRESS").build());
+        client.packing().update(new PackJobId("pj-1"), UpdatePackJobRequest.builder().version(3).status("IN_PROGRESS").build());
 
         // Then
         server.verify(patchRequestedFor(urlPathEqualTo("/api/packjobs/pj-1"))

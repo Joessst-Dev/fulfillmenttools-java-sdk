@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.id.ReservationId;
 import de.joesst.dev.fulfillmenttools.reservations.Reservation;
 import de.joesst.dev.fulfillmenttools.reservations.ReservationListRequest;
 import de.joesst.dev.fulfillmenttools.reservations.ReservationsClient;
@@ -29,10 +30,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
     }
 
     @Override
-    public Reservation get(String reservationId) {
+    public Reservation get(ReservationId reservationId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/reservations/" + reservationId)
+                .url(baseUrl + "/api/reservations/" + reservationId.value())
                 .build();
         return responseHandler.handle(execute(request), Reservation.class);
     }
@@ -56,10 +57,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
     }
 
     @Override
-    public CompletableFuture<Reservation> getAsync(String reservationId) {
+    public CompletableFuture<Reservation> getAsync(ReservationId reservationId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/reservations/" + reservationId)
+                .url(baseUrl + "/api/reservations/" + reservationId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, Reservation.class));

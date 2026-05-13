@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.processes.OperativeProcessClient;
 import de.joesst.dev.fulfillmenttools.processes.Process;
 import de.joesst.dev.fulfillmenttools.processes.ProcessListRequest;
@@ -30,10 +31,10 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
     }
 
     @Override
-    public Process get(String processId) {
+    public Process get(ProcessId processId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/processes/" + processId)
+                .url(baseUrl + "/api/processes/" + processId.value())
                 .build();
         return responseHandler.handle(execute(request), Process.class);
     }
@@ -66,10 +67,10 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
     }
 
     @Override
-    public CompletableFuture<Process> getAsync(String processId) {
+    public CompletableFuture<Process> getAsync(ProcessId processId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/processes/" + processId)
+                .url(baseUrl + "/api/processes/" + processId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, Process.class));

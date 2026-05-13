@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.externalactions;
 
+import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -14,14 +15,14 @@ public interface ExternalActionsClient {
      * @param externalActionId the external action identifier
      * @return the external action
      */
-    ExternalAction get(String externalActionId);
+    ExternalAction get(ExternalActionId externalActionId);
 
     /**
      * Asynchronously retrieves an external action by ID.
      * @param externalActionId the external action identifier
      * @return a future containing the external action
      */
-    CompletableFuture<ExternalAction> getAsync(String externalActionId);
+    CompletableFuture<ExternalAction> getAsync(ExternalActionId externalActionId);
 
     /**
      * Lists external actions with pagination.
@@ -64,7 +65,7 @@ public interface ExternalActionsClient {
      * @param request the external action update request
      * @return the updated external action
      */
-    ExternalAction update(String externalActionId, UpdateExternalActionRequest request);
+    ExternalAction update(ExternalActionId externalActionId, UpdateExternalActionRequest request);
 
     /**
      * Asynchronously updates an existing external action.
@@ -72,5 +73,5 @@ public interface ExternalActionsClient {
      * @param request the external action update request
      * @return a future containing the updated external action
      */
-    CompletableFuture<ExternalAction> updateAsync(String externalActionId, UpdateExternalActionRequest request);
+    CompletableFuture<ExternalAction> updateAsync(ExternalActionId externalActionId, UpdateExternalActionRequest request);
 }

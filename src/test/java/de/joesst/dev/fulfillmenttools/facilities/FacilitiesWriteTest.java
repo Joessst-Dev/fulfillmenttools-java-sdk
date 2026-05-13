@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -94,7 +95,7 @@ class FacilitiesWriteTest {
                         """)));
 
         // When
-        Facility facility = client.facilities().update("fac-1",
+        Facility facility = client.facilities().update(new FacilityId("fac-1"),
                 UpdateFacilityRequest.builder().name("Munich").status("INACTIVE").build());
 
         // Then
@@ -110,7 +111,7 @@ class FacilitiesWriteTest {
                 .willReturn(okJson("{\"id\":\"fac-1\",\"name\":\"Munich\"}")));
 
         // When
-        client.facilities().update("fac-1", UpdateFacilityRequest.builder().name("Munich").build());
+        client.facilities().update(new FacilityId("fac-1"), UpdateFacilityRequest.builder().name("Munich").build());
 
         // Then
         server.verify(patchRequestedFor(urlPathEqualTo("/api/facilities/fac-1"))
@@ -127,7 +128,7 @@ class FacilitiesWriteTest {
                 .willReturn(aResponse().withStatus(200)));
 
         // When / Then
-        assertThatCode(() -> client.facilities().delete("fac-1")).doesNotThrowAnyException();
+        assertThatCode(() -> client.facilities().delete(new FacilityId("fac-1"))).doesNotThrowAnyException();
     }
 
     @Test
@@ -140,7 +141,7 @@ class FacilitiesWriteTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.facilities().delete("missing"))
+        assertThatThrownBy(() -> client.facilities().delete(new FacilityId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Facility not found");
     }
@@ -154,7 +155,7 @@ class FacilitiesWriteTest {
                 .willReturn(okJson("{\"id\":\"fac-1\",\"name\":\"Replaced\"}")));
 
         // When
-        Facility facility = client.facilities().replace("fac-1",
+        Facility facility = client.facilities().replace(new FacilityId("fac-1"),
                 CreateFacilityRequest.builder().name("Replaced").build());
 
         // Then
@@ -173,7 +174,7 @@ class FacilitiesWriteTest {
                 .willReturn(aResponse().withStatus(200)));
 
         // When / Then
-        assertThatCode(() -> client.facilities().delete("fac-1", true)).doesNotThrowAnyException();
+        assertThatCode(() -> client.facilities().delete(new FacilityId("fac-1"), true)).doesNotThrowAnyException();
         server.verify(deleteRequestedFor(urlPathEqualTo("/api/facilities/fac-1"))
                 .withQueryParam("forceDeletion", equalTo("true")));
     }

@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.eventing;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.SubscriptionId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -64,7 +65,7 @@ class SubscriptionTargetDeserializationTest {
                             """)));
 
             // When
-            Subscription sub = client.eventing().get("s-1");
+            Subscription sub = client.eventing().get(new SubscriptionId("s-1"));
 
             // Then
             assertThat(sub.target()).isInstanceOf(WebhookTarget.class);
@@ -94,7 +95,7 @@ class SubscriptionTargetDeserializationTest {
                             """)));
 
             // When
-            Subscription sub = client.eventing().get("s-2");
+            Subscription sub = client.eventing().get(new SubscriptionId("s-2"));
 
             // Then
             assertThat(sub.target()).isInstanceOf(WebhookTarget.class);
@@ -154,7 +155,7 @@ class SubscriptionTargetDeserializationTest {
                             """)));
 
             // When
-            Subscription sub = client.eventing().get("s-3");
+            Subscription sub = client.eventing().get(new SubscriptionId("s-3"));
 
             // Then
             assertThat(sub.target()).isInstanceOf(AzureServiceBusTarget.class);
@@ -219,7 +220,7 @@ class SubscriptionTargetDeserializationTest {
                             """)));
 
             // When
-            Subscription sub = client.eventing().get("s-4");
+            Subscription sub = client.eventing().get(new SubscriptionId("s-4"));
 
             // Then
             assertThat(sub.target()).isInstanceOf(GoogleCloudPubSubTarget.class);
@@ -274,7 +275,7 @@ class SubscriptionTargetDeserializationTest {
                             """)));
 
             // When
-            Subscription sub = client.eventing().get("s-5");
+            Subscription sub = client.eventing().get(new SubscriptionId("s-5"));
 
             // Then
             assertThat(sub.target()).isNull();

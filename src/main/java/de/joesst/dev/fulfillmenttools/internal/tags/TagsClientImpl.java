@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
+import de.joesst.dev.fulfillmenttools.id.TagId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.tags.CreateTagRequest;
@@ -36,18 +37,18 @@ public final class TagsClientImpl implements TagsClient {
     }
 
     @Override
-    public Tag get(String tagId) {
+    public Tag get(TagId tagId) {
         return responseHandler.handle(execute(SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/tags/" + tagId)
+                .url(baseUrl + "/api/tags/" + tagId.value())
                 .build()), Tag.class);
     }
 
     @Override
-    public CompletableFuture<Tag> getAsync(String tagId) {
+    public CompletableFuture<Tag> getAsync(TagId tagId) {
         return transport.executeAsync(SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/tags/" + tagId)
+                .url(baseUrl + "/api/tags/" + tagId.value())
                 .build()).thenApply(r -> responseHandler.handle(r, Tag.class));
     }
 
@@ -106,12 +107,12 @@ public final class TagsClientImpl implements TagsClient {
     }
 
     @Override
-    public Tag addAllowedValue(String tagId, String allowedValue, Integer version) {
+    public Tag addAllowedValue(TagId tagId, String allowedValue, Integer version) {
         return responseHandler.handle(execute(buildAddAllowedValueRequest(tagId, allowedValue, version)), Tag.class);
     }
 
     @Override
-    public CompletableFuture<Tag> addAllowedValueAsync(String tagId, String allowedValue, Integer version) {
+    public CompletableFuture<Tag> addAllowedValueAsync(TagId tagId, String allowedValue, Integer version) {
         return transport.executeAsync(buildAddAllowedValueRequest(tagId, allowedValue, version))
                 .thenApply(r -> responseHandler.handle(r, Tag.class));
     }
@@ -163,12 +164,12 @@ public final class TagsClientImpl implements TagsClient {
                 .build();
     }
 
-    private SdkHttpRequest buildAddAllowedValueRequest(String tagId, String allowedValue, Integer version) {
+    private SdkHttpRequest buildAddAllowedValueRequest(TagId tagId, String allowedValue, Integer version) {
         var body = new AddAllowedValueBody(version,
                 List.of(new AddAllowedValueBody.ActionItem("AddAllowedValueToTag", allowedValue)));
         return SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/tags/" + tagId)
+                .url(baseUrl + "/api/tags/" + tagId.value())
                 .body(responseHandler.encode(body))
                 .build();
     }

@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.id.PackJobId;
 import de.joesst.dev.fulfillmenttools.packjobs.PackJob;
 import de.joesst.dev.fulfillmenttools.packjobs.PackJobListRequest;
 import de.joesst.dev.fulfillmenttools.packjobs.PackingClient;
@@ -30,10 +31,10 @@ public final class PackingClientImpl implements PackingClient {
     }
 
     @Override
-    public PackJob get(String packJobId) {
+    public PackJob get(PackJobId packJobId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/packjobs/" + packJobId)
+                .url(baseUrl + "/api/packjobs/" + packJobId.value())
                 .build();
         return responseHandler.handle(execute(request), PackJob.class);
     }
@@ -58,24 +59,24 @@ public final class PackingClientImpl implements PackingClient {
     }
 
     @Override
-    public PackJob update(String packJobId, UpdatePackJobRequest request) {
+    public PackJob update(PackJobId packJobId, UpdatePackJobRequest request) {
         UpdatePackJobBody body = new UpdatePackJobBody(
                 request.version(),
                 List.of(new UpdatePackJobBody.ModifyPackJobAction(request.status(), request.customAttributes()))
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/packjobs/" + packJobId)
+                .url(baseUrl + "/api/packjobs/" + packJobId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), PackJob.class);
     }
 
     @Override
-    public CompletableFuture<PackJob> getAsync(String packJobId) {
+    public CompletableFuture<PackJob> getAsync(PackJobId packJobId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/packjobs/" + packJobId)
+                .url(baseUrl + "/api/packjobs/" + packJobId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, PackJob.class));
@@ -90,14 +91,14 @@ public final class PackingClientImpl implements PackingClient {
     }
 
     @Override
-    public CompletableFuture<PackJob> updateAsync(String packJobId, UpdatePackJobRequest request) {
+    public CompletableFuture<PackJob> updateAsync(PackJobId packJobId, UpdatePackJobRequest request) {
         UpdatePackJobBody body = new UpdatePackJobBody(
                 request.version(),
                 List.of(new UpdatePackJobBody.ModifyPackJobAction(request.status(), request.customAttributes()))
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/packjobs/" + packJobId)
+                .url(baseUrl + "/api/packjobs/" + packJobId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)

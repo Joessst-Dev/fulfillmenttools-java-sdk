@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.carriers;
 
+import de.joesst.dev.fulfillmenttools.id.CarrierId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
 import java.util.concurrent.CompletableFuture;
@@ -14,14 +15,14 @@ public interface CarriersClient {
      * @param carrierId the carrier identifier
      * @return the carrier
      */
-    Carrier get(String carrierId);
+    Carrier get(CarrierId carrierId);
 
     /**
      * Asynchronously retrieves a carrier by ID.
      * @param carrierId the carrier identifier
      * @return a future containing the carrier
      */
-    CompletableFuture<Carrier> getAsync(String carrierId);
+    CompletableFuture<Carrier> getAsync(CarrierId carrierId);
 
     /**
      * Lists carriers with pagination.
@@ -64,7 +65,7 @@ public interface CarriersClient {
      * @param request the carrier update request
      * @return the updated carrier
      */
-    Carrier update(String carrierId, UpdateCarrierRequest request);
+    Carrier update(CarrierId carrierId, UpdateCarrierRequest request);
 
     /**
      * Asynchronously updates an existing carrier.
@@ -72,18 +73,18 @@ public interface CarriersClient {
      * @param request the carrier update request
      * @return a future containing the updated carrier
      */
-    CompletableFuture<Carrier> updateAsync(String carrierId, UpdateCarrierRequest request);
+    CompletableFuture<Carrier> updateAsync(CarrierId carrierId, UpdateCarrierRequest request);
 
     /**
      * Deletes a carrier.
      * @param carrierId the carrier identifier
      */
-    void delete(String carrierId);
+    void delete(CarrierId carrierId);
 
     /**
      * Asynchronously deletes a carrier.
      * @param carrierId the carrier identifier
      * @return a future that completes when the deletion is done
      */
-    CompletableFuture<Void> deleteAsync(String carrierId);
+    CompletableFuture<Void> deleteAsync(CarrierId carrierId);
 }

@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.carriers.CarrierListRequest;
 import de.joesst.dev.fulfillmenttools.carriers.CarriersClient;
 import de.joesst.dev.fulfillmenttools.carriers.CreateCarrierRequest;
 import de.joesst.dev.fulfillmenttools.carriers.UpdateCarrierRequest;
+import de.joesst.dev.fulfillmenttools.id.CarrierId;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
@@ -31,10 +32,10 @@ public final class CarriersClientImpl implements CarriersClient {
     }
 
     @Override
-    public Carrier get(String carrierId) {
+    public Carrier get(CarrierId carrierId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/carriers/" + carrierId)
+                .url(baseUrl + "/api/carriers/" + carrierId.value())
                 .build();
         return responseHandler.handle(execute(request), Carrier.class);
     }
@@ -87,30 +88,30 @@ public final class CarriersClientImpl implements CarriersClient {
     }
 
     @Override
-    public Carrier update(String carrierId, UpdateCarrierRequest request) {
+    public Carrier update(CarrierId carrierId, UpdateCarrierRequest request) {
         UpdateCarrierBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/carriers/" + carrierId)
+                .url(baseUrl + "/api/carriers/" + carrierId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return responseHandler.handle(execute(httpRequest), Carrier.class);
     }
 
     @Override
-    public void delete(String carrierId) {
+    public void delete(CarrierId carrierId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/carriers/" + carrierId)
+                .url(baseUrl + "/api/carriers/" + carrierId.value())
                 .build();
         responseHandler.handleVoid(execute(request));
     }
 
     @Override
-    public CompletableFuture<Carrier> getAsync(String carrierId) {
+    public CompletableFuture<Carrier> getAsync(CarrierId carrierId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.GET)
-                .url(baseUrl + "/api/carriers/" + carrierId)
+                .url(baseUrl + "/api/carriers/" + carrierId.value())
                 .build();
         return transport.executeAsync(request)
                 .thenApply(response -> responseHandler.handle(response, Carrier.class));
@@ -154,11 +155,11 @@ public final class CarriersClientImpl implements CarriersClient {
     }
 
     @Override
-    public CompletableFuture<Carrier> updateAsync(String carrierId, UpdateCarrierRequest request) {
+    public CompletableFuture<Carrier> updateAsync(CarrierId carrierId, UpdateCarrierRequest request) {
         UpdateCarrierBody body = buildUpdateBody(request);
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
                 .method(HttpMethod.PATCH)
-                .url(baseUrl + "/api/carriers/" + carrierId)
+                .url(baseUrl + "/api/carriers/" + carrierId.value())
                 .body(responseHandler.encode(body))
                 .build();
         return transport.executeAsync(httpRequest)
@@ -166,10 +167,10 @@ public final class CarriersClientImpl implements CarriersClient {
     }
 
     @Override
-    public CompletableFuture<Void> deleteAsync(String carrierId) {
+    public CompletableFuture<Void> deleteAsync(CarrierId carrierId) {
         SdkHttpRequest request = SdkHttpRequest.builder()
                 .method(HttpMethod.DELETE)
-                .url(baseUrl + "/api/carriers/" + carrierId)
+                .url(baseUrl + "/api/carriers/" + carrierId.value())
                 .build();
         return transport.executeAsync(request).thenApply(response -> {
             responseHandler.handleVoid(response);

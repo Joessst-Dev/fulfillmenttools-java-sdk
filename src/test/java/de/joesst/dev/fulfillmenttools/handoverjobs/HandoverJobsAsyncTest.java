@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.handoverjobs;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.HandoverJobId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -41,7 +42,7 @@ class HandoverJobsAsyncTest {
                 .willReturn(okJson("{\"id\":\"hj-1\",\"status\":\"OPEN\"}")));
 
         // When
-        HandoverJob job = client.handoverJobs().getAsync("hj-1").get();
+        HandoverJob job = client.handoverJobs().getAsync(new HandoverJobId("hj-1")).get();
 
         // Then
         assertThat(job.id()).isEqualTo("hj-1");
@@ -69,7 +70,7 @@ class HandoverJobsAsyncTest {
 
         // When
         HandoverJob job = client.handoverJobs()
-                .updateAsync("hj-1", UpdateHandoverJobRequest.builder().version(1).status("IN_PROGRESS").build()).get();
+                .updateAsync(new HandoverJobId("hj-1"), UpdateHandoverJobRequest.builder().version(1).status("IN_PROGRESS").build()).get();
 
         // Then
         assertThat(job.status()).isEqualTo("IN_PROGRESS");

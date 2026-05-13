@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.users;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.UserId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -41,7 +42,7 @@ class UserManagementAsyncTest {
                 .willReturn(okJson("{\"id\":\"u-1\",\"email\":\"alice@example.com\",\"firstname\":\"Alice\",\"lastname\":\"Smith\",\"status\":\"ACTIVE\"}")));
 
         // When
-        User user = client.users().getAsync("u-1").get();
+        User user = client.users().getAsync(new UserId("u-1")).get();
 
         // Then
         assertThat(user.id()).isEqualTo("u-1");
@@ -90,7 +91,7 @@ class UserManagementAsyncTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatCode(() -> client.users().deleteAsync("u-1").get())
+        assertThatCode(() -> client.users().deleteAsync(new UserId("u-1")).get())
                 .doesNotThrowAnyException();
     }
 

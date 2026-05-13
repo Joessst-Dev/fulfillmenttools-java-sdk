@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.tags;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.TagId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import org.junit.jupiter.api.*;
@@ -43,7 +44,7 @@ class TagsAsyncTest {
                 .willReturn(okJson("{\"id\":\"color\",\"version\":1,\"allowedValues\":[\"red\"]}")));
 
         // When
-        Tag tag = client.tags().getAsync("color").get();
+        Tag tag = client.tags().getAsync(new TagId("color")).get();
 
         // Then
         assertThat(tag.id()).isEqualTo("color");
@@ -93,7 +94,7 @@ class TagsAsyncTest {
                 .willReturn(okJson("{\"id\":\"color\",\"version\":2,\"allowedValues\":[\"red\",\"blue\"]}")));
 
         // When
-        Tag tag = client.tags().addAllowedValueAsync("color", "blue", 1).get();
+        Tag tag = client.tags().addAllowedValueAsync(new TagId("color"), "blue", 1).get();
 
         // Then
         assertThat(tag.version()).isEqualTo(2);

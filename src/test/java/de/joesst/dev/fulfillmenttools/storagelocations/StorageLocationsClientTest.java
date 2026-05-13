@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -60,7 +62,7 @@ class StorageLocationsClientTest {
                         """)));
 
         // When
-        StorageLocation loc = client.storageLocations().get(FAC, "sl-1");
+        StorageLocation loc = client.storageLocations().get(new FacilityId(FAC), new StorageLocationId("sl-1"));
 
         // Then
         assertThat(loc.id()).isEqualTo("sl-1");
@@ -78,7 +80,7 @@ class StorageLocationsClientTest {
                 .willReturn(okJson("{\"id\":\"sl-1\"}")));
 
         // When
-        client.storageLocations().get(FAC, "sl-1");
+        client.storageLocations().get(new FacilityId(FAC), new StorageLocationId("sl-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/facilities/fac-1/storagelocations/sl-1"))
@@ -95,7 +97,7 @@ class StorageLocationsClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.storageLocations().get(FAC, "missing"))
+        assertThatThrownBy(() -> client.storageLocations().get(new FacilityId(FAC), new StorageLocationId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Storage location not found");
     }
@@ -114,7 +116,7 @@ class StorageLocationsClientTest {
                         """)));
 
         // When
-        Page<StorageLocation> page = client.storageLocations().list(FAC,
+        Page<StorageLocation> page = client.storageLocations().list(new FacilityId(FAC),
                 StorageLocationListRequest.builder().size(2).build());
 
         // Then
@@ -130,7 +132,7 @@ class StorageLocationsClientTest {
                 .willReturn(okJson("[]")));
 
         // When
-        client.storageLocations().list(FAC, StorageLocationListRequest.builder()
+        client.storageLocations().list(new FacilityId(FAC), StorageLocationListRequest.builder()
                 .size(10)
                 .startAfterId("cursor-abc")
                 .scannableCode("BC001")
@@ -153,7 +155,7 @@ class StorageLocationsClientTest {
 
         // When
         List<String> ids = new ArrayList<>();
-        for (StorageLocation s : client.storageLocations().listAll(FAC, StorageLocationListRequest.builder().build())) {
+        for (StorageLocation s : client.storageLocations().listAll(new FacilityId(FAC), StorageLocationListRequest.builder().build())) {
             ids.add(s.id());
         }
 
@@ -172,7 +174,7 @@ class StorageLocationsClientTest {
                         .withBody("{\"id\":\"sl-new\",\"name\":\"Shelf C3\",\"type\":\"SHELF\",\"facilityRef\":\"fac-1\"}")));
 
         // When
-        StorageLocation loc = client.storageLocations().create(FAC, CreateStorageLocationRequest.builder()
+        StorageLocation loc = client.storageLocations().create(new FacilityId(FAC), CreateStorageLocationRequest.builder()
                 .name("Shelf C3")
                 .type("SHELF")
                 .scannableCodes(List.of("BC999"))
@@ -193,7 +195,7 @@ class StorageLocationsClientTest {
                         .withBody("{\"id\":\"sl-new\"}")));
 
         // When
-        client.storageLocations().create(FAC, CreateStorageLocationRequest.builder()
+        client.storageLocations().create(new FacilityId(FAC), CreateStorageLocationRequest.builder()
                 .name("Shelf C3")
                 .type("SHELF")
                 .scannableCodes(List.of("BC999"))
@@ -233,7 +235,7 @@ class StorageLocationsClientTest {
                 .willReturn(okJson("{\"id\":\"sl-1\",\"name\":\"Updated Shelf\",\"type\":\"SHELF\"}")));
 
         // When
-        StorageLocation loc = client.storageLocations().update(FAC, "sl-1", UpdateStorageLocationRequest.builder()
+        StorageLocation loc = client.storageLocations().update(new FacilityId(FAC), new StorageLocationId("sl-1"), UpdateStorageLocationRequest.builder()
                 .version(2)
                 .name("Updated Shelf")
                 .build());
@@ -263,7 +265,7 @@ class StorageLocationsClientTest {
                 .willReturn(aResponse().withStatus(200)));
 
         // When / Then
-        assertThatCode(() -> client.storageLocations().delete(FAC, "sl-1"))
+        assertThatCode(() -> client.storageLocations().delete(new FacilityId(FAC), new StorageLocationId("sl-1")))
                 .doesNotThrowAnyException();
     }
 

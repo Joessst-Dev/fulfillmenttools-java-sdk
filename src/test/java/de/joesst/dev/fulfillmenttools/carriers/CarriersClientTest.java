@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.CarrierId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -59,7 +60,7 @@ class CarriersClientTest {
                         """)));
 
         // When
-        Carrier carrier = client.carriers().get("c-1");
+        Carrier carrier = client.carriers().get(new CarrierId("c-1"));
 
         // Then
         assertThat(carrier.id()).isEqualTo("c-1");
@@ -77,7 +78,7 @@ class CarriersClientTest {
                 .willReturn(okJson("{\"id\":\"c-1\"}")));
 
         // When
-        client.carriers().get("c-1");
+        client.carriers().get(new CarrierId("c-1"));
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/carriers/c-1"))
@@ -94,7 +95,7 @@ class CarriersClientTest {
                         """)));
 
         // When / Then
-        assertThatThrownBy(() -> client.carriers().get("missing"))
+        assertThatThrownBy(() -> client.carriers().get(new CarrierId("missing")))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Carrier not found");
     }
@@ -124,7 +125,7 @@ class CarriersClientTest {
                         """)));
 
         // When
-        Carrier carrier = client.carriers().get("c-1");
+        Carrier carrier = client.carriers().get(new CarrierId("c-1"));
 
         // Then
         assertThat(carrier.parcelLabelClassifications()).hasSize(1);
@@ -293,7 +294,7 @@ class CarriersClientTest {
                 .willReturn(okJson("{\"id\":\"c-1\",\"name\":\"DHL Express\",\"status\":\"ACTIVE\"}")));
 
         // When
-        Carrier carrier = client.carriers().update("c-1", UpdateCarrierRequest.builder()
+        Carrier carrier = client.carriers().update(new CarrierId("c-1"), UpdateCarrierRequest.builder()
                 .version(2)
                 .name("DHL Express")
                 .status("ACTIVE")
@@ -325,7 +326,7 @@ class CarriersClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatCode(() -> client.carriers().delete("c-1"))
+        assertThatCode(() -> client.carriers().delete(new CarrierId("c-1")))
                 .doesNotThrowAnyException();
     }
 

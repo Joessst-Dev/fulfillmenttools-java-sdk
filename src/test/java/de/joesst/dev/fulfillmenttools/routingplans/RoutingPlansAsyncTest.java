@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.routingplans;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -41,7 +42,7 @@ class RoutingPlansAsyncTest {
                 .willReturn(okJson("{\"id\":\"rp-1\",\"status\":\"ACTIVE\"}")));
 
         // When
-        RoutingPlan plan = client.routingPlans().getAsync("rp-1").get();
+        RoutingPlan plan = client.routingPlans().getAsync(new RoutingPlanId("rp-1")).get();
 
         // Then
         assertThat(plan.id()).isEqualTo("rp-1");
@@ -83,7 +84,7 @@ class RoutingPlansAsyncTest {
                 .willReturn(aResponse().withStatus(204)));
 
         // When / Then
-        assertThatCode(() -> client.routingPlans().deleteAsync("rp-1").get())
+        assertThatCode(() -> client.routingPlans().deleteAsync(new RoutingPlanId("rp-1")).get())
                 .doesNotThrowAnyException();
     }
 
