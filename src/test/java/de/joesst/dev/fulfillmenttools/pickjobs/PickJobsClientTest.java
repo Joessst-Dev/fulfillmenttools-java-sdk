@@ -61,8 +61,8 @@ class PickJobsClientTest {
         PickJob job = client.pickJobs().get(new PickJobId("pj-1"));
 
         // Then
-        assertThat(job.id()).isEqualTo("pj-1");
-        assertThat(job.facilityRef()).isEqualTo("fac-1");
+        assertThat(job.id().value()).isEqualTo("pj-1");
+        assertThat(job.facilityRef().value()).isEqualTo("fac-1");
         assertThat(job.status()).isEqualTo("OPEN");
         assertThat(job.shortId()).isEqualTo("AS12");
         assertThat(job.created()).isNotNull();
@@ -118,7 +118,7 @@ class PickJobsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("pj-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("pj-1");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cursor-page-2");
     }
@@ -171,7 +171,7 @@ class PickJobsClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (PickJob j : client.pickJobs().listAll(PickJobListRequest.builder().size(2).build())) {
-            ids.add(j.id());
+            ids.add(j.id().value());
         }
 
         // Then
@@ -194,7 +194,7 @@ class PickJobsClientTest {
                 UpdatePickJobRequest.builder().version(2).status("IN_PROGRESS").build());
 
         // Then
-        assertThat(job.id()).isEqualTo("pj-1");
+        assertThat(job.id().value()).isEqualTo("pj-1");
         assertThat(job.status()).isEqualTo("IN_PROGRESS");
     }
 

@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.eventing;
 
+import de.joesst.dev.fulfillmenttools.id.SubscriptionId;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -21,7 +23,7 @@ import java.util.List;
  * @param target      the delivery target configuration; {@code null} when using deprecated fields
  */
 public record Subscription(
-        String id,
+        SubscriptionId id,
         Instant created,
         String name,
         String event,

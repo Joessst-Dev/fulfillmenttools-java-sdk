@@ -45,7 +45,7 @@ class FacilitiesAsyncTest {
         Facility facility = client.facilities().getAsync(new FacilityId("fac-1")).get();
 
         // Then
-        assertThat(facility.id()).isEqualTo("fac-1");
+        assertThat(facility.id().value()).isEqualTo("fac-1");
         assertThat(facility.name()).isEqualTo("Berlin");
     }
 
@@ -76,7 +76,7 @@ class FacilitiesAsyncTest {
                 .createAsync(CreateFacilityRequest.builder().name("Hamburg").build()).get();
 
         // Then
-        assertThat(facility.id()).isEqualTo("fac-new");
+        assertThat(facility.id().value()).isEqualTo("fac-new");
     }
 
     @Test

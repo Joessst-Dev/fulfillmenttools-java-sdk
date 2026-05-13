@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Represents a facility in the fulfillmenttools platform.
  *
- * @param id unique identifier assigned by the system
+ * @param id unique {@link FacilityId} assigned by the system
  * @param version optimistic-locking version number
  * @param created creation timestamp in UTC
  * @param lastModified last modification timestamp in UTC
@@ -34,7 +35,7 @@ import java.util.Map;
  * @param customAttributes free-form custom attributes
  */
 public record Facility(
-        String id,
+        FacilityId id,
         Integer version,
         Instant created,
         Instant lastModified,

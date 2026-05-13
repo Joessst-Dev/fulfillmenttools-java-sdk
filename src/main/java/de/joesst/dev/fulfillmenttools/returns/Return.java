@@ -1,5 +1,8 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
 import java.time.Instant;
@@ -27,15 +30,15 @@ import java.util.Map;
  * @param customAttributes free-form custom attributes
  */
 public record Return(
-        String id,
+        ReturnId id,
         Integer version,
         Instant created,
         Instant lastModified,
         String status,
         String shortId,
-        String processRef,
+        ProcessId processRef,
         String tenantOrderId,
-        List<String> originFacilityRefs,
+        List<FacilityId> originFacilityRefs,
         List<String> scannableCodes,
         List<ConsumerAddress> consumerAddresses,
         List<ReturnJobLineItem> returnableLineItems,

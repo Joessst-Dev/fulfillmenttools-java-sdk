@@ -61,8 +61,8 @@ class PackingClientTest {
         PackJob job = client.packing().get(new PackJobId("pj-1"));
 
         // Then
-        assertThat(job.id()).isEqualTo("pj-1");
-        assertThat(job.facilityRef()).isEqualTo("fac-1");
+        assertThat(job.id().value()).isEqualTo("pj-1");
+        assertThat(job.facilityRef().value()).isEqualTo("fac-1");
         assertThat(job.status()).isEqualTo("OPEN");
         assertThat(job.shortId()).isEqualTo("PK12");
         assertThat(job.created()).isNotNull();
@@ -118,7 +118,7 @@ class PackingClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("pj-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("pj-1");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cursor-page-2");
     }
@@ -175,7 +175,7 @@ class PackingClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (PackJob j : client.packing().listAll(PackJobListRequest.builder().size(2).build())) {
-            ids.add(j.id());
+            ids.add(j.id().value());
         }
 
         // Then
@@ -198,7 +198,7 @@ class PackingClientTest {
                 UpdatePackJobRequest.builder().version(2).status("IN_PROGRESS").build());
 
         // Then
-        assertThat(job.id()).isEqualTo("pj-1");
+        assertThat(job.id().value()).isEqualTo("pj-1");
         assertThat(job.status()).isEqualTo("IN_PROGRESS");
     }
 

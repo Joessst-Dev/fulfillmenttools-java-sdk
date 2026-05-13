@@ -1,5 +1,10 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
@@ -14,20 +19,20 @@ import java.util.Map;
  *
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
- * @param id                       Unique identifier of the pick job.
+ * @param id                       Unique {@link PickJobId} of the pick job.
  * @param version                  Optimistic-locking version counter.
  * @param created                  Timestamp when the pick job was created.
  * @param lastModified             Timestamp when the pick job was last modified.
- * @param facilityRef              Reference to the facility responsible for fulfilment.
+ * @param facilityRef              {@link FacilityId} reference to the facility responsible for fulfilment.
  * @param status                   Current status of the pick job.
  * @param subStatus                Sub-status providing additional context for the main status.
  * @param shortId                  Short human-readable identifier for the pick job.
- * @param orderRef                 Reference to the originating order.
+ * @param orderRef                 {@link OrderId} reference to the originating order.
  * @param orderDate                Date the order was created in the source system.
  * @param tenantOrderId            External reference number for the order.
- * @param processId                Id of the global process related to this pick job.
- * @param routingPlanRef           Reference to the routing plan that created this pick job.
- * @param operativeProcessRef      Reference to the operative process.
+ * @param processId                {@link ProcessId} of the global process related to this pick job.
+ * @param routingPlanRef           {@link RoutingPlanId} reference to the routing plan that created this pick job.
+ * @param operativeProcessRef      {@link ProcessId} reference to the operative process.
  * @param pickRunRef               Reference to the pick run this pick job belongs to.
  * @param documentsRef             Reference to the document collection for this pick job.
  * @param resetBlocked             Whether the pick job can still be reset or restarted.
@@ -46,20 +51,20 @@ import java.util.Map;
  * @param customAttributes         Free-form custom attributes.
  */
 public record PickJob(
-        String id,
+        PickJobId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityRef,
+        FacilityId facilityRef,
         String status,
         String subStatus,
         String shortId,
-        String orderRef,
+        OrderId orderRef,
         Instant orderDate,
         String tenantOrderId,
-        String processId,
-        String routingPlanRef,
-        String operativeProcessRef,
+        ProcessId processId,
+        RoutingPlanId routingPlanRef,
+        ProcessId operativeProcessRef,
         String pickRunRef,
         String documentsRef,
         Boolean resetBlocked,

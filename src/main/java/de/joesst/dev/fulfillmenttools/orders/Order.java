@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
@@ -14,13 +16,13 @@ import java.util.Map;
  *
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
- * @param id               The platform-generated order identifier.
+ * @param id               The platform-generated {@link OrderId}.
  * @param version          The optimistic-locking version.
  * @param created          The timestamp when this order was created.
  * @param lastModified     The timestamp of the last modification.
  * @param tenantOrderId    The tenant's external order reference number.
  * @param status           The current order status (e.g. {@code OPEN}, {@code LOCKED}).
- * @param processId        The ID of the global process related to this order.
+ * @param processId        The {@link ProcessId} of the global process related to this order.
  * @param schemaVersion    The schema version of this order document.
  * @param orderDate        The date this order was created in the source system.
  * @param orderLineItems   The line items on this order.
@@ -38,13 +40,13 @@ import java.util.Map;
  * @param anonymized       Whether GDPR-related data has been anonymized.
  */
 public record Order(
-        String id,
+        OrderId id,
         Integer version,
         Instant created,
         Instant lastModified,
         String tenantOrderId,
         String status,
-        String processId,
+        ProcessId processId,
         Double schemaVersion,
         Instant orderDate,
         List<OrderLineItem> orderLineItems,

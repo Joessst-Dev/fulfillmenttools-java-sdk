@@ -60,7 +60,7 @@ class ReturnsClientTest {
         Return ret = client.returns().get(new ReturnId("ret-1"));
 
         // Then
-        assertThat(ret.id()).isEqualTo("ret-1");
+        assertThat(ret.id().value()).isEqualTo("ret-1");
         assertThat(ret.status()).isEqualTo("OPEN");
         assertThat(ret.shortId()).isEqualTo("RJ12");
         assertThat(ret.created()).isNotNull();
@@ -113,7 +113,7 @@ class ReturnsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("ret-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("ret-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -155,7 +155,7 @@ class ReturnsClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (Return r : client.returns().listAll(ReturnListRequest.builder().build())) {
-            ids.add(r.id());
+            ids.add(r.id().value());
         }
 
         // Then
@@ -177,7 +177,7 @@ class ReturnsClientTest {
                 .build());
 
         // Then
-        assertThat(ret.id()).isEqualTo("ret-new");
+        assertThat(ret.id().value()).isEqualTo("ret-new");
         assertThat(ret.status()).isEqualTo("OPEN");
     }
 

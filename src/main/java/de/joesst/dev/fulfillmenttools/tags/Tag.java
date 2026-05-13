@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.tags;
 
+import de.joesst.dev.fulfillmenttools.id.TagId;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import java.util.List;
  * @param allowedValues  List of valid values that can be assigned to this tag.
  */
 public record Tag(
-        String id,
+        TagId id,
         Integer version,
         Instant created,
         Instant lastModified,

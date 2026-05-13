@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.carriers;
 
+import de.joesst.dev.fulfillmenttools.id.CarrierId;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +9,7 @@ import java.util.Map;
 /**
  * Represents a carrier in the fulfillmenttools platform.
  *
- * @param id the carrier's unique identifier
+ * @param id the carrier's unique {@link CarrierId}
  * @param version the current version of the carrier entity
  * @param created the timestamp when the carrier was created
  * @param lastModified the timestamp of the last modification
@@ -26,7 +28,7 @@ import java.util.Map;
  * @param parcelLabelClassifications list of available parcel label classifications
  */
 public record Carrier(
-        String id,
+        CarrierId id,
         Integer version,
         Instant created,
         Instant lastModified,

@@ -50,9 +50,9 @@ class StorageLocationsAsyncTest {
         StorageLocation location = client.storageLocations().getAsync(new FacilityId(FACILITY_ID), new StorageLocationId("sl-1")).get();
 
         // Then
-        assertThat(location.id()).isEqualTo("sl-1");
+        assertThat(location.id().value()).isEqualTo("sl-1");
         assertThat(location.name()).isEqualTo("Shelf A1");
-        assertThat(location.facilityRef()).isEqualTo("fac-1");
+        assertThat(location.facilityRef().value()).isEqualTo("fac-1");
     }
 
     @Test
@@ -83,7 +83,7 @@ class StorageLocationsAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(location.id()).isEqualTo("sl-new");
+        assertThat(location.id().value()).isEqualTo("sl-new");
         assertThat(location.name()).isEqualTo("New Shelf");
     }
 

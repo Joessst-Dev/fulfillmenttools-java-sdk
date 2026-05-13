@@ -63,9 +63,9 @@ class ExternalActionsClientTest {
         ExternalAction action = client.externalActions().get(new ExternalActionId("ea-1"));
 
         // Then
-        assertThat(action.id()).isEqualTo("ea-1");
+        assertThat(action.id().value()).isEqualTo("ea-1");
         assertThat(action.name()).isEqualTo("Notify Warehouse");
-        assertThat(action.processRef()).isEqualTo("proc-1");
+        assertThat(action.processRef().value()).isEqualTo("proc-1");
         assertThat(action.groups()).containsExactly("warehouse");
         assertThat(action.version()).isEqualTo(1);
         assertThat(action.action()).isInstanceOf(ExternalLinkActionDefinition.class);
@@ -181,7 +181,7 @@ class ExternalActionsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("ea-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("ea-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -219,7 +219,7 @@ class ExternalActionsClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (ExternalAction ea : client.externalActions().listAll(ExternalActionListRequest.builder().build())) {
-            ids.add(ea.id());
+            ids.add(ea.id().value());
         }
 
         // Then
@@ -245,8 +245,8 @@ class ExternalActionsClientTest {
                 .build());
 
         // Then
-        assertThat(action.id()).isEqualTo("ea-new");
-        assertThat(action.processRef()).isEqualTo("proc-1");
+        assertThat(action.id().value()).isEqualTo("ea-new");
+        assertThat(action.processRef().value()).isEqualTo("proc-1");
     }
 
     @Test
@@ -326,7 +326,7 @@ class ExternalActionsClientTest {
                 .build());
 
         // Then
-        assertThat(action.id()).isEqualTo("ea-1");
+        assertThat(action.id().value()).isEqualTo("ea-1");
         server.verify(putRequestedFor(urlPathEqualTo("/api/externalactions/ea-1"))
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(matchingJsonPath("$.version", equalTo("2")))

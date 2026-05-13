@@ -60,7 +60,7 @@ class EventingClientTest {
         Subscription sub = client.eventing().get(new SubscriptionId("s-1"));
 
         // Then
-        assertThat(sub.id()).isEqualTo("s-1");
+        assertThat(sub.id().value()).isEqualTo("s-1");
         assertThat(sub.name()).isEqualTo("order-hook");
         assertThat(sub.event()).isEqualTo("ORDER_CREATED");
         assertThat(sub.callbackUrl()).isEqualTo("https://example.com/hook");
@@ -144,7 +144,7 @@ class EventingClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("s-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("s-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -177,7 +177,7 @@ class EventingClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (Subscription s : client.eventing().listAll(SubscriptionListRequest.builder().build())) {
-            ids.add(s.id());
+            ids.add(s.id().value());
         }
 
         // Then
@@ -202,7 +202,7 @@ class EventingClientTest {
                 .build());
 
         // Then
-        assertThat(sub.id()).isEqualTo("s-new");
+        assertThat(sub.id().value()).isEqualTo("s-new");
         assertThat(sub.event()).isEqualTo("ORDER_CREATED");
     }
 

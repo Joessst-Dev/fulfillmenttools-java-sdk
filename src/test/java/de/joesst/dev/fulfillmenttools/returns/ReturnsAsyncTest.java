@@ -47,7 +47,7 @@ class ReturnsAsyncTest {
         Return ret = client.returns().getAsync(new ReturnId("ret-1")).get();
 
         // Then
-        assertThat(ret.id()).isEqualTo("ret-1");
+        assertThat(ret.id().value()).isEqualTo("ret-1");
         assertThat(ret.status()).isEqualTo("OPEN");
     }
 
@@ -78,7 +78,7 @@ class ReturnsAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(ret.id()).isEqualTo("ret-new");
+        assertThat(ret.id().value()).isEqualTo("ret-new");
         assertThat(ret.status()).isEqualTo("OPEN");
     }
 

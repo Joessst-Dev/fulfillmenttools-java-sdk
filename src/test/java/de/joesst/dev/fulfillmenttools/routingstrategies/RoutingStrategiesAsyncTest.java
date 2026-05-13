@@ -47,7 +47,7 @@ class RoutingStrategiesAsyncTest {
         RoutingStrategy strategy = client.routingStrategies().getAsync(new RoutingStrategyId("rs-1")).get();
 
         // Then
-        assertThat(strategy.id()).isEqualTo("rs-1");
+        assertThat(strategy.id().value()).isEqualTo("rs-1");
         assertThat(strategy.name()).isEqualTo("Nearest Facility");
     }
 
@@ -77,7 +77,7 @@ class RoutingStrategiesAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(strategy.id()).isEqualTo("rs-new");
+        assertThat(strategy.id().value()).isEqualTo("rs-new");
         assertThat(strategy.name()).isEqualTo("New Strategy");
     }
 

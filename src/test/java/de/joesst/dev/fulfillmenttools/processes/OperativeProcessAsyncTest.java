@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.processes;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -48,7 +49,7 @@ class OperativeProcessAsyncTest {
         Process process = client.processes().getAsync(new ProcessId("proc-1")).get();
 
         // Then
-        assertThat(process.id()).isEqualTo("proc-1");
+        assertThat(process.id().value()).isEqualTo("proc-1");
         assertThat(process.status()).isEqualTo("OPEN");
     }
 
@@ -82,7 +83,7 @@ class OperativeProcessAsyncTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).facilityRefs()).containsExactly("fac-1");
+        assertThat(page.items().get(0).facilityRefs()).extracting(FacilityId::value).containsExactly("fac-1");
     }
 
     // --- Helpers ---

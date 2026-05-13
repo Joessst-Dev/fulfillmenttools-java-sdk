@@ -129,7 +129,7 @@ class UserManagementClientTest {
         User user = client.users().get(new UserId("u-1"));
 
         // Then
-        assertThat(user.id()).isEqualTo("u-1");
+        assertThat(user.id().value()).isEqualTo("u-1");
         assertThat(user.firstName()).isEqualTo("Alice");
         assertThat(user.lastName()).isEqualTo("Smith");
         assertThat(user.username()).isEqualTo("alice");
@@ -189,7 +189,7 @@ class UserManagementClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("u-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("u-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -247,7 +247,7 @@ class UserManagementClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (User u : client.users().listAll(UserListRequest.builder().build())) {
-            ids.add(u.id());
+            ids.add(u.id().value());
         }
 
         // Then
@@ -274,7 +274,7 @@ class UserManagementClientTest {
                 .build());
 
         // Then
-        assertThat(user.id()).isEqualTo("u-new");
+        assertThat(user.id().value()).isEqualTo("u-new");
         assertThat(user.username()).isEqualTo("alice");
     }
 
@@ -350,7 +350,7 @@ class UserManagementClientTest {
                 .build());
 
         // Then
-        assertThat(user.id()).isEqualTo("u-1");
+        assertThat(user.id().value()).isEqualTo("u-1");
         server.verify(patchRequestedFor(urlPathEqualTo("/api/users/u-1"))
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(matchingJsonPath("$.version", equalTo("2")))

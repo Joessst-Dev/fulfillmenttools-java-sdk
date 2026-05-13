@@ -45,7 +45,7 @@ class ReservationsAsyncTest {
         Reservation reservation = client.reservations().getAsync(new ReservationId("res-1")).get();
 
         // Then
-        assertThat(reservation.id()).isEqualTo("res-1");
+        assertThat(reservation.id().value()).isEqualTo("res-1");
         assertThat(reservation.quantity()).isEqualTo(3);
     }
 

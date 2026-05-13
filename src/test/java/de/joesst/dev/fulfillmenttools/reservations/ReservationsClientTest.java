@@ -60,8 +60,8 @@ class ReservationsClientTest {
         Reservation reservation = client.reservations().get(new ReservationId("res-1"));
 
         // Then
-        assertThat(reservation.id()).isEqualTo("res-1");
-        assertThat(reservation.facilityRef()).isEqualTo("fac-1");
+        assertThat(reservation.id().value()).isEqualTo("res-1");
+        assertThat(reservation.facilityRef().value()).isEqualTo("fac-1");
         assertThat(reservation.tenantArticleId()).isEqualTo("art-1");
         assertThat(reservation.quantity()).isEqualTo(5);
         assertThat(reservation.created()).isNotNull();
@@ -124,7 +124,7 @@ class ReservationsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("res-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("res-1");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cursor-page-2");
     }
@@ -171,7 +171,7 @@ class ReservationsClientTest {
         List<String> ids = new ArrayList<>();
         for (Reservation r : client.reservations().listAll(
                 ReservationListRequest.builder().size(2).build())) {
-            ids.add(r.id());
+            ids.add(r.id().value());
         }
 
         // Then

@@ -1,5 +1,8 @@
 package de.joesst.dev.fulfillmenttools.storagelocations;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +33,11 @@ import java.util.Map;
  * @param runningSequences    Running sequence items (picking and restow sequences).
  */
 public record StorageLocation(
-        String id,
+        StorageLocationId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityRef,
+        FacilityId facilityRef,
         String name,
         String type,
         String tenantLocationId,

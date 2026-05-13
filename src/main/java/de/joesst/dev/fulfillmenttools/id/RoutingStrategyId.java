@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.id;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Objects;
 
 /**
@@ -8,6 +10,9 @@ import java.util.Objects;
  * @param value the raw UUID string
  */
 public record RoutingStrategyId(String value) implements PlatformId {
-    public RoutingStrategyId { Objects.requireNonNull(value, "value"); }
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public RoutingStrategyId(String value) {
+        this.value = Objects.requireNonNull(value, "value");
+    }
     @Override public String toString() { return value; }
 }

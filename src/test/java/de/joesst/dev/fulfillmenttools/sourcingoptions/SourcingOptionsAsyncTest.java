@@ -59,7 +59,7 @@ class SourcingOptionsAsyncTest {
         SourcingOptionsResult result = client.sourcingOptions().evaluateAsync(request).get();
 
         // Then
-        assertThat(result.id()).isEqualTo("run-1");
+        assertThat(result.id().value()).isEqualTo("run-1");
         assertThat(result.options()).isEmpty();
     }
 
@@ -133,7 +133,7 @@ class SourcingOptionsAsyncTest {
         SourcingOptionsResult result = client.sourcingOptions().getAsync(new SourcingOptionsRequestId("run-1")).get();
 
         // Then
-        assertThat(result.id()).isEqualTo("run-1");
+        assertThat(result.id().value()).isEqualTo("run-1");
         assertThat(result.options()).hasSize(1);
         assertThat(result.options().get(0).id()).isEqualTo("opt-1");
     }

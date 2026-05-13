@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRequestId;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,6 @@ import java.util.List;
  * @param options The list of feasible sourcing options for the order.
  */
 public record SourcingOptionsResult(
-        String id,
+        SourcingOptionsRequestId id,
         List<SourcingOption> options
 ) {}

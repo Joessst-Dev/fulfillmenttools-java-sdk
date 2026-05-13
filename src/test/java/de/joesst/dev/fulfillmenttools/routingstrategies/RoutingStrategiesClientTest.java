@@ -63,7 +63,7 @@ class RoutingStrategiesClientTest {
         RoutingStrategy strategy = client.routingStrategies().get(new RoutingStrategyId("rs-1"));
 
         // Then
-        assertThat(strategy.id()).isEqualTo("rs-1");
+        assertThat(strategy.id().value()).isEqualTo("rs-1");
         assertThat(strategy.version()).isEqualTo(3);
         assertThat(strategy.name()).isEqualTo("Nearest Facility");
         assertThat(strategy.inUse()).isTrue();
@@ -117,7 +117,7 @@ class RoutingStrategiesClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("rs-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("rs-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -160,7 +160,7 @@ class RoutingStrategiesClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (RoutingStrategy rs : client.routingStrategies().listAll(RoutingStrategyListRequest.builder().build())) {
-            ids.add(rs.id());
+            ids.add(rs.id().value());
         }
 
         // Then
@@ -182,7 +182,7 @@ class RoutingStrategiesClientTest {
                         .build());
 
         // Then
-        assertThat(strategy.id()).isEqualTo("rs-new");
+        assertThat(strategy.id().value()).isEqualTo("rs-new");
         server.verify(postRequestedFor(urlPathEqualTo("/api/routing/strategies"))
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(matchingJsonPath("$.nameLocalized.en_US", equalTo("New Strategy"))));
@@ -212,7 +212,7 @@ class RoutingStrategiesClientTest {
                         .build());
 
         // Then
-        assertThat(strategy.id()).isEqualTo("rs-1");
+        assertThat(strategy.id().value()).isEqualTo("rs-1");
         server.verify(putRequestedFor(urlPathEqualTo("/api/routing/strategies/rs-1"))
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(matchingJsonPath("$.version", equalTo("1")))

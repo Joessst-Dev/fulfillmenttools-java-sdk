@@ -45,7 +45,7 @@ class UserManagementAsyncTest {
         User user = client.users().getAsync(new UserId("u-1")).get();
 
         // Then
-        assertThat(user.id()).isEqualTo("u-1");
+        assertThat(user.id().value()).isEqualTo("u-1");
         assertThat(user.email()).isEqualTo("alice@example.com");
         assertThat(user.firstName()).isEqualTo("Alice");
     }
@@ -80,7 +80,7 @@ class UserManagementAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(user.id()).isEqualTo("u-new");
+        assertThat(user.id().value()).isEqualTo("u-new");
         assertThat(user.email()).isEqualTo("charlie@example.com");
     }
 

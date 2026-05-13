@@ -62,8 +62,8 @@ class HandoverJobsClientTest {
         HandoverJob job = client.handoverJobs().get(new HandoverJobId("hj-1"));
 
         // Then
-        assertThat(job.id()).isEqualTo("hj-1");
-        assertThat(job.facilityRef()).isEqualTo("fac-1");
+        assertThat(job.id().value()).isEqualTo("hj-1");
+        assertThat(job.facilityRef().value()).isEqualTo("fac-1");
         assertThat(job.status()).isEqualTo("OPEN");
         assertThat(job.channel()).isEqualTo("SHIPPING");
         assertThat(job.shortIdentifier()).isEqualTo("HJ12");
@@ -120,7 +120,7 @@ class HandoverJobsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("hj-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("hj-1");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cursor-page-2");
     }
@@ -175,7 +175,7 @@ class HandoverJobsClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (HandoverJob j : client.handoverJobs().listAll(HandoverJobListRequest.builder().size(2).build())) {
-            ids.add(j.id());
+            ids.add(j.id().value());
         }
 
         // Then
@@ -198,7 +198,7 @@ class HandoverJobsClientTest {
                 UpdateHandoverJobRequest.builder().version(2).status("HANDED_OVER").build());
 
         // Then
-        assertThat(job.id()).isEqualTo("hj-1");
+        assertThat(job.id().value()).isEqualTo("hj-1");
         assertThat(job.status()).isEqualTo("HANDED_OVER");
     }
 

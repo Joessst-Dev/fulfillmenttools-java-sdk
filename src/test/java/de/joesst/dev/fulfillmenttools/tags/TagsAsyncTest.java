@@ -47,7 +47,7 @@ class TagsAsyncTest {
         Tag tag = client.tags().getAsync(new TagId("color")).get();
 
         // Then
-        assertThat(tag.id()).isEqualTo("color");
+        assertThat(tag.id().value()).isEqualTo("color");
         assertThat(tag.allowedValues()).containsExactly("red");
     }
 
@@ -84,7 +84,7 @@ class TagsAsyncTest {
                 .build()).get();
 
         // Then
-        assertThat(tag.id()).isEqualTo("brand");
+        assertThat(tag.id().value()).isEqualTo("brand");
     }
 
     @Test
@@ -115,7 +115,7 @@ class TagsAsyncTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).id()).isEqualTo("color");
+        assertThat(page.items().get(0).id().value()).isEqualTo("color");
     }
 
     @Test

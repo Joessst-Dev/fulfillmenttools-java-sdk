@@ -57,9 +57,9 @@ class FacilityConnectionsClientTest {
         FacilityConnection conn = client.facilityConnections().get(new FacilityId("fac-1"), new ConnectionId("conn-1"));
 
         // Then
-        assertThat(conn.id()).isEqualTo("conn-1");
+        assertThat(conn.id().value()).isEqualTo("conn-1");
         assertThat(conn.version()).isEqualTo(1);
-        assertThat(conn.sourceFacilityRef()).isEqualTo("fac-1");
+        assertThat(conn.sourceFacilityRef().value()).isEqualTo("fac-1");
         assertThat(conn.carrierKey()).isEqualTo("DHL");
         assertThat(conn.carrierName()).isEqualTo("DHL Express");
         assertThat(conn.target()).isInstanceOf(ConnectionTarget.Customer.class);
@@ -112,8 +112,8 @@ class FacilityConnectionsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("conn-1");
-        assertThat(page.items().get(1).id()).isEqualTo("conn-2");
+        assertThat(page.items().get(0).id().value()).isEqualTo("conn-1");
+        assertThat(page.items().get(1).id().value()).isEqualTo("conn-2");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("conn-2");
     }
@@ -185,7 +185,7 @@ class FacilityConnectionsClientTest {
         // When
         List<String> ids = new ArrayList<>();
         client.facilityConnections().listAll(new FacilityId("fac-1"),
-                FacilityConnectionListRequest.builder().size(2).build()).forEach(c -> ids.add(c.id()));
+                FacilityConnectionListRequest.builder().size(2).build()).forEach(c -> ids.add(c.id().value()));
 
         // Then
         assertThat(ids).containsExactly("conn-1", "conn-2", "conn-3");
@@ -211,7 +211,7 @@ class FacilityConnectionsClientTest {
                         .build());
 
         // Then
-        assertThat(conn.id()).isEqualTo("conn-new");
+        assertThat(conn.id().value()).isEqualTo("conn-new");
         assertThat(conn.carrierKey()).isEqualTo("DHL");
         assertThat(conn.target()).isInstanceOf(ConnectionTarget.Customer.class);
     }

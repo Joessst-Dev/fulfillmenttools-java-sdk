@@ -50,7 +50,7 @@ class FacilityGroupsAsyncTest {
         FacilityGroup group = client.facilityGroups().getAsync(new FacilityGroupId("fg-1")).get();
 
         // Then
-        assertThat(group.id()).isEqualTo("fg-1");
+        assertThat(group.id().value()).isEqualTo("fg-1");
         assertThat(group.tenantFacilityGroupId()).isEqualTo("tg-1");
     }
 
@@ -86,7 +86,7 @@ class FacilityGroupsAsyncTest {
                 .build()).get();
 
         // Then
-        assertThat(group.id()).isEqualTo("fg-new");
+        assertThat(group.id().value()).isEqualTo("fg-new");
     }
 
     @Test

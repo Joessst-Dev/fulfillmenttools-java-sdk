@@ -52,7 +52,7 @@ class OrdersAsyncTest {
         Order order = client.orders().getAsync(new OrderId("ord-1")).get();
 
         // Then
-        assertThat(order.id()).isEqualTo("ord-1");
+        assertThat(order.id().value()).isEqualTo("ord-1");
         assertThat(order.status()).isEqualTo("OPEN");
     }
 
@@ -94,7 +94,7 @@ class OrdersAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(order.id()).isEqualTo("ord-new");
+        assertThat(order.id().value()).isEqualTo("ord-new");
     }
 
     @Test

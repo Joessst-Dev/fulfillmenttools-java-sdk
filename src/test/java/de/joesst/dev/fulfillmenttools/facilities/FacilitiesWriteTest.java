@@ -53,7 +53,7 @@ class FacilitiesWriteTest {
                 CreateFacilityRequest.builder().name("Berlin").tenantFacilityId("ext-1").build());
 
         // Then
-        assertThat(facility.id()).isEqualTo("fac-new");
+        assertThat(facility.id().value()).isEqualTo("fac-new");
         assertThat(facility.name()).isEqualTo("Berlin");
         assertThat(facility.tenantFacilityId()).isEqualTo("ext-1");
     }
@@ -99,7 +99,7 @@ class FacilitiesWriteTest {
                 UpdateFacilityRequest.builder().name("Munich").status("INACTIVE").build());
 
         // Then
-        assertThat(facility.id()).isEqualTo("fac-1");
+        assertThat(facility.id().value()).isEqualTo("fac-1");
         assertThat(facility.name()).isEqualTo("Munich");
         assertThat(facility.status()).isEqualTo("INACTIVE");
     }
@@ -196,7 +196,7 @@ class FacilitiesWriteTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).id()).isEqualTo("fac-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("fac-1");
         assertThat(page.nextCursor()).isEqualTo("c1");
         server.verify(postRequestedFor(urlPathEqualTo("/api/facilities/search"))
                 .withHeader("Authorization", equalTo("Bearer test-bearer")));

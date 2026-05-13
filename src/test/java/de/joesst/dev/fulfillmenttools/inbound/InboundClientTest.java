@@ -62,9 +62,9 @@ class InboundClientTest {
         StowJob job = client.inbound().get(new StowJobId("sj-1"));
 
         // Then
-        assertThat(job.id()).isEqualTo("sj-1");
+        assertThat(job.id().value()).isEqualTo("sj-1");
         assertThat(job.status()).isEqualTo("OPEN");
-        assertThat(job.facilityRef()).isEqualTo("fac-1");
+        assertThat(job.facilityRef().value()).isEqualTo("fac-1");
         assertThat(job.version()).isEqualTo(1);
         assertThat(job.created()).isNotNull();
     }
@@ -118,7 +118,7 @@ class InboundClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("sj-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("sj-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -161,7 +161,7 @@ class InboundClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (StowJob j : client.inbound().listAll(StowJobListRequest.builder().build())) {
-            ids.add(j.id());
+            ids.add(j.id().value());
         }
 
         // Then
@@ -184,8 +184,8 @@ class InboundClientTest {
                 .build());
 
         // Then
-        assertThat(job.id()).isEqualTo("sj-new");
-        assertThat(job.facilityRef()).isEqualTo("fac-1");
+        assertThat(job.id().value()).isEqualTo("sj-new");
+        assertThat(job.facilityRef().value()).isEqualTo("fac-1");
     }
 
     @Test
@@ -247,7 +247,7 @@ class InboundClientTest {
                 .build());
 
         // Then
-        assertThat(job.id()).isEqualTo("sj-1");
+        assertThat(job.id().value()).isEqualTo("sj-1");
         server.verify(patchRequestedFor(urlPathEqualTo("/api/stowjobs/sj-1"))
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(matchingJsonPath("$.version", equalTo("2")))

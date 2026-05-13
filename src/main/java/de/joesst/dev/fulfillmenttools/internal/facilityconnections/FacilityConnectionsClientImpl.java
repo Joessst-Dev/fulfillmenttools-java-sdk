@@ -73,7 +73,7 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
                     accumulated += items.size();
                     pageIter = items.iterator();
                     if (!items.isEmpty()) {
-                        current[0] = current[0].toBuilder().startAfterId(items.getLast().id()).build();
+                        current[0] = current[0].toBuilder().startAfterId(items.getLast().id().value()).build();
                     }
                     done = items.isEmpty() || (resp.total() != null && accumulated >= resp.total());
                 }
@@ -191,7 +191,7 @@ public final class FacilityConnectionsClientImpl implements FacilityConnectionsC
         List<FacilityConnection> items = resp.interFacilityConnections() != null ? resp.interFacilityConnections() : List.of();
         Integer total = resp.total();
         String cursor = (!items.isEmpty() && total != null && total > items.size())
-                ? items.getLast().id()
+                ? items.getLast().id().value()
                 : null;
         return new Page<>(items, cursor);
     }

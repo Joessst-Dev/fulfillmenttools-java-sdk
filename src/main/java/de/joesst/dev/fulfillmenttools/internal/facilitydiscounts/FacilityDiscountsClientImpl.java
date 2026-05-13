@@ -69,7 +69,7 @@ public final class FacilityDiscountsClientImpl implements FacilityDiscountsClien
                 buffer.addAll(items);
                 accumulated += items.size();
                 boolean done = items.isEmpty() || (resp.total() != null && accumulated >= resp.total());
-                if (done) { exhausted = true; } else { cursor = items.getLast().id(); }
+                if (done) { exhausted = true; } else { cursor = items.getLast().id().value(); }
             }
 
             @Override public boolean hasNext() {
@@ -173,7 +173,7 @@ public final class FacilityDiscountsClientImpl implements FacilityDiscountsClien
         String cursor = null;
         if (!items.isEmpty()) {
             boolean couldHaveMore = resp.total() == null || items.size() < resp.total();
-            if (couldHaveMore) cursor = items.getLast().id();
+            if (couldHaveMore) cursor = items.getLast().id().value();
         }
         return new Page<>(items, cursor);
     }

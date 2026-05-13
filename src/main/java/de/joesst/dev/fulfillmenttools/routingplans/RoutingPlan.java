@@ -1,5 +1,10 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 import de.joesst.dev.fulfillmenttools.pickjobs.WorkflowInformation;
 import de.joesst.dev.fulfillmenttools.routingstrategies.RoutingStrategyNodeConfig;
@@ -85,14 +90,14 @@ import java.util.Map;
  * @param transfers                           Transfer relationships for this routing plan.
  */
 public record RoutingPlan(
-        String id,
+        RoutingPlanId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityRef,
-        String orderRef,
+        FacilityId facilityRef,
+        OrderId orderRef,
         String tenantOrderId,
-        String processId,
+        ProcessId processId,
         String status,
         String consolidatedStatus,
         Instant orderDate,
@@ -104,18 +109,18 @@ public record RoutingPlan(
         String runId,
         String runType,
         Boolean anonymized,
-        String childRoutingPlanRef,
-        String parentRoutingPlanRef,
-        String pickJobRef,
-        String reRoutedFacilityRef,
-        String reRoutedPickJobRef,
-        String reRoutedRoutingPlanRef,
+        RoutingPlanId childRoutingPlanRef,
+        RoutingPlanId parentRoutingPlanRef,
+        PickJobId pickJobRef,
+        FacilityId reRoutedFacilityRef,
+        PickJobId reRoutedPickJobRef,
+        RoutingPlanId reRoutedRoutingPlanRef,
         Instant firstRoutingAttempt,
         Instant provisioningTime,
         Instant targetTimeBaseDate,
-        List<String> predecessorRerouteRoutingPlanRefs,
-        List<String> successorRerouteRoutingPlanRefs,
-        List<String> facilityBlackList,
+        List<RoutingPlanId> predecessorRerouteRoutingPlanRefs,
+        List<RoutingPlanId> successorRerouteRoutingPlanRefs,
+        List<FacilityId> facilityBlackList,
         List<String> statusHistory,
         RoutingStrategyNodeConfig activeConfig,
         DeliveryPreferences deliveryPreferences,

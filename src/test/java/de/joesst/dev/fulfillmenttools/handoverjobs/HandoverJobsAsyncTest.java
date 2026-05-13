@@ -45,7 +45,7 @@ class HandoverJobsAsyncTest {
         HandoverJob job = client.handoverJobs().getAsync(new HandoverJobId("hj-1")).get();
 
         // Then
-        assertThat(job.id()).isEqualTo("hj-1");
+        assertThat(job.id().value()).isEqualTo("hj-1");
         assertThat(job.status()).isEqualTo("OPEN");
     }
 

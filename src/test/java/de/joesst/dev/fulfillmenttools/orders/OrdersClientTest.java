@@ -60,7 +60,7 @@ class OrdersClientTest {
         Order order = client.orders().get(new OrderId("ord-1"));
 
         // Then
-        assertThat(order.id()).isEqualTo("ord-1");
+        assertThat(order.id().value()).isEqualTo("ord-1");
         assertThat(order.tenantOrderId()).isEqualTo("ext-001");
         assertThat(order.status()).isEqualTo("OPEN");
         assertThat(order.created()).isNotNull();
@@ -118,8 +118,8 @@ class OrdersClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("ord-1");
-        assertThat(page.items().get(1).id()).isEqualTo("ord-2");
+        assertThat(page.items().get(0).id().value()).isEqualTo("ord-1");
+        assertThat(page.items().get(1).id().value()).isEqualTo("ord-2");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cursor-page-2");
     }
@@ -174,7 +174,7 @@ class OrdersClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (Order o : client.orders().listAll(OrderListRequest.builder().size(2).build())) {
-            ids.add(o.id());
+            ids.add(o.id().value());
         }
 
         // Then

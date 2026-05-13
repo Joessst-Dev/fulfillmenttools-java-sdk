@@ -63,7 +63,7 @@ class OrdersWriteTest {
                         .build());
 
         // Then
-        assertThat(order.id()).isEqualTo("ord-new");
+        assertThat(order.id().value()).isEqualTo("ord-new");
         assertThat(order.tenantOrderId()).isEqualTo("ext-new");
         assertThat(order.status()).isEqualTo("OPEN");
     }
@@ -148,7 +148,7 @@ class OrdersWriteTest {
                 UpdateOrderRequest.builder().version(1).comment("routing change").build());
 
         // Then
-        assertThat(order.id()).isEqualTo("ord-1");
+        assertThat(order.id().value()).isEqualTo("ord-1");
         assertThat(order.status()).isEqualTo("LOCKED");
     }
 
@@ -336,7 +336,7 @@ class OrdersWriteTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).id()).isEqualTo("ord-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("ord-1");
         assertThat(page.nextCursor()).isEqualTo("c1");
         server.verify(postRequestedFor(urlPathEqualTo("/api/orders/search"))
                 .withHeader("Authorization", equalTo("Bearer test-bearer")));

@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
 
 import java.time.Instant;
@@ -23,11 +25,11 @@ import java.util.Map;
  * @param customAttributes Free-form custom attributes.
  */
 public record StowJob(
-        String id,
+        StowJobId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityRef,
+        FacilityId facilityRef,
         String status,
         String shortId,
         Integer priority,

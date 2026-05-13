@@ -1,5 +1,9 @@
 package de.joesst.dev.fulfillmenttools.handoverjobs;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.HandoverJobId;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
@@ -18,22 +22,22 @@ import java.util.Map;
  *
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
- * @param id                           Unique identifier of the handover job. Required.
+ * @param id                           Unique {@link HandoverJobId} of the handover job. Required.
  * @param version                      Optimistic-locking version counter. Required.
  * @param created                      Timestamp when the handover job was created.
  * @param lastModified                 Timestamp when the handover job was last modified.
- * @param facilityRef                  Reference to the facility. Required.
+ * @param facilityRef                  {@link FacilityId} reference to the facility. Required.
  * @param status                       Current status of the handover job. Required.
  * @param channel                      Delivery channel: {@code DELIVERY} or {@code COLLECT}.
  *                                     Required.
  * @param targetTime                   Expected pick-up time at the facility. Required.
  * @param orderDate                    Date the order was created in the source system. Required.
  * @param tenantOrderId                External reference number for the order.
- * @param processId                    Id of the global process related to this entity.
+ * @param processId                    {@link ProcessId} of the global process related to this entity.
  * @param shortIdentifier              Short identifier of the shipment.
  * @param fullIdentifier               Full identifier to identify the recipient.
- * @param pickJobRef                   Reference to the associated pick job.
- * @param operativeProcessRef          Reference to the operative process.
+ * @param pickJobRef                   {@link PickJobId} reference to the associated pick job.
+ * @param operativeProcessRef          {@link ProcessId} reference to the operative process.
  * @param documentsRef                 Reference to the document collection.
  * @param cancelReason                 Reason for cancellation, if applicable.
  * @param handoverJobLineItems         The active line items of this handover job.
@@ -54,21 +58,21 @@ import java.util.Map;
  * @param paid                         Whether the order is already paid.
  */
 public record HandoverJob(
-        String id,
+        HandoverJobId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityRef,
+        FacilityId facilityRef,
         String status,
         String channel,
         Instant targetTime,
         Instant orderDate,
         String tenantOrderId,
-        String processId,
+        ProcessId processId,
         String shortIdentifier,
         String fullIdentifier,
-        String pickJobRef,
-        String operativeProcessRef,
+        PickJobId pickJobRef,
+        ProcessId operativeProcessRef,
         String documentsRef,
         String cancelReason,
         List<HandoverLineItem> handoverJobLineItems,

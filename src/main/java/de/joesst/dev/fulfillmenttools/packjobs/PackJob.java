@@ -1,5 +1,10 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.PackJobId;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
@@ -19,20 +24,20 @@ import java.util.Map;
  *
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
- * @param id                     Unique identifier of the pack job.
+ * @param id                     Unique {@link PackJobId} of the pack job.
  * @param version                Optimistic-locking version counter.
  * @param created                Timestamp when the pack job was created.
  * @param lastModified           Timestamp when the pack job was last modified.
- * @param facilityRef            Reference to the facility responsible for fulfilment.
+ * @param facilityRef            {@link FacilityId} reference to the facility responsible for fulfilment.
  * @param status                 Current status of the pack job.
  * @param shortId                Short human-readable identifier for the pack job.
- * @param processId              Id of the global process related to this pack job.
- * @param operativeProcessRef    Reference to the operative process.
+ * @param processId              {@link ProcessId} of the global process related to this pack job.
+ * @param operativeProcessRef    {@link ProcessId} reference to the operative process.
  * @param documentsRef           Reference to the document collection for this pack job.
- * @param orderRef               Reference to the originating order.
+ * @param orderRef               {@link OrderId} reference to the originating order.
  * @param orderDate              Date the order was placed.
  * @param tenantOrderId          External reference number for the order.
- * @param pickJobRef             Reference to a pick job.
+ * @param pickJobRef             {@link PickJobId} reference to a pick job.
  * @param deliveryChannel        Delivery channel: {@code COLLECT} or {@code SHIPPING}.
  * @param recipientName          The name of the recipient.
  * @param targetTime             Until when the pack job must be finished.
@@ -51,20 +56,20 @@ import java.util.Map;
  * @param anonymized             Whether GDPR-related data has been anonymized.
  */
 public record PackJob(
-        String id,
+        PackJobId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityRef,
+        FacilityId facilityRef,
         String status,
         String shortId,
-        String processId,
-        String operativeProcessRef,
+        ProcessId processId,
+        ProcessId operativeProcessRef,
         String documentsRef,
-        String orderRef,
+        OrderId orderRef,
         Instant orderDate,
         String tenantOrderId,
-        String pickJobRef,
+        PickJobId pickJobRef,
         String deliveryChannel,
         String recipientName,
         Instant targetTime,

@@ -53,7 +53,7 @@ class TagsClientTest {
         Tag tag = client.tags().get(new TagId("color"));
 
         // Then
-        assertThat(tag.id()).isEqualTo("color");
+        assertThat(tag.id().value()).isEqualTo("color");
         assertThat(tag.version()).isEqualTo(1);
         assertThat(tag.allowedValues()).containsExactly("red", "green", "blue");
     }
@@ -104,8 +104,8 @@ class TagsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("color");
-        assertThat(page.items().get(1).id()).isEqualTo("size");
+        assertThat(page.items().get(0).id().value()).isEqualTo("color");
+        assertThat(page.items().get(1).id().value()).isEqualTo("size");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("size");
     }
@@ -148,7 +148,7 @@ class TagsClientTest {
 
         // When
         List<String> ids = new ArrayList<>();
-        client.tags().listAll(TagListRequest.builder().size(2).build()).forEach(t -> ids.add(t.id()));
+        client.tags().listAll(TagListRequest.builder().size(2).build()).forEach(t -> ids.add(t.id().value()));
 
         // Then
         assertThat(ids).containsExactly("tag-1", "tag-2", "tag-3");
@@ -171,7 +171,7 @@ class TagsClientTest {
                 .build());
 
         // Then
-        assertThat(tag.id()).isEqualTo("material");
+        assertThat(tag.id().value()).isEqualTo("material");
         assertThat(tag.allowedValues()).containsExactly("cotton", "wool");
     }
 
@@ -248,7 +248,7 @@ class TagsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).id()).isEqualTo("color");
+        assertThat(page.items().get(0).id().value()).isEqualTo("color");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cur-2");
     }
@@ -292,7 +292,7 @@ class TagsClientTest {
 
         // When
         List<String> ids = new ArrayList<>();
-        client.tags().searchAll(TagSearchRequest.builder().build()).forEach(t -> ids.add(t.id()));
+        client.tags().searchAll(TagSearchRequest.builder().build()).forEach(t -> ids.add(t.id().value()));
 
         // Then
         assertThat(ids).containsExactly("tag-1", "tag-2", "tag-3");

@@ -65,10 +65,10 @@ class StorageLocationsClientTest {
         StorageLocation loc = client.storageLocations().get(new FacilityId(FAC), new StorageLocationId("sl-1"));
 
         // Then
-        assertThat(loc.id()).isEqualTo("sl-1");
+        assertThat(loc.id().value()).isEqualTo("sl-1");
         assertThat(loc.name()).isEqualTo("Shelf A1");
         assertThat(loc.type()).isEqualTo("SHELF");
-        assertThat(loc.facilityRef()).isEqualTo("fac-1");
+        assertThat(loc.facilityRef().value()).isEqualTo("fac-1");
         assertThat(loc.version()).isEqualTo(1);
         assertThat(loc.created()).isNotNull();
     }
@@ -121,7 +121,7 @@ class StorageLocationsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("sl-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("sl-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -156,7 +156,7 @@ class StorageLocationsClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (StorageLocation s : client.storageLocations().listAll(new FacilityId(FAC), StorageLocationListRequest.builder().build())) {
-            ids.add(s.id());
+            ids.add(s.id().value());
         }
 
         // Then
@@ -182,7 +182,7 @@ class StorageLocationsClientTest {
                 .build());
 
         // Then
-        assertThat(loc.id()).isEqualTo("sl-new");
+        assertThat(loc.id().value()).isEqualTo("sl-new");
         assertThat(loc.name()).isEqualTo("Shelf C3");
     }
 

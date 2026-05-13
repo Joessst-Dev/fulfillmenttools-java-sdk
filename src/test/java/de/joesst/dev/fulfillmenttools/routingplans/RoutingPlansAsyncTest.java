@@ -45,7 +45,7 @@ class RoutingPlansAsyncTest {
         RoutingPlan plan = client.routingPlans().getAsync(new RoutingPlanId("rp-1")).get();
 
         // Then
-        assertThat(plan.id()).isEqualTo("rp-1");
+        assertThat(plan.id().value()).isEqualTo("rp-1");
         assertThat(plan.status()).isEqualTo("ACTIVE");
     }
 
@@ -73,7 +73,7 @@ class RoutingPlansAsyncTest {
                 .createAsync(CreateRoutingPlanRequest.builder().name("New Plan").build()).get();
 
         // Then
-        assertThat(plan.id()).isEqualTo("rp-new");
+        assertThat(plan.id().value()).isEqualTo("rp-new");
         assertThat(plan.status()).isEqualTo("ACTIVE");
     }
 

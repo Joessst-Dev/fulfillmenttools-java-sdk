@@ -1,5 +1,8 @@
 package de.joesst.dev.fulfillmenttools.externalactions;
 
+import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +29,12 @@ import java.util.Map;
  * @param customAttributes free-form custom attributes; keys and values are arbitrary
  */
 public record ExternalAction(
-        String id,
+        ExternalActionId id,
         Integer version,
         Instant created,
         Instant lastModified,
         String name,
-        String processRef,
+        ProcessId processRef,
         Map<String, String> nameLocalized,
         ExternalActionDefinition action,
         List<String> groups,

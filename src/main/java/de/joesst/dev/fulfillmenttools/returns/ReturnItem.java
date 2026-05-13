@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ public record ReturnItem(
         Instant created,
         Instant lastModified,
         String status,
-        String returnFacilityRef,
+        FacilityId returnFacilityRef,
         String tenantOrderId,
         List<String> scannableCodes,
         List<String> parcelRefs,

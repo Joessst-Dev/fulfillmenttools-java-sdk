@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -66,13 +68,13 @@ class OperativeProcessClientTest {
         Process process = client.processes().get(new ProcessId("proc-1"));
 
         // Then
-        assertThat(process.id()).isEqualTo("proc-1");
+        assertThat(process.id().value()).isEqualTo("proc-1");
         assertThat(process.version()).isEqualTo(3);
         assertThat(process.status()).isEqualTo("OPEN");
         assertThat(process.tenantOrderId()).isEqualTo("order-abc");
-        assertThat(process.facilityRefs()).containsExactly("fac-1");
+        assertThat(process.facilityRefs()).extracting(FacilityId::value).containsExactly("fac-1");
         assertThat(process.serviceJobRefs()).containsExactly("sj-1");
-        assertThat(process.externalActionRefs()).containsExactly("ea-1");
+        assertThat(process.externalActionRefs()).extracting(ExternalActionId::value).containsExactly("ea-1");
         assertThat(process.tags()).hasSize(1);
         assertThat(process.gdprCleanupDate()).isNotNull();
     }
@@ -124,7 +126,7 @@ class OperativeProcessClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("proc-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("proc-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -169,7 +171,7 @@ class OperativeProcessClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (Process p : client.processes().listAll(ProcessListRequest.builder().build())) {
-            ids.add(p.id());
+            ids.add(p.id().value());
         }
 
         // Then
@@ -194,7 +196,7 @@ class OperativeProcessClientTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).facilityRefs()).containsExactly("fac-1");
+        assertThat(page.items().get(0).facilityRefs()).extracting(FacilityId::value).containsExactly("fac-1");
     }
 
     @Test

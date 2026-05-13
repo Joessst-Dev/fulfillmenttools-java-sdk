@@ -45,7 +45,7 @@ class EventingAsyncTest {
         Subscription subscription = client.eventing().getAsync(new SubscriptionId("s-1")).get();
 
         // Then
-        assertThat(subscription.id()).isEqualTo("s-1");
+        assertThat(subscription.id().value()).isEqualTo("s-1");
         assertThat(subscription.event()).isEqualTo("ORDER_CREATED");
         assertThat(subscription.callbackUrl()).isEqualTo("https://example.com/hook");
     }
@@ -78,7 +78,7 @@ class EventingAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(subscription.id()).isEqualTo("s-new");
+        assertThat(subscription.id().value()).isEqualTo("s-new");
         assertThat(subscription.event()).isEqualTo("ORDER_CREATED");
     }
 

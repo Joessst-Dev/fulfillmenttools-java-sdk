@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.joesst.dev.fulfillmenttools.id.UserId;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  *                               prefer {@link #assignedRoles()} with context limitations
  */
 public record User(
-        String id,
+        UserId id,
         Integer version,
         Instant created,
         Instant lastModified,

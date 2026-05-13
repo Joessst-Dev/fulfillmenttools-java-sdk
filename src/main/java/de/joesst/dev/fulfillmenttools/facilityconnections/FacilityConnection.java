@@ -1,5 +1,8 @@
 package de.joesst.dev.fulfillmenttools.facilityconnections;
 
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +14,11 @@ import java.util.Map;
  * an optional target (customer, managed facility, or supplier), together with all
  * associated routing rules such as cutoff times, packaging units, and delivery costs.
  *
- * @param id                       unique identifier of the connection
+ * @param id                       unique {@link ConnectionId} of the connection
  * @param version                  optimistic-locking version number
  * @param created                  creation timestamp
  * @param lastModified             last modification timestamp
- * @param sourceFacilityRef        reference to the source facility
+ * @param sourceFacilityRef        {@link FacilityId} reference to the source facility
  * @param target                   typed target of this connection
  * @param carrierKey               carrier identifier key
  * @param carrierName              human-readable carrier name
@@ -28,11 +31,11 @@ import java.util.Map;
  * @param customAttributes         free-form tenant-defined attributes
  */
 public record FacilityConnection(
-        String id,
+        ConnectionId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String sourceFacilityRef,
+        FacilityId sourceFacilityRef,
         ConnectionTarget target,
         String carrierKey,
         String carrierName,

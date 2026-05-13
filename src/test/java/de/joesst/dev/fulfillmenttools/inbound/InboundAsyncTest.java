@@ -48,7 +48,7 @@ class InboundAsyncTest {
         StowJob job = client.inbound().getAsync(new StowJobId("sj-1")).get();
 
         // Then
-        assertThat(job.id()).isEqualTo("sj-1");
+        assertThat(job.id().value()).isEqualTo("sj-1");
         assertThat(job.status()).isEqualTo("OPEN");
     }
 
@@ -80,8 +80,8 @@ class InboundAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(job.id()).isEqualTo("sj-new");
-        assertThat(job.facilityRef()).isEqualTo("fac-1");
+        assertThat(job.id().value()).isEqualTo("sj-new");
+        assertThat(job.facilityRef().value()).isEqualTo("fac-1");
     }
 
     // --- Helpers ---

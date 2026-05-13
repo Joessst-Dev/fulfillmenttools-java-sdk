@@ -47,8 +47,8 @@ class FacilityConnectionsAsyncTest {
         FacilityConnection conn = client.facilityConnections().getAsync(new FacilityId("fac-1"), new ConnectionId("conn-1")).get();
 
         // Then
-        assertThat(conn.id()).isEqualTo("conn-1");
-        assertThat(conn.sourceFacilityRef()).isEqualTo("fac-1");
+        assertThat(conn.id().value()).isEqualTo("conn-1");
+        assertThat(conn.sourceFacilityRef().value()).isEqualTo("fac-1");
         assertThat(conn.target()).isInstanceOf(ConnectionTarget.Customer.class);
     }
 
@@ -87,7 +87,7 @@ class FacilityConnectionsAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(conn.id()).isEqualTo("conn-new");
+        assertThat(conn.id().value()).isEqualTo("conn-new");
         assertThat(conn.target()).isInstanceOf(ConnectionTarget.Supplier.class);
         assertThat(((ConnectionTarget.Supplier) conn.target()).facilityRef()).isEqualTo("fac-3");
     }

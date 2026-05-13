@@ -61,7 +61,7 @@ class FacilitiesClientTest {
         Facility facility = client.facilities().get(new FacilityId("fac-1"));
 
         // Then
-        assertThat(facility.id()).isEqualTo("fac-1");
+        assertThat(facility.id().value()).isEqualTo("fac-1");
         assertThat(facility.tenantFacilityId()).isEqualTo("ext-fac-1");
         assertThat(facility.name()).isEqualTo("Berlin Warehouse");
         assertThat(facility.status()).isEqualTo("ACTIVE");
@@ -119,8 +119,8 @@ class FacilitiesClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("fac-1");
-        assertThat(page.items().get(1).id()).isEqualTo("fac-2");
+        assertThat(page.items().get(0).id().value()).isEqualTo("fac-1");
+        assertThat(page.items().get(1).id().value()).isEqualTo("fac-2");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cursor-page-2");
     }
@@ -175,7 +175,7 @@ class FacilitiesClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (Facility f : client.facilities().listAll(FacilityListRequest.builder().size(2).build())) {
-            ids.add(f.id());
+            ids.add(f.id().value());
         }
 
         // Then

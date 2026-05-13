@@ -45,7 +45,7 @@ class CarriersAsyncTest {
         Carrier carrier = client.carriers().getAsync(new CarrierId("c-1")).get();
 
         // Then
-        assertThat(carrier.id()).isEqualTo("c-1");
+        assertThat(carrier.id().value()).isEqualTo("c-1");
         assertThat(carrier.name()).isEqualTo("DHL");
     }
 
@@ -73,7 +73,7 @@ class CarriersAsyncTest {
                 .createAsync(CreateCarrierRequest.builder().key("fedex").name("FedEx").build()).get();
 
         // Then
-        assertThat(carrier.id()).isEqualTo("c-new");
+        assertThat(carrier.id().value()).isEqualTo("c-new");
         assertThat(carrier.name()).isEqualTo("FedEx");
     }
 

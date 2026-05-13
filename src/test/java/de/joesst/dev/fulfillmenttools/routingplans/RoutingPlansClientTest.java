@@ -68,12 +68,12 @@ class RoutingPlansClientTest {
         RoutingPlan plan = client.routingPlans().get(new RoutingPlanId("rp-1"));
 
         // Then
-        assertThat(plan.id()).isEqualTo("rp-1");
+        assertThat(plan.id().value()).isEqualTo("rp-1");
         assertThat(plan.version()).isEqualTo(2);
         assertThat(plan.status()).isEqualTo("ROUTED");
         assertThat(plan.consolidatedStatus()).isEqualTo("ROUTED");
-        assertThat(plan.processId()).isEqualTo("proc-1");
-        assertThat(plan.facilityRef()).isEqualTo("fac-1");
+        assertThat(plan.processId().value()).isEqualTo("proc-1");
+        assertThat(plan.facilityRef().value()).isEqualTo("fac-1");
         assertThat(plan.priority()).isEqualTo(10.0);
         assertThat(plan.predecessorRerouteRoutingPlanRefs()).isEmpty();
     }
@@ -125,7 +125,7 @@ class RoutingPlansClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("rp-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("rp-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -154,7 +154,7 @@ class RoutingPlansClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (RoutingPlan rp : client.routingPlans().listAll(RoutingPlanListRequest.builder().build())) {
-            ids.add(rp.id());
+            ids.add(rp.id().value());
         }
 
         // Then
@@ -176,7 +176,7 @@ class RoutingPlansClientTest {
                 .build());
 
         // Then
-        assertThat(plan.id()).isEqualTo("rp-1");
+        assertThat(plan.id().value()).isEqualTo("rp-1");
         server.verify(patchRequestedFor(urlPathEqualTo("/api/routingplans/rp-1"))
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(matchingJsonPath("$.version", equalTo("2")))

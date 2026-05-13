@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingstrategies;
 
+import de.joesst.dev.fulfillmenttools.id.RoutingStrategyId;
+
 import java.time.Instant;
 import java.util.Map;
 
@@ -21,7 +23,7 @@ import java.util.Map;
  * @param customAttributes    arbitrary key/value pairs set by the caller
  */
 public record RoutingStrategy(
-        String id,
+        RoutingStrategyId id,
         Integer version,
         Instant created,
         Instant lastModified,

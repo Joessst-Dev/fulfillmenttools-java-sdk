@@ -45,7 +45,7 @@ class PackingAsyncTest {
         PackJob job = client.packing().getAsync(new PackJobId("pj-1")).get();
 
         // Then
-        assertThat(job.id()).isEqualTo("pj-1");
+        assertThat(job.id().value()).isEqualTo("pj-1");
         assertThat(job.status()).isEqualTo("OPEN");
     }
 

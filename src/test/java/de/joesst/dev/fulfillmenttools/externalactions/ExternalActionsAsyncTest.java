@@ -48,9 +48,9 @@ class ExternalActionsAsyncTest {
         ExternalAction action = client.externalActions().getAsync(new ExternalActionId("ea-1")).get();
 
         // Then
-        assertThat(action.id()).isEqualTo("ea-1");
+        assertThat(action.id().value()).isEqualTo("ea-1");
         assertThat(action.name()).isEqualTo("Notify Warehouse");
-        assertThat(action.processRef()).isEqualTo("proc-1");
+        assertThat(action.processRef().value()).isEqualTo("proc-1");
     }
 
     @Test
@@ -82,7 +82,7 @@ class ExternalActionsAsyncTest {
                         .build()).get();
 
         // Then
-        assertThat(action.id()).isEqualTo("ea-new");
+        assertThat(action.id().value()).isEqualTo("ea-new");
         assertThat(action.name()).isEqualTo("My Action");
     }
 

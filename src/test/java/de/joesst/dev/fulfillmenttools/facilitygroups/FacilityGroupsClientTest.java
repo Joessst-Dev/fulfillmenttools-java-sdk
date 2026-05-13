@@ -57,10 +57,10 @@ class FacilityGroupsClientTest {
         FacilityGroup group = client.facilityGroups().get(new FacilityGroupId("fg-1"));
 
         // Then
-        assertThat(group.id()).isEqualTo("fg-1");
+        assertThat(group.id().value()).isEqualTo("fg-1");
         assertThat(group.version()).isEqualTo(1);
         assertThat(group.tenantFacilityGroupId()).isEqualTo("tenant-fg-1");
-        assertThat(group.facilityRefs()).containsExactly("fac-1", "fac-2");
+        assertThat(group.facilityRefs()).extracting(FacilityId::value).containsExactly("fac-1", "fac-2");
         assertThat(group.nameLocalized()).containsEntry("en", "Group 1");
     }
 
@@ -111,7 +111,7 @@ class FacilityGroupsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("fg-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("fg-1");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cur-2");
     }
@@ -154,7 +154,7 @@ class FacilityGroupsClientTest {
 
         // When
         List<String> ids = new ArrayList<>();
-        client.facilityGroups().listAll(FacilityGroupListRequest.builder().size(2).build()).forEach(g -> ids.add(g.id()));
+        client.facilityGroups().listAll(FacilityGroupListRequest.builder().size(2).build()).forEach(g -> ids.add(g.id().value()));
 
         // Then
         assertThat(ids).containsExactly("fg-1", "fg-2", "fg-3");
@@ -180,7 +180,7 @@ class FacilityGroupsClientTest {
                 .build());
 
         // Then
-        assertThat(group.id()).isEqualTo("fg-new");
+        assertThat(group.id().value()).isEqualTo("fg-new");
         assertThat(group.tenantFacilityGroupId()).isEqualTo("tg-1");
     }
 
@@ -361,7 +361,7 @@ class FacilityGroupsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).id()).isEqualTo("fg-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("fg-1");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cur-2");
     }
@@ -427,7 +427,7 @@ class FacilityGroupsClientTest {
 
         // When
         List<String> ids = new ArrayList<>();
-        client.facilityGroups().searchAll(FacilityGroupSearchRequest.builder().build()).forEach(g -> ids.add(g.id()));
+        client.facilityGroups().searchAll(FacilityGroupSearchRequest.builder().build()).forEach(g -> ids.add(g.id().value()));
 
         // Then
         assertThat(ids).containsExactly("fg-1", "fg-2", "fg-3");

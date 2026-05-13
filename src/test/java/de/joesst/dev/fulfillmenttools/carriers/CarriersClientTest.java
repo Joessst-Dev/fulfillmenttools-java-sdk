@@ -63,7 +63,7 @@ class CarriersClientTest {
         Carrier carrier = client.carriers().get(new CarrierId("c-1"));
 
         // Then
-        assertThat(carrier.id()).isEqualTo("c-1");
+        assertThat(carrier.id().value()).isEqualTo("c-1");
         assertThat(carrier.key()).isEqualTo("dhl");
         assertThat(carrier.name()).isEqualTo("DHL");
         assertThat(carrier.status()).isEqualTo("ACTIVE");
@@ -162,7 +162,7 @@ class CarriersClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("c-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("c-1");
         assertThat(page.hasMore()).isFalse();
     }
 
@@ -195,7 +195,7 @@ class CarriersClientTest {
         // When
         List<String> ids = new ArrayList<>();
         for (Carrier c : client.carriers().listAll(CarrierListRequest.builder().build())) {
-            ids.add(c.id());
+            ids.add(c.id().value());
         }
 
         // Then
@@ -217,7 +217,7 @@ class CarriersClientTest {
                 .build());
 
         // Then
-        assertThat(carrier.id()).isEqualTo("c-new");
+        assertThat(carrier.id().value()).isEqualTo("c-new");
         assertThat(carrier.key()).isEqualTo("fedex");
         assertThat(carrier.name()).isEqualTo("FedEx");
     }

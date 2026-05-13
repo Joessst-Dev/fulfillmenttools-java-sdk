@@ -1,5 +1,8 @@
 package de.joesst.dev.fulfillmenttools.reservations;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.ReservationId;
+
 import java.time.Instant;
 import java.util.Map;
 
@@ -24,11 +27,11 @@ import java.util.Map;
  *                         this field as a free-form {@code object}
  */
 public record Reservation(
-        String id,
+        ReservationId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityRef,
+        FacilityId facilityRef,
         String tenantArticleId,
         int quantity,
         ReservationHost host,

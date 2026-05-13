@@ -51,7 +51,7 @@ class RetryingTransportTest {
         Order order = client.orders().get(new OrderId("order-1"));
 
         // Then
-        assertThat(order.id()).isEqualTo("order-1");
+        assertThat(order.id().value()).isEqualTo("order-1");
         server.verify(1, getRequestedFor(urlPathEqualTo("/api/orders/order-1")));
     }
 
@@ -71,7 +71,7 @@ class RetryingTransportTest {
         Order order = client.orders().get(new OrderId("order-1"));
 
         // Then
-        assertThat(order.id()).isEqualTo("order-1");
+        assertThat(order.id().value()).isEqualTo("order-1");
         server.verify(2, getRequestedFor(urlPathEqualTo("/api/orders/order-1")));
     }
 
@@ -91,7 +91,7 @@ class RetryingTransportTest {
         Order order = client.orders().get(new OrderId("order-1"));
 
         // Then
-        assertThat(order.id()).isEqualTo("order-1");
+        assertThat(order.id().value()).isEqualTo("order-1");
         server.verify(2, getRequestedFor(urlPathEqualTo("/api/orders/order-1")));
     }
 
@@ -135,7 +135,7 @@ class RetryingTransportTest {
         Order order = client.orders().getAsync(new OrderId("order-1")).get();
 
         // Then
-        assertThat(order.id()).isEqualTo("order-1");
+        assertThat(order.id().value()).isEqualTo("order-1");
         server.verify(2, getRequestedFor(urlPathEqualTo("/api/orders/order-1")));
     }
 

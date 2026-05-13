@@ -51,8 +51,8 @@ class FacilityDiscountsClientTest {
         FacilityDiscount discount = client.facilityDiscounts().get(new FacilityId("fac-1"), new FacilityDiscountId("disc-1"));
 
         // Then
-        assertThat(discount.id()).isEqualTo("disc-1");
-        assertThat(discount.facilityRef()).isEqualTo("fac-1");
+        assertThat(discount.id().value()).isEqualTo("disc-1");
+        assertThat(discount.facilityRef().value()).isEqualTo("fac-1");
         assertThat(discount.version()).isEqualTo(1);
         assertThat(discount.type()).isEqualTo("SALES_PRICE");
         assertThat(discount.priority()).isEqualTo(1);
@@ -177,7 +177,7 @@ class FacilityDiscountsClientTest {
         List<String> ids = new ArrayList<>();
         client.facilityDiscounts()
                 .listAll(new FacilityId("fac-1"), FacilityDiscountListRequest.builder().size(2).build())
-                .forEach(d -> ids.add(d.id()));
+                .forEach(d -> ids.add(d.id().value()));
 
         // Then
         assertThat(ids).containsExactly("d1", "d2", "d3");
@@ -202,7 +202,7 @@ class FacilityDiscountsClientTest {
                         .build());
 
         // Then
-        assertThat(discount.id()).isEqualTo("disc-new");
+        assertThat(discount.id().value()).isEqualTo("disc-new");
     }
 
     @Test
@@ -344,7 +344,7 @@ class FacilityDiscountsClientTest {
         FacilityDiscount discount = client.facilityDiscounts().getAsync(new FacilityId("fac-1"), new FacilityDiscountId("disc-1")).get();
 
         // Then
-        assertThat(discount.id()).isEqualTo("disc-1");
+        assertThat(discount.id().value()).isEqualTo("disc-1");
     }
 
     @Test
@@ -362,7 +362,7 @@ class FacilityDiscountsClientTest {
                         .build()).get();
 
         // Then
-        assertThat(discount.id()).isEqualTo("disc-new");
+        assertThat(discount.id().value()).isEqualTo("disc-new");
     }
 
     @Test
