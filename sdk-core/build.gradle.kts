@@ -36,7 +36,7 @@ tasks.test {
 tasks.javadoc {
     exclude("**/internal/**")
     (options as StandardJavadocDocletOptions).apply {
-        addStringOption("Xdoclint:all", "-quiet")
+        addStringOption("Xdoclint:all,-missing", "-quiet")
         addStringOption("Xmaxwarns", "9999")
     }
 }

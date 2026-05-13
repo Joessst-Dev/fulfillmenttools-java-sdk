@@ -181,7 +181,7 @@ Delete a facility group asynchronously.
 
 **Returns:** `CompletableFuture<Void>`
 
-### addFacilities(FacilityGroupId, List<FacilityId>, Integer)
+### addFacilities(FacilityGroupId, List&lt;FacilityId&gt;, Integer)
 
 Add facilities to a facility group.
 
@@ -194,13 +194,13 @@ Add facilities to a facility group.
 
 **Throws:** `FulfillmenttoolsException` if the request fails
 
-### addFacilitiesAsync(FacilityGroupId, List<FacilityId>, Integer)
+### addFacilitiesAsync(FacilityGroupId, List&lt;FacilityId&gt;, Integer)
 
 Add facilities to a group asynchronously.
 
 **Returns:** `CompletableFuture<FacilityGroup>`
 
-### removeFacilities(FacilityGroupId, List<FacilityId>, Integer)
+### removeFacilities(FacilityGroupId, List&lt;FacilityId&gt;, Integer)
 
 Remove facilities from a facility group.
 
@@ -213,7 +213,7 @@ Remove facilities from a facility group.
 
 **Throws:** `FulfillmenttoolsException` if the request fails
 
-### removeFacilitiesAsync(FacilityGroupId, List<FacilityId>, Integer)
+### removeFacilitiesAsync(FacilityGroupId, List&lt;FacilityId&gt;, Integer)
 
 Remove facilities from a group asynchronously.
 
