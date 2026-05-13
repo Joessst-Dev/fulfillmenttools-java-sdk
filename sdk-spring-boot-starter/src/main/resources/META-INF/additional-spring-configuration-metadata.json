@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "fulfillmenttools.project-id",
+      "type": "java.lang.String",
+      "description": "fulfillmenttools project ID (e.g. ocff-abc123-pre)."
+    },
+    {
+      "name": "fulfillmenttools.api-key",
+      "type": "java.lang.String",
+      "description": "API key for Google Identity Toolkit authentication."
+    },
+    {
+      "name": "fulfillmenttools.username",
+      "type": "java.lang.String",
+      "description": "Service account email for authentication."
+    },
+    {
+      "name": "fulfillmenttools.password",
+      "type": "java.lang.String",
+      "description": "Service account password for authentication."
+    }
+  ]
+}
