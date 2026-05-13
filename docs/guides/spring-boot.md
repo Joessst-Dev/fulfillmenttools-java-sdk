@@ -9,7 +9,7 @@ Add the starter to your Spring Boot 3.x project:
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("de.joesst.dev:sdk-spring-boot-starter:0.1.0-SNAPSHOT")
+    implementation("de.joesst.dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0-SNAPSHOT")
 }
 ```
 
@@ -18,7 +18,7 @@ Or with Maven:
 ```xml
 <dependency>
     <groupId>de.joesst.dev</groupId>
-    <artifactId>sdk-spring-boot-starter</artifactId>
+    <artifactId>fulfillmenttools-java-sdk-springboot-starter</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
 ```
