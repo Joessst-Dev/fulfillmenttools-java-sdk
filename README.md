@@ -29,9 +29,9 @@ repositories {
 }
 
 dependencies {
-    implementation("de.joesst.dev:sdk-core:0.1.0-SNAPSHOT")
+    implementation("de.joesst.dev:fulfillmenttools-java-sdk:0.1.0-SNAPSHOT")
     // Optional: Spring Boot auto-configuration
-    implementation("de.joesst.dev:sdk-spring-boot-starter:0.1.0-SNAPSHOT")
+    implementation("de.joesst.dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0-SNAPSHOT")
 }
 ```
 

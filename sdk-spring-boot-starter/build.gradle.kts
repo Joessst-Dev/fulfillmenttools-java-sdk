@@ -35,6 +35,7 @@ tasks.test {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
+            artifactId = "fulfillmenttools-java-sdk-springboot-starter"
             from(components["java"])
             pom {
                 name = "fulfillmenttools Spring Boot Starter"

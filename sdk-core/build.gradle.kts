@@ -44,6 +44,7 @@ tasks.javadoc {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
+            artifactId = "fulfillmenttools-java-sdk"
             from(components["java"])
             pom {
                 name = "fulfillmenttools Java SDK"
