@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.orders;
 
 import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
@@ -20,7 +21,7 @@ import java.util.Map;
  * @param version          The optimistic-locking version.
  * @param created          The timestamp when this order was created.
  * @param lastModified     The timestamp of the last modification.
- * @param tenantOrderId    The tenant's external order reference number.
+ * @param tenantOrderId    The tenant's external {@link TenantOrderId} order reference number.
  * @param status           The current order status (e.g. {@code OPEN}, {@code LOCKED}).
  * @param processId        The {@link ProcessId} of the global process related to this order.
  * @param schemaVersion    The schema version of this order document.
@@ -44,7 +45,7 @@ public record Order(
         Integer version,
         Instant created,
         Instant lastModified,
-        String tenantOrderId,
+        TenantOrderId tenantOrderId,
         String status,
         ProcessId processId,
         Double schemaVersion,

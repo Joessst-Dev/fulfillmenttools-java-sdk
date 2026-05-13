@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.processes;
 
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ public final class ProcessListRequest {
     private final List<String> facilityRefs;
     private final List<String> status;
     private final List<String> operativeStatus;
-    private final String tenantOrderId;
+    private final TenantOrderId tenantOrderId;
     private final String searchTerm;
 
     private ProcessListRequest(Builder builder) {
@@ -65,7 +67,7 @@ public final class ProcessListRequest {
      *
      * @return the tenant order ID, or null if not set
      */
-    public String tenantOrderId() { return tenantOrderId; }
+    public TenantOrderId tenantOrderId() { return tenantOrderId; }
 
     /**
      * Returns the search term filter.
@@ -111,7 +113,7 @@ public final class ProcessListRequest {
         private List<String> facilityRefs;
         private List<String> status;
         private List<String> operativeStatus;
-        private String tenantOrderId;
+        private TenantOrderId tenantOrderId;
         private String searchTerm;
 
         /**
@@ -160,7 +162,7 @@ public final class ProcessListRequest {
          * @param tenantOrderId the tenant order ID
          * @return this builder
          */
-        public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
          * Sets the search term filter.

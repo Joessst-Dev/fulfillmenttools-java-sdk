@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @param version optimistic-locking version number
  * @param created creation timestamp in UTC
  * @param lastModified last modification timestamp in UTC
- * @param tenantFacilityId optional tenant-provided facility identifier
+ * @param tenantFacilityId optional tenant-provided {@link TenantFacilityId} identifier
  * @param name human-readable name of the facility
  * @param status operational status (e.g. "ONLINE", "SUSPENDED", "OFFLINE")
  * @param type facility type (e.g. "MANAGED_FACILITY", "SUPPLIER")
@@ -39,7 +40,7 @@ public record Facility(
         Integer version,
         Instant created,
         Instant lastModified,
-        String tenantFacilityId,
+        TenantFacilityId tenantFacilityId,
         String name,
         String status,
         String type,

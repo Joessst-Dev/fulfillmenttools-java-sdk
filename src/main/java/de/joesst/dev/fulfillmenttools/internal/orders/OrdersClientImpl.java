@@ -51,7 +51,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId().value());
         if (request.consumerId() != null) builder.queryParam("consumerId", request.consumerId());
 
         SdkHttpResponse response = execute(builder.build());
@@ -101,7 +101,7 @@ public final class OrdersClientImpl implements OrdersClient {
                 request.orderDate(),
                 request.orderLineItems(),
                 request.consumer(),
-                request.tenantOrderId(),
+                request.tenantOrderId() != null ? request.tenantOrderId().value() : null,
                 request.deliveryPreferences(),
                 request.paymentInfo(),
                 request.tags(),
@@ -163,7 +163,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId().value());
         if (request.consumerId() != null) builder.queryParam("consumerId", request.consumerId());
 
         return transport.executeAsync(builder.build()).thenApply(response -> {
@@ -194,7 +194,7 @@ public final class OrdersClientImpl implements OrdersClient {
                 request.orderDate(),
                 request.orderLineItems(),
                 request.consumer(),
-                request.tenantOrderId(),
+                request.tenantOrderId() != null ? request.tenantOrderId().value() : null,
                 request.deliveryPreferences(),
                 request.paymentInfo(),
                 request.tags(),

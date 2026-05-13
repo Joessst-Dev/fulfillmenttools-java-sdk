@@ -49,7 +49,7 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.tenantFacilityId() != null) builder.queryParam("tenantFacilityId", request.tenantFacilityId());
+        if (request.tenantFacilityId() != null) builder.queryParam("tenantFacilityId", request.tenantFacilityId().value());
         if (request.orderBy() != null) builder.queryParam("orderBy", request.orderBy());
         if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
         if (request.type() != null) request.type().forEach(t -> builder.queryParam("type", t));
@@ -157,7 +157,7 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.tenantFacilityId() != null) builder.queryParam("tenantFacilityId", request.tenantFacilityId());
+        if (request.tenantFacilityId() != null) builder.queryParam("tenantFacilityId", request.tenantFacilityId().value());
         if (request.orderBy() != null) builder.queryParam("orderBy", request.orderBy());
         if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
         if (request.type() != null) request.type().forEach(t -> builder.queryParam("type", t));
@@ -236,7 +236,7 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
     private CreateFacilityBody toCreateBody(CreateFacilityRequest r) {
         return new CreateFacilityBody(
-                r.name(), r.tenantFacilityId(), r.status(), r.type(),
+                r.name(), r.tenantFacilityId() != null ? r.tenantFacilityId().value() : null, r.status(), r.type(),
                 r.locationType(), r.address(), r.contact(),
                 r.pickingMethods(), r.pickingTimes(), r.closingDays(),
                 r.scanningRule(), r.capacityEnabled(), r.capacityPlanningTimeframe(),
@@ -246,7 +246,7 @@ public final class FacilitiesClientImpl implements FacilitiesClient {
 
     private UpdateFacilityBody toUpdateBody(UpdateFacilityRequest r) {
         return new UpdateFacilityBody(
-                r.name(), r.tenantFacilityId(), r.status(), r.type(),
+                r.name(), r.tenantFacilityId() != null ? r.tenantFacilityId().value() : null, r.status(), r.type(),
                 r.locationType(), r.address(), r.contact(),
                 r.pickingMethods(), r.pickingTimes(), r.closingDays(),
                 r.scanningRule(), r.capacityEnabled(), r.capacityPlanningTimeframe(),

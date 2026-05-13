@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.Map;
 public final class UpdateFacilityRequest {
 
     private final String name;
-    private final String tenantFacilityId;
+    private final TenantFacilityId tenantFacilityId;
     private final String status;
     private final String type;
     private final String locationType;
@@ -69,7 +70,7 @@ public final class UpdateFacilityRequest {
      * Returns the tenant facility ID.
      * @return the tenant facility ID, or {@code null} if not set
      */
-    public String tenantFacilityId() { return tenantFacilityId; }
+    public TenantFacilityId tenantFacilityId() { return tenantFacilityId; }
 
     /**
      * Returns the facility status.
@@ -171,7 +172,7 @@ public final class UpdateFacilityRequest {
     public static final class Builder {
 
         private String name;
-        private String tenantFacilityId;
+        private TenantFacilityId tenantFacilityId;
         private String status;
         private String type;
         private String locationType;
@@ -203,7 +204,7 @@ public final class UpdateFacilityRequest {
          * @param tenantFacilityId the tenant facility ID
          * @return this builder
          */
-        public Builder tenantFacilityId(String tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
 
         /**
          * Sets the facility status.

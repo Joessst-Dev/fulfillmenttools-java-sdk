@@ -141,7 +141,7 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
         if (request.carrierRefs() != null) request.carrierRefs().forEach(c -> builder.queryParam("carrierRefs", c));
         if (request.channel() != null) builder.queryParam("channel", request.channel());
         if (request.anonymized() != null) builder.queryParam("anonymized", String.valueOf(request.anonymized()));
-        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId().value());
         if (request.searchTerm() != null) builder.queryParam("searchTerm", request.searchTerm());
         if (request.startTargetTime() != null) builder.queryParam("startTargetTime", request.startTargetTime());
         if (request.endTargetTime() != null) builder.queryParam("endTargetTime", request.endTargetTime());

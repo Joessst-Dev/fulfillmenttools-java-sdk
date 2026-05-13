@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.stocks;
 
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+
 /**
  * A compact reference to the facility associated with a stock entry.
  *
@@ -10,9 +12,9 @@ package de.joesst.dev.fulfillmenttools.stocks;
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
  * @param facilityRef      The fulfillmenttools-internal facility identifier.
- * @param tenantFacilityId The tenant-specific facility identifier.
+ * @param tenantFacilityId The tenant-specific {@link TenantFacilityId} facility identifier.
  */
 public record StockFacilityReferences(
         String facilityRef,
-        String tenantFacilityId
+        TenantFacilityId tenantFacilityId
 ) {}

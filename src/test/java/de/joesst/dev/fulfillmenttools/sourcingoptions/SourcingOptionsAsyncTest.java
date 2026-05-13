@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRequestId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticleForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 import org.junit.jupiter.api.*;
@@ -82,7 +83,7 @@ class SourcingOptionsAsyncTest {
                 .order(OrderForSourcingOptionsRequest.builder()
                         .consumer(consumer)
                         .orderLineItems(List.of(lineItem))
-                        .tenantOrderId("tenant-ord-1")
+                        .tenantOrderId(new TenantOrderId("tenant-ord-1"))
                         .build())
                 .additionalInfo(new SourcingOptionsRequestAdditionalInfo(true))
                 .optimizationHints(new OptimizationHints(false, 3))

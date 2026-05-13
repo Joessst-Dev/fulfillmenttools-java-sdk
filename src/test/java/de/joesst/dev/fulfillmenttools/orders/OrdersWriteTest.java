@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import org.junit.jupiter.api.*;
 
 import java.time.Instant;
@@ -59,12 +60,12 @@ class OrdersWriteTest {
                                         .quantity(1)
                                         .build()))
                         .consumer(minimalConsumer())
-                        .tenantOrderId("ext-new")
+                        .tenantOrderId(new TenantOrderId("ext-new"))
                         .build());
 
         // Then
         assertThat(order.id().value()).isEqualTo("ord-new");
-        assertThat(order.tenantOrderId()).isEqualTo("ext-new");
+        assertThat(order.tenantOrderId()).isEqualTo(new TenantOrderId("ext-new"));
         assertThat(order.status()).isEqualTo("OPEN");
     }
 
@@ -84,7 +85,7 @@ class OrdersWriteTest {
                                 .quantity(1)
                                 .build()))
                 .consumer(minimalConsumer())
-                .tenantOrderId("ext-1")
+                .tenantOrderId(new TenantOrderId("ext-1"))
                 .build());
 
         // Then
@@ -375,7 +376,7 @@ class OrdersWriteTest {
 
         // When
         client.orders().list(OrderListRequest.builder()
-                .tenantOrderId("ext-001")
+                .tenantOrderId(new TenantOrderId("ext-001"))
                 .consumerId("con-1")
                 .build());
 

@@ -198,7 +198,7 @@ public final class PickJobsClientImpl implements PickJobsClient {
         if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
         if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
         if (request.orderRef() != null) builder.queryParam("orderRef", request.orderRef());
-        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId().value());
         if (request.assignedUser() != null) builder.queryParam("assignedUser", request.assignedUser());
         if (request.searchTerm() != null) builder.queryParam("searchTerm", request.searchTerm());
         if (request.channel() != null) builder.queryParam("channel", request.channel());

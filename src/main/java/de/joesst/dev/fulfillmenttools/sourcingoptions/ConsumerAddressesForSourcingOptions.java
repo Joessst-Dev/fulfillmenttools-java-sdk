@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +15,7 @@ public final class ConsumerAddressesForSourcingOptions {
     private final List<ConsumerAddressForSourcingOptions> addresses;
     private final String consumerId;
     private final String facilityRef;
-    private final String tenantFacilityId;
+    private final TenantFacilityId tenantFacilityId;
     private final Map<String, Object> customAttributes;
 
     private ConsumerAddressesForSourcingOptions(Builder builder) {
@@ -46,7 +48,7 @@ public final class ConsumerAddressesForSourcingOptions {
      * Returns the tenant-scoped facility identifier.
      * @return the tenant facility ID, or {@code null} if not set
      */
-    public String tenantFacilityId() { return tenantFacilityId; }
+    public TenantFacilityId tenantFacilityId() { return tenantFacilityId; }
 
     /**
      * Returns the free-form custom attributes.
@@ -71,7 +73,7 @@ public final class ConsumerAddressesForSourcingOptions {
         private List<ConsumerAddressForSourcingOptions> addresses;
         private String consumerId;
         private String facilityRef;
-        private String tenantFacilityId;
+        private TenantFacilityId tenantFacilityId;
         private Map<String, Object> customAttributes;
 
         /**
@@ -100,7 +102,7 @@ public final class ConsumerAddressesForSourcingOptions {
          * @param tenantFacilityId the tenant facility ID
          * @return this builder
          */
-        public Builder tenantFacilityId(String tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
 
         /**
          * Sets the free-form custom attributes.

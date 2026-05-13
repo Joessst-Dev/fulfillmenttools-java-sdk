@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -62,7 +63,7 @@ class FacilitiesClientTest {
 
         // Then
         assertThat(facility.id().value()).isEqualTo("fac-1");
-        assertThat(facility.tenantFacilityId()).isEqualTo("ext-fac-1");
+        assertThat(facility.tenantFacilityId()).isEqualTo(new TenantFacilityId("ext-fac-1"));
         assertThat(facility.name()).isEqualTo("Berlin Warehouse");
         assertThat(facility.status()).isEqualTo("ACTIVE");
         assertThat(facility.created()).isNotNull();

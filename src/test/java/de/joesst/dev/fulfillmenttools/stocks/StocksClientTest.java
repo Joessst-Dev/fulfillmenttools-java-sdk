@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.stocks;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -111,7 +112,7 @@ class StocksClientTest {
 
         // When
         client.stocks().list(StockListRequest.builder()
-                .tenantFacilityId("tenant-fac-1")
+                .tenantFacilityId(new TenantFacilityId("tenant-fac-1"))
                 .tenantArticleId(List.of("art-1", "art-2"))
                 .locationRef(List.of("loc-A"))
                 .build());
@@ -252,7 +253,7 @@ class StocksClientTest {
         // Then
         assertThat(item.facility()).isNotNull();
         assertThat(item.facility().facilityRef()).isEqualTo("fac-1");
-        assertThat(item.facility().tenantFacilityId()).isEqualTo("tenant-fac-1");
+        assertThat(item.facility().tenantFacilityId()).isEqualTo(new TenantFacilityId("tenant-fac-1"));
     }
 
     @Test

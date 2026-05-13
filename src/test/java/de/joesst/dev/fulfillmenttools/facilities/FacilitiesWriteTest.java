@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import org.junit.jupiter.api.*;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -50,12 +51,12 @@ class FacilitiesWriteTest {
 
         // When
         Facility facility = client.facilities().create(
-                CreateFacilityRequest.builder().name("Berlin").tenantFacilityId("ext-1").build());
+                CreateFacilityRequest.builder().name("Berlin").tenantFacilityId(new TenantFacilityId("ext-1")).build());
 
         // Then
         assertThat(facility.id().value()).isEqualTo("fac-new");
         assertThat(facility.name()).isEqualTo("Berlin");
-        assertThat(facility.tenantFacilityId()).isEqualTo("ext-1");
+        assertThat(facility.tenantFacilityId()).isEqualTo(new TenantFacilityId("ext-1"));
     }
 
     @Test
@@ -242,7 +243,7 @@ class FacilitiesWriteTest {
         client.facilities().list(FacilityListRequest.builder()
                 .status(java.util.List.of("ONLINE", "SUSPENDED"))
                 .type(java.util.List.of("MANAGED_FACILITY"))
-                .tenantFacilityId("ext-1")
+                .tenantFacilityId(new TenantFacilityId("ext-1"))
                 .orderBy("NAME")
                 .build());
 

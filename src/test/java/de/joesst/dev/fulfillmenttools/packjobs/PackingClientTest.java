@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.PackJobId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -136,7 +137,7 @@ class PackingClientTest {
                 .facilityRef("fac-1")
                 .status(List.of("OPEN", "IN_PROGRESS"))
                 .orderRef("ord-1")
-                .tenantOrderId("ext-001")
+                .tenantOrderId(new TenantOrderId("ext-001"))
                 .orderBy("TARGET_TIME_ASC")
                 .shortId("PK99")
                 .build());

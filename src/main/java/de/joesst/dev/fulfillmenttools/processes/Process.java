@@ -9,6 +9,7 @@ import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
@@ -29,7 +30,7 @@ import java.util.Map;
  * @param version the optimistic-locking version
  * @param created the timestamp when this process was created
  * @param lastModified the timestamp of the last modification
- * @param tenantOrderId the tenant's external order reference number
+ * @param tenantOrderId the tenant's external {@link TenantOrderId} order reference number
  * @param orderRef the {@link OrderId} reference to the order associated with this process
  * @param status the overall process status
  * @param domsStatus the DOMS (fulfillmenttools domain order management system) status
@@ -61,7 +62,7 @@ public record Process(
         Integer version,
         Instant created,
         Instant lastModified,
-        String tenantOrderId,
+        TenantOrderId tenantOrderId,
         OrderId orderRef,
         String status,
         String domsStatus,

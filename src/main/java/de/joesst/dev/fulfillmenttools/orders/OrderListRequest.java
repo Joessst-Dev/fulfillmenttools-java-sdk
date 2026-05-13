@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+
 /**
  * Request to list orders with optional filtering and pagination.
  */
@@ -7,7 +9,7 @@ public final class OrderListRequest {
 
     private final Integer size;
     private final String startAfterId;
-    private final String tenantOrderId;
+    private final TenantOrderId tenantOrderId;
     private final String consumerId;
 
     private OrderListRequest(Builder builder) {
@@ -36,7 +38,7 @@ public final class OrderListRequest {
      *
      * @return the tenant order ID, or null if not set
      */
-    public String tenantOrderId() { return tenantOrderId; }
+    public TenantOrderId tenantOrderId() { return tenantOrderId; }
 
     /**
      * Returns the consumer ID filter.
@@ -75,7 +77,7 @@ public final class OrderListRequest {
 
         private Integer size;
         private String startAfterId;
-        private String tenantOrderId;
+        private TenantOrderId tenantOrderId;
         private String consumerId;
 
         /**
@@ -100,7 +102,7 @@ public final class OrderListRequest {
          * @param tenantOrderId the tenant order ID
          * @return this builder
          */
-        public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
          * Sets the consumer ID filter.

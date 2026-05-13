@@ -69,7 +69,7 @@ public final class ReturnsClientImpl implements ReturnsClient {
                 request.notReturnableLineItems(),
                 request.scannableCodes(),
                 request.shortId(),
-                request.tenantOrderId(),
+                request.tenantOrderId() != null ? request.tenantOrderId().value() : null,
                 request.customAttributes()
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()
@@ -123,7 +123,7 @@ public final class ReturnsClientImpl implements ReturnsClient {
                 request.notReturnableLineItems(),
                 request.scannableCodes(),
                 request.shortId(),
-                request.tenantOrderId(),
+                request.tenantOrderId() != null ? request.tenantOrderId().value() : null,
                 request.customAttributes()
         );
         SdkHttpRequest httpRequest = SdkHttpRequest.builder()

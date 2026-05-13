@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+
 import java.util.Map;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Map;
  *
  * @param listingRef        Reference to the listing.
  * @param facilityRef       Reference to the facility this listing belongs to.
- * @param tenantFacilityId  Tenant-specific facility identifier.
+ * @param tenantFacilityId  Tenant-specific {@link TenantFacilityId} facility identifier.
  * @param tenantArticleId   Tenant-specific article identifier.
  * @param stockInformation  Stock availability details for this listing.
  * @param customAttributes  Free-form custom attributes.
@@ -20,7 +22,7 @@ import java.util.Map;
 public record SourcingOptionListingDetails(
         String listingRef,
         String facilityRef,
-        String tenantFacilityId,
+        TenantFacilityId tenantFacilityId,
         String tenantArticleId,
         SourcingOptionStockInformation stockInformation,
         Map<String, Object> customAttributes

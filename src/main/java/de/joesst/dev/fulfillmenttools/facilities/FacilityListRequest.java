@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public final class FacilityListRequest {
     private final Integer size;
     private final String startAfterId;
     private final List<String> status;
-    private final String tenantFacilityId;
+    private final TenantFacilityId tenantFacilityId;
     private final List<String> type;
     private final String orderBy;
 
@@ -57,7 +59,7 @@ public final class FacilityListRequest {
      * Returns the tenant facility ID filter.
      * @return the tenant facility ID, or {@code null} if not set
      */
-    public String tenantFacilityId() { return tenantFacilityId; }
+    public TenantFacilityId tenantFacilityId() { return tenantFacilityId; }
 
     /**
      * Returns the facility type filter.
@@ -98,7 +100,7 @@ public final class FacilityListRequest {
         private Integer size;
         private String startAfterId;
         private List<String> status;
-        private String tenantFacilityId;
+        private TenantFacilityId tenantFacilityId;
         private List<String> type;
         private String orderBy;
 
@@ -131,7 +133,7 @@ public final class FacilityListRequest {
          * @param tenantFacilityId the tenant facility ID
          * @return this builder
          */
-        public Builder tenantFacilityId(String tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
 
         /**
          * Sets the facility type filter.

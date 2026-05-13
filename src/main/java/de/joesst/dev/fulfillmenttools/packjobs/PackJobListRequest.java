@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
 
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public final class PackJobListRequest {
     private final String startOrderDate;
     private final String endOrderDate;
     private final String modifiedByUsername;
-    private final String tenantOrderId;
+    private final TenantOrderId tenantOrderId;
 
     /**
      * @param size Maximum number of results to return; defaults to 100.
@@ -236,7 +238,7 @@ public final class PackJobListRequest {
      *
      * @return the tenant order ID, or null if not set
      */
-    public String tenantOrderId() { return tenantOrderId; }
+    public TenantOrderId tenantOrderId() { return tenantOrderId; }
 
     /**
      * Returns a new builder initialized with this request's current values.
@@ -310,7 +312,7 @@ public final class PackJobListRequest {
         private String startOrderDate;
         private String endOrderDate;
         private String modifiedByUsername;
-        private String tenantOrderId;
+        private TenantOrderId tenantOrderId;
 
         /**
          * Sets the page size.
@@ -486,7 +488,7 @@ public final class PackJobListRequest {
          * @param tenantOrderId the tenant order ID
          * @return this builder
          */
-        public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
          * Builds the {@code PackJobListRequest}.

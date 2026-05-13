@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.handoverjobs;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.HandoverJobId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
@@ -32,7 +33,7 @@ import java.util.Map;
  *                                     Required.
  * @param targetTime                   Expected pick-up time at the facility. Required.
  * @param orderDate                    Date the order was created in the source system. Required.
- * @param tenantOrderId                External reference number for the order.
+ * @param tenantOrderId                External {@link TenantOrderId} reference number for the order.
  * @param processId                    {@link ProcessId} of the global process related to this entity.
  * @param shortIdentifier              Short identifier of the shipment.
  * @param fullIdentifier               Full identifier to identify the recipient.
@@ -67,7 +68,7 @@ public record HandoverJob(
         String channel,
         Instant targetTime,
         Instant orderDate,
-        String tenantOrderId,
+        TenantOrderId tenantOrderId,
         ProcessId processId,
         String shortIdentifier,
         String fullIdentifier,

@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +14,7 @@ public final class OrderForCreationConsumer {
     private final String consumerId;
     private final String email;
     private final String facilityRef;
-    private final String tenantFacilityId;
+    private final TenantFacilityId tenantFacilityId;
     private final Map<String, Object> customAttributes;
 
     private OrderForCreationConsumer(Builder builder) {
@@ -57,7 +59,7 @@ public final class OrderForCreationConsumer {
      *
      * @return the tenant facility ID, or null if not set
      */
-    public String tenantFacilityId() { return tenantFacilityId; }
+    public TenantFacilityId tenantFacilityId() { return tenantFacilityId; }
 
     /**
      * Returns custom attributes for this consumer.
@@ -85,7 +87,7 @@ public final class OrderForCreationConsumer {
         private String consumerId;
         private String email;
         private String facilityRef;
-        private String tenantFacilityId;
+        private TenantFacilityId tenantFacilityId;
         private Map<String, Object> customAttributes;
 
         /**
@@ -126,7 +128,7 @@ public final class OrderForCreationConsumer {
          * @param tenantFacilityId the tenant facility ID
          * @return this builder
          */
-        public Builder tenantFacilityId(String tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
 
         /**
          * Sets custom attributes for this consumer.

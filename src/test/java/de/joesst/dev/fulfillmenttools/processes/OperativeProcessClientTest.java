@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -71,7 +72,7 @@ class OperativeProcessClientTest {
         assertThat(process.id().value()).isEqualTo("proc-1");
         assertThat(process.version()).isEqualTo(3);
         assertThat(process.status()).isEqualTo("OPEN");
-        assertThat(process.tenantOrderId()).isEqualTo("order-abc");
+        assertThat(process.tenantOrderId()).isEqualTo(new TenantOrderId("order-abc"));
         assertThat(process.facilityRefs()).extracting(FacilityId::value).containsExactly("fac-1");
         assertThat(process.serviceJobRefs()).containsExactly("sj-1");
         assertThat(process.externalActionRefs()).extracting(ExternalActionId::value).containsExactly("ea-1");
@@ -143,7 +144,7 @@ class OperativeProcessClientTest {
                 .facilityRefs(List.of("fac-1", "fac-2"))
                 .status(List.of("OPEN", "IN_PROGRESS"))
                 .operativeStatus(List.of("IN_PROGRESS"))
-                .tenantOrderId("order-123")
+                .tenantOrderId(new TenantOrderId("order-123"))
                 .searchTerm("query")
                 .build());
 

@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ public final class PickJobListRequest {
     private final String facilityRef;
     private final List<String> status;
     private final String orderRef;
-    private final String tenantOrderId;
+    private final TenantOrderId tenantOrderId;
     private final String assignedUser;
     private final String searchTerm;
     private final String channel;
@@ -124,7 +126,7 @@ public final class PickJobListRequest {
      *
      * @return the tenant order ID, or null if not set
      */
-    public String tenantOrderId() { return tenantOrderId; }
+    public TenantOrderId tenantOrderId() { return tenantOrderId; }
 
     /**
      * Returns the assigned user ID filter.
@@ -294,7 +296,7 @@ public final class PickJobListRequest {
         private String facilityRef;
         private List<String> status;
         private String orderRef;
-        private String tenantOrderId;
+        private TenantOrderId tenantOrderId;
         private String assignedUser;
         private String searchTerm;
         private String channel;
@@ -358,7 +360,7 @@ public final class PickJobListRequest {
          * @param tenantOrderId the tenant order ID
          * @return this builder
          */
-        public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
          * Sets the assigned user ID filter.

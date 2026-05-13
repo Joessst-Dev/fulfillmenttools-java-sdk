@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.id.PackJobId;
 import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
@@ -36,7 +37,7 @@ import java.util.Map;
  * @param documentsRef           Reference to the document collection for this pack job.
  * @param orderRef               {@link OrderId} reference to the originating order.
  * @param orderDate              Date the order was placed.
- * @param tenantOrderId          External reference number for the order.
+ * @param tenantOrderId          External {@link TenantOrderId} reference number for the order.
  * @param pickJobRef             {@link PickJobId} reference to a pick job.
  * @param deliveryChannel        Delivery channel: {@code COLLECT} or {@code SHIPPING}.
  * @param recipientName          The name of the recipient.
@@ -68,7 +69,7 @@ public record PackJob(
         String documentsRef,
         OrderId orderRef,
         Instant orderDate,
-        String tenantOrderId,
+        TenantOrderId tenantOrderId,
         PickJobId pickJobRef,
         String deliveryChannel,
         String recipientName,

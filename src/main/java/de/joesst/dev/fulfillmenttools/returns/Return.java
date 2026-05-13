@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.returns;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.ReturnId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
 import java.time.Instant;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @param status the current return status
  * @param shortId a short human-readable identifier for this return
  * @param processRef the reference to the process associated with this return
- * @param tenantOrderId the tenant's external order reference number
+ * @param tenantOrderId the tenant's external {@link TenantOrderId} order reference number
  * @param originFacilityRefs references to the origin facilities for this return
  * @param scannableCodes scannable codes (e.g., barcodes) for this return
  * @param consumerAddresses addresses associated with this return
@@ -37,7 +38,7 @@ public record Return(
         String status,
         String shortId,
         ProcessId processRef,
-        String tenantOrderId,
+        TenantOrderId tenantOrderId,
         List<FacilityId> originFacilityRefs,
         List<String> scannableCodes,
         List<ConsumerAddress> consumerAddresses,

@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public final class CreateReturnRequest {
     private final List<ReturnJobLineItemForCreation> notReturnableLineItems;
     private final List<String> scannableCodes;
     private final String shortId;
-    private final String tenantOrderId;
+    private final TenantOrderId tenantOrderId;
     private final Map<String, Object> customAttributes;
 
     private CreateReturnRequest(Builder builder) {
@@ -86,7 +87,7 @@ public final class CreateReturnRequest {
      * Returns the tenant order identifier.
      * @return the tenant order ID, or {@code null} if not set
      */
-    public String tenantOrderId() { return tenantOrderId; }
+    public TenantOrderId tenantOrderId() { return tenantOrderId; }
 
     /**
      * Returns the free-form custom attributes.
@@ -115,7 +116,7 @@ public final class CreateReturnRequest {
         private List<ReturnJobLineItemForCreation> notReturnableLineItems;
         private List<String> scannableCodes;
         private String shortId;
-        private String tenantOrderId;
+        private TenantOrderId tenantOrderId;
         private Map<String, Object> customAttributes;
 
         /**
@@ -172,7 +173,7 @@ public final class CreateReturnRequest {
          * @param tenantOrderId the tenant order ID
          * @return this builder
          */
-        public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
          * Sets the free-form custom attributes.

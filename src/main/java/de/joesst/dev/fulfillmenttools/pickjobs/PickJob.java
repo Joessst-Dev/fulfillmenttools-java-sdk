@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
@@ -29,7 +30,7 @@ import java.util.Map;
  * @param shortId                  Short human-readable identifier for the pick job.
  * @param orderRef                 {@link OrderId} reference to the originating order.
  * @param orderDate                Date the order was created in the source system.
- * @param tenantOrderId            External reference number for the order.
+ * @param tenantOrderId            External {@link TenantOrderId} reference number for the order.
  * @param processId                {@link ProcessId} of the global process related to this pick job.
  * @param routingPlanRef           {@link RoutingPlanId} reference to the routing plan that created this pick job.
  * @param operativeProcessRef      {@link ProcessId} reference to the operative process.
@@ -61,7 +62,7 @@ public record PickJob(
         String shortId,
         OrderId orderRef,
         Instant orderDate,
-        String tenantOrderId,
+        TenantOrderId tenantOrderId,
         ProcessId processId,
         RoutingPlanId routingPlanRef,
         ProcessId operativeProcessRef,

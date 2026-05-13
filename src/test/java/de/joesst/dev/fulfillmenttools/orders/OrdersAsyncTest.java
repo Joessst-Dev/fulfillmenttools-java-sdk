@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -90,7 +91,7 @@ class OrdersAsyncTest {
                                         .quantity(1)
                                         .build()))
                         .consumer(OrderForCreationConsumer.builder().consumerId("con-1").build())
-                        .tenantOrderId("ext-1")
+                        .tenantOrderId(new TenantOrderId("ext-1"))
                         .build()).get();
 
         // Then

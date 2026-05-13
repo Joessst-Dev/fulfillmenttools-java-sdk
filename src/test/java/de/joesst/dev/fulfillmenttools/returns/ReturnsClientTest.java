@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.ReturnId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -191,7 +192,7 @@ class ReturnsClientTest {
         client.returns().create(CreateReturnRequest.builder()
                 .originFacilityRefs(List.of("fac-1", "fac-2"))
                 .status("OPEN")
-                .tenantOrderId("ext-001")
+                .tenantOrderId(new TenantOrderId("ext-001"))
                 .build());
 
         // Then

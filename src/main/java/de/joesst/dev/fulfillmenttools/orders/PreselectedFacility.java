@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 /**
  * A pre-selected facility reference for shipping delivery preferences.
@@ -11,10 +12,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
  * @param facilityRef      The fulfillmenttools facility ID.
- * @param tenantFacilityId The tenant-specific facility identifier.
+ * @param tenantFacilityId The tenant-specific {@link TenantFacilityId} facility identifier.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record PreselectedFacility(
         String facilityRef,
-        String tenantFacilityId
+        TenantFacilityId tenantFacilityId
 ) {}

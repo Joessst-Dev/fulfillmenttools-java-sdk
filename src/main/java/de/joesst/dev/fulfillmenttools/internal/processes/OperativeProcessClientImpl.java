@@ -113,7 +113,7 @@ public final class OperativeProcessClientImpl implements OperativeProcessClient 
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId().value());
         if (request.searchTerm() != null) builder.queryParam("searchTerm", request.searchTerm());
         if (request.facilityRefs() != null) {
             request.facilityRefs().forEach(r -> builder.queryParam("facilityRefs", r));

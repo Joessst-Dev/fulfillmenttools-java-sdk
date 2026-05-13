@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 import de.joesst.dev.fulfillmenttools.pickjobs.WorkflowInformation;
 import de.joesst.dev.fulfillmenttools.routingstrategies.RoutingStrategyNodeConfig;
@@ -27,7 +28,7 @@ import java.util.Map;
  * @param lastModified                        Last modification timestamp (required).
  * @param facilityRef                         Reference to the assigned facility.
  * @param orderRef                            Reference to the originating order (required).
- * @param tenantOrderId                       The tenant's own order ID.
+ * @param tenantOrderId                       The tenant's own {@link TenantOrderId} order ID.
  * @param processId                           Global process ID for GDPR and other processes
  *                                            (required).
  * @param status                              Current routing plan status (required).
@@ -96,7 +97,7 @@ public record RoutingPlan(
         Instant lastModified,
         FacilityId facilityRef,
         OrderId orderRef,
-        String tenantOrderId,
+        TenantOrderId tenantOrderId,
         ProcessId processId,
         String status,
         String consolidatedStatus,

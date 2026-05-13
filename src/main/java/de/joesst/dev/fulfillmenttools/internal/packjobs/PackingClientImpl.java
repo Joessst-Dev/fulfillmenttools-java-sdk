@@ -131,7 +131,7 @@ public final class PackingClientImpl implements PackingClient {
         if (request.startOrderDate() != null) builder.queryParam("startOrderDate", request.startOrderDate());
         if (request.endOrderDate() != null) builder.queryParam("endOrderDate", request.endOrderDate());
         if (request.modifiedByUsername() != null) builder.queryParam("modifiedByUsername", request.modifiedByUsername());
-        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId());
+        if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId().value());
 
         return builder;
     }

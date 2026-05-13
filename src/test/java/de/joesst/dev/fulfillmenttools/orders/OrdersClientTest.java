@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -61,7 +62,7 @@ class OrdersClientTest {
 
         // Then
         assertThat(order.id().value()).isEqualTo("ord-1");
-        assertThat(order.tenantOrderId()).isEqualTo("ext-001");
+        assertThat(order.tenantOrderId()).isEqualTo(new TenantOrderId("ext-001"));
         assertThat(order.status()).isEqualTo("OPEN");
         assertThat(order.created()).isNotNull();
         assertThat(order.lastModified()).isNotNull();

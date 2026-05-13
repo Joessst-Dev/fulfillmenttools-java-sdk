@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
@@ -22,7 +23,7 @@ public final class CreateOrderRequest {
     private final Instant orderDate;
     private final List<OrderLineItemForCreation> orderLineItems;
     private final OrderForCreationConsumer consumer;
-    private final String tenantOrderId;
+    private final TenantOrderId tenantOrderId;
     private final DeliveryPreferences deliveryPreferences;
     private final OrderPaymentInfoForCreation paymentInfo;
     private final List<TagReference> tags;
@@ -67,7 +68,7 @@ public final class CreateOrderRequest {
      * Returns the tenant order identifier.
      * @return the tenant order ID, or {@code null} if not set
      */
-    public String tenantOrderId() { return tenantOrderId; }
+    public TenantOrderId tenantOrderId() { return tenantOrderId; }
 
     /**
      * Returns the delivery preferences.
@@ -128,7 +129,7 @@ public final class CreateOrderRequest {
         private Instant orderDate;
         private List<OrderLineItemForCreation> orderLineItems;
         private OrderForCreationConsumer consumer;
-        private String tenantOrderId;
+        private TenantOrderId tenantOrderId;
         private DeliveryPreferences deliveryPreferences;
         private OrderPaymentInfoForCreation paymentInfo;
         private List<TagReference> tags;
@@ -163,7 +164,7 @@ public final class CreateOrderRequest {
          * @param tenantOrderId the tenant order ID
          * @return this builder
          */
-        public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
          * Sets the delivery preferences.

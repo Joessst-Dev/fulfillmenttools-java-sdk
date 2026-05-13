@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.id.HandoverJobId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -138,7 +139,7 @@ class HandoverJobsClientTest {
                 .facilityRef("fac-1")
                 .status(List.of("OPEN", "HANDED_OVER"))
                 .channel("SHIPPING")
-                .tenantOrderId("ext-001")
+                .tenantOrderId(new TenantOrderId("ext-001"))
                 .searchTerm("test")
                 .build());
 

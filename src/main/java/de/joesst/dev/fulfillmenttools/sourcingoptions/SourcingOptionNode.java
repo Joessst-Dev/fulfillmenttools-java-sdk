@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * @param id               Unique identifier of this node.
  * @param facilityRef      Reference to the fulfillmenttools facility.
- * @param tenantFacilityId Tenant-specific facility identifier.
+ * @param tenantFacilityId Tenant-specific {@link TenantFacilityId} facility identifier.
  * @param type             Node type (e.g. {@code SHIP_FROM_STORE}, {@code WAREHOUSE}).
  * @param isPickUpLocation Whether this node is a click-and-collect pickup location.
  * @param lineItems        The line items to be fulfilled from this node.
@@ -20,7 +22,7 @@ import java.util.List;
 public record SourcingOptionNode(
         String id,
         String facilityRef,
-        String tenantFacilityId,
+        TenantFacilityId tenantFacilityId,
         String type,
         Boolean isPickUpLocation,
         List<SourcingOptionNodeLineItem> lineItems

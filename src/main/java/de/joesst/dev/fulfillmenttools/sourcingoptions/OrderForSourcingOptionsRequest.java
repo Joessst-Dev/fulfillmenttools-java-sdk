@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderPaymentInfoForCreation;
@@ -25,7 +26,7 @@ public final class OrderForSourcingOptionsRequest {
 
     private final ConsumerAddressesForSourcingOptions consumer;
     private final List<OrderLineItemForCreation> orderLineItems;
-    private final String tenantOrderId;
+    private final TenantOrderId tenantOrderId;
     private final Instant orderDate;
     private final DeliveryPreferences deliveryPreferences;
     private final String status;
@@ -72,7 +73,7 @@ public final class OrderForSourcingOptionsRequest {
      *
      * @return the tenant order ID, or null if not set
      */
-    public String tenantOrderId() { return tenantOrderId; }
+    public TenantOrderId tenantOrderId() { return tenantOrderId; }
 
     /**
      * The date this order was created in the source system.
@@ -163,7 +164,7 @@ public final class OrderForSourcingOptionsRequest {
 
         private ConsumerAddressesForSourcingOptions consumer;
         private List<OrderLineItemForCreation> orderLineItems;
-        private String tenantOrderId;
+        private TenantOrderId tenantOrderId;
         private Instant orderDate;
         private DeliveryPreferences deliveryPreferences;
         private String status;
@@ -203,7 +204,7 @@ public final class OrderForSourcingOptionsRequest {
          * @param tenantOrderId the tenant order ID
          * @return this builder
          */
-        public Builder tenantOrderId(String tenantOrderId) {
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) {
             this.tenantOrderId = tenantOrderId;
             return this;
         }

@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.handoverjobs;
 
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public final class HandoverJobListRequest {
     private final List<String> carrierRefs;
     private final String channel;
     private final Boolean anonymized;
-    private final String tenantOrderId;
+    private final TenantOrderId tenantOrderId;
     private final String searchTerm;
     private final String startTargetTime;
     private final String endTargetTime;
@@ -108,7 +110,7 @@ public final class HandoverJobListRequest {
      * Returns the tenant order ID filter.
      * @return the tenant order ID, or {@code null} if not set
      */
-    public String tenantOrderId() { return tenantOrderId; }
+    public TenantOrderId tenantOrderId() { return tenantOrderId; }
 
     /**
      * Returns the text search filter.
@@ -176,7 +178,7 @@ public final class HandoverJobListRequest {
         private List<String> carrierRefs;
         private String channel;
         private Boolean anonymized;
-        private String tenantOrderId;
+        private TenantOrderId tenantOrderId;
         private String searchTerm;
         private String startTargetTime;
         private String endTargetTime;
@@ -259,7 +261,7 @@ public final class HandoverJobListRequest {
          * @param tenantOrderId the tenant order ID
          * @return this builder
          */
-        public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
          * Sets the text search term.

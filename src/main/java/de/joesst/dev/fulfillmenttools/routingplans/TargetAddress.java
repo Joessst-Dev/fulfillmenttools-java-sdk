@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Coordinates;
 import de.joesst.dev.fulfillmenttools.orders.PhoneNumber;
 
@@ -39,7 +40,7 @@ import java.util.Map;
  * @param phoneNumbers         Optional list of phone numbers.
  * @param customAttributes     Free-form custom attributes.
  * @param facilityRef          Optional ID of the facility associated with this address.
- * @param tenantFacilityId     Optional tenant-side facility ID.
+ * @param tenantFacilityId     Optional tenant-side {@link TenantFacilityId} facility ID.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record TargetAddress(
@@ -61,5 +62,5 @@ public record TargetAddress(
         List<PhoneNumber> phoneNumbers,
         Map<String, Object> customAttributes,
         String facilityRef,
-        String tenantFacilityId
+        TenantFacilityId tenantFacilityId
 ) {}

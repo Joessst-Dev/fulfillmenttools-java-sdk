@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.PickJobId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -135,7 +136,7 @@ class PickJobsClientTest {
                 .startAfterId("cursor-abc")
                 .facilityRef("fac-1")
                 .status(List.of("OPEN", "IN_PROGRESS"))
-                .tenantOrderId("ext-001")
+                .tenantOrderId(new TenantOrderId("ext-001"))
                 .orderBy("TARGET_TIME_ASC")
                 .build());
 
