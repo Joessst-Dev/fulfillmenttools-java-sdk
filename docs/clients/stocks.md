@@ -17,18 +17,6 @@ for (StockItem item : page.items()) {
 }
 ```
 
-## Listing Stocks
-
-List stocks with pagination:
-
-```java
-Page<Stock> page = client.stocks().list(
-    StockListRequest.builder()
-        .size(50)
-        .build()
-);
-```
-
 Iterate through all stocks:
 
 ```java

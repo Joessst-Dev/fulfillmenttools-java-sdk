@@ -15,9 +15,19 @@ System.out.println("Name: " + process.getName());
 ## Listing Processes
 
 ```java
-Page<OperativeProcess> page = client.processes().list(
+Page<Process> page = client.processes().list(
     ProcessListRequest.builder()
         .size(50)
+        .build()
+);
+```
+
+## Searching Processes
+
+```java
+Page<Process> results = client.processes().search(
+    ProcessSearchRequest.builder()
+        .name("Picking")
         .build()
 );
 ```
@@ -28,16 +38,76 @@ Page<OperativeProcess> page = client.processes().list(
 
 Get a process by ID.
 
-**Returns:** `OperativeProcess`
+**Parameters:**
+- `processId: ProcessId` — The process ID
+
+**Returns:** `Process`
+
+**Throws:** `FulfillmenttoolsException` if not found
+
+### getAsync(ProcessId)
+
+Get a process asynchronously.
+
+**Parameters:**
+- `processId: ProcessId` — The process ID
+
+**Returns:** `CompletableFuture<Process>`
 
 ### list(ProcessListRequest)
 
 List processes with pagination.
 
-**Returns:** `Page<OperativeProcess>`
+**Parameters:**
+- `request: ProcessListRequest` — List request with pagination
+
+**Returns:** `Page<Process>`
+
+**Throws:** `FulfillmenttoolsException` if the request fails
+
+### listAsync(ProcessListRequest)
+
+List processes asynchronously.
+
+**Parameters:**
+- `request: ProcessListRequest` — List request with pagination
+
+**Returns:** `CompletableFuture<Page<Process>>`
 
 ### listAll(ProcessListRequest)
 
-List all processes.
+List all processes, automatically iterating through pages.
 
-**Returns:** `Iterable<OperativeProcess>`
+**Parameters:**
+- `request: ProcessListRequest` — List request
+
+**Returns:** `Iterable<Process>`
+
+### search(ProcessSearchRequest)
+
+Search processes by criteria, returning one page of results.
+
+**Parameters:**
+- `request: ProcessSearchRequest` — Search request with query and pagination
+
+**Returns:** `Page<Process>`
+
+**Throws:** `FulfillmenttoolsException` if the request fails
+
+### searchAsync(ProcessSearchRequest)
+
+Search processes asynchronously.
+
+**Parameters:**
+- `request: ProcessSearchRequest` — Search request with query and pagination
+
+**Returns:** `CompletableFuture<Page<Process>>`
+
+### searchAll(ProcessSearchRequest)
+
+Search all processes, automatically iterating through pages.
+
+**Parameters:**
+- `request: ProcessSearchRequest` — Search request with query
+
+**Returns:** `Iterable<Process>`

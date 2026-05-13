@@ -5,16 +5,24 @@ The Health client provides system health and status checks. Monitor the health o
 ## Basic Usage
 
 ```java
-// Check system health
-HealthStatus status = client.health().check();
-System.out.println("Status: " + status.getStatus());
-System.out.println("Timestamp: " + status.getTimestamp());
+// Get detailed health information
+HealthResult healthResult = client.health().health();
+System.out.println("Status: " + healthResult.getStatus());
+
+// Get overall system status
+SystemStatus status = client.health().status();
+System.out.println("System Status: " + status.getStatus());
 ```
 
 ## Async Health Checks
 
 ```java
-CompletableFuture<HealthStatus> futureStatus = client.health().checkAsync();
+CompletableFuture<HealthResult> futureHealth = client.health().healthAsync();
+futureHealth.thenAccept(result -> {
+    System.out.println("System is " + result.getStatus());
+});
+
+CompletableFuture<SystemStatus> futureStatus = client.health().statusAsync();
 futureStatus.thenAccept(status -> {
     System.out.println("System is " + status.getStatus());
 });
@@ -22,16 +30,30 @@ futureStatus.thenAccept(status -> {
 
 ## API Reference
 
-### check()
+### health()
 
-Get the current system health status.
+Retrieve detailed health information including the status of all dependencies.
 
-**Returns:** `HealthStatus`
+**Returns:** `HealthResult`
 
-**Throws:** `FulfillmenttoolsException` if the health check fails
+**Throws:** `FulfillmenttoolsException` if the health check request fails
 
-### checkAsync()
+### healthAsync()
 
-Get the system health status asynchronously.
+Retrieve health information asynchronously.
 
-**Returns:** `CompletableFuture<HealthStatus>`
+**Returns:** `CompletableFuture<HealthResult>`
+
+### status()
+
+Retrieve the overall system status of the fulfillmenttools platform.
+
+**Returns:** `SystemStatus`
+
+**Throws:** `FulfillmenttoolsException` if the status check request fails
+
+### statusAsync()
+
+Retrieve the overall system status asynchronously.
+
+**Returns:** `CompletableFuture<SystemStatus>`

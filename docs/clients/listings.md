@@ -12,15 +12,26 @@ Listing listing = client.listings().get(new ListingId("list-001"));
 System.out.println("SKU: " + listing.getSku());
 ```
 
-## Listing Products
+## Bulk Operations
 
 ```java
-Page<Listing> page = client.listings().list(
-    ListingListRequest.builder()
-        .size(50)
+List<Listing> upserted = client.listings().bulkUpsert(
+    ListingBulkUpsertRequest.builder()
+        .listings(Arrays.asList(
+            CreateListingRequest.builder()
+                .sku("SKU-001")
+                .title("Product 1")
+                .build(),
+            CreateListingRequest.builder()
+                .sku("SKU-002")
+                .title("Product 2")
+                .build()
+        ))
         .build()
 );
 ```
+
+## Searching Listings
 
 Search listings by SKU or other criteria:
 
@@ -34,26 +45,51 @@ Page<Listing> results = client.listings().search(
 
 ## API Reference
 
-### get(ListingId)
+### bulkUpsert(ListingBulkUpsertRequest)
 
-Get a listing by ID.
+Bulk upsert product listings (create or update).
 
-**Returns:** `Listing`
+**Parameters:**
+- `request: ListingBulkUpsertRequest` — Bulk upsert request containing listings
 
-### list(ListingListRequest)
+**Returns:** `List<Listing>`
 
-List listings with pagination.
+**Throws:** `FulfillmenttoolsException` if the request fails
 
-**Returns:** `Page<Listing>`
+### bulkUpsertAsync(ListingBulkUpsertRequest)
+
+Bulk upsert product listings asynchronously.
+
+**Parameters:**
+- `request: ListingBulkUpsertRequest` — Bulk upsert request containing listings
+
+**Returns:** `CompletableFuture<List<Listing>>`
 
 ### search(ListingSearchRequest)
 
-Search listings by criteria.
+Search product listings by criteria, returning one page of results.
+
+**Parameters:**
+- `request: ListingSearchRequest` — Search request with query and pagination
 
 **Returns:** `Page<Listing>`
 
+**Throws:** `FulfillmenttoolsException` if the request fails
+
+### searchAsync(ListingSearchRequest)
+
+Search product listings asynchronously.
+
+**Parameters:**
+- `request: ListingSearchRequest` — Search request with query and pagination
+
+**Returns:** `CompletableFuture<Page<Listing>>`
+
 ### searchAll(ListingSearchRequest)
 
-Search all matching listings.
+Search all product listings, automatically iterating through pages.
+
+**Parameters:**
+- `request: ListingSearchRequest` — Search request with query
 
 **Returns:** `Iterable<Listing>`
