@@ -185,7 +185,7 @@ Search all tags, automatically iterating through pages.
 
 **Returns:** `Iterable<Tag>`
 
-### needsPacking(List<TagReference>)
+### needsPacking(List&lt;TagReference&gt;)
 
 Determine if the given tags need packing.
 
@@ -196,7 +196,7 @@ Determine if the given tags need packing.
 
 **Throws:** `FulfillmenttoolsException` if the request fails
 
-### needsPackingAsync(List<TagReference>)
+### needsPackingAsync(List&lt;TagReference&gt;)
 
 Determine packing requirements for tags asynchronously.
 
