@@ -309,8 +309,8 @@ class TagsClientTest {
 
         // When
         List<NeedsPacking> result = client.tags().needsPacking(List.of(
-                new TagReference("color", "red"),
-                new TagReference("size", "XL")));
+                new TagReference(new TagId("color"), "red"),
+                new TagReference(new TagId("size"), "XL")));
 
         // Then
         assertThat(result).hasSize(2);
@@ -325,7 +325,7 @@ class TagsClientTest {
                 .willReturn(okJson("[{\"needsPacking\":true}]")));
 
         // When
-        client.tags().needsPacking(List.of(new TagReference("color", "red")));
+        client.tags().needsPacking(List.of(new TagReference(new TagId("color"), "red")));
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/tags/packing/needspacking"))

@@ -126,7 +126,7 @@ class TagsAsyncTest {
 
         // When
         List<NeedsPacking> result = client.tags()
-                .needsPackingAsync(List.of(new TagReference("color", "red"))).get();
+                .needsPackingAsync(List.of(new TagReference(new TagId("color"), "red"))).get();
 
         // Then
         assertThat(result).hasSize(1);

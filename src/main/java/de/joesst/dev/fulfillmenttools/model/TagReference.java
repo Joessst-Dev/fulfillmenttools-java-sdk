@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.TagId;
 
 /**
  * A reference to a tag entity, carrying the tag's identifier and value.
@@ -15,4 +16,4 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @param value the value or label of the tag
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record TagReference(String id, String value) {}
+public record TagReference(TagId id, String value) {}
