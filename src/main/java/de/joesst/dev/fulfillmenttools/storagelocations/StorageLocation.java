@@ -16,10 +16,10 @@ public record StorageLocation(
         String zoneName,
         String zoneRef,
         String information,
-        List<Map<String, Object>> traits,
+        List<String> traits,
         List<String> scannableCodes,
         Map<String, Object> customAttributes,
         Double schemaVersion,
-        Map<String, Object> traitConfig,
-        List<Map<String, Object>> runningSequences
+        List<StorageLocationTraitConfigEntry> traitConfig,
+        List<StorageLocationSequenceItem> runningSequences
 ) {}
