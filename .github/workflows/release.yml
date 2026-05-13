@@ -30,23 +30,30 @@ jobs:
 
       - name: Set release version from tag
         # Strips the leading 'v' so tag v1.2.3 becomes version 1.2.3 in the build.
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          echo "RELEASE_VERSION=$VERSION" >> "$GITHUB_ENV"
-          sed -i "s/^version = .*/version = \"$VERSION\"/" build.gradle.kts
+        run: echo "RELEASE_VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
 
       - name: Build & test
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: ./gradlew test --no-daemon
 
-      - name: Publish to GitHub Packages and Maven Central
+      - name: Publish to GitHub Packages
         env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository --no-daemon
+
+      - name: Publish to Maven Central
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-        run: ./gradlew publish --no-daemon
+        run: ./gradlew publishAllPublicationsToCentralPortal --no-daemon
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
