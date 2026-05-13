@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.stocks;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.time.Instant;
@@ -45,7 +46,7 @@ public record StockItem(
         Instant created,
         Instant lastModified,
         FacilityId facilityRef,
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         String tenantStockId,
         Integer value,
         Double available,

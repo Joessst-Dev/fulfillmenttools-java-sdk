@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ import java.util.Map;
  *                         {@code customAttributes} on the line item).
  */
 public record OrderLineItemArticle(
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         String title,
         String imageUrl,
         Double weight,

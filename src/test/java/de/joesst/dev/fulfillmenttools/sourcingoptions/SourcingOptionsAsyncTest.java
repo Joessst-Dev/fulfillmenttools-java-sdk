@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRequestId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticleForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
@@ -75,7 +76,7 @@ class SourcingOptionsAsyncTest {
                 .build();
 
         OrderLineItemForCreation lineItem = OrderLineItemForCreation.builder()
-                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-42").build())
+                .article(OrderLineItemArticleForCreation.builder().tenantArticleId(new TenantArticleId("art-42")).build())
                 .quantity(3)
                 .build();
 

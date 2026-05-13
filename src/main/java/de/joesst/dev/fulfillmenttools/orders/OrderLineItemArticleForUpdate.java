@@ -1,11 +1,13 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+
 /**
  * Represents an article in a line item for order update operations.
  */
 public final class OrderLineItemArticleForUpdate {
 
-    private final String tenantArticleId;
+    private final TenantArticleId tenantArticleId;
     private final String title;
     private final String imageUrl;
 
@@ -20,7 +22,7 @@ public final class OrderLineItemArticleForUpdate {
      *
      * @return the tenant article ID, or null if not set
      */
-    public String tenantArticleId() { return tenantArticleId; }
+    public TenantArticleId tenantArticleId() { return tenantArticleId; }
 
     /**
      * Returns the article title.
@@ -50,7 +52,7 @@ public final class OrderLineItemArticleForUpdate {
         /** Creates a new Builder. */
         public Builder() {}
 
-        private String tenantArticleId;
+        private TenantArticleId tenantArticleId;
         private String title;
         private String imageUrl;
 
@@ -60,7 +62,7 @@ public final class OrderLineItemArticleForUpdate {
          * @param tenantArticleId the article ID
          * @return this builder
          */
-        public Builder tenantArticleId(String tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
 
         /**
          * Sets the article title.

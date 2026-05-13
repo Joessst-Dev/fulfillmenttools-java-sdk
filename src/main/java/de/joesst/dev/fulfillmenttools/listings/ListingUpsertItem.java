@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.listings;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
@@ -20,8 +22,8 @@ import java.util.Objects;
  */
 public final class ListingUpsertItem {
 
-    private final String facilityId;
-    private final String tenantArticleId;
+    private final FacilityId facilityId;
+    private final TenantArticleId tenantArticleId;
     private final String title;
     private final Map<String, String> titleLocalized;
     private final String imageUrl;
@@ -78,13 +80,13 @@ public final class ListingUpsertItem {
      * Returns the facility this listing belongs to.
      * @return the facility ID; never {@code null}
      */
-    public String facilityId() { return facilityId; }
+    public FacilityId facilityId() { return facilityId; }
 
     /**
      * Returns the tenant-assigned article identifier.
      * @return the tenant article ID; never {@code null}
      */
-    public String tenantArticleId() { return tenantArticleId; }
+    public TenantArticleId tenantArticleId() { return tenantArticleId; }
 
     /**
      * Returns the human-readable title of the article.
@@ -246,8 +248,8 @@ public final class ListingUpsertItem {
      * Fluent builder for {@link ListingUpsertItem}.
      */
     public static final class Builder {
-        private String facilityId;
-        private String tenantArticleId;
+        private FacilityId facilityId;
+        private TenantArticleId tenantArticleId;
         private String title;
         private Map<String, String> titleLocalized;
         private String imageUrl;
@@ -279,14 +281,14 @@ public final class ListingUpsertItem {
          * @param facilityId the facility ID
          * @return this builder
          */
-        public Builder facilityId(String facilityId) { this.facilityId = facilityId; return this; }
+        public Builder facilityId(FacilityId facilityId) { this.facilityId = facilityId; return this; }
 
         /**
          * Sets the tenant article ID (required).
          * @param tenantArticleId the tenant article ID
          * @return this builder
          */
-        public Builder tenantArticleId(String tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
 
         /**
          * Sets the human-readable title of the article.

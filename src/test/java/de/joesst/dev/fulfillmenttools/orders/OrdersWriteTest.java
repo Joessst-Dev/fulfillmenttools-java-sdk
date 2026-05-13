@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import org.junit.jupiter.api.*;
 
@@ -56,7 +57,7 @@ class OrdersWriteTest {
                         .orderDate(Instant.parse("2024-03-01T10:00:00Z"))
                         .orderLineItems(List.of(
                                 OrderLineItemForCreation.builder()
-                                        .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                        .article(OrderLineItemArticleForCreation.builder().tenantArticleId(new TenantArticleId("art-1")).build())
                                         .quantity(1)
                                         .build()))
                         .consumer(minimalConsumer())
@@ -81,7 +82,7 @@ class OrdersWriteTest {
                 .orderDate(Instant.parse("2024-03-01T10:00:00Z"))
                 .orderLineItems(List.of(
                         OrderLineItemForCreation.builder()
-                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId(new TenantArticleId("art-1")).build())
                                 .quantity(1)
                                 .build()))
                 .consumer(minimalConsumer())
@@ -101,7 +102,7 @@ class OrdersWriteTest {
         assertThatThrownBy(() -> CreateOrderRequest.builder()
                 .orderLineItems(List.of(
                         OrderLineItemForCreation.builder()
-                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId(new TenantArticleId("art-1")).build())
                                 .quantity(1)
                                 .build()))
                 .build())
@@ -126,7 +127,7 @@ class OrdersWriteTest {
                 .orderDate(Instant.parse("2024-03-01T10:00:00Z"))
                 .orderLineItems(List.of(
                         OrderLineItemForCreation.builder()
-                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                                .article(OrderLineItemArticleForCreation.builder().tenantArticleId(new TenantArticleId("art-1")).build())
                                 .quantity(1)
                                 .build()))
                 .build())

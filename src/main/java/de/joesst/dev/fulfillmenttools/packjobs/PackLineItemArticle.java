@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
 
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.Map;
  *                        (e.g. subtitle, sales price, dimensions). Up to 40 items.
  */
 public record PackLineItemArticle(
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         String title,
         String imageUrl,
         Double weight,

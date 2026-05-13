@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.reservations;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ReservationId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 
 import java.time.Instant;
 import java.util.Map;
@@ -32,7 +33,7 @@ public record Reservation(
         Instant created,
         Instant lastModified,
         FacilityId facilityRef,
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         int quantity,
         ReservationHost host,
         RelatedRefs relatedRefs,

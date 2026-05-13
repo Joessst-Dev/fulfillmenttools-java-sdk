@@ -1,5 +1,8 @@
 package de.joesst.dev.fulfillmenttools.listings;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.ListingId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
@@ -47,12 +50,12 @@ import java.util.Map;
  *                                    Not usable within fulfillment processes.
  */
 public record Listing(
-        String id,
+        ListingId id,
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityId,
-        String tenantArticleId,
+        FacilityId facilityId,
+        TenantArticleId tenantArticleId,
         String status,
         String title,
         Map<String, String> titleLocalized,

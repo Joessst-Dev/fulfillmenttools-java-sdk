@@ -3,6 +3,8 @@ package de.joesst.dev.fulfillmenttools.listings;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -51,16 +53,16 @@ class ListingsAsyncTest {
         List<Listing> listings = client.listings()
                 .bulkUpsertAsync(ListingBulkUpsertRequest.builder()
                         .listings(List.of(
-                                ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").build()
+                                ListingUpsertItem.builder().facilityId(new FacilityId("fac-1")).tenantArticleId(new TenantArticleId("art-1")).build()
                         ))
                         .build())
                 .get();
 
         // Then
         assertThat(listings).hasSize(1);
-        assertThat(listings.get(0).id()).isEqualTo("l-1");
-        assertThat(listings.get(0).facilityId()).isEqualTo("fac-1");
-        assertThat(listings.get(0).tenantArticleId()).isEqualTo("art-1");
+        assertThat(listings.get(0).id().value()).isEqualTo("l-1");
+        assertThat(listings.get(0).facilityId().value()).isEqualTo("fac-1");
+        assertThat(listings.get(0).tenantArticleId().value()).isEqualTo("art-1");
         assertThat(listings.get(0).status()).isEqualTo("ACTIVE");
     }
 
@@ -83,7 +85,7 @@ class ListingsAsyncTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).tenantArticleId()).isEqualTo("art-1");
+        assertThat(page.items().get(0).tenantArticleId().value()).isEqualTo("art-1");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("c2");
     }

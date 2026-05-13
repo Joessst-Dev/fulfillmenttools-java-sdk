@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.handoverjobs;
 
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.Map;
  *                         Maximum 40 items.
  */
 public record HandoverLineItemArticle(
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         String title,
         String imageUrl,
         Double weight,

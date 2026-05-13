@@ -64,7 +64,7 @@ class StocksClientTest {
         assertThat(page.items()).hasSize(2);
         assertThat(page.items().get(0).id()).isEqualTo("s-1");
         assertThat(page.items().get(0).facilityRef().value()).isEqualTo("fac-1");
-        assertThat(page.items().get(0).tenantArticleId()).isEqualTo("art-1");
+        assertThat(page.items().get(0).tenantArticleId().value()).isEqualTo("art-1");
         assertThat(page.items().get(0).value()).isEqualTo(10);
         assertThat(page.items().get(0).available()).isEqualTo(8.0);
         assertThat(page.hasMore()).isTrue();
@@ -166,7 +166,7 @@ class StocksClientTest {
         // When
         List<String> articleIds = new ArrayList<>();
         for (StockItem s : client.stocks().listAll(StockListRequest.builder().size(2).build())) {
-            articleIds.add(s.tenantArticleId());
+            articleIds.add(s.tenantArticleId().value());
         }
 
         // Then

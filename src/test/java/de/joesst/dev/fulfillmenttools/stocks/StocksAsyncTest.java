@@ -52,7 +52,7 @@ class StocksAsyncTest {
 
         // Then
         assertThat(page.items()).hasSize(1);
-        assertThat(page.items().get(0).tenantArticleId()).isEqualTo("art-1");
+        assertThat(page.items().get(0).tenantArticleId().value()).isEqualTo("art-1");
         assertThat(page.hasMore()).isTrue();
     }
 

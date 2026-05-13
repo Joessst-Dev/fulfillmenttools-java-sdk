@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.listings;
 
+import de.joesst.dev.fulfillmenttools.id.TagId;
+
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -483,8 +485,8 @@ public final class ListingSearchQuery {
          * @param tagId the tag ID to match
          * @return this builder
          */
-        public Builder tagsContainId(String tagId) {
-            tags = Map.of("contains", Map.of("id", Map.of("eq", tagId)));
+        public Builder tagsContainId(TagId tagId) {
+            tags = Map.of("contains", Map.of("id", Map.of("eq", tagId.value())));
             return this;
         }
 

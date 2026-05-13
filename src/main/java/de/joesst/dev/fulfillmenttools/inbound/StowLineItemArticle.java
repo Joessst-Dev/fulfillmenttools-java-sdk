@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +23,7 @@ import java.util.Map;
  * @param scannableCodes    Barcodes or other scannable codes related to the article.
  */
 public record StowLineItemArticle(
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         String title,
         String imageUrl,
         String measurementUnitKey,

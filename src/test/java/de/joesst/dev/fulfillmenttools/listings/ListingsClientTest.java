@@ -3,6 +3,8 @@ package de.joesst.dev.fulfillmenttools.listings;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -56,19 +58,19 @@ class ListingsClientTest {
         // When
         List<Listing> listings = client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
                 .listings(List.of(
-                        ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").title("Article 1").build(),
-                        ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-2").title("Article 2").build()
+                        ListingUpsertItem.builder().facilityId(new FacilityId("fac-1")).tenantArticleId(new TenantArticleId("art-1")).title("Article 1").build(),
+                        ListingUpsertItem.builder().facilityId(new FacilityId("fac-1")).tenantArticleId(new TenantArticleId("art-2")).title("Article 2").build()
                 ))
                 .build());
 
         // Then
         assertThat(listings).hasSize(2);
-        assertThat(listings.get(0).id()).isEqualTo("l-1");
-        assertThat(listings.get(0).facilityId()).isEqualTo("fac-1");
-        assertThat(listings.get(0).tenantArticleId()).isEqualTo("art-1");
+        assertThat(listings.get(0).id().value()).isEqualTo("l-1");
+        assertThat(listings.get(0).facilityId().value()).isEqualTo("fac-1");
+        assertThat(listings.get(0).tenantArticleId().value()).isEqualTo("art-1");
         assertThat(listings.get(0).title()).isEqualTo("Article 1");
         assertThat(listings.get(0).status()).isEqualTo("ACTIVE");
-        assertThat(listings.get(1).id()).isEqualTo("l-2");
+        assertThat(listings.get(1).id().value()).isEqualTo("l-2");
     }
 
     @Test
@@ -95,7 +97,7 @@ class ListingsClientTest {
 
         // When
         List<Listing> listings = client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
-                .listings(List.of(ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").build()))
+                .listings(List.of(ListingUpsertItem.builder().facilityId(new FacilityId("fac-1")).tenantArticleId(new TenantArticleId("art-1")).build()))
                 .build());
 
         // Then
@@ -125,7 +127,7 @@ class ListingsClientTest {
         // When
         client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
                 .listings(List.of(
-                        ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").build()
+                        ListingUpsertItem.builder().facilityId(new FacilityId("fac-1")).tenantArticleId(new TenantArticleId("art-1")).build()
                 ))
                 .build());
 
@@ -144,8 +146,8 @@ class ListingsClientTest {
         client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
                 .listings(List.of(
                         ListingUpsertItem.builder()
-                                .facilityId("fac-1")
-                                .tenantArticleId("art-1")
+                                .facilityId(new FacilityId("fac-1"))
+                                .tenantArticleId(new TenantArticleId("art-1"))
                                 .title("My Article")
                                 .build()
                 ))
@@ -167,7 +169,7 @@ class ListingsClientTest {
         // When
         List<Listing> listings = client.listings().bulkUpsert(ListingBulkUpsertRequest.builder()
                 .listings(List.of(
-                        ListingUpsertItem.builder().facilityId("fac-1").tenantArticleId("art-1").build()
+                        ListingUpsertItem.builder().facilityId(new FacilityId("fac-1")).tenantArticleId(new TenantArticleId("art-1")).build()
                 ))
                 .build());
 
@@ -178,14 +180,14 @@ class ListingsClientTest {
     @Test
     void listingUpsertItem_requiresFacilityId() {
         assertThatNullPointerException().isThrownBy(() ->
-                ListingUpsertItem.builder().tenantArticleId("art-1").build()
+                ListingUpsertItem.builder().tenantArticleId(new TenantArticleId("art-1")).build()
         ).withMessageContaining("facilityId");
     }
 
     @Test
     void listingUpsertItem_requiresTenantArticleId() {
         assertThatNullPointerException().isThrownBy(() ->
-                ListingUpsertItem.builder().facilityId("fac-1").build()
+                ListingUpsertItem.builder().facilityId(new FacilityId("fac-1")).build()
         ).withMessageContaining("tenantArticleId");
     }
 
@@ -221,9 +223,9 @@ class ListingsClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("l-1");
-        assertThat(page.items().get(0).facilityId()).isEqualTo("fac-1");
-        assertThat(page.items().get(0).tenantArticleId()).isEqualTo("art-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("l-1");
+        assertThat(page.items().get(0).facilityId().value()).isEqualTo("fac-1");
+        assertThat(page.items().get(0).tenantArticleId().value()).isEqualTo("art-1");
         assertThat(page.items().get(0).status()).isEqualTo("ACTIVE");
         assertThat(page.hasMore()).isTrue();
         assertThat(page.nextCursor()).isEqualTo("cursor-2");
@@ -325,7 +327,7 @@ class ListingsClientTest {
         // When
         List<String> articleIds = new ArrayList<>();
         for (Listing l : client.listings().searchAll(ListingSearchRequest.builder().build())) {
-            articleIds.add(l.tenantArticleId());
+            articleIds.add(l.tenantArticleId().value());
         }
 
         // Then

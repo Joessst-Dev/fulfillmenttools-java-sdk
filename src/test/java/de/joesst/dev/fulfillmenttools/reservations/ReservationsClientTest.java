@@ -62,7 +62,7 @@ class ReservationsClientTest {
         // Then
         assertThat(reservation.id().value()).isEqualTo("res-1");
         assertThat(reservation.facilityRef().value()).isEqualTo("fac-1");
-        assertThat(reservation.tenantArticleId()).isEqualTo("art-1");
+        assertThat(reservation.tenantArticleId().value()).isEqualTo("art-1");
         assertThat(reservation.quantity()).isEqualTo(5);
         assertThat(reservation.created()).isNotNull();
     }

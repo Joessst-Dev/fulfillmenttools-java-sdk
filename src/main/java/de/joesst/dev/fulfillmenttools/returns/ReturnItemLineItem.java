@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
 
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.Map;
 public record ReturnItemLineItem(
         String id,
         String status,
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         String itemCondition,
         String itemConditionComment,
         Map<String, String> itemConditionLocalized,

@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record Substitute(
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         String title,
         String imageUrl,
         Double priority,

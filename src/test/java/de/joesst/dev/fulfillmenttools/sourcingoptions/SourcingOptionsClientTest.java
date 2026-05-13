@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRequestId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticleForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
@@ -105,7 +106,7 @@ class SourcingOptionsClientTest {
                 .willReturn(okJson("{\"id\":\"run-1\",\"result\":{\"options\":[]}}")));
 
         OrderLineItemForCreation lineItem = OrderLineItemForCreation.builder()
-                .article(OrderLineItemArticleForCreation.builder().tenantArticleId("art-1").build())
+                .article(OrderLineItemArticleForCreation.builder().tenantArticleId(new TenantArticleId("art-1")).build())
                 .quantity(2)
                 .build();
 
