@@ -19,4 +19,54 @@ import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 public record PreselectedFacility(
         FacilityId facilityRef,
         TenantFacilityId tenantFacilityId
-) {}
+) {
+
+    /**
+     * Returns a builder for constructing a {@code PreselectedFacility}.
+     *
+     * @return a new {@link Builder}.
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    /**
+     * Builder for {@link PreselectedFacility}.
+     */
+    public static final class Builder {
+
+        private FacilityId facilityRef;
+        private TenantFacilityId tenantFacilityId;
+
+        private Builder() {}
+
+        /**
+         * Sets the fulfillmenttools facility identifier.
+         * @param facilityRef the facility identifier
+         * @return this builder
+         */
+        public Builder facilityRef(FacilityId facilityRef) {
+            this.facilityRef = facilityRef;
+            return this;
+        }
+
+        /**
+         * Sets the tenant-specific facility identifier.
+         * @param tenantFacilityId the tenant facility identifier
+         * @return this builder
+         */
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) {
+            this.tenantFacilityId = tenantFacilityId;
+            return this;
+        }
+
+        /**
+         * Builds a {@link PreselectedFacility}.
+         *
+         * @return a new instance.
+         */
+        public PreselectedFacility build() {
+            return new PreselectedFacility(facilityRef, tenantFacilityId);
+        }
+    }
+}
