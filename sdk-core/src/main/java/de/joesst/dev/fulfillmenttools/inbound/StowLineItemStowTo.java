@@ -31,4 +31,33 @@ public record StowLineItemStowTo(
         StorageLocationId storageLocationRef,
         List<String> scannableCodes,
         StowedProgress stowed
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String id;
+        private Integer quantity;
+        private String type;
+        private String stockRef;
+        private StorageLocationId storageLocationRef;
+        private List<String> scannableCodes;
+        private StowedProgress stowed;
+
+        private Builder() {}
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
+        public Builder type(String type) { this.type = type; return this; }
+        public Builder stockRef(String stockRef) { this.stockRef = stockRef; return this; }
+        public Builder storageLocationRef(StorageLocationId storageLocationRef) { this.storageLocationRef = storageLocationRef; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+        public Builder stowed(StowedProgress stowed) { this.stowed = stowed; return this; }
+
+        public StowLineItemStowTo build() {
+            return new StowLineItemStowTo(id, quantity, type, stockRef, storageLocationRef, scannableCodes, stowed);
+        }
+    }
+}

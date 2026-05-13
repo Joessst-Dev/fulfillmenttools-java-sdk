@@ -25,4 +25,29 @@ public record StowLineItemForCreation(
         StowLineItemTakeFrom takeFrom,
         List<ExternalStockChangeReasonInput> reasons,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private StowLineItemArticle article;
+        private List<StowLineItemStowToForCreation> stowTo;
+        private StowLineItemTakeFrom takeFrom;
+        private List<ExternalStockChangeReasonInput> reasons;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder article(StowLineItemArticle article) { this.article = article; return this; }
+        public Builder stowTo(List<StowLineItemStowToForCreation> stowTo) { this.stowTo = stowTo; return this; }
+        public Builder takeFrom(StowLineItemTakeFrom takeFrom) { this.takeFrom = takeFrom; return this; }
+        public Builder reasons(List<ExternalStockChangeReasonInput> reasons) { this.reasons = reasons; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public StowLineItemForCreation build() {
+            return new StowLineItemForCreation(article, stowTo, takeFrom, reasons, customAttributes);
+        }
+    }
+}

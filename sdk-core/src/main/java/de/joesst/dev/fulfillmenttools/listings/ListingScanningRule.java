@@ -18,6 +18,22 @@ public record ListingScanningRule(
         List<ScanningRuleValue> values
 ) {
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private List<ScanningRuleValue> values;
+
+        private Builder() {}
+
+        public Builder values(List<ScanningRuleValue> values) { this.values = values; return this; }
+
+        public ListingScanningRule build() {
+            return new ListingScanningRule(values);
+        }
+    }
+
     /**
      * A single scanning rule entry with its priority and type.
      *

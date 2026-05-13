@@ -19,4 +19,23 @@ package de.joesst.dev.fulfillmenttools.inbound;
 public record StorageLocationTraitConfigEntry(
         Boolean enabled,
         String trait
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Boolean enabled;
+        private String trait;
+
+        private Builder() {}
+
+        public Builder enabled(Boolean enabled) { this.enabled = enabled; return this; }
+        public Builder trait(String trait) { this.trait = trait; return this; }
+
+        public StorageLocationTraitConfigEntry build() {
+            return new StorageLocationTraitConfigEntry(enabled, trait);
+        }
+    }
+}

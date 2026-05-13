@@ -28,4 +28,27 @@ public record StowedProgress(
         Integer stowedQuantity,
         String stowedStockRef,
         StorageLocationId stowedStorageLocationRef
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Instant stowedAt;
+        private Integer stowedQuantity;
+        private String stowedStockRef;
+        private StorageLocationId stowedStorageLocationRef;
+
+        private Builder() {}
+
+        public Builder stowedAt(Instant stowedAt) { this.stowedAt = stowedAt; return this; }
+        public Builder stowedQuantity(Integer stowedQuantity) { this.stowedQuantity = stowedQuantity; return this; }
+        public Builder stowedStockRef(String stowedStockRef) { this.stowedStockRef = stowedStockRef; return this; }
+        public Builder stowedStorageLocationRef(StorageLocationId stowedStorageLocationRef) { this.stowedStorageLocationRef = stowedStorageLocationRef; return this; }
+
+        public StowedProgress build() {
+            return new StowedProgress(stowedAt, stowedQuantity, stowedStockRef, stowedStorageLocationRef);
+        }
+    }
+}

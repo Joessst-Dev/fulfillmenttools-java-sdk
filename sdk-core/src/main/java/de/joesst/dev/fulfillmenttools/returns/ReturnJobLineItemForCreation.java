@@ -33,4 +33,33 @@ public record ReturnJobLineItemForCreation(
         List<String> serviceJobRefs,
         List<RecordableAttribute> recordableAttributes,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private ReturnJobLineItemArticle article;
+        private Double delivered;
+        private String globalLineItemId;
+        private List<String> scannableCodes;
+        private List<String> serviceJobRefs;
+        private List<RecordableAttribute> recordableAttributes;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder article(ReturnJobLineItemArticle article) { this.article = article; return this; }
+        public Builder delivered(Double delivered) { this.delivered = delivered; return this; }
+        public Builder globalLineItemId(String globalLineItemId) { this.globalLineItemId = globalLineItemId; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+        public Builder serviceJobRefs(List<String> serviceJobRefs) { this.serviceJobRefs = serviceJobRefs; return this; }
+        public Builder recordableAttributes(List<RecordableAttribute> recordableAttributes) { this.recordableAttributes = recordableAttributes; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public ReturnJobLineItemForCreation build() {
+            return new ReturnJobLineItemForCreation(article, delivered, globalLineItemId, scannableCodes, serviceJobRefs, recordableAttributes, customAttributes);
+        }
+    }
+}

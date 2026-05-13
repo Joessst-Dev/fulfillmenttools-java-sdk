@@ -19,6 +19,24 @@ public record ListingOutOfStockConfig(
         Restock restock
 ) {
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Preorder preorder;
+        private Restock restock;
+
+        private Builder() {}
+
+        public Builder preorder(Preorder preorder) { this.preorder = preorder; return this; }
+        public Builder restock(Restock restock) { this.restock = restock; return this; }
+
+        public ListingOutOfStockConfig build() {
+            return new ListingOutOfStockConfig(preorder, restock);
+        }
+    }
+
     /**
      * Configuration for pre-order availability.
      *

@@ -17,4 +17,25 @@ public record ReturnLineItemReason(
         Map<String, String> reasonLocalized,
         String reason,
         String comment
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Map<String, String> reasonLocalized;
+        private String reason;
+        private String comment;
+
+        private Builder() {}
+
+        public Builder reasonLocalized(Map<String, String> reasonLocalized) { this.reasonLocalized = reasonLocalized; return this; }
+        public Builder reason(String reason) { this.reason = reason; return this; }
+        public Builder comment(String comment) { this.comment = comment; return this; }
+
+        public ReturnLineItemReason build() {
+            return new ReturnLineItemReason(reasonLocalized, reason, comment);
+        }
+    }
+}

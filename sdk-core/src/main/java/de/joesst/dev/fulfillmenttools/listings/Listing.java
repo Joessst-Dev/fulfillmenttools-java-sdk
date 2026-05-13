@@ -80,4 +80,79 @@ public record Listing(
         Map<String, ListingStockPropertyDefinition> stockProperties,
         ListingAvailabilityTimeframe availabilityTimeframe,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private ListingId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityId;
+        private TenantArticleId tenantArticleId;
+        private String status;
+        private String title;
+        private Map<String, String> titleLocalized;
+        private String imageUrl;
+        private String measurementUnitKey;
+        private String outOfStockBehaviour;
+        private String currency;
+        private Double price;
+        private Double weight;
+        private List<String> categoryRefs;
+        private List<String> scannableCodes;
+        private List<ArticleAttribute> attributes;
+        private List<ListingRecordableAttribute> recordableAttributes;
+        private List<ListingOutOfStockBehaviourByContext> outOfStockBehaviourByContexts;
+        private List<ListingPartialStock> partialStocks;
+        private List<TagReference> tags;
+        private ListingLegal legal;
+        private ListingOutOfStockConfig outOfStockConfig;
+        private ListingScanningRule scanningRule;
+        private ListingStockAvailableUntil stockAvailableUntil;
+        private ListingStockInformation stockinformation;
+        private Map<String, ListingStockPropertyDefinition> stockProperties;
+        private ListingAvailabilityTimeframe availabilityTimeframe;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder id(ListingId id) { this.id = id; return this; }
+        public Builder version(Integer version) { this.version = version; return this; }
+        public Builder created(Instant created) { this.created = created; return this; }
+        public Builder lastModified(Instant lastModified) { this.lastModified = lastModified; return this; }
+        public Builder facilityId(FacilityId facilityId) { this.facilityId = facilityId; return this; }
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder title(String title) { this.title = title; return this; }
+        public Builder titleLocalized(Map<String, String> titleLocalized) { this.titleLocalized = titleLocalized; return this; }
+        public Builder imageUrl(String imageUrl) { this.imageUrl = imageUrl; return this; }
+        public Builder measurementUnitKey(String measurementUnitKey) { this.measurementUnitKey = measurementUnitKey; return this; }
+        public Builder outOfStockBehaviour(String outOfStockBehaviour) { this.outOfStockBehaviour = outOfStockBehaviour; return this; }
+        public Builder currency(String currency) { this.currency = currency; return this; }
+        public Builder price(Double price) { this.price = price; return this; }
+        public Builder weight(Double weight) { this.weight = weight; return this; }
+        public Builder categoryRefs(List<String> categoryRefs) { this.categoryRefs = categoryRefs; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+        public Builder attributes(List<ArticleAttribute> attributes) { this.attributes = attributes; return this; }
+        public Builder recordableAttributes(List<ListingRecordableAttribute> recordableAttributes) { this.recordableAttributes = recordableAttributes; return this; }
+        public Builder outOfStockBehaviourByContexts(List<ListingOutOfStockBehaviourByContext> outOfStockBehaviourByContexts) { this.outOfStockBehaviourByContexts = outOfStockBehaviourByContexts; return this; }
+        public Builder partialStocks(List<ListingPartialStock> partialStocks) { this.partialStocks = partialStocks; return this; }
+        public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
+        public Builder legal(ListingLegal legal) { this.legal = legal; return this; }
+        public Builder outOfStockConfig(ListingOutOfStockConfig outOfStockConfig) { this.outOfStockConfig = outOfStockConfig; return this; }
+        public Builder scanningRule(ListingScanningRule scanningRule) { this.scanningRule = scanningRule; return this; }
+        public Builder stockAvailableUntil(ListingStockAvailableUntil stockAvailableUntil) { this.stockAvailableUntil = stockAvailableUntil; return this; }
+        public Builder stockinformation(ListingStockInformation stockinformation) { this.stockinformation = stockinformation; return this; }
+        public Builder stockProperties(Map<String, ListingStockPropertyDefinition> stockProperties) { this.stockProperties = stockProperties; return this; }
+        public Builder availabilityTimeframe(ListingAvailabilityTimeframe availabilityTimeframe) { this.availabilityTimeframe = availabilityTimeframe; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public Listing build() {
+            return new Listing(id, version, created, lastModified, facilityId, tenantArticleId, status, title, titleLocalized, imageUrl, measurementUnitKey, outOfStockBehaviour, currency, price, weight, categoryRefs, scannableCodes, attributes, recordableAttributes, outOfStockBehaviourByContexts, partialStocks, tags, legal, outOfStockConfig, scanningRule, stockAvailableUntil, stockinformation, stockProperties, availabilityTimeframe, customAttributes);
+        }
+    }
+}

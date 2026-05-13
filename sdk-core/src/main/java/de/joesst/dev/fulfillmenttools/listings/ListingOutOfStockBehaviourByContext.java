@@ -28,4 +28,27 @@ public record ListingOutOfStockBehaviourByContext(
         List<ListingOutOfStockBehaviourContext> context,
         Integer priority,
         ListingOutOfStockConfig outOfStockConfig
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String outOfStockBehaviour;
+        private List<ListingOutOfStockBehaviourContext> context;
+        private Integer priority;
+        private ListingOutOfStockConfig outOfStockConfig;
+
+        private Builder() {}
+
+        public Builder outOfStockBehaviour(String outOfStockBehaviour) { this.outOfStockBehaviour = outOfStockBehaviour; return this; }
+        public Builder context(List<ListingOutOfStockBehaviourContext> context) { this.context = context; return this; }
+        public Builder priority(Integer priority) { this.priority = priority; return this; }
+        public Builder outOfStockConfig(ListingOutOfStockConfig outOfStockConfig) { this.outOfStockConfig = outOfStockConfig; return this; }
+
+        public ListingOutOfStockBehaviourByContext build() {
+            return new ListingOutOfStockBehaviourByContext(outOfStockBehaviour, context, priority, outOfStockConfig);
+        }
+    }
+}

@@ -16,4 +16,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record ReturnedLineItemRefundPrice(
         Double value,
         String currency
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Double value;
+        private String currency;
+
+        private Builder() {}
+
+        public Builder value(Double value) { this.value = value; return this; }
+        public Builder currency(String currency) { this.currency = currency; return this; }
+
+        public ReturnedLineItemRefundPrice build() {
+            return new ReturnedLineItemRefundPrice(value, currency);
+        }
+    }
+}
