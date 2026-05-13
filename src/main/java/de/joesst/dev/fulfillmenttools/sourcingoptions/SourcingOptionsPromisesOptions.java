@@ -1,0 +1,22 @@
+package de.joesst.dev.fulfillmenttools.sourcingoptions;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+/**
+ * Options controlling how delivery promises are calculated for sourcing options.
+ *
+ * <p>Maps to the {@code promisesOptions} field on {@code OrderForSourcingOptionsRequest}
+ * in the fulfillmenttools OpenAPI spec.
+ *
+ * <p>Thread-safety: immutable record; safe for concurrent use.
+ *
+ * @param calculatePromises  Whether delivery promise times should be calculated.
+ * @param carrierId          Optional carrier identifier to use for promise calculations.
+ * @param carrierProductId   Optional carrier product identifier.
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record SourcingOptionsPromisesOptions(
+        Boolean calculatePromises,
+        String carrierId,
+        String carrierProductId
+) {}

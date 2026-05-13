@@ -1,12 +1,26 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
+import de.joesst.dev.fulfillmenttools.orders.OrderPaymentInfoForCreation;
+import de.joesst.dev.fulfillmenttools.orders.OrderStatusReason;
+import de.joesst.dev.fulfillmenttools.orders.Sticker;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * An order submitted to the sourcing options engine for fulfillment evaluation.
+ *
+ * <p>Maps to the {@code OrderForSourcingOptionsRequest} schema in the fulfillmenttools
+ * OpenAPI spec. The {@code consumer} field is required.
+ *
+ * <p>Thread-safety: immutable; safe for concurrent use.
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class OrderForSourcingOptionsRequest {
 
     private final ConsumerAddressesForSourcingOptions consumer;
@@ -16,12 +30,12 @@ public final class OrderForSourcingOptionsRequest {
     private final DeliveryPreferences deliveryPreferences;
     private final String status;
     private final Map<String, Object> customAttributes;
-    private final List<Map<String, Object>> customServices;
-    private final Map<String, Object> paymentInfo;
-    private final Map<String, Object> promisesOptions;
-    private final List<Map<String, Object>> statusReasons;
-    private final List<Map<String, Object>> stickers;
-    private final List<Map<String, Object>> tags;
+    private final List<SourcingOptionsCustomService> customServices;
+    private final OrderPaymentInfoForCreation paymentInfo;
+    private final SourcingOptionsPromisesOptions promisesOptions;
+    private final List<OrderStatusReason> statusReasons;
+    private final List<Sticker> stickers;
+    private final List<TagReference> tags;
 
     private OrderForSourcingOptionsRequest(Builder builder) {
         this.consumer = Objects.requireNonNull(builder.consumer, "consumer must not be null");
@@ -39,22 +53,38 @@ public final class OrderForSourcingOptionsRequest {
         this.tags = builder.tags;
     }
 
+    /** The consumer this order is for. Required. */
     public ConsumerAddressesForSourcingOptions consumer() { return consumer; }
+    /** The line items on this order. */
     public List<OrderLineItemForCreation> orderLineItems() { return orderLineItems; }
+    /** The tenant's external order reference number. */
     public String tenantOrderId() { return tenantOrderId; }
+    /** The date this order was created in the source system. */
     public Instant orderDate() { return orderDate; }
+    /** How and where this order should be delivered. */
     public DeliveryPreferences deliveryPreferences() { return deliveryPreferences; }
+    /** Current order status (e.g. {@code OPEN}). */
     public String status() { return status; }
+    /** Free-form custom attributes. */
     public Map<String, Object> customAttributes() { return customAttributes; }
-    public List<Map<String, Object>> customServices() { return customServices; }
-    public Map<String, Object> paymentInfo() { return paymentInfo; }
-    public Map<String, Object> promisesOptions() { return promisesOptions; }
-    public List<Map<String, Object>> statusReasons() { return statusReasons; }
-    public List<Map<String, Object>> stickers() { return stickers; }
-    public List<Map<String, Object>> tags() { return tags; }
+    /** Custom services attached to this order. */
+    public List<SourcingOptionsCustomService> customServices() { return customServices; }
+    /** Payment information for this order. */
+    public OrderPaymentInfoForCreation paymentInfo() { return paymentInfo; }
+    /** Options controlling delivery promise calculation. */
+    public SourcingOptionsPromisesOptions promisesOptions() { return promisesOptions; }
+    /** Reasons explaining the current order status. */
+    public List<OrderStatusReason> statusReasons() { return statusReasons; }
+    /** Visual stickers attached to this order. */
+    public List<Sticker> stickers() { return stickers; }
+    /** Tag references attached to this order. */
+    public List<TagReference> tags() { return tags; }
 
     public static Builder builder() { return new Builder(); }
 
+    /**
+     * Builder for {@link OrderForSourcingOptionsRequest}.
+     */
     public static final class Builder {
 
         private ConsumerAddressesForSourcingOptions consumer;
@@ -64,12 +94,12 @@ public final class OrderForSourcingOptionsRequest {
         private DeliveryPreferences deliveryPreferences;
         private String status;
         private Map<String, Object> customAttributes;
-        private List<Map<String, Object>> customServices;
-        private Map<String, Object> paymentInfo;
-        private Map<String, Object> promisesOptions;
-        private List<Map<String, Object>> statusReasons;
-        private List<Map<String, Object>> stickers;
-        private List<Map<String, Object>> tags;
+        private List<SourcingOptionsCustomService> customServices;
+        private OrderPaymentInfoForCreation paymentInfo;
+        private SourcingOptionsPromisesOptions promisesOptions;
+        private List<OrderStatusReason> statusReasons;
+        private List<Sticker> stickers;
+        private List<TagReference> tags;
 
         public Builder consumer(ConsumerAddressesForSourcingOptions consumer) {
             this.consumer = consumer;
@@ -106,32 +136,32 @@ public final class OrderForSourcingOptionsRequest {
             return this;
         }
 
-        public Builder customServices(List<Map<String, Object>> customServices) {
+        public Builder customServices(List<SourcingOptionsCustomService> customServices) {
             this.customServices = customServices;
             return this;
         }
 
-        public Builder paymentInfo(Map<String, Object> paymentInfo) {
+        public Builder paymentInfo(OrderPaymentInfoForCreation paymentInfo) {
             this.paymentInfo = paymentInfo;
             return this;
         }
 
-        public Builder promisesOptions(Map<String, Object> promisesOptions) {
+        public Builder promisesOptions(SourcingOptionsPromisesOptions promisesOptions) {
             this.promisesOptions = promisesOptions;
             return this;
         }
 
-        public Builder statusReasons(List<Map<String, Object>> statusReasons) {
+        public Builder statusReasons(List<OrderStatusReason> statusReasons) {
             this.statusReasons = statusReasons;
             return this;
         }
 
-        public Builder stickers(List<Map<String, Object>> stickers) {
+        public Builder stickers(List<Sticker> stickers) {
             this.stickers = stickers;
             return this;
         }
 
-        public Builder tags(List<Map<String, Object>> tags) {
+        public Builder tags(List<TagReference> tags) {
             this.tags = tags;
             return this;
         }
