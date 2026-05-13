@@ -27,6 +27,24 @@ public record AssignedUserInput(
         String username
 ) {
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private UserId userId;
+        private String username;
+
+        private Builder() {}
+
+        public Builder userId(UserId userId) { this.userId = userId; return this; }
+        public Builder username(String username) { this.username = username; return this; }
+
+        public AssignedUserInput build() {
+            return new AssignedUserInput(userId, username);
+        }
+    }
+
     /**
      * Creates an {@code AssignedUserInput} that references a user by their internal ID.
      *

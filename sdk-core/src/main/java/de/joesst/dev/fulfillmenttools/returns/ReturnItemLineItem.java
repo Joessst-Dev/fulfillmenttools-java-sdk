@@ -39,4 +39,43 @@ public record ReturnItemLineItem(
         ReturnedLineItemRefund refund,
         List<RecordableAttribute> recordableAttributes,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String id;
+        private String status;
+        private TenantArticleId tenantArticleId;
+        private String itemCondition;
+        private String itemConditionComment;
+        private Map<String, String> itemConditionLocalized;
+        private List<String> itemReturnJobLineItemRefs;
+        private List<String> scannedCodes;
+        private List<ReturnLineItemReason> reasons;
+        private ReturnedLineItemRefund refund;
+        private List<RecordableAttribute> recordableAttributes;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder itemCondition(String itemCondition) { this.itemCondition = itemCondition; return this; }
+        public Builder itemConditionComment(String itemConditionComment) { this.itemConditionComment = itemConditionComment; return this; }
+        public Builder itemConditionLocalized(Map<String, String> itemConditionLocalized) { this.itemConditionLocalized = itemConditionLocalized; return this; }
+        public Builder itemReturnJobLineItemRefs(List<String> itemReturnJobLineItemRefs) { this.itemReturnJobLineItemRefs = itemReturnJobLineItemRefs; return this; }
+        public Builder scannedCodes(List<String> scannedCodes) { this.scannedCodes = scannedCodes; return this; }
+        public Builder reasons(List<ReturnLineItemReason> reasons) { this.reasons = reasons; return this; }
+        public Builder refund(ReturnedLineItemRefund refund) { this.refund = refund; return this; }
+        public Builder recordableAttributes(List<RecordableAttribute> recordableAttributes) { this.recordableAttributes = recordableAttributes; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public ReturnItemLineItem build() {
+            return new ReturnItemLineItem(id, status, tenantArticleId, itemCondition, itemConditionComment, itemConditionLocalized, itemReturnJobLineItemRefs, scannedCodes, reasons, refund, recordableAttributes, customAttributes);
+        }
+    }
+}

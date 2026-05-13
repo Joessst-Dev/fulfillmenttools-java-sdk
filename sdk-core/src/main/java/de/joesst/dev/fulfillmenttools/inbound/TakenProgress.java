@@ -19,4 +19,25 @@ public record TakenProgress(
         Instant takenAt,
         Integer takenQuantity,
         String takenStockRef
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Instant takenAt;
+        private Integer takenQuantity;
+        private String takenStockRef;
+
+        private Builder() {}
+
+        public Builder takenAt(Instant takenAt) { this.takenAt = takenAt; return this; }
+        public Builder takenQuantity(Integer takenQuantity) { this.takenQuantity = takenQuantity; return this; }
+        public Builder takenStockRef(String takenStockRef) { this.takenStockRef = takenStockRef; return this; }
+
+        public TakenProgress build() {
+            return new TakenProgress(takenAt, takenQuantity, takenStockRef);
+        }
+    }
+}

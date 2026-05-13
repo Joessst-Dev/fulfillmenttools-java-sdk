@@ -17,4 +17,21 @@ import java.time.Instant;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ListingAvailabilityTimeframe(
         Instant start
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Instant start;
+
+        private Builder() {}
+
+        public Builder start(Instant start) { this.start = start; return this; }
+
+        public ListingAvailabilityTimeframe build() {
+            return new ListingAvailabilityTimeframe(start);
+        }
+    }
+}

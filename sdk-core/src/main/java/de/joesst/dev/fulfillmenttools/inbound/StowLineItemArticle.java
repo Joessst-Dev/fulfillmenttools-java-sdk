@@ -30,4 +30,33 @@ public record StowLineItemArticle(
         Map<String, Object> customAttributes,
         Map<String, String> titleLocalized,
         List<String> scannableCodes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private TenantArticleId tenantArticleId;
+        private String title;
+        private String imageUrl;
+        private String measurementUnitKey;
+        private Map<String, Object> customAttributes;
+        private Map<String, String> titleLocalized;
+        private List<String> scannableCodes;
+
+        private Builder() {}
+
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder title(String title) { this.title = title; return this; }
+        public Builder imageUrl(String imageUrl) { this.imageUrl = imageUrl; return this; }
+        public Builder measurementUnitKey(String measurementUnitKey) { this.measurementUnitKey = measurementUnitKey; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder titleLocalized(Map<String, String> titleLocalized) { this.titleLocalized = titleLocalized; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+
+        public StowLineItemArticle build() {
+            return new StowLineItemArticle(tenantArticleId, title, imageUrl, measurementUnitKey, customAttributes, titleLocalized, scannableCodes);
+        }
+    }
+}

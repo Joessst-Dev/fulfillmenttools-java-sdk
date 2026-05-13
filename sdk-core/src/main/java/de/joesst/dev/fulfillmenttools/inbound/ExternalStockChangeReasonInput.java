@@ -27,4 +27,25 @@ public record ExternalStockChangeReasonInput(
         Map<String, String> reasonLocalized,
         String id,
         String tenantReasonId
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Map<String, String> reasonLocalized;
+        private String id;
+        private String tenantReasonId;
+
+        private Builder() {}
+
+        public Builder reasonLocalized(Map<String, String> reasonLocalized) { this.reasonLocalized = reasonLocalized; return this; }
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder tenantReasonId(String tenantReasonId) { this.tenantReasonId = tenantReasonId; return this; }
+
+        public ExternalStockChangeReasonInput build() {
+            return new ExternalStockChangeReasonInput(reasonLocalized, id, tenantReasonId);
+        }
+    }
+}

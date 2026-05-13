@@ -16,4 +16,23 @@ import java.util.Map;
 public record ExternalStockChangeReason(
         Map<String, String> reasonLocalized,
         String tenantReasonId
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Map<String, String> reasonLocalized;
+        private String tenantReasonId;
+
+        private Builder() {}
+
+        public Builder reasonLocalized(Map<String, String> reasonLocalized) { this.reasonLocalized = reasonLocalized; return this; }
+        public Builder tenantReasonId(String tenantReasonId) { this.tenantReasonId = tenantReasonId; return this; }
+
+        public ExternalStockChangeReason build() {
+            return new ExternalStockChangeReason(reasonLocalized, tenantReasonId);
+        }
+    }
+}

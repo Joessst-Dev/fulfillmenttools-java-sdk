@@ -37,4 +37,41 @@ public record ReturnJobLineItem(
         List<String> serviceJobRefs,
         List<RecordableAttribute> recordableAttributes,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String id;
+        private String status;
+        private String globalLineItemId;
+        private Double delivered;
+        private Double returned;
+        private Double returnable;
+        private ReturnJobLineItemArticle article;
+        private List<String> scannableCodes;
+        private List<String> serviceJobRefs;
+        private List<RecordableAttribute> recordableAttributes;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder globalLineItemId(String globalLineItemId) { this.globalLineItemId = globalLineItemId; return this; }
+        public Builder delivered(Double delivered) { this.delivered = delivered; return this; }
+        public Builder returned(Double returned) { this.returned = returned; return this; }
+        public Builder returnable(Double returnable) { this.returnable = returnable; return this; }
+        public Builder article(ReturnJobLineItemArticle article) { this.article = article; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+        public Builder serviceJobRefs(List<String> serviceJobRefs) { this.serviceJobRefs = serviceJobRefs; return this; }
+        public Builder recordableAttributes(List<RecordableAttribute> recordableAttributes) { this.recordableAttributes = recordableAttributes; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public ReturnJobLineItem build() {
+            return new ReturnJobLineItem(id, status, globalLineItemId, delivered, returned, returnable, article, scannableCodes, serviceJobRefs, recordableAttributes, customAttributes);
+        }
+    }
+}

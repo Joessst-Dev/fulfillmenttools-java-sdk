@@ -19,4 +19,25 @@ public record ListingStockInformation(
         Integer stock,
         Integer reserved,
         Integer available
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Integer stock;
+        private Integer reserved;
+        private Integer available;
+
+        private Builder() {}
+
+        public Builder stock(Integer stock) { this.stock = stock; return this; }
+        public Builder reserved(Integer reserved) { this.reserved = reserved; return this; }
+        public Builder available(Integer available) { this.available = available; return this; }
+
+        public ListingStockInformation build() {
+            return new ListingStockInformation(stock, reserved, available);
+        }
+    }
+}

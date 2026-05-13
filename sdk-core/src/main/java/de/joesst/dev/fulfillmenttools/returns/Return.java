@@ -47,4 +47,51 @@ public record Return(
         List<ReturnItem> itemReturns,
         Boolean anonymized,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private ReturnId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private String status;
+        private String shortId;
+        private ProcessId processRef;
+        private TenantOrderId tenantOrderId;
+        private List<FacilityId> originFacilityRefs;
+        private List<String> scannableCodes;
+        private List<ConsumerAddress> consumerAddresses;
+        private List<ReturnJobLineItem> returnableLineItems;
+        private List<ReturnJobLineItem> notReturnableLineItems;
+        private List<ReturnItem> itemReturns;
+        private Boolean anonymized;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder id(ReturnId id) { this.id = id; return this; }
+        public Builder version(Integer version) { this.version = version; return this; }
+        public Builder created(Instant created) { this.created = created; return this; }
+        public Builder lastModified(Instant lastModified) { this.lastModified = lastModified; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder shortId(String shortId) { this.shortId = shortId; return this; }
+        public Builder processRef(ProcessId processRef) { this.processRef = processRef; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder originFacilityRefs(List<FacilityId> originFacilityRefs) { this.originFacilityRefs = originFacilityRefs; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+        public Builder consumerAddresses(List<ConsumerAddress> consumerAddresses) { this.consumerAddresses = consumerAddresses; return this; }
+        public Builder returnableLineItems(List<ReturnJobLineItem> returnableLineItems) { this.returnableLineItems = returnableLineItems; return this; }
+        public Builder notReturnableLineItems(List<ReturnJobLineItem> notReturnableLineItems) { this.notReturnableLineItems = notReturnableLineItems; return this; }
+        public Builder itemReturns(List<ReturnItem> itemReturns) { this.itemReturns = itemReturns; return this; }
+        public Builder anonymized(Boolean anonymized) { this.anonymized = anonymized; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public Return build() {
+            return new Return(id, version, created, lastModified, status, shortId, processRef, tenantOrderId, originFacilityRefs, scannableCodes, consumerAddresses, returnableLineItems, notReturnableLineItems, itemReturns, anonymized, customAttributes);
+        }
+    }
+}

@@ -37,4 +37,43 @@ public record StowJob(
         List<StowLineItem> stowLineItems,
         List<AssignedUser> assignedUsers,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private StowJobId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityRef;
+        private String status;
+        private String shortId;
+        private Integer priority;
+        private Instant targetTime;
+        private List<StowLineItem> stowLineItems;
+        private List<AssignedUser> assignedUsers;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder id(StowJobId id) { this.id = id; return this; }
+        public Builder version(Integer version) { this.version = version; return this; }
+        public Builder created(Instant created) { this.created = created; return this; }
+        public Builder lastModified(Instant lastModified) { this.lastModified = lastModified; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder shortId(String shortId) { this.shortId = shortId; return this; }
+        public Builder priority(Integer priority) { this.priority = priority; return this; }
+        public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
+        public Builder stowLineItems(List<StowLineItem> stowLineItems) { this.stowLineItems = stowLineItems; return this; }
+        public Builder assignedUsers(List<AssignedUser> assignedUsers) { this.assignedUsers = assignedUsers; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public StowJob build() {
+            return new StowJob(id, version, created, lastModified, facilityRef, status, shortId, priority, targetTime, stowLineItems, assignedUsers, customAttributes);
+        }
+    }
+}

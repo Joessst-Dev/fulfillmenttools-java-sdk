@@ -21,4 +21,25 @@ public record ReturnedLineItemRefund(
         String status,
         ReturnedLineItemRefundPrice price,
         Double percent
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String status;
+        private ReturnedLineItemRefundPrice price;
+        private Double percent;
+
+        private Builder() {}
+
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder price(ReturnedLineItemRefundPrice price) { this.price = price; return this; }
+        public Builder percent(Double percent) { this.percent = percent; return this; }
+
+        public ReturnedLineItemRefund build() {
+            return new ReturnedLineItemRefund(status, price, percent);
+        }
+    }
+}

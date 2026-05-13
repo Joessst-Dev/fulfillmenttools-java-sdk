@@ -20,4 +20,23 @@ import java.util.Map;
 public record StowJobStockInformation(
         Map<String, String> properties,
         List<StorageLocationTraitConfigEntry> traitConfig
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Map<String, String> properties;
+        private List<StorageLocationTraitConfigEntry> traitConfig;
+
+        private Builder() {}
+
+        public Builder properties(Map<String, String> properties) { this.properties = properties; return this; }
+        public Builder traitConfig(List<StorageLocationTraitConfigEntry> traitConfig) { this.traitConfig = traitConfig; return this; }
+
+        public StowJobStockInformation build() {
+            return new StowJobStockInformation(properties, traitConfig);
+        }
+    }
+}

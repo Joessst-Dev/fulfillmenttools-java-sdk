@@ -21,4 +21,25 @@ public record ListingStockPropertyDefinition(
         String inputType,
         Boolean required,
         String defaultValue
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String inputType;
+        private Boolean required;
+        private String defaultValue;
+
+        private Builder() {}
+
+        public Builder inputType(String inputType) { this.inputType = inputType; return this; }
+        public Builder required(Boolean required) { this.required = required; return this; }
+        public Builder defaultValue(String defaultValue) { this.defaultValue = defaultValue; return this; }
+
+        public ListingStockPropertyDefinition build() {
+            return new ListingStockPropertyDefinition(inputType, required, defaultValue);
+        }
+    }
+}

@@ -14,4 +14,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ListingLegal(
         String hsCode
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String hsCode;
+
+        private Builder() {}
+
+        public Builder hsCode(String hsCode) { this.hsCode = hsCode; return this; }
+
+        public ListingLegal build() {
+            return new ListingLegal(hsCode);
+        }
+    }
+}

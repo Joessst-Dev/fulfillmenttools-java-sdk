@@ -20,4 +20,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record ListingStockAvailableUntil(
         String calculationBase,
         String modifier
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String calculationBase;
+        private String modifier;
+
+        private Builder() {}
+
+        public Builder calculationBase(String calculationBase) { this.calculationBase = calculationBase; return this; }
+        public Builder modifier(String modifier) { this.modifier = modifier; return this; }
+
+        public ListingStockAvailableUntil build() {
+            return new ListingStockAvailableUntil(calculationBase, modifier);
+        }
+    }
+}

@@ -21,4 +21,25 @@ public record ListingPartialStock(
         String tenantPartialStockId,
         ListingStockInformation stockinformation,
         Instant eventLastModified
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String tenantPartialStockId;
+        private ListingStockInformation stockinformation;
+        private Instant eventLastModified;
+
+        private Builder() {}
+
+        public Builder tenantPartialStockId(String tenantPartialStockId) { this.tenantPartialStockId = tenantPartialStockId; return this; }
+        public Builder stockinformation(ListingStockInformation stockinformation) { this.stockinformation = stockinformation; return this; }
+        public Builder eventLastModified(Instant eventLastModified) { this.eventLastModified = eventLastModified; return this; }
+
+        public ListingPartialStock build() {
+            return new ListingPartialStock(tenantPartialStockId, stockinformation, eventLastModified);
+        }
+    }
+}
