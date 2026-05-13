@@ -32,4 +32,144 @@ public record RoutingStrategyNode(
         String categoryRef,
         RoutingStrategyCondition nextCondition,
         List<ActivationTimeFrame> activationTimeFrames
-) {}
+) {
+
+    /**
+     * Returns a builder for constructing a {@code RoutingStrategyNode}.
+     *
+     * @return a new {@link Builder}.
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    /**
+     * Builder for {@link RoutingStrategyNode}.
+     */
+    public static final class Builder {
+
+        private String id;
+        private Boolean active;
+        private RoutingStrategyNodeConfig config;
+        private Map<String, String> nameLocalized;
+        private Map<String, String> descriptionLocalized;
+        private String name;
+        private String description;
+        private String categoryRef;
+        private RoutingStrategyCondition nextCondition;
+        private List<ActivationTimeFrame> activationTimeFrames;
+
+        private Builder() {}
+
+        /**
+         * Sets the unique identifier of this node.
+         * @param id the node ID
+         * @return this builder
+         */
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        /**
+         * Sets whether this node is active.
+         * @param active the active flag
+         * @return this builder
+         */
+        public Builder active(Boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        /**
+         * Sets the fence/rating/split/reroute configuration for this node.
+         * @param config the node configuration
+         * @return this builder
+         */
+        public Builder config(RoutingStrategyNodeConfig config) {
+            this.config = config;
+            return this;
+        }
+
+        /**
+         * Sets the localized display name.
+         * @param nameLocalized map of locale to localized name
+         * @return this builder
+         */
+        public Builder nameLocalized(Map<String, String> nameLocalized) {
+            this.nameLocalized = nameLocalized;
+            return this;
+        }
+
+        /**
+         * Sets the localized description.
+         * @param descriptionLocalized map of locale to localized description
+         * @return this builder
+         */
+        public Builder descriptionLocalized(Map<String, String> descriptionLocalized) {
+            this.descriptionLocalized = descriptionLocalized;
+            return this;
+        }
+
+        /**
+         * Sets the optional plain-text name.
+         * @param name the plain-text name
+         * @return this builder
+         */
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        /**
+         * Sets the optional plain-text description.
+         * @param description the plain-text description
+         * @return this builder
+         */
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        /**
+         * Sets the optional reference to a node config category.
+         * @param categoryRef the category reference
+         * @return this builder
+         */
+        public Builder categoryRef(String categoryRef) {
+            this.categoryRef = categoryRef;
+            return this;
+        }
+
+        /**
+         * Sets the optional condition chain evaluated after this node.
+         * @param nextCondition the next condition
+         * @return this builder
+         */
+        public Builder nextCondition(RoutingStrategyCondition nextCondition) {
+            this.nextCondition = nextCondition;
+            return this;
+        }
+
+        /**
+         * Sets the time frames during which this node is active.
+         * @param activationTimeFrames the activation time frames (max 1)
+         * @return this builder
+         */
+        public Builder activationTimeFrames(List<ActivationTimeFrame> activationTimeFrames) {
+            this.activationTimeFrames = activationTimeFrames;
+            return this;
+        }
+
+        /**
+         * Builds a {@link RoutingStrategyNode}.
+         *
+         * @return a new instance.
+         */
+        public RoutingStrategyNode build() {
+            return new RoutingStrategyNode(
+                    id, active, config, nameLocalized, descriptionLocalized,
+                    name, description, categoryRef, nextCondition, activationTimeFrames);
+        }
+    }
+}
