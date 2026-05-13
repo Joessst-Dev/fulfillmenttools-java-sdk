@@ -11,4 +11,21 @@ package de.joesst.dev.fulfillmenttools.pickjobs;
  */
 public record PickingZone(
         String zoneRef
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String zoneRef;
+
+        private Builder() {}
+
+        public Builder zoneRef(String zoneRef) { this.zoneRef = zoneRef; return this; }
+
+        public PickingZone build() {
+            return new PickingZone(zoneRef);
+        }
+    }
+}

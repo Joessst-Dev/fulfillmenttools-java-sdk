@@ -29,4 +29,33 @@ public record RerouteDescription(
         Integer version,
         Instant created,
         Instant lastModified
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String id;
+        private String action;
+        private String reason;
+        private Map<String, String> reasonLocalized;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+
+        private Builder() {}
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder action(String action) { this.action = action; return this; }
+        public Builder reason(String reason) { this.reason = reason; return this; }
+        public Builder reasonLocalized(Map<String, String> reasonLocalized) { this.reasonLocalized = reasonLocalized; return this; }
+        public Builder version(Integer version) { this.version = version; return this; }
+        public Builder created(Instant created) { this.created = created; return this; }
+        public Builder lastModified(Instant lastModified) { this.lastModified = lastModified; return this; }
+
+        public RerouteDescription build() {
+            return new RerouteDescription(id, action, reason, reasonLocalized, version, created, lastModified);
+        }
+    }
+}

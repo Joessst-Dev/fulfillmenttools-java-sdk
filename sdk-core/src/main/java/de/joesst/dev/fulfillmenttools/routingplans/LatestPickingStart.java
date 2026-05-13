@@ -20,4 +20,25 @@ public record LatestPickingStart(
         Instant targetTime,
         CarrierId carrierRef,
         Instant latestPickingStartDate
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Instant targetTime;
+        private CarrierId carrierRef;
+        private Instant latestPickingStartDate;
+
+        private Builder() {}
+
+        public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
+        public Builder carrierRef(CarrierId carrierRef) { this.carrierRef = carrierRef; return this; }
+        public Builder latestPickingStartDate(Instant latestPickingStartDate) { this.latestPickingStartDate = latestPickingStartDate; return this; }
+
+        public LatestPickingStart build() {
+            return new LatestPickingStart(targetTime, carrierRef, latestPickingStartDate);
+        }
+    }
+}

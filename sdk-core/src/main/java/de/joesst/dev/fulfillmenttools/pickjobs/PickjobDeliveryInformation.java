@@ -22,4 +22,27 @@ public record PickjobDeliveryInformation(
         Instant targetTime,
         Instant targetTimeBaseDate,
         PickjobDeliveryInformationDetails details
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String channel;
+        private Instant targetTime;
+        private Instant targetTimeBaseDate;
+        private PickjobDeliveryInformationDetails details;
+
+        private Builder() {}
+
+        public Builder channel(String channel) { this.channel = channel; return this; }
+        public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
+        public Builder targetTimeBaseDate(Instant targetTimeBaseDate) { this.targetTimeBaseDate = targetTimeBaseDate; return this; }
+        public Builder details(PickjobDeliveryInformationDetails details) { this.details = details; return this; }
+
+        public PickjobDeliveryInformation build() {
+            return new PickjobDeliveryInformation(channel, targetTime, targetTimeBaseDate, details);
+        }
+    }
+}

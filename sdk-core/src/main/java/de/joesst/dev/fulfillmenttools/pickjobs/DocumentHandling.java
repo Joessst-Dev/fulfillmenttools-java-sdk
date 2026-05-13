@@ -13,6 +13,22 @@ public record DocumentHandling(
         SendLabelConfig sendLabel
 ) {
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private SendLabelConfig sendLabel;
+
+        private Builder() {}
+
+        public Builder sendLabel(SendLabelConfig sendLabel) { this.sendLabel = sendLabel; return this; }
+
+        public DocumentHandling build() {
+            return new DocumentHandling(sendLabel);
+        }
+    }
+
     /**
      * Configuration for the send-label behaviour.
      *
@@ -20,5 +36,22 @@ public record DocumentHandling(
      */
     public record SendLabelConfig(
             Boolean enabled
-    ) {}
+    ) {
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public static final class Builder {
+            private Boolean enabled;
+
+            private Builder() {}
+
+            public Builder enabled(Boolean enabled) { this.enabled = enabled; return this; }
+
+            public SendLabelConfig build() {
+                return new SendLabelConfig(enabled);
+            }
+        }
+    }
 }

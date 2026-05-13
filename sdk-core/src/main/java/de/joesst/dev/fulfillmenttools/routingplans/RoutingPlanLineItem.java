@@ -49,4 +49,49 @@ public record RoutingPlanLineItem(
         Double picked,
         String outOfStockBehaviour,
         AvailabilityTimeframe availabilityTimeframe
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String id;
+        private Integer quantity;
+        private OrderLineItemArticle article;
+        private String measurementUnitKey;
+        private String secondaryMeasurementUnitKey;
+        private Integer secondaryQuantity;
+        private List<String> scannableCodes;
+        private List<Substitute> allowedSubstitutes;
+        private MeasurementValidation measurementValidation;
+        private List<TagReference> tags;
+        private Map<String, Object> customAttributes;
+        private Double available;
+        private Double picked;
+        private String outOfStockBehaviour;
+        private AvailabilityTimeframe availabilityTimeframe;
+
+        private Builder() {}
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
+        public Builder article(OrderLineItemArticle article) { this.article = article; return this; }
+        public Builder measurementUnitKey(String measurementUnitKey) { this.measurementUnitKey = measurementUnitKey; return this; }
+        public Builder secondaryMeasurementUnitKey(String secondaryMeasurementUnitKey) { this.secondaryMeasurementUnitKey = secondaryMeasurementUnitKey; return this; }
+        public Builder secondaryQuantity(Integer secondaryQuantity) { this.secondaryQuantity = secondaryQuantity; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+        public Builder allowedSubstitutes(List<Substitute> allowedSubstitutes) { this.allowedSubstitutes = allowedSubstitutes; return this; }
+        public Builder measurementValidation(MeasurementValidation measurementValidation) { this.measurementValidation = measurementValidation; return this; }
+        public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder available(Double available) { this.available = available; return this; }
+        public Builder picked(Double picked) { this.picked = picked; return this; }
+        public Builder outOfStockBehaviour(String outOfStockBehaviour) { this.outOfStockBehaviour = outOfStockBehaviour; return this; }
+        public Builder availabilityTimeframe(AvailabilityTimeframe availabilityTimeframe) { this.availabilityTimeframe = availabilityTimeframe; return this; }
+
+        public RoutingPlanLineItem build() {
+            return new RoutingPlanLineItem(id, quantity, article, measurementUnitKey, secondaryMeasurementUnitKey, secondaryQuantity, scannableCodes, allowedSubstitutes, measurementValidation, tags, customAttributes, available, picked, outOfStockBehaviour, availabilityTimeframe);
+        }
+    }
+}

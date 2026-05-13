@@ -15,4 +15,23 @@ package de.joesst.dev.fulfillmenttools.routingplans;
 public record DecisionLogRef(
         String url,
         Double routingRun
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String url;
+        private Double routingRun;
+
+        private Builder() {}
+
+        public Builder url(String url) { this.url = url; return this; }
+        public Builder routingRun(Double routingRun) { this.routingRun = routingRun; return this; }
+
+        public DecisionLogRef build() {
+            return new DecisionLogRef(url, routingRun);
+        }
+    }
+}

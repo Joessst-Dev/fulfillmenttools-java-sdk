@@ -46,4 +46,47 @@ public record ExpectedPickLineItem(
         List<Sticker> stickers,
         List<TagReference> tags,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String id;
+        private String transferId;
+        private Integer quantity;
+        private PickLineItemArticle article;
+        private String measurementUnitKey;
+        private String secondaryMeasurementUnitKey;
+        private Integer secondaryQuantity;
+        private List<String> scannableCodes;
+        private MeasurementValidation measurementValidation;
+        private List<PickJobLineItemPartialStockLocation> partialStockLocations;
+        private List<Substitute> allowedSubstitutes;
+        private List<Sticker> stickers;
+        private List<TagReference> tags;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder transferId(String transferId) { this.transferId = transferId; return this; }
+        public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
+        public Builder article(PickLineItemArticle article) { this.article = article; return this; }
+        public Builder measurementUnitKey(String measurementUnitKey) { this.measurementUnitKey = measurementUnitKey; return this; }
+        public Builder secondaryMeasurementUnitKey(String secondaryMeasurementUnitKey) { this.secondaryMeasurementUnitKey = secondaryMeasurementUnitKey; return this; }
+        public Builder secondaryQuantity(Integer secondaryQuantity) { this.secondaryQuantity = secondaryQuantity; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+        public Builder measurementValidation(MeasurementValidation measurementValidation) { this.measurementValidation = measurementValidation; return this; }
+        public Builder partialStockLocations(List<PickJobLineItemPartialStockLocation> partialStockLocations) { this.partialStockLocations = partialStockLocations; return this; }
+        public Builder allowedSubstitutes(List<Substitute> allowedSubstitutes) { this.allowedSubstitutes = allowedSubstitutes; return this; }
+        public Builder stickers(List<Sticker> stickers) { this.stickers = stickers; return this; }
+        public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public ExpectedPickLineItem build() {
+            return new ExpectedPickLineItem(id, transferId, quantity, article, measurementUnitKey, secondaryMeasurementUnitKey, secondaryQuantity, scannableCodes, measurementValidation, partialStockLocations, allowedSubstitutes, stickers, tags, customAttributes);
+        }
+    }
+}

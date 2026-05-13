@@ -19,4 +19,25 @@ public record UserModificationHistory(
         Instant modificationDate,
         UserId userId,
         String username
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Instant modificationDate;
+        private UserId userId;
+        private String username;
+
+        private Builder() {}
+
+        public Builder modificationDate(Instant modificationDate) { this.modificationDate = modificationDate; return this; }
+        public Builder userId(UserId userId) { this.userId = userId; return this; }
+        public Builder username(String username) { this.username = username; return this; }
+
+        public UserModificationHistory build() {
+            return new UserModificationHistory(modificationDate, userId, username);
+        }
+    }
+}

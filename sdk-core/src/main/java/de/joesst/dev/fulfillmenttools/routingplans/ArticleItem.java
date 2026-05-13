@@ -13,4 +13,23 @@ package de.joesst.dev.fulfillmenttools.routingplans;
 public record ArticleItem(
         String tenantArticleRef,
         Double quantity
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String tenantArticleRef;
+        private Double quantity;
+
+        private Builder() {}
+
+        public Builder tenantArticleRef(String tenantArticleRef) { this.tenantArticleRef = tenantArticleRef; return this; }
+        public Builder quantity(Double quantity) { this.quantity = quantity; return this; }
+
+        public ArticleItem build() {
+            return new ArticleItem(tenantArticleRef, quantity);
+        }
+    }
+}

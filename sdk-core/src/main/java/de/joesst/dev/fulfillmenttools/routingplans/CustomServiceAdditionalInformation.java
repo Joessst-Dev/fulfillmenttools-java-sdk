@@ -18,4 +18,25 @@ public record CustomServiceAdditionalInformation(
         String additionalInformationRef,
         String tenantAdditionalInformationId,
         Object value
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String additionalInformationRef;
+        private String tenantAdditionalInformationId;
+        private Object value;
+
+        private Builder() {}
+
+        public Builder additionalInformationRef(String additionalInformationRef) { this.additionalInformationRef = additionalInformationRef; return this; }
+        public Builder tenantAdditionalInformationId(String tenantAdditionalInformationId) { this.tenantAdditionalInformationId = tenantAdditionalInformationId; return this; }
+        public Builder value(Object value) { this.value = value; return this; }
+
+        public CustomServiceAdditionalInformation build() {
+            return new CustomServiceAdditionalInformation(additionalInformationRef, tenantAdditionalInformationId, value);
+        }
+    }
+}

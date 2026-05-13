@@ -14,4 +14,23 @@ package de.joesst.dev.fulfillmenttools.pickjobs;
 public record DeliveryInformationCollect(
         String identifier,
         Boolean paid
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String identifier;
+        private Boolean paid;
+
+        private Builder() {}
+
+        public Builder identifier(String identifier) { this.identifier = identifier; return this; }
+        public Builder paid(Boolean paid) { this.paid = paid; return this; }
+
+        public DeliveryInformationCollect build() {
+            return new DeliveryInformationCollect(identifier, paid);
+        }
+    }
+}

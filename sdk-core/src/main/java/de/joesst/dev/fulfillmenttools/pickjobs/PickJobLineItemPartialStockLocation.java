@@ -36,4 +36,43 @@ public record PickJobLineItemPartialStockLocation(
         Map<String, String> stockProperties,
         String zoneName,
         String zoneRef
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String tenantPartialStockId;
+        private String stockRef;
+        private Integer available;
+        private Integer quantity;
+        private Integer picked;
+        private Double ratingScore;
+        private Double sequenceScore;
+        private Boolean stockEmptied;
+        private PickJobStockLocation location;
+        private Map<String, String> stockProperties;
+        private String zoneName;
+        private String zoneRef;
+
+        private Builder() {}
+
+        public Builder tenantPartialStockId(String tenantPartialStockId) { this.tenantPartialStockId = tenantPartialStockId; return this; }
+        public Builder stockRef(String stockRef) { this.stockRef = stockRef; return this; }
+        public Builder available(Integer available) { this.available = available; return this; }
+        public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
+        public Builder picked(Integer picked) { this.picked = picked; return this; }
+        public Builder ratingScore(Double ratingScore) { this.ratingScore = ratingScore; return this; }
+        public Builder sequenceScore(Double sequenceScore) { this.sequenceScore = sequenceScore; return this; }
+        public Builder stockEmptied(Boolean stockEmptied) { this.stockEmptied = stockEmptied; return this; }
+        public Builder location(PickJobStockLocation location) { this.location = location; return this; }
+        public Builder stockProperties(Map<String, String> stockProperties) { this.stockProperties = stockProperties; return this; }
+        public Builder zoneName(String zoneName) { this.zoneName = zoneName; return this; }
+        public Builder zoneRef(String zoneRef) { this.zoneRef = zoneRef; return this; }
+
+        public PickJobLineItemPartialStockLocation build() {
+            return new PickJobLineItemPartialStockLocation(tenantPartialStockId, stockRef, available, quantity, picked, ratingScore, sequenceScore, stockEmptied, location, stockProperties, zoneName, zoneRef);
+        }
+    }
+}
