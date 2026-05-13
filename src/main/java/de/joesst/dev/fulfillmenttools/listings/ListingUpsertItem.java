@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.listings;
 
+import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public final class ListingUpsertItem {
     private final List<ListingRecordableAttribute> recordableAttributes;
     private final List<ListingOutOfStockBehaviourByContext> outOfStockBehaviourByContexts;
     private final List<ListingPartialStock> partialStocks;
-    private final List<ListingTag> tags;
+    private final List<TagReference> tags;
     private final ListingLegal legal;
     private final ListingOutOfStockConfig outOfStockConfig;
     private final ListingScanningRule scanningRule;
@@ -181,7 +182,7 @@ public final class ListingUpsertItem {
      * Returns the tag references attached to this listing.
      * @return the tags, or {@code null} if not set
      */
-    public List<ListingTag> tags() { return tags; }
+    public List<TagReference> tags() { return tags; }
 
     /**
      * Returns the legal information for this listing.
@@ -261,7 +262,7 @@ public final class ListingUpsertItem {
         private List<ListingRecordableAttribute> recordableAttributes;
         private List<ListingOutOfStockBehaviourByContext> outOfStockBehaviourByContexts;
         private List<ListingPartialStock> partialStocks;
-        private List<ListingTag> tags;
+        private List<TagReference> tags;
         private ListingLegal legal;
         private ListingOutOfStockConfig outOfStockConfig;
         private ListingScanningRule scanningRule;
@@ -390,7 +391,7 @@ public final class ListingUpsertItem {
          * @param tags the tags
          * @return this builder
          */
-        public Builder tags(List<ListingTag> tags) { this.tags = tags; return this; }
+        public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
 
         /**
          * Sets the legal information for this listing.

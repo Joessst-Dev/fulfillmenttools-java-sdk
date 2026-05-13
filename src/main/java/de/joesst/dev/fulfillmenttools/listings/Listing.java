@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.listings;
 
+import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
 import java.time.Instant;
@@ -67,7 +68,7 @@ public record Listing(
         List<ListingRecordableAttribute> recordableAttributes,
         List<ListingOutOfStockBehaviourByContext> outOfStockBehaviourByContexts,
         List<ListingPartialStock> partialStocks,
-        List<ListingTag> tags,
+        List<TagReference> tags,
         ListingLegal legal,
         ListingOutOfStockConfig outOfStockConfig,
         ListingScanningRule scanningRule,
