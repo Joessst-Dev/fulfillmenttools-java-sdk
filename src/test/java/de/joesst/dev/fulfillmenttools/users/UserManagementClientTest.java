@@ -42,6 +42,72 @@ class UserManagementClientTest {
     // --- get ---
 
     @Test
+    void get_deserializesAssignedRolesWithContextLimitations() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/users/u-typed"))
+                .willReturn(okJson("""
+                        {
+                          "id": "u-typed",
+                          "version": 3,
+                          "firstname": "Carol",
+                          "lastname": "White",
+                          "username": "carol",
+                          "authenticationProvider": {"id": "prov-1", "type": "EMAIL_PASSWORD"},
+                          "assignedRoles": [
+                            {
+                              "ref": "role-picker",
+                              "context": [
+                                {"type": "FACILITY", "values": ["fac-1", "fac-2"]}
+                              ]
+                            }
+                          ]
+                        }
+                        """)));
+
+        // When
+        User user = client.users().get("u-typed");
+
+        // Then
+        assertThat(user.authenticationProvider()).isNotNull();
+        assertThat(user.authenticationProvider().type()).isEqualTo("EMAIL_PASSWORD");
+        assertThat(user.authenticationProvider().id()).isEqualTo("prov-1");
+
+        assertThat(user.assignedRoles()).hasSize(1);
+        AssignedRole role = user.assignedRoles().get(0);
+        assertThat(role.ref()).isEqualTo("role-picker");
+        assertThat(role.context()).hasSize(1);
+        assertThat(role.context().get(0).type()).isEqualTo("FACILITY");
+        assertThat(role.context().get(0).values()).containsExactly("fac-1", "fac-2");
+    }
+
+    @Test
+    void create_sendsTypedAssignedRolesInBody() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/users"))
+                .willReturn(aResponse().withStatus(201)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("{\"id\":\"u-new\"}")));
+
+        // When
+        client.users().create(CreateUserRequest.builder()
+                .username("dana")
+                .password("secret99")
+                .firstName("Dana")
+                .lastName("Lee")
+                .assignedRoles(List.of(
+                        new AssignedRole("role-manager",
+                                List.of(new ContextLimitation("FACILITY", List.of("fac-99"))),
+                                null)))
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/users"))
+                .withRequestBody(matchingJsonPath("$.assignedRoles[0].ref", equalTo("role-manager")))
+                .withRequestBody(matchingJsonPath("$.assignedRoles[0].context[0].type", equalTo("FACILITY")))
+                .withRequestBody(matchingJsonPath("$.assignedRoles[0].context[0].values[0]", equalTo("fac-99"))));
+    }
+
+    @Test
     void get_returnsDeserializedUser() {
         // Given
         server.stubFor(get(urlPathEqualTo("/api/users/u-1"))

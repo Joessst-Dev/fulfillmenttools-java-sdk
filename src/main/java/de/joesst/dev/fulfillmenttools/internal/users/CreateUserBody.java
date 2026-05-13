@@ -1,10 +1,12 @@
 package de.joesst.dev.fulfillmenttools.internal.users;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.joesst.dev.fulfillmenttools.users.AssignedRole;
 
 import java.util.List;
-import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 record CreateUserBody(
         String username,
         String password,
@@ -12,5 +14,5 @@ record CreateUserBody(
         @JsonProperty("lastname") String lastName,
         String email,
         String locale,
-        List<Map<String, Object>> assignedRoles
+        List<AssignedRole> assignedRoles
 ) {}

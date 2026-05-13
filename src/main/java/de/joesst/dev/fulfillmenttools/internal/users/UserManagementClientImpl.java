@@ -176,7 +176,7 @@ public final class UserManagementClientImpl implements UserManagementClient {
     private UpdateUserBody buildUpdateBody(UpdateUserRequest request) {
         UpdateUserBody.ModifyUserAction action = new UpdateUserBody.ModifyUserAction(
                 request.firstName(), request.lastName(), request.email(), request.password(),
-                request.locale(), request.assignedRoles(), request.customAttributes());
+                request.locale(), request.assignedRoles());
         return new UpdateUserBody(request.version(), List.of(action));
     }
 
