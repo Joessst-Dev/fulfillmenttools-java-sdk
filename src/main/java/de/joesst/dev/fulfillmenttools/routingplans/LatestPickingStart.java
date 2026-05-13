@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
+import de.joesst.dev.fulfillmenttools.id.CarrierId;
+
 import java.time.Instant;
 
 /**
@@ -16,6 +18,6 @@ import java.time.Instant;
  */
 public record LatestPickingStart(
         Instant targetTime,
-        String carrierRef,
+        CarrierId carrierRef,
         Instant latestPickingStartDate
 ) {}

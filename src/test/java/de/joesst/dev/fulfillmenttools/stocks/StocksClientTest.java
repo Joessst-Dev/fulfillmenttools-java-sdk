@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.stocks;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -62,7 +63,7 @@ class StocksClientTest {
         // Then
         assertThat(page.items()).hasSize(2);
         assertThat(page.items().get(0).id()).isEqualTo("s-1");
-        assertThat(page.items().get(0).facilityRef()).isEqualTo("fac-1");
+        assertThat(page.items().get(0).facilityRef().value()).isEqualTo("fac-1");
         assertThat(page.items().get(0).tenantArticleId()).isEqualTo("art-1");
         assertThat(page.items().get(0).value()).isEqualTo(10);
         assertThat(page.items().get(0).available()).isEqualTo(8.0);
@@ -94,7 +95,7 @@ class StocksClientTest {
         client.stocks().list(StockListRequest.builder()
                 .size(10)
                 .startAfterId("cursor-abc")
-                .facilityRef("fac-1")
+                .facilityRef(new FacilityId("fac-1"))
                 .build());
 
         // Then
@@ -252,7 +253,7 @@ class StocksClientTest {
 
         // Then
         assertThat(item.facility()).isNotNull();
-        assertThat(item.facility().facilityRef()).isEqualTo("fac-1");
+        assertThat(item.facility().facilityRef().value()).isEqualTo("fac-1");
         assertThat(item.facility().tenantFacilityId()).isEqualTo(new TenantFacilityId("tenant-fac-1"));
     }
 

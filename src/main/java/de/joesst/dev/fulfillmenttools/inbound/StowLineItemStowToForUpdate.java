@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public record StowLineItemStowToForUpdate(
         Integer quantity,
         String type,
         String stockRef,
-        String storageLocationRef,
+        StorageLocationId storageLocationRef,
         List<String> scannableCodes,
         StowedProgress stowed
 ) {}

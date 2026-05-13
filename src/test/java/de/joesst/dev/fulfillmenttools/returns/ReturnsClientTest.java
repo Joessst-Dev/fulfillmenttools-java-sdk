@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
@@ -128,7 +129,7 @@ class ReturnsClientTest {
         client.returns().list(ReturnListRequest.builder()
                 .size(5)
                 .startAfterId("cursor-abc")
-                .facilityId("fac-1")
+                .facilityId(new FacilityId("fac-1"))
                 .itemReturnJobStatus(List.of("OPEN", "IN_PROGRESS"))
                 .searchTerm("test")
                 .build());
@@ -173,7 +174,7 @@ class ReturnsClientTest {
 
         // When
         Return ret = client.returns().create(CreateReturnRequest.builder()
-                .originFacilityRefs(List.of("fac-1"))
+                .originFacilityRefs(List.of(new FacilityId("fac-1")))
                 .status("OPEN")
                 .build());
 
@@ -190,7 +191,7 @@ class ReturnsClientTest {
 
         // When
         client.returns().create(CreateReturnRequest.builder()
-                .originFacilityRefs(List.of("fac-1", "fac-2"))
+                .originFacilityRefs(List.of(new FacilityId("fac-1"), new FacilityId("fac-2")))
                 .status("OPEN")
                 .tenantOrderId(new TenantOrderId("ext-001"))
                 .build());
@@ -212,7 +213,7 @@ class ReturnsClientTest {
 
     @Test
     void create_requiresStatus() {
-        assertThatThrownBy(() -> CreateReturnRequest.builder().originFacilityRefs(List.of("fac-1")).build())
+        assertThatThrownBy(() -> CreateReturnRequest.builder().originFacilityRefs(List.of(new FacilityId("fac-1"))).build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("status");
     }

@@ -1,5 +1,8 @@
 package de.joesst.dev.fulfillmenttools.handoverjobs;
 
+import de.joesst.dev.fulfillmenttools.id.CarrierId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 
 import java.util.List;
@@ -16,12 +19,12 @@ public final class HandoverJobListRequest {
 
     private final Integer size;
     private final String startAfterId;
-    private final String facilityRef;
+    private final FacilityId facilityRef;
     private final List<String> status;
-    private final String pickJobRef;
+    private final PickJobId pickJobRef;
     private final String shipmentRef;
     private final String assignedUser;
-    private final List<String> carrierRefs;
+    private final List<CarrierId> carrierRefs;
     private final String channel;
     private final Boolean anonymized;
     private final TenantOrderId tenantOrderId;
@@ -59,10 +62,10 @@ public final class HandoverJobListRequest {
     public String startAfterId() { return startAfterId; }
 
     /**
-     * Returns the facility reference filter.
-     * @return the facility reference, or {@code null} if not set
+     * Returns the facility ID filter.
+     * @return the facility ID, or {@code null} if not set
      */
-    public String facilityRef() { return facilityRef; }
+    public FacilityId facilityRef() { return facilityRef; }
 
     /**
      * Returns the status filter values.
@@ -71,10 +74,10 @@ public final class HandoverJobListRequest {
     public List<String> status() { return status; }
 
     /**
-     * Returns the pick job reference filter.
-     * @return the pick job reference, or {@code null} if not set
+     * Returns the pick job ID filter.
+     * @return the pick job ID, or {@code null} if not set
      */
-    public String pickJobRef() { return pickJobRef; }
+    public PickJobId pickJobRef() { return pickJobRef; }
 
     /**
      * Returns the shipment reference filter.
@@ -89,10 +92,10 @@ public final class HandoverJobListRequest {
     public String assignedUser() { return assignedUser; }
 
     /**
-     * Returns the carrier reference filters.
-     * @return the carrier reference list, or {@code null} if not set
+     * Returns the carrier ID filters.
+     * @return the carrier ID list, or {@code null} if not set
      */
-    public List<String> carrierRefs() { return carrierRefs; }
+    public List<CarrierId> carrierRefs() { return carrierRefs; }
 
     /**
      * Returns the delivery channel filter.
@@ -170,12 +173,12 @@ public final class HandoverJobListRequest {
 
         private Integer size;
         private String startAfterId;
-        private String facilityRef;
+        private FacilityId facilityRef;
         private List<String> status;
-        private String pickJobRef;
+        private PickJobId pickJobRef;
         private String shipmentRef;
         private String assignedUser;
-        private List<String> carrierRefs;
+        private List<CarrierId> carrierRefs;
         private String channel;
         private Boolean anonymized;
         private TenantOrderId tenantOrderId;
@@ -201,11 +204,11 @@ public final class HandoverJobListRequest {
         public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
 
         /**
-         * Sets the facility reference to filter by.
-         * @param facilityRef the facility reference
+         * Sets the facility ID to filter by.
+         * @param facilityRef the facility ID
          * @return this builder
          */
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
          * Sets the status values to filter by.
@@ -215,11 +218,11 @@ public final class HandoverJobListRequest {
         public Builder status(List<String> status) { this.status = status; return this; }
 
         /**
-         * Sets the pick job reference to filter by.
-         * @param pickJobRef the pick job reference
+         * Sets the pick job ID to filter by.
+         * @param pickJobRef the pick job ID
          * @return this builder
          */
-        public Builder pickJobRef(String pickJobRef) { this.pickJobRef = pickJobRef; return this; }
+        public Builder pickJobRef(PickJobId pickJobRef) { this.pickJobRef = pickJobRef; return this; }
 
         /**
          * Sets the shipment reference to filter by.
@@ -240,7 +243,7 @@ public final class HandoverJobListRequest {
          * @param carrierRefs the carrier reference list
          * @return this builder
          */
-        public Builder carrierRefs(List<String> carrierRefs) { this.carrierRefs = carrierRefs; return this; }
+        public Builder carrierRefs(List<CarrierId> carrierRefs) { this.carrierRefs = carrierRefs; return this; }
 
         /**
          * Sets the delivery channel to filter by.

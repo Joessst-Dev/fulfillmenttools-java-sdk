@@ -133,12 +133,12 @@ public final class HandoverJobsClientImpl implements HandoverJobsClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
+        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef().value());
         if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
-        if (request.pickJobRef() != null) builder.queryParam("pickJobRef", request.pickJobRef());
+        if (request.pickJobRef() != null) builder.queryParam("pickJobRef", request.pickJobRef().value());
         if (request.shipmentRef() != null) builder.queryParam("shipmentRef", request.shipmentRef());
         if (request.assignedUser() != null) builder.queryParam("assignedUser", request.assignedUser());
-        if (request.carrierRefs() != null) request.carrierRefs().forEach(c -> builder.queryParam("carrierRefs", c));
+        if (request.carrierRefs() != null) request.carrierRefs().forEach(c -> builder.queryParam("carrierRefs", c.value()));
         if (request.channel() != null) builder.queryParam("channel", request.channel());
         if (request.anonymized() != null) builder.queryParam("anonymized", String.valueOf(request.anonymized()));
         if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId().value());

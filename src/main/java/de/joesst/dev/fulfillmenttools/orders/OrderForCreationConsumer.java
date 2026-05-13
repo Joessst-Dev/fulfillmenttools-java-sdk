@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public final class OrderForCreationConsumer {
     private final List<ConsumerAddress> addresses;
     private final String consumerId;
     private final String email;
-    private final String facilityRef;
+    private final FacilityId facilityRef;
     private final TenantFacilityId tenantFacilityId;
     private final Map<String, Object> customAttributes;
 
@@ -52,7 +53,7 @@ public final class OrderForCreationConsumer {
      *
      * @return the facility reference, or null if not set
      */
-    public String facilityRef() { return facilityRef; }
+    public FacilityId facilityRef() { return facilityRef; }
 
     /**
      * Returns the tenant facility ID.
@@ -86,7 +87,7 @@ public final class OrderForCreationConsumer {
         private List<ConsumerAddress> addresses;
         private String consumerId;
         private String email;
-        private String facilityRef;
+        private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
         private Map<String, Object> customAttributes;
 
@@ -120,7 +121,7 @@ public final class OrderForCreationConsumer {
          * @param facilityRef the facility reference
          * @return this builder
          */
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
          * Sets the tenant facility ID.

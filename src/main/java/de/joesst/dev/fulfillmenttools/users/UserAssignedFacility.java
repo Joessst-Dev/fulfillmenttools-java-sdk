@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.users;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 /**
  * A facility directly assigned to a user.
  *
@@ -11,5 +13,5 @@ package de.joesst.dev.fulfillmenttools.users;
  */
 @Deprecated
 public record UserAssignedFacility(
-        String facilityRef
+        FacilityId facilityRef
 ) {}

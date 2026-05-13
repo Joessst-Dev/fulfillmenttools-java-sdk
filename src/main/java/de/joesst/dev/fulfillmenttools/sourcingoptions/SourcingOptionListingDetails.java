@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.util.Map;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 public record SourcingOptionListingDetails(
         String listingRef,
-        String facilityRef,
+        FacilityId facilityRef,
         TenantFacilityId tenantFacilityId,
         String tenantArticleId,
         SourcingOptionStockInformation stockInformation,

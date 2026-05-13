@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.UserId;
 
 /**
  * Specifies a user to assign to a stow job in a create or update request.
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record AssignedUserInput(
-        String userId,
+        UserId userId,
         String username
 ) {
 
@@ -32,7 +33,7 @@ public record AssignedUserInput(
      * @param userId the internal user ID; must not be {@code null}
      * @return a new {@code AssignedUserInput}
      */
-    public static AssignedUserInput byId(String userId) {
+    public static AssignedUserInput byId(UserId userId) {
         return new AssignedUserInput(userId, null);
     }
 
@@ -53,7 +54,7 @@ public record AssignedUserInput(
      * @param username the username; must not be {@code null}
      * @return a new {@code AssignedUserInput}
      */
-    public static AssignedUserInput of(String userId, String username) {
+    public static AssignedUserInput of(UserId userId, String username) {
         return new AssignedUserInput(userId, username);
     }
 }

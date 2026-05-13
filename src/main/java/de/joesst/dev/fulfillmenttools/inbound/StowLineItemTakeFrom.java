@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public record StowLineItemTakeFrom(
         Integer quantity,
         String type,
         String stockRef,
-        String storageLocationRef,
+        StorageLocationId storageLocationRef,
         List<String> scannableCodes,
         StowJobStockInformation stockInformation,
         TakenProgress taken

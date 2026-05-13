@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public final class ConsumerAddressesForSourcingOptions {
 
     private final List<ConsumerAddressForSourcingOptions> addresses;
     private final String consumerId;
-    private final String facilityRef;
+    private final FacilityId facilityRef;
     private final TenantFacilityId tenantFacilityId;
     private final Map<String, Object> customAttributes;
 
@@ -42,7 +43,7 @@ public final class ConsumerAddressesForSourcingOptions {
      * Returns the facility reference.
      * @return the facility ref, or {@code null} if not set
      */
-    public String facilityRef() { return facilityRef; }
+    public FacilityId facilityRef() { return facilityRef; }
 
     /**
      * Returns the tenant-scoped facility identifier.
@@ -72,7 +73,7 @@ public final class ConsumerAddressesForSourcingOptions {
 
         private List<ConsumerAddressForSourcingOptions> addresses;
         private String consumerId;
-        private String facilityRef;
+        private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
         private Map<String, Object> customAttributes;
 
@@ -95,7 +96,7 @@ public final class ConsumerAddressesForSourcingOptions {
          * @param facilityRef the facility ref
          * @return this builder
          */
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
          * Sets the tenant-scoped facility identifier.

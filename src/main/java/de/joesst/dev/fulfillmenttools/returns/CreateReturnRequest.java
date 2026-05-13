@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
  */
 public final class CreateReturnRequest {
 
-    private final List<String> originFacilityRefs;
+    private final List<FacilityId> originFacilityRefs;
     private final String status;
     private final List<ConsumerAddress> consumerAddresses;
     private final List<ReturnJobLineItemForCreation> returnableLineItems;
@@ -42,10 +43,10 @@ public final class CreateReturnRequest {
     }
 
     /**
-     * Returns the origin facility references.
-     * @return the origin facility references; never {@code null}
+     * Returns the origin facility IDs.
+     * @return the origin facility IDs; never {@code null}
      */
-    public List<String> originFacilityRefs() { return originFacilityRefs; }
+    public List<FacilityId> originFacilityRefs() { return originFacilityRefs; }
 
     /**
      * Returns the return job status.
@@ -109,7 +110,7 @@ public final class CreateReturnRequest {
         /** Creates a new Builder instance. */
         public Builder() {}
 
-        private List<String> originFacilityRefs;
+        private List<FacilityId> originFacilityRefs;
         private String status;
         private List<ConsumerAddress> consumerAddresses;
         private List<ReturnJobLineItemForCreation> returnableLineItems;
@@ -120,11 +121,11 @@ public final class CreateReturnRequest {
         private Map<String, Object> customAttributes;
 
         /**
-         * Sets the origin facility references (required).
-         * @param originFacilityRefs the origin facility references
+         * Sets the origin facility IDs (required).
+         * @param originFacilityRefs the origin facility IDs
          * @return this builder
          */
-        public Builder originFacilityRefs(List<String> originFacilityRefs) { this.originFacilityRefs = originFacilityRefs; return this; }
+        public Builder originFacilityRefs(List<FacilityId> originFacilityRefs) { this.originFacilityRefs = originFacilityRefs; return this; }
 
         /**
          * Sets the return job status (required).

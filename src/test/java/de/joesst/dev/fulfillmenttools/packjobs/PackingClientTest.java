@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.id.PackJobId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
@@ -134,9 +136,9 @@ class PackingClientTest {
         client.packing().list(PackJobListRequest.builder()
                 .size(5)
                 .startAfterId("cursor-abc")
-                .facilityRef("fac-1")
+                .facilityRef(new FacilityId("fac-1"))
                 .status(List.of("OPEN", "IN_PROGRESS"))
-                .orderRef("ord-1")
+                .orderRef(new OrderId("ord-1"))
                 .tenantOrderId(new TenantOrderId("ext-001"))
                 .orderBy("TARGET_TIME_ASC")
                 .shortId("PK99")

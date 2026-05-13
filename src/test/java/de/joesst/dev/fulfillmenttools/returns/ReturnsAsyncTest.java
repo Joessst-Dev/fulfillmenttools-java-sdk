@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.returns;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import org.junit.jupiter.api.*;
 
@@ -73,7 +74,7 @@ class ReturnsAsyncTest {
         // When
         Return ret = client.returns()
                 .createAsync(CreateReturnRequest.builder()
-                        .originFacilityRefs(List.of("fac-1"))
+                        .originFacilityRefs(List.of(new FacilityId("fac-1")))
                         .status("OPEN")
                         .build()).get();
 

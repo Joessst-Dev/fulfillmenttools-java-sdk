@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.stocks;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.time.Instant;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @param version              Optimistic-locking version counter.
  * @param created              Timestamp when this stock record was created.
  * @param lastModified         Timestamp when this stock record was last modified.
- * @param facilityRef          Reference to the owning facility.
+ * @param facilityRef          {@link FacilityId} reference to the owning facility.
  * @param tenantArticleId      The tenant's own article identifier.
  * @param tenantStockId        The tenant's own stock identifier.
  * @param value                Total quantity of this stock (integer).
@@ -43,7 +44,7 @@ public record StockItem(
         Integer version,
         Instant created,
         Instant lastModified,
-        String facilityRef,
+        FacilityId facilityRef,
         String tenantArticleId,
         String tenantStockId,
         Integer value,

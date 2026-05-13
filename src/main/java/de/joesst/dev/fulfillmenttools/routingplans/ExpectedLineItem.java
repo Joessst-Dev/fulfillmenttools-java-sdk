@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.MeasurementValidation;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticle;
@@ -43,6 +44,6 @@ public record ExpectedLineItem(
         MeasurementValidation measurementValidation,
         List<TagReference> tags,
         Map<String, Object> customAttributes,
-        String facilityRef,
+        FacilityId facilityRef,
         String transferId
 ) {}

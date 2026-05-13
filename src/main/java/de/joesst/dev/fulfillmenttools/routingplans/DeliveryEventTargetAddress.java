@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 /**
  * Associates a delivery target address with a specific delivery event and facility.
  *
@@ -12,7 +14,7 @@ package de.joesst.dev.fulfillmenttools.routingplans;
  * @param deliveryEvent The delivery event identifier (required).
  */
 public record DeliveryEventTargetAddress(
-        String facilityRef,
+        FacilityId facilityRef,
         TargetAddress targetAddress,
         String deliveryEvent
 ) {}

@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.CarrierId;
 
 /**
  * Options controlling how delivery promises are calculated for sourcing options.
@@ -17,6 +18,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SourcingOptionsPromisesOptions(
         Boolean calculatePromises,
-        String carrierId,
+        CarrierId carrierId,
         String carrierProductId
 ) {}

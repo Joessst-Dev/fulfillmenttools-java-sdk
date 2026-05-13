@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -136,7 +137,7 @@ class RoutingPlansClientTest {
                 .willReturn(okJson("{\"routingPlans\":[], \"total\":0}")));
 
         // When
-        client.routingPlans().list(RoutingPlanListRequest.builder().orderRef("order-abc").build());
+        client.routingPlans().list(RoutingPlanListRequest.builder().orderRef(new OrderId("order-abc")).build());
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/routingplans"))

@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
+import de.joesst.dev.fulfillmenttools.id.UserId;
+
 /**
  * Identifies the user who currently has the pick job open for editing.
  *
@@ -11,6 +13,6 @@ package de.joesst.dev.fulfillmenttools.pickjobs;
  * @param username Username of the user who is editing the pick job.
  */
 public record PickJobEditor(
-        String userId,
+        UserId userId,
         String username
 ) {}

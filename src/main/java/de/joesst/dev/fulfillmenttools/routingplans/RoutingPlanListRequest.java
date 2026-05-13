@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+
 /**
  * Request parameters for listing routing plans with optional filtering and pagination.
  *
@@ -10,7 +12,7 @@ package de.joesst.dev.fulfillmenttools.routingplans;
  */
 public final class RoutingPlanListRequest {
 
-    private final String orderRef;
+    private final OrderId orderRef;
 
     /**
      * Creates a new request with the values from the builder.
@@ -26,7 +28,7 @@ public final class RoutingPlanListRequest {
      *
      * @return the order reference filter, or null if not set
      */
-    public String orderRef() { return orderRef; }
+    public OrderId orderRef() { return orderRef; }
 
     /**
      * Returns a new builder initialized with this request's current values.
@@ -54,7 +56,7 @@ public final class RoutingPlanListRequest {
      */
     public static final class Builder {
 
-        private String orderRef;
+        private OrderId orderRef;
 
         /**
          * Creates a new Builder.
@@ -67,7 +69,7 @@ public final class RoutingPlanListRequest {
          * @param orderRef order reference to filter by
          * @return this builder
          */
-        public Builder orderRef(String orderRef) { this.orderRef = orderRef; return this; }
+        public Builder orderRef(OrderId orderRef) { this.orderRef = orderRef; return this; }
 
         /**
          * Builds the {@code RoutingPlanListRequest}.

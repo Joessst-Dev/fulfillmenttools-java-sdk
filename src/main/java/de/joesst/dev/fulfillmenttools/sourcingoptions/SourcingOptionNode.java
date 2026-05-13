@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public record SourcingOptionNode(
         String id,
-        String facilityRef,
+        FacilityId facilityRef,
         TenantFacilityId tenantFacilityId,
         String type,
         Boolean isPickUpLocation,

@@ -141,14 +141,16 @@ public final class RoutingPlansClientImpl implements RoutingPlansClient {
                 .method(HttpMethod.GET)
                 .url(baseUrl + "/api/routingplans");
 
-        if (request.orderRef() != null) builder.queryParam("orderRef", request.orderRef());
+        if (request.orderRef() != null) builder.queryParam("orderRef", request.orderRef().value());
 
         return builder.build();
     }
 
     private UpdateRoutingPlanBody buildUpdateBody(UpdateRoutingPlanRequest request) {
         UpdateRoutingPlanBody.ModifyRoutingPlanAction action =
-                new UpdateRoutingPlanBody.ModifyRoutingPlanAction(request.facilityRef(), request.status());
+                new UpdateRoutingPlanBody.ModifyRoutingPlanAction(
+                        request.facilityRef() != null ? request.facilityRef().value() : null,
+                        request.status());
         return new UpdateRoutingPlanBody(request.version(), List.of(action));
     }
 

@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.UserId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -223,7 +224,7 @@ class UserManagementClientTest {
                 .size(10)
                 .startAfterId("cursor-abc")
                 .orderBy("lastname")
-                .facilityId("fac-1")
+                .facilityId(new FacilityId("fac-1"))
                 .includeAdminUsers(true)
                 .build());
 

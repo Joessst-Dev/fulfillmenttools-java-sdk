@@ -112,7 +112,7 @@ public final class PackingClientImpl implements PackingClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
+        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef().value());
         if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
         if (request.anonymized() != null) builder.queryParam("anonymized", String.valueOf(request.anonymized()));
         if (request.assignedUser() != null) builder.queryParam("assignedUser", request.assignedUser());
@@ -122,10 +122,10 @@ public final class PackingClientImpl implements PackingClient {
         if (request.orderBy() != null) builder.queryParam("orderBy", request.orderBy());
         if (request.startTargetTime() != null) builder.queryParam("startTargetTime", request.startTargetTime());
         if (request.endTargetTime() != null) builder.queryParam("endTargetTime", request.endTargetTime());
-        if (request.orderRef() != null) builder.queryParam("orderRef", request.orderRef());
-        if (request.packJobIds() != null) request.packJobIds().forEach(id -> builder.queryParam("packJobIds", id));
-        if (request.processId() != null) builder.queryParam("processId", request.processId());
-        if (request.pickJobRef() != null) builder.queryParam("pickJobRef", request.pickJobRef());
+        if (request.orderRef() != null) builder.queryParam("orderRef", request.orderRef().value());
+        if (request.packJobIds() != null) request.packJobIds().forEach(id -> builder.queryParam("packJobIds", id.value()));
+        if (request.processId() != null) builder.queryParam("processId", request.processId().value());
+        if (request.pickJobRef() != null) builder.queryParam("pickJobRef", request.pickJobRef().value());
         if (request.shortId() != null) builder.queryParam("shortId", request.shortId());
         if (request.articleTitle() != null) builder.queryParam("articleTitle", request.articleTitle());
         if (request.startOrderDate() != null) builder.queryParam("startOrderDate", request.startOrderDate());

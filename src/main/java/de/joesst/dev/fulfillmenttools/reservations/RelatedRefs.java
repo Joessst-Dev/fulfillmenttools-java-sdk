@@ -1,6 +1,10 @@
 package de.joesst.dev.fulfillmenttools.reservations;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 
 import java.util.List;
 
@@ -17,13 +21,13 @@ import java.util.List;
  * @param pickJobRefs     references to related pick jobs
  * @param processRefs     references to related processes
  * @param routingPlanRefs references to related routing plans
- * @param transferRefs    references to related transfers
+ * @param transferRefs    references to related transfers (kept as {@code String}; no typed ID class)
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record RelatedRefs(
-        List<String> orderRefs,
-        List<String> pickJobRefs,
-        List<String> processRefs,
-        List<String> routingPlanRefs,
+        List<OrderId> orderRefs,
+        List<PickJobId> pickJobRefs,
+        List<ProcessId> processRefs,
+        List<RoutingPlanId> routingPlanRefs,
         List<String> transferRefs
 ) {}

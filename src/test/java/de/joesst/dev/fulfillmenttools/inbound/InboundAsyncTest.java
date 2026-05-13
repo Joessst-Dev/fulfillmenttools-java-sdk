@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.inbound;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import org.junit.jupiter.api.*;
 
@@ -74,7 +75,7 @@ class InboundAsyncTest {
         // When
         StowJob job = client.inbound()
                 .createAsync(CreateStowJobRequest.builder()
-                        .facilityRef("fac-1")
+                        .facilityRef(new FacilityId("fac-1"))
                         .status("OPEN")
                         .stowLineItems(List.of())
                         .build()).get();

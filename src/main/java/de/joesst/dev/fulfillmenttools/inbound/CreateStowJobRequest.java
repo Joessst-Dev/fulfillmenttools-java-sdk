@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,7 @@ import java.util.Objects;
  */
 public final class CreateStowJobRequest {
 
-    private final String facilityRef;
+    private final FacilityId facilityRef;
     private final String status;
     private final List<StowLineItemForCreation> stowLineItems;
     private final List<AssignedUserInput> assignedUsers;
@@ -46,7 +48,7 @@ public final class CreateStowJobRequest {
      * Returns the facility reference.
      * @return the facility ref; never {@code null}
      */
-    public String facilityRef() { return facilityRef; }
+    public FacilityId facilityRef() { return facilityRef; }
 
     /**
      * Returns the initial status of the stow job.
@@ -104,7 +106,7 @@ public final class CreateStowJobRequest {
         /** Creates a new Builder instance. */
         public Builder() {}
 
-        private String facilityRef;
+        private FacilityId facilityRef;
         private String status;
         private List<StowLineItemForCreation> stowLineItems;
         private List<AssignedUserInput> assignedUsers;
@@ -118,7 +120,7 @@ public final class CreateStowJobRequest {
          * @param facilityRef the facility ref
          * @return this builder
          */
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
          * Sets the initial status (required).

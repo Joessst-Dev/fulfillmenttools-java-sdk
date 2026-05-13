@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+
 import java.time.Instant;
 
 /**
@@ -25,5 +27,5 @@ public record StowedProgress(
         Instant stowedAt,
         Integer stowedQuantity,
         String stowedStockRef,
-        String stowedStorageLocationRef
+        StorageLocationId stowedStorageLocationRef
 ) {}

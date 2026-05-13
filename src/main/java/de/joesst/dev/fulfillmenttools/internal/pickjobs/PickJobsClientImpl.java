@@ -195,9 +195,9 @@ public final class PickJobsClientImpl implements PickJobsClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
+        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef().value());
         if (request.status() != null) request.status().forEach(s -> builder.queryParam("status", s));
-        if (request.orderRef() != null) builder.queryParam("orderRef", request.orderRef());
+        if (request.orderRef() != null) builder.queryParam("orderRef", request.orderRef().value());
         if (request.tenantOrderId() != null) builder.queryParam("tenantOrderId", request.tenantOrderId().value());
         if (request.assignedUser() != null) builder.queryParam("assignedUser", request.assignedUser());
         if (request.searchTerm() != null) builder.queryParam("searchTerm", request.searchTerm());
@@ -214,7 +214,7 @@ public final class PickJobsClientImpl implements PickJobsClient {
         if (request.endTargetTime() != null) builder.queryParam("endTargetTime", request.endTargetTime());
         if (request.carrierKeys() != null) request.carrierKeys().forEach(k -> builder.queryParam("carrierKeys", k));
         if (request.zoneRefs() != null) request.zoneRefs().forEach(z -> builder.queryParam("zoneRefs", z));
-        if (request.pickJobRefs() != null) request.pickJobRefs().forEach(r -> builder.queryParam("pickJobRefs", r));
+        if (request.pickJobRefs() != null) request.pickJobRefs().forEach(r -> builder.queryParam("pickJobRefs", r.value()));
 
         return builder;
     }

@@ -1,5 +1,10 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.PackJobId;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
+import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 
 import java.util.List;
@@ -16,7 +21,7 @@ public final class PackJobListRequest {
 
     private final Integer size;
     private final String startAfterId;
-    private final String facilityRef;
+    private final FacilityId facilityRef;
     private final List<String> status;
     private final Boolean anonymized;
     private final String assignedUser;
@@ -26,10 +31,10 @@ public final class PackJobListRequest {
     private final String orderBy;
     private final String startTargetTime;
     private final String endTargetTime;
-    private final String orderRef;
-    private final List<String> packJobIds;
-    private final String processId;
-    private final String pickJobRef;
+    private final OrderId orderRef;
+    private final List<PackJobId> packJobIds;
+    private final ProcessId processId;
+    private final PickJobId pickJobRef;
     private final String shortId;
     private final String articleTitle;
     private final String startOrderDate;
@@ -40,7 +45,7 @@ public final class PackJobListRequest {
     /**
      * @param size Maximum number of results to return; defaults to 100.
      * @param startAfterId Pagination cursor: return results after this pack job ID.
-     * @param facilityRef Filter by facility reference.
+     * @param facilityRef Filter by facility ID.
      * @param status Filter by pack job status (one or more).
      * @param anonymized Filter by anonymization status.
      * @param assignedUser Filter by assigned user ID.
@@ -50,10 +55,10 @@ public final class PackJobListRequest {
      * @param orderBy Sort key and direction (e.g. {@code "created,desc"}).
      * @param startTargetTime Filter by target time (inclusive start).
      * @param endTargetTime Filter by target time (inclusive end).
-     * @param orderRef Filter by order reference.
+     * @param orderRef Filter by order ID.
      * @param packJobIds Filter by pack job ID (one or more).
      * @param processId Filter by process ID.
-     * @param pickJobRef Filter by pick job reference.
+     * @param pickJobRef Filter by pick job ID.
      * @param shortId Filter by short ID.
      * @param articleTitle Filter by article title.
      * @param startOrderDate Filter by order date (inclusive start).
@@ -101,11 +106,11 @@ public final class PackJobListRequest {
     public String startAfterId() { return startAfterId; }
 
     /**
-     * Returns the facility reference filter.
+     * Returns the facility ID filter.
      *
-     * @return the facility reference, or null if not set
+     * @return the facility ID, or null if not set
      */
-    public String facilityRef() { return facilityRef; }
+    public FacilityId facilityRef() { return facilityRef; }
 
     /**
      * Returns the status filter values.
@@ -171,32 +176,32 @@ public final class PackJobListRequest {
     public String endTargetTime() { return endTargetTime; }
 
     /**
-     * Returns the order reference filter.
+     * Returns the order ID filter.
      *
-     * @return the order reference, or null if not set
+     * @return the order ID, or null if not set
      */
-    public String orderRef() { return orderRef; }
+    public OrderId orderRef() { return orderRef; }
 
     /**
      * Returns the pack job ID filters.
      *
      * @return the pack job IDs list, or null if not set
      */
-    public List<String> packJobIds() { return packJobIds; }
+    public List<PackJobId> packJobIds() { return packJobIds; }
 
     /**
      * Returns the process ID filter.
      *
      * @return the process ID, or null if not set
      */
-    public String processId() { return processId; }
+    public ProcessId processId() { return processId; }
 
     /**
-     * Returns the pick job reference filter.
+     * Returns the pick job ID filter.
      *
-     * @return the pick job reference, or null if not set
+     * @return the pick job ID, or null if not set
      */
-    public String pickJobRef() { return pickJobRef; }
+    public PickJobId pickJobRef() { return pickJobRef; }
 
     /**
      * Returns the short ID filter.
@@ -293,7 +298,7 @@ public final class PackJobListRequest {
 
         private Integer size;
         private String startAfterId;
-        private String facilityRef;
+        private FacilityId facilityRef;
         private List<String> status;
         private Boolean anonymized;
         private String assignedUser;
@@ -303,10 +308,10 @@ public final class PackJobListRequest {
         private String orderBy;
         private String startTargetTime;
         private String endTargetTime;
-        private String orderRef;
-        private List<String> packJobIds;
-        private String processId;
-        private String pickJobRef;
+        private OrderId orderRef;
+        private List<PackJobId> packJobIds;
+        private ProcessId processId;
+        private PickJobId pickJobRef;
         private String shortId;
         private String articleTitle;
         private String startOrderDate;
@@ -331,12 +336,12 @@ public final class PackJobListRequest {
         public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
 
         /**
-         * Sets the facility reference filter.
+         * Sets the facility ID filter.
          *
-         * @param facilityRef the facility reference
+         * @param facilityRef the facility ID
          * @return this builder
          */
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
          * Sets the status filter.
@@ -411,12 +416,12 @@ public final class PackJobListRequest {
         public Builder endTargetTime(String endTargetTime) { this.endTargetTime = endTargetTime; return this; }
 
         /**
-         * Sets the order reference filter.
+         * Sets the order ID filter.
          *
-         * @param orderRef the order reference
+         * @param orderRef the order ID
          * @return this builder
          */
-        public Builder orderRef(String orderRef) { this.orderRef = orderRef; return this; }
+        public Builder orderRef(OrderId orderRef) { this.orderRef = orderRef; return this; }
 
         /**
          * Sets the pack job ID filters.
@@ -424,7 +429,7 @@ public final class PackJobListRequest {
          * @param packJobIds the pack job IDs
          * @return this builder
          */
-        public Builder packJobIds(List<String> packJobIds) { this.packJobIds = packJobIds; return this; }
+        public Builder packJobIds(List<PackJobId> packJobIds) { this.packJobIds = packJobIds; return this; }
 
         /**
          * Sets the process ID filter.
@@ -432,15 +437,15 @@ public final class PackJobListRequest {
          * @param processId the process ID
          * @return this builder
          */
-        public Builder processId(String processId) { this.processId = processId; return this; }
+        public Builder processId(ProcessId processId) { this.processId = processId; return this; }
 
         /**
-         * Sets the pick job reference filter.
+         * Sets the pick job ID filter.
          *
-         * @param pickJobRef the pick job reference
+         * @param pickJobRef the pick job ID
          * @return this builder
          */
-        public Builder pickJobRef(String pickJobRef) { this.pickJobRef = pickJobRef; return this; }
+        public Builder pickJobRef(PickJobId pickJobRef) { this.pickJobRef = pickJobRef; return this; }
 
         /**
          * Sets the short ID filter.

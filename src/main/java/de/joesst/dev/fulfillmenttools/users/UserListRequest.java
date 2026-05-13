@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.users;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 /**
  * Request parameters for listing users via {@link UserManagementClient#list(UserListRequest)}.
  *
@@ -18,7 +20,7 @@ public final class UserListRequest {
     private final Integer size;
     private final String startAfterId;
     private final String orderBy;
-    private final String facilityId;
+    private final FacilityId facilityId;
     private final Boolean includeAdminUsers;
 
     private UserListRequest(Builder builder) {
@@ -55,7 +57,7 @@ public final class UserListRequest {
      *
      * @return the facility ID, or {@code null} if not set
      */
-    public String facilityId() { return facilityId; }
+    public FacilityId facilityId() { return facilityId; }
 
     /**
      * Returns whether to include admin users in the results.
@@ -99,7 +101,7 @@ public final class UserListRequest {
         private Integer size;
         private String startAfterId;
         private String orderBy;
-        private String facilityId;
+        private FacilityId facilityId;
         private Boolean includeAdminUsers;
 
         /**
@@ -132,7 +134,7 @@ public final class UserListRequest {
          * @param facilityId the facility ID
          * @return this builder
          */
-        public Builder facilityId(String facilityId) { this.facilityId = facilityId; return this; }
+        public Builder facilityId(FacilityId facilityId) { this.facilityId = facilityId; return this; }
 
         /**
          * Sets whether to include admin users in the results.

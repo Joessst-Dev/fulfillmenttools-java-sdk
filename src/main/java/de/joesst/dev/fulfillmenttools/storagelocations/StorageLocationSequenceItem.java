@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.storagelocations;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 
 /**
  * Represents a single entry in a storage location's running sequence, describing the
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record StorageLocationSequenceItem(
         String type,
-        String nextStorageLocationRef,
-        String previousStorageLocationRef,
+        StorageLocationId nextStorageLocationRef,
+        StorageLocationId previousStorageLocationRef,
         Double score
 ) {}

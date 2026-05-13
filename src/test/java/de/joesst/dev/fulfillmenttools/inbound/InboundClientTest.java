@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -178,7 +179,7 @@ class InboundClientTest {
 
         // When
         StowJob job = client.inbound().create(CreateStowJobRequest.builder()
-                .facilityRef("fac-1")
+                .facilityRef(new FacilityId("fac-1"))
                 .status("OPEN")
                 .stowLineItems(List.of())
                 .build());
@@ -196,7 +197,7 @@ class InboundClientTest {
 
         // When
         client.inbound().create(CreateStowJobRequest.builder()
-                .facilityRef("fac-1")
+                .facilityRef(new FacilityId("fac-1"))
                 .status("OPEN")
                 .stowLineItems(List.of())
                 .build());
@@ -219,7 +220,7 @@ class InboundClientTest {
     @Test
     void create_requiresStatus() {
         assertThatThrownBy(() -> CreateStowJobRequest.builder()
-                .facilityRef("fac-1").stowLineItems(List.of()).build())
+                .facilityRef(new FacilityId("fac-1")).stowLineItems(List.of()).build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("status");
     }
@@ -227,7 +228,7 @@ class InboundClientTest {
     @Test
     void create_requiresStowLineItems() {
         assertThatThrownBy(() -> CreateStowJobRequest.builder()
-                .facilityRef("fac-1").status("OPEN").build())
+                .facilityRef(new FacilityId("fac-1")).status("OPEN").build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("stowLineItems");
     }

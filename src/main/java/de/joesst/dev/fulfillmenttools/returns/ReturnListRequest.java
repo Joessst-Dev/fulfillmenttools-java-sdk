@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ public final class ReturnListRequest {
 
     private final Integer size;
     private final String startAfterId;
-    private final String facilityId;
+    private final FacilityId facilityId;
     private final List<String> itemReturnJobStatus;
     private final List<String> itemReturnStatus;
     private final List<String> itemReturnJobScannableCodes;
@@ -48,7 +50,7 @@ public final class ReturnListRequest {
      *
      * @return the facility ID, or null if not set
      */
-    public String facilityId() { return facilityId; }
+    public FacilityId facilityId() { return facilityId; }
 
     /**
      * Returns the item return job status filter.
@@ -130,7 +132,7 @@ public final class ReturnListRequest {
          * Creates a new Builder.
          */
         public Builder() {}
-        private String facilityId;
+        private FacilityId facilityId;
         private List<String> itemReturnJobStatus;
         private List<String> itemReturnStatus;
         private List<String> itemReturnJobScannableCodes;
@@ -160,7 +162,7 @@ public final class ReturnListRequest {
          * @param facilityId the facility ID
          * @return this builder
          */
-        public Builder facilityId(String facilityId) { this.facilityId = facilityId; return this; }
+        public Builder facilityId(FacilityId facilityId) { this.facilityId = facilityId; return this; }
 
         /**
          * Sets the item return job status filter.

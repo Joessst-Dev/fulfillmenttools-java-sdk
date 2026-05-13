@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Coordinates;
 import de.joesst.dev.fulfillmenttools.orders.PhoneNumber;
@@ -61,6 +62,6 @@ public record TargetAddress(
         Coordinates coordinates,
         List<PhoneNumber> phoneNumbers,
         Map<String, Object> customAttributes,
-        String facilityRef,
+        FacilityId facilityRef,
         TenantFacilityId tenantFacilityId
 ) {}

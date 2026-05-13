@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
+import de.joesst.dev.fulfillmenttools.id.UserId;
+
 import java.time.Instant;
 
 /**
@@ -15,6 +17,6 @@ import java.time.Instant;
  */
 public record UserModificationHistory(
         Instant modificationDate,
-        String userId,
+        UserId userId,
         String username
 ) {}

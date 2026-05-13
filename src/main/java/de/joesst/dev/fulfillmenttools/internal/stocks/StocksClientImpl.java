@@ -57,7 +57,7 @@ public final class StocksClientImpl implements StocksClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef());
+        if (request.facilityRef() != null) builder.queryParam("facilityRef", request.facilityRef().value());
         if (request.tenantFacilityId() != null) builder.queryParam("tenantFacilityId", request.tenantFacilityId().value());
         if (request.tenantArticleId() != null) request.tenantArticleId().forEach(v -> builder.queryParam("tenantArticleId", v));
         if (request.locationRef() != null) request.locationRef().forEach(v -> builder.queryParam("locationRef", v));

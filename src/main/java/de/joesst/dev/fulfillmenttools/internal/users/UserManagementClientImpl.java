@@ -165,7 +165,7 @@ public final class UserManagementClientImpl implements UserManagementClient {
             builder.queryParam("orderBy", request.orderBy());
         }
         if (request.facilityId() != null) {
-            builder.queryParam("facilityId", request.facilityId());
+            builder.queryParam("facilityId", request.facilityId().value());
         }
         if (request.includeAdminUsers() != null) {
             builder.queryParam("includeAdminUsers", String.valueOf(request.includeAdminUsers()));

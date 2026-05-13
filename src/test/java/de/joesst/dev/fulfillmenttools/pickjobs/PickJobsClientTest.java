@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.Page;
@@ -134,7 +135,7 @@ class PickJobsClientTest {
         client.pickJobs().list(PickJobListRequest.builder()
                 .size(5)
                 .startAfterId("cursor-abc")
-                .facilityRef("fac-1")
+                .facilityRef(new FacilityId("fac-1"))
                 .status(List.of("OPEN", "IN_PROGRESS"))
                 .tenantOrderId(new TenantOrderId("ext-001"))
                 .orderBy("TARGET_TIME_ASC")

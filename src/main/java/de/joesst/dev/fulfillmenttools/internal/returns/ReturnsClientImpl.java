@@ -62,7 +62,7 @@ public final class ReturnsClientImpl implements ReturnsClient {
     @Override
     public Return create(CreateReturnRequest request) {
         CreateReturnBody body = new CreateReturnBody(
-                request.originFacilityRefs(),
+                request.originFacilityRefs().stream().map(id -> id.value()).toList(),
                 request.status(),
                 request.consumerAddresses(),
                 request.returnableLineItems(),
@@ -116,7 +116,7 @@ public final class ReturnsClientImpl implements ReturnsClient {
     @Override
     public CompletableFuture<Return> createAsync(CreateReturnRequest request) {
         CreateReturnBody body = new CreateReturnBody(
-                request.originFacilityRefs(),
+                request.originFacilityRefs().stream().map(id -> id.value()).toList(),
                 request.status(),
                 request.consumerAddresses(),
                 request.returnableLineItems(),
@@ -176,7 +176,7 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
         if (request.size() != null) builder.queryParam("size", String.valueOf(request.size()));
         if (request.startAfterId() != null) builder.queryParam("startAfterId", request.startAfterId());
-        if (request.facilityId() != null) builder.queryParam("facilityId", request.facilityId());
+        if (request.facilityId() != null) builder.queryParam("facilityId", request.facilityId().value());
         if (request.itemReturnJobStatus() != null) request.itemReturnJobStatus().forEach(s -> builder.queryParam("itemReturnJobStatus", s));
         if (request.itemReturnStatus() != null) request.itemReturnStatus().forEach(s -> builder.queryParam("itemReturnStatus", s));
         if (request.itemReturnJobScannableCodes() != null) request.itemReturnJobScannableCodes().forEach(c -> builder.queryParam("itemReturnJobScannableCodes", c));

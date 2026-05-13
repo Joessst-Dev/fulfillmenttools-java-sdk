@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.time.Instant;
@@ -14,7 +15,8 @@ import java.util.List;
  *
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
- * @param facilityRef     The fulfillmenttools facility ID where the consumer will collect.
+ * @param facilityRef     The fulfillmenttools {@link FacilityId} of the facility where the
+ *                        consumer will collect.
  * @param tenantFacilityId The tenant-specific {@link TenantFacilityId} facility identifier.
  * @param paid            Whether the order is already paid. Defaults to {@code false}.
  * @param provisioningTime The target time by which the order must be provisioned.
@@ -22,7 +24,7 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record CollectDelivery(
-        String facilityRef,
+        FacilityId facilityRef,
         TenantFacilityId tenantFacilityId,
         Boolean paid,
         Instant provisioningTime,

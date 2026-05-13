@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 import java.util.Objects;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Objects;
 public final class UpdateRoutingPlanRequest {
 
     private final Integer version;
-    private final String facilityRef;
+    private final FacilityId facilityRef;
     private final String status;
 
     /**
@@ -37,7 +39,7 @@ public final class UpdateRoutingPlanRequest {
      *
      * @return the facility reference, or null if not set
      */
-    public String facilityRef() { return facilityRef; }
+    public FacilityId facilityRef() { return facilityRef; }
 
     /**
      * Returns the new status for the routing plan.
@@ -62,7 +64,7 @@ public final class UpdateRoutingPlanRequest {
     public static final class Builder {
 
         private Integer version;
-        private String facilityRef;
+        private FacilityId facilityRef;
         private String status;
 
         /**
@@ -84,7 +86,7 @@ public final class UpdateRoutingPlanRequest {
          * @param facilityRef the facility reference
          * @return this builder
          */
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
          * Sets the new status for the routing plan.

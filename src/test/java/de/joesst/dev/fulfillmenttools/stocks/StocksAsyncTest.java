@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.stocks;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -47,7 +48,7 @@ class StocksAsyncTest {
 
         // When
         Page<StockItem> page = client.stocks()
-                .listAsync(StockListRequest.builder().facilityRef("fac-1").build()).get();
+                .listAsync(StockListRequest.builder().facilityRef(new FacilityId("fac-1")).build()).get();
 
         // Then
         assertThat(page.items()).hasSize(1);
@@ -63,7 +64,7 @@ class StocksAsyncTest {
 
         // When
         client.stocks().listAsync(
-                StockListRequest.builder().size(5).facilityRef("fac-1").build()).get();
+                StockListRequest.builder().size(5).facilityRef(new FacilityId("fac-1")).build()).get();
 
         // Then
         server.verify(getRequestedFor(urlPathEqualTo("/api/stocks"))

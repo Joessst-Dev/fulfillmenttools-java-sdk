@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.stocks;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public final class StockListRequest {
 
     private final Integer size;
     private final String startAfterId;
-    private final String facilityRef;
+    private final FacilityId facilityRef;
     private final TenantFacilityId tenantFacilityId;
     private final List<String> tenantArticleId;
     private final List<String> locationRef;
@@ -54,7 +55,7 @@ public final class StockListRequest {
      *
      * @return the facility reference, or {@code null} if not set
      */
-    public String facilityRef() { return facilityRef; }
+    public FacilityId facilityRef() { return facilityRef; }
 
     /**
      * Returns the tenant facility ID to filter by.
@@ -112,7 +113,7 @@ public final class StockListRequest {
 
         private Integer size;
         private String startAfterId;
-        private String facilityRef;
+        private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
         private List<String> tenantArticleId;
         private List<String> locationRef;
@@ -139,7 +140,7 @@ public final class StockListRequest {
          * @param facilityRef the facility reference
          * @return this builder
          */
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
          * Sets the tenant facility ID to filter by.

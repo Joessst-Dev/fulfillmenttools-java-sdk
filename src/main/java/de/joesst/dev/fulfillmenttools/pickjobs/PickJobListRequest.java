@@ -1,5 +1,8 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 
 import java.util.List;
@@ -16,9 +19,9 @@ public final class PickJobListRequest {
 
     private final Integer size;
     private final String startAfterId;
-    private final String facilityRef;
+    private final FacilityId facilityRef;
     private final List<String> status;
-    private final String orderRef;
+    private final OrderId orderRef;
     private final TenantOrderId tenantOrderId;
     private final String assignedUser;
     private final String searchTerm;
@@ -35,14 +38,14 @@ public final class PickJobListRequest {
     private final String endTargetTime;
     private final List<String> carrierKeys;
     private final List<String> zoneRefs;
-    private final List<String> pickJobRefs;
+    private final List<PickJobId> pickJobRefs;
 
     /**
      * @param size Maximum number of results to return; defaults to 100.
      * @param startAfterId Pagination cursor: return results after this pick job ID.
-     * @param facilityRef Filter by facility reference.
+     * @param facilityRef Filter by facility ID.
      * @param status Filter by pick job status (one or more).
-     * @param orderRef Filter by order reference.
+     * @param orderRef Filter by order ID.
      * @param tenantOrderId Filter by tenant order ID.
      * @param assignedUser Filter by assigned user ID.
      * @param searchTerm General text search across order metadata.
@@ -59,7 +62,7 @@ public final class PickJobListRequest {
      * @param endTargetTime Filter by target time (inclusive end).
      * @param carrierKeys Filter by carrier key (one or more).
      * @param zoneRefs Filter by zone reference (one or more).
-     * @param pickJobRefs Filter by pick job reference (one or more).
+     * @param pickJobRefs Filter by pick job ID (one or more).
      */
     private PickJobListRequest(Builder builder) {
         this.size = builder.size;
@@ -101,11 +104,11 @@ public final class PickJobListRequest {
     public String startAfterId() { return startAfterId; }
 
     /**
-     * Returns the facility reference filter.
+     * Returns the facility ID filter.
      *
-     * @return the facility reference, or null if not set
+     * @return the facility ID, or null if not set
      */
-    public String facilityRef() { return facilityRef; }
+    public FacilityId facilityRef() { return facilityRef; }
 
     /**
      * Returns the status filter values.
@@ -115,11 +118,11 @@ public final class PickJobListRequest {
     public List<String> status() { return status; }
 
     /**
-     * Returns the order reference filter.
+     * Returns the order ID filter.
      *
-     * @return the order reference, or null if not set
+     * @return the order ID, or null if not set
      */
-    public String orderRef() { return orderRef; }
+    public OrderId orderRef() { return orderRef; }
 
     /**
      * Returns the tenant order ID filter.
@@ -234,11 +237,11 @@ public final class PickJobListRequest {
     public List<String> zoneRefs() { return zoneRefs; }
 
     /**
-     * Returns the pick job reference filters.
+     * Returns the pick job ID filters.
      *
-     * @return the pick job references list, or null if not set
+     * @return the pick job IDs list, or null if not set
      */
-    public List<String> pickJobRefs() { return pickJobRefs; }
+    public List<PickJobId> pickJobRefs() { return pickJobRefs; }
 
     /**
      * Returns a new builder initialized with this request's current values.
@@ -293,9 +296,9 @@ public final class PickJobListRequest {
 
         private Integer size;
         private String startAfterId;
-        private String facilityRef;
+        private FacilityId facilityRef;
         private List<String> status;
-        private String orderRef;
+        private OrderId orderRef;
         private TenantOrderId tenantOrderId;
         private String assignedUser;
         private String searchTerm;
@@ -312,7 +315,7 @@ public final class PickJobListRequest {
         private String endTargetTime;
         private List<String> carrierKeys;
         private List<String> zoneRefs;
-        private List<String> pickJobRefs;
+        private List<PickJobId> pickJobRefs;
 
         /**
          * Sets the page size.
@@ -331,12 +334,12 @@ public final class PickJobListRequest {
         public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
 
         /**
-         * Sets the facility reference filter.
+         * Sets the facility ID filter.
          *
-         * @param facilityRef the facility reference
+         * @param facilityRef the facility ID
          * @return this builder
          */
-        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
          * Sets the status filter.
@@ -347,12 +350,12 @@ public final class PickJobListRequest {
         public Builder status(List<String> status) { this.status = status; return this; }
 
         /**
-         * Sets the order reference filter.
+         * Sets the order ID filter.
          *
-         * @param orderRef the order reference
+         * @param orderRef the order ID
          * @return this builder
          */
-        public Builder orderRef(String orderRef) { this.orderRef = orderRef; return this; }
+        public Builder orderRef(OrderId orderRef) { this.orderRef = orderRef; return this; }
 
         /**
          * Sets the tenant order ID filter.
@@ -483,12 +486,12 @@ public final class PickJobListRequest {
         public Builder zoneRefs(List<String> zoneRefs) { this.zoneRefs = zoneRefs; return this; }
 
         /**
-         * Sets the pick job reference filters.
+         * Sets the pick job ID filters.
          *
-         * @param pickJobRefs the pick job references
+         * @param pickJobRefs the pick job IDs
          * @return this builder
          */
-        public Builder pickJobRefs(List<String> pickJobRefs) { this.pickJobRefs = pickJobRefs; return this; }
+        public Builder pickJobRefs(List<PickJobId> pickJobRefs) { this.pickJobRefs = pickJobRefs; return this; }
 
         /**
          * Builds the {@code PickJobListRequest}.
