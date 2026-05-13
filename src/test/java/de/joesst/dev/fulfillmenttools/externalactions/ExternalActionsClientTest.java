@@ -54,7 +54,7 @@ class ExternalActionsClientTest {
                           "processRef": "proc-1",
                           "nameLocalized": {"en_US": "Notify Warehouse"},
                           "groups": ["warehouse"],
-                          "action": {"type": "BLANK_LINK", "url": "https://example.com"}
+                          "action": {"type": "BLANK_LINK", "linkUrl": "https://example.com"}
                         }
                         """)));
 
@@ -67,6 +67,69 @@ class ExternalActionsClientTest {
         assertThat(action.processRef()).isEqualTo("proc-1");
         assertThat(action.groups()).containsExactly("warehouse");
         assertThat(action.version()).isEqualTo(1);
+        assertThat(action.action()).isInstanceOf(ExternalLinkActionDefinition.class);
+        assertThat(((ExternalLinkActionDefinition) action.action()).linkUrl()).isEqualTo("https://example.com");
+    }
+
+    @Test
+    void get_deserializesFormAction() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/externalactions/ea-2"))
+                .willReturn(okJson("""
+                        {
+                          "id": "ea-2",
+                          "version": 1,
+                          "name": "Fill Form",
+                          "processRef": "proc-1",
+                          "nameLocalized": {"en_US": "Fill Form"},
+                          "groups": [],
+                          "action": {
+                            "type": "FORM",
+                            "elements": [
+                              {
+                                "elementType": "TEXT_INPUT",
+                                "elementId": "field-1",
+                                "titleLocalized": {"en_US": "Your name"}
+                              }
+                            ],
+                            "cancel": {"labelLocalized": {"en_US": "Cancel"}}
+                          }
+                        }
+                        """)));
+
+        // When
+        ExternalAction action = client.externalActions().get("ea-2");
+
+        // Then
+        assertThat(action.action()).isInstanceOf(ExternalFormActionDefinition.class);
+        ExternalFormActionDefinition form = (ExternalFormActionDefinition) action.action();
+        assertThat(form.elements()).hasSize(1);
+        assertThat(form.elements().get(0)).isInstanceOf(FormInputElement.class);
+        assertThat(((FormInputElement) form.elements().get(0)).elementId()).isEqualTo("field-1");
+    }
+
+    @Test
+    void get_deserializesCommentAction() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/externalactions/ea-3"))
+                .willReturn(okJson("""
+                        {
+                          "id": "ea-3",
+                          "version": 1,
+                          "name": "Add Comment",
+                          "processRef": "proc-1",
+                          "nameLocalized": {"en_US": "Add Comment"},
+                          "groups": [],
+                          "action": {"type": "COMMENT", "isInternal": true}
+                        }
+                        """)));
+
+        // When
+        ExternalAction action = client.externalActions().get("ea-3");
+
+        // Then
+        assertThat(action.action()).isInstanceOf(ExternalCommentActionDefinition.class);
+        assertThat(((ExternalCommentActionDefinition) action.action()).isInternal()).isTrue();
     }
 
     @Test
@@ -177,7 +240,7 @@ class ExternalActionsClientTest {
                 .processRef("proc-1")
                 .nameLocalized(Map.of("en_US", "New Action"))
                 .groups(List.of())
-                .action(Map.of("type", "BLANK_LINK", "url", "https://example.com"))
+                .action(new ExternalLinkActionDefinition(ExternalActionType.BLANK_LINK, "https://example.com"))
                 .build());
 
         // Then
@@ -198,7 +261,7 @@ class ExternalActionsClientTest {
                 .processRef("proc-1")
                 .nameLocalized(Map.of("en_US", "New Action"))
                 .groups(List.of("warehouse"))
-                .action(Map.of("type", "BLANK_LINK", "url", "https://example.com"))
+                .action(new ExternalLinkActionDefinition(ExternalActionType.BLANK_LINK, "https://example.com"))
                 .build());
 
         // Then
@@ -214,7 +277,7 @@ class ExternalActionsClientTest {
     void create_requiresProcessRef() {
         assertThatThrownBy(() -> CreateExternalActionRequest.builder()
                 .nameLocalized(Map.of("en_US", "X")).groups(List.of())
-                .action(Map.of("type", "BLANK_LINK")).build())
+                .action(new ExternalLinkActionDefinition(ExternalActionType.BLANK_LINK, "https://x.com")).build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("processRef");
     }
@@ -223,7 +286,7 @@ class ExternalActionsClientTest {
     void create_requiresNameLocalized() {
         assertThatThrownBy(() -> CreateExternalActionRequest.builder()
                 .processRef("proc-1").groups(List.of())
-                .action(Map.of("type", "BLANK_LINK")).build())
+                .action(new ExternalLinkActionDefinition(ExternalActionType.BLANK_LINK, "https://x.com")).build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("nameLocalized");
     }
@@ -232,7 +295,7 @@ class ExternalActionsClientTest {
     void create_requiresGroups() {
         assertThatThrownBy(() -> CreateExternalActionRequest.builder()
                 .processRef("proc-1").nameLocalized(Map.of("en_US", "X"))
-                .action(Map.of("type", "BLANK_LINK")).build())
+                .action(new ExternalLinkActionDefinition(ExternalActionType.BLANK_LINK, "https://x.com")).build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("groups");
     }
@@ -258,7 +321,7 @@ class ExternalActionsClientTest {
                 .version(2)
                 .nameLocalized(Map.of("en_US", "Updated Action"))
                 .groups(List.of())
-                .action(Map.of("type", "BLANK_LINK", "url", "https://new.example.com"))
+                .action(new ExternalLinkActionDefinition(ExternalActionType.BLANK_LINK, "https://new.example.com"))
                 .build());
 
         // Then
@@ -274,7 +337,7 @@ class ExternalActionsClientTest {
     void update_requiresVersion() {
         assertThatThrownBy(() -> UpdateExternalActionRequest.builder()
                 .nameLocalized(Map.of("en_US", "X")).groups(List.of())
-                .action(Map.of("type", "BLANK_LINK")).build())
+                .action(new ExternalLinkActionDefinition(ExternalActionType.BLANK_LINK, "https://x.com")).build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("version");
     }

@@ -77,7 +77,7 @@ class ExternalActionsAsyncTest {
                         .processRef("proc-1")
                         .nameLocalized(Map.of("en_US", "My Action"))
                         .groups(List.of())
-                        .action(Map.of("type", "BLANK_LINK", "url", "https://example.com"))
+                        .action(new ExternalLinkActionDefinition(ExternalActionType.BLANK_LINK, "https://example.com"))
                         .build()).get();
 
         // Then
