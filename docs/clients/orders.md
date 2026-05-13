@@ -98,7 +98,7 @@ Get a single order by ID.
 
 **Returns:** `Order`
 
-**Throws:** `NotFoundException` (404), `ValidationException` (422), `AuthenticationException` (401)
+**Throws:** `FulfillmenttoolsException` on request failure
 
 ### getAsync(OrderId)
 
@@ -147,6 +147,8 @@ Search for orders by criteria.
 
 **Returns:** `Page<Order>`
 
+**Throws:** `FulfillmenttoolsException` on request failure
+
 ### searchAsync(OrderSearchRequest)
 
 Search for orders asynchronously.
@@ -164,3 +166,155 @@ Search for all matching orders, automatically iterating through pages.
 - `request: OrderSearchRequest` — Search request
 
 **Returns:** `Iterable<Order>`
+
+### create(CreateOrderRequest)
+
+Create a new order.
+
+**Parameters:**
+- `request: CreateOrderRequest` — Create order request
+
+**Returns:** `Order`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### createAsync(CreateOrderRequest)
+
+Create a new order asynchronously.
+
+**Parameters:**
+- `request: CreateOrderRequest` — Create order request
+
+**Returns:** `CompletableFuture<Order>`
+
+### update(OrderId, UpdateOrderRequest)
+
+Update an existing order.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `request: UpdateOrderRequest` — Update request
+
+**Returns:** `Order`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### updateAsync(OrderId, UpdateOrderRequest)
+
+Update an existing order asynchronously.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `request: UpdateOrderRequest` — Update request
+
+**Returns:** `CompletableFuture<Order>`
+
+### delete(OrderId)
+
+Delete an order by ID.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+
+**Returns:** `void`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### deleteAsync(OrderId)
+
+Delete an order by ID asynchronously.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+
+**Returns:** `CompletableFuture<Void>`
+
+### cancel(OrderId, CancelOrderRequest)
+
+Cancel an order with a cancellation reason.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `request: CancelOrderRequest` — Cancellation request with reason
+
+**Returns:** `Order`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### cancelAsync(OrderId, CancelOrderRequest)
+
+Cancel an order asynchronously with a cancellation reason.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `request: CancelOrderRequest` — Cancellation request with reason
+
+**Returns:** `CompletableFuture<Order>`
+
+### forceCancel(OrderId, int)
+
+Force cancel an order, bypassing normal validation.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `version: int` — Current version of the order (for optimistic locking)
+
+**Returns:** `Order`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### forceCancelAsync(OrderId, int)
+
+Force cancel an order asynchronously, bypassing normal validation.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `version: int` — Current version of the order (for optimistic locking)
+
+**Returns:** `CompletableFuture<Order>`
+
+### unlock(OrderId, int)
+
+Unlock an order, releasing any locks held on it.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `version: int` — Current version of the order (for optimistic locking)
+
+**Returns:** `Order`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### unlock(OrderId, int, Instant)
+
+Unlock an order at a specific target time.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `version: int` — Current version of the order (for optimistic locking)
+- `targetTime: Instant` — Time at which to unlock the order
+
+**Returns:** `Order`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### unlockAsync(OrderId, int)
+
+Unlock an order asynchronously.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `version: int` — Current version of the order (for optimistic locking)
+
+**Returns:** `CompletableFuture<Order>`
+
+### unlockAsync(OrderId, int, Instant)
+
+Unlock an order asynchronously at a specific target time.
+
+**Parameters:**
+- `orderId: OrderId` — The order identifier
+- `version: int` — Current version of the order (for optimistic locking)
+- `targetTime: Instant` — Time at which to unlock the order
+
+**Returns:** `CompletableFuture<Order>`

@@ -38,16 +38,47 @@ Iterable<Reservation> allReservations = client.reservations().listAll(
 
 Get a reservation by ID.
 
+**Parameters:**
+- `reservationId: ReservationId` — The reservation ID
+
 **Returns:** `Reservation`
+
+**Throws:** `FulfillmenttoolsException` if not found
+
+### getAsync(ReservationId)
+
+Get a reservation asynchronously.
+
+**Parameters:**
+- `reservationId: ReservationId` — The reservation ID
+
+**Returns:** `CompletableFuture<Reservation>`
 
 ### list(ReservationListRequest)
 
 List reservations with pagination.
 
+**Parameters:**
+- `request: ReservationListRequest` — List request with pagination
+
 **Returns:** `Page<Reservation>`
+
+**Throws:** `FulfillmenttoolsException` if the request fails
+
+### listAsync(ReservationListRequest)
+
+List reservations asynchronously with pagination.
+
+**Parameters:**
+- `request: ReservationListRequest` — List request with pagination
+
+**Returns:** `CompletableFuture<Page<Reservation>>`
 
 ### listAll(ReservationListRequest)
 
-List all reservations.
+List all reservations, automatically iterating through pages.
+
+**Parameters:**
+- `request: ReservationListRequest` — List request
 
 **Returns:** `Iterable<Reservation>`

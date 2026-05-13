@@ -9,7 +9,7 @@ Add the starter to your Spring Boot 3.x project:
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("de.joesst.dev:sdk-spring-boot-starter:0.1.0")
+    implementation("de.joesst.dev:sdk-spring-boot-starter:0.1.0-SNAPSHOT")
 }
 ```
 
@@ -19,7 +19,7 @@ Or with Maven:
 <dependency>
     <groupId>de.joesst.dev</groupId>
     <artifactId>sdk-spring-boot-starter</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -33,8 +33,6 @@ fulfillmenttools:
   api-key: ${FFT_API_KEY}
   username: ${FFT_USERNAME}
   password: ${FFT_PASSWORD}
-  base-url: https://your-project.api.fulfillmenttools.com
-  retry-max-attempts: 3
 ```
 
 Or `application.properties`:
@@ -44,8 +42,6 @@ fulfillmenttools.project-id=ocff-abc123-pre
 fulfillmenttools.api-key=${FFT_API_KEY}
 fulfillmenttools.username=${FFT_USERNAME}
 fulfillmenttools.password=${FFT_PASSWORD}
-fulfillmenttools.base-url=https://your-project.api.fulfillmenttools.com
-fulfillmenttools.retry-max-attempts=3
 ```
 
 ## Using the Client
@@ -170,18 +166,18 @@ public class OrderServiceTest {
 For production deployments, use environment variables:
 
 ```bash
+export FFT_PROJECT_ID="ocff-abc123-pre"
 export FFT_API_KEY="your-api-key"
 export FFT_USERNAME="your-email@example.com"
 export FFT_PASSWORD="your-password"
-export FFT_BASE_URL="https://your-project.api.fulfillmenttools.com"
 ```
 
 Then reference them in your configuration:
 
 ```yaml
 fulfillmenttools:
+  project-id: ${FFT_PROJECT_ID}
   api-key: ${FFT_API_KEY}
   username: ${FFT_USERNAME}
   password: ${FFT_PASSWORD}
-  base-url: ${FFT_BASE_URL}
 ```

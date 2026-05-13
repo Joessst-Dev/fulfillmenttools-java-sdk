@@ -77,7 +77,6 @@ fulfillmenttools:
   api-key: ${FFT_API_KEY}
   username: ${FFT_USERNAME}
   password: ${FFT_PASSWORD}
-  retry-max-attempts: 3
 ```
 
 The `FulfillmenttoolsClient` bean is automatically created and injected:

@@ -5,11 +5,16 @@ The Stocks client provides access to inventory and stock management across your 
 ## Basic Usage
 
 ```java
-import de.joesst.dev.fulfillmenttools.id.StockId;
+// List stock entries
+Page<StockItem> page = client.stocks().list(
+    StockListRequest.builder()
+        .size(50)
+        .build()
+);
 
-// Get stock information
-Stock stock = client.stocks().get(new StockId("stk-001"));
-System.out.println("Available: " + stock.getAvailable());
+for (StockItem item : page.items()) {
+    System.out.println("Facility: " + item.getFacilityId());
+}
 ```
 
 ## Listing Stocks
@@ -27,38 +32,42 @@ Page<Stock> page = client.stocks().list(
 Iterate through all stocks:
 
 ```java
-Iterable<Stock> allStocks = client.stocks().listAll(
+Iterable<StockItem> allStocks = client.stocks().listAll(
     StockListRequest.builder()
         .size(100)
         .build()
 );
+
+for (StockItem item : allStocks) {
+    System.out.println("Stock: " + item.getStockId());
+}
 ```
 
 ## API Reference
-
-### get(StockId)
-
-Get stock information by ID.
-
-**Parameters:**
-- `stockId: StockId` — The stock identifier
-
-**Returns:** `Stock`
-
-### getAsync(StockId)
-
-Get stock information asynchronously.
-
-**Returns:** `CompletableFuture<Stock>`
 
 ### list(StockListRequest)
 
 List stocks with pagination.
 
-**Returns:** `Page<Stock>`
+**Parameters:**
+- `request: StockListRequest` — List request with filters and pagination
+
+**Returns:** `Page<StockItem>`
+
+### listAsync(StockListRequest)
+
+List stocks asynchronously with pagination.
+
+**Parameters:**
+- `request: StockListRequest` — List request with filters and pagination
+
+**Returns:** `CompletableFuture<Page<StockItem>>`
 
 ### listAll(StockListRequest)
 
 List all stocks, automatically iterating through pages.
 
-**Returns:** `Iterable<Stock>`
+**Parameters:**
+- `request: StockListRequest` — List request with filters
+
+**Returns:** `Iterable<StockItem>`

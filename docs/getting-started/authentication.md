@@ -32,7 +32,7 @@ var credentials = new EmailPasswordCredentials(
 );
 ```
 
-The credentials are used only during token exchange—they are not stored or transmitted with each request.
+The credentials are used only during token exchange—they are not stored or transmitted with each request. Tokens are automatically refreshed 60 seconds before expiry, ensuring seamless operation without manual intervention.
 
 ## Custom Token Provider
 

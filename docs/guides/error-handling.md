@@ -72,7 +72,11 @@ Thrown when rate limits are exceeded (HTTP 429).
 try {
     Order order = client.orders().get(new OrderId("ord-123"));
 } catch (RateLimitException e) {
-    System.out.println("Rate limited. Retry after: " + e.getRetryAfter());
+    if (e.retryAfter().isPresent()) {
+        System.out.println("Rate limited. Retry after: " + e.retryAfter().get());
+    } else {
+        System.out.println("Rate limited");
+    }
 }
 ```
 
@@ -140,8 +144,10 @@ For rate limiting, inspect the `RateLimitException` for retry guidance:
 try {
     Order order = client.orders().get(new OrderId("ord-123"));
 } catch (RateLimitException e) {
-    long retryAfterMs = e.getRetryAfter(); // Milliseconds to wait
-    Thread.sleep(retryAfterMs);
-    // Retry the operation
+    if (e.retryAfter().isPresent()) {
+        Duration waitTime = e.retryAfter().get();
+        Thread.sleep(waitTime.toMillis());
+        // Retry the operation
+    }
 }
 ```

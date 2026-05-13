@@ -120,3 +120,105 @@ Search for all matching facilities.
 - `request: FacilitySearchRequest` — Search request
 
 **Returns:** `Iterable<Facility>`
+
+### create(CreateFacilityRequest)
+
+Create a new facility.
+
+**Parameters:**
+- `request: CreateFacilityRequest` — Creation request
+
+**Returns:** `Facility`
+
+**Throws:** `FulfillmenttoolsException` if validation fails
+
+### createAsync(CreateFacilityRequest)
+
+Create a facility asynchronously.
+
+**Parameters:**
+- `request: CreateFacilityRequest` — Creation request
+
+**Returns:** `CompletableFuture<Facility>`
+
+### update(FacilityId, UpdateFacilityRequest)
+
+Update an existing facility with partial changes.
+
+**Parameters:**
+- `facilityId: FacilityId` — The facility ID to update
+- `request: UpdateFacilityRequest` — Update request with new field values
+
+**Returns:** `Facility`
+
+**Throws:** `FulfillmenttoolsException` if not found or request fails
+
+### updateAsync(FacilityId, UpdateFacilityRequest)
+
+Update a facility asynchronously.
+
+**Parameters:**
+- `facilityId: FacilityId` — The facility ID to update
+- `request: UpdateFacilityRequest` — Update request with new field values
+
+**Returns:** `CompletableFuture<Facility>`
+
+### replace(FacilityId, CreateFacilityRequest)
+
+Replace an entire facility, overwriting all fields.
+
+**Parameters:**
+- `facilityId: FacilityId` — The facility ID to replace
+- `request: CreateFacilityRequest` — Replacement facility payload
+
+**Returns:** `Facility`
+
+**Throws:** `FulfillmenttoolsException` if not found or request fails
+
+### replaceAsync(FacilityId, CreateFacilityRequest)
+
+Replace a facility asynchronously.
+
+**Parameters:**
+- `facilityId: FacilityId` — The facility ID to replace
+- `request: CreateFacilityRequest` — Replacement facility payload
+
+**Returns:** `CompletableFuture<Facility>`
+
+### delete(FacilityId)
+
+Delete a facility.
+
+**Parameters:**
+- `facilityId: FacilityId` — The facility ID to delete
+
+**Throws:** `FulfillmenttoolsException` if not found or request fails
+
+### delete(FacilityId, boolean)
+
+Delete a facility, optionally forcing deletion.
+
+**Parameters:**
+- `facilityId: FacilityId` — The facility ID to delete
+- `forceDeletion: boolean` — If true, bypasses soft-delete constraints
+
+**Throws:** `FulfillmenttoolsException` if request fails
+
+### deleteAsync(FacilityId)
+
+Delete a facility asynchronously.
+
+**Parameters:**
+- `facilityId: FacilityId` — The facility ID to delete
+
+**Returns:** `CompletableFuture<Void>`
+
+### deleteAsync(FacilityId, boolean)
+
+Delete a facility asynchronously with optional force deletion.
+
+**Parameters:**
+- `facilityId: FacilityId` — The facility ID to delete
+- `forceDeletion: boolean` — If true, bypasses soft-delete constraints
+
+**Returns:** `CompletableFuture<Void>`

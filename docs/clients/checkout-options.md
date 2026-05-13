@@ -1,43 +1,40 @@
 # Checkout Options Client
 
-The Checkout Options client manages checkout configurations. Define and manage checkout behavior in your fulfillment system.
+The Checkout Options client evaluates available checkout options based on order and customer criteria. Use this to determine feasible delivery and payment configurations for checkout flows.
 
 ## Basic Usage
 
 ```java
-import de.joesst.dev.fulfillmenttools.id.CheckoutOptionId;
+import de.joesst.dev.fulfillmenttools.checkoutoptions.EvaluateCheckoutOptionsRequest;
 
-// Get a checkout option
-CheckoutOption option = client.checkoutOptions().get(new CheckoutOptionId("chopt-001"));
-System.out.println("Name: " + option.getName());
-```
-
-## Listing Checkout Options
-
-```java
-Page<CheckoutOption> page = client.checkoutOptions().list(
-    CheckoutOptionListRequest.builder()
-        .size(50)
+// Evaluate checkout options for a customer order
+CheckoutOption option = client.checkoutOptions().evaluate(
+    EvaluateCheckoutOptionsRequest.builder()
+        .order(/* order details */)
         .build()
 );
+
+System.out.println("Available checkout: " + option);
 ```
 
 ## API Reference
 
-### get(CheckoutOptionId)
+### evaluate(EvaluateCheckoutOptionsRequest)
 
-Get a checkout option by ID.
+Evaluate available checkout options based on the provided request parameters.
+
+**Parameters:**
+- `request: EvaluateCheckoutOptionsRequest` — Request with order and checkout criteria
 
 **Returns:** `CheckoutOption`
 
-### list(CheckoutOptionListRequest)
+**Throws:** `FulfillmenttoolsException` on evaluation failure
 
-List checkout options with pagination.
+### evaluateAsync(EvaluateCheckoutOptionsRequest)
 
-**Returns:** `Page<CheckoutOption>`
+Evaluate available checkout options asynchronously based on the provided request parameters.
 
-### listAll(CheckoutOptionListRequest)
+**Parameters:**
+- `request: EvaluateCheckoutOptionsRequest` — Request with order and checkout criteria
 
-List all checkout options.
-
-**Returns:** `Iterable<CheckoutOption>`
+**Returns:** `CompletableFuture<CheckoutOption>`

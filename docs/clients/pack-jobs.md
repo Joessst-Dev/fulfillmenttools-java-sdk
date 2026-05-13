@@ -28,16 +28,69 @@ Page<PackJob> page = client.packing().list(
 
 Get a pack job by ID.
 
+**Parameters:**
+- `packJobId: PackJobId` — The pack job identifier
+
 **Returns:** `PackJob`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### getAsync(PackJobId)
+
+Get a pack job by ID asynchronously.
+
+**Parameters:**
+- `packJobId: PackJobId` — The pack job identifier
+
+**Returns:** `CompletableFuture<PackJob>`
 
 ### list(PackJobListRequest)
 
 List pack jobs with pagination.
 
+**Parameters:**
+- `request: PackJobListRequest` — List request with filter and pagination parameters
+
 **Returns:** `Page<PackJob>`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### listAsync(PackJobListRequest)
+
+List pack jobs asynchronously.
+
+**Parameters:**
+- `request: PackJobListRequest` — List request
+
+**Returns:** `CompletableFuture<Page<PackJob>>`
 
 ### listAll(PackJobListRequest)
 
-List all pack jobs.
+List all pack jobs, automatically iterating through pages.
+
+**Parameters:**
+- `request: PackJobListRequest` — List request
 
 **Returns:** `Iterable<PackJob>`
+
+### update(PackJobId, UpdatePackJobRequest)
+
+Update a pack job with new values.
+
+**Parameters:**
+- `packJobId: PackJobId` — The pack job identifier
+- `request: UpdatePackJobRequest` — Update request with new values and version for optimistic locking
+
+**Returns:** `PackJob`
+
+**Throws:** `FulfillmenttoolsException` on request failure or version conflict
+
+### updateAsync(PackJobId, UpdatePackJobRequest)
+
+Update a pack job asynchronously.
+
+**Parameters:**
+- `packJobId: PackJobId` — The pack job identifier
+- `request: UpdatePackJobRequest` — Update request
+
+**Returns:** `CompletableFuture<PackJob>`

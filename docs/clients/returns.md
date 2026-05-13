@@ -38,16 +38,133 @@ Iterable<Return> allReturns = client.returns().listAll(
 
 Get a return by ID.
 
+**Parameters:**
+- `returnId: ReturnId` — The return identifier
+
 **Returns:** `Return`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### getAsync(ReturnId)
+
+Get a return by ID asynchronously.
+
+**Parameters:**
+- `returnId: ReturnId` — The return identifier
+
+**Returns:** `CompletableFuture<Return>`
 
 ### list(ReturnListRequest)
 
 List returns with pagination.
 
+**Parameters:**
+- `request: ReturnListRequest` — List request with filter and pagination parameters
+
 **Returns:** `Page<Return>`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### listAsync(ReturnListRequest)
+
+List returns asynchronously.
+
+**Parameters:**
+- `request: ReturnListRequest` — List request
+
+**Returns:** `CompletableFuture<Page<Return>>`
 
 ### listAll(ReturnListRequest)
 
-List all returns.
+List all returns, automatically iterating through pages.
+
+**Parameters:**
+- `request: ReturnListRequest` — List request
 
 **Returns:** `Iterable<Return>`
+
+### create(CreateReturnRequest)
+
+Create a new return.
+
+**Parameters:**
+- `request: CreateReturnRequest` — Create return request
+
+**Returns:** `Return`
+
+**Throws:** `FulfillmenttoolsException` on request failure
+
+### createAsync(CreateReturnRequest)
+
+Create a new return asynchronously.
+
+**Parameters:**
+- `request: CreateReturnRequest` — Create return request
+
+**Returns:** `CompletableFuture<Return>`
+
+### start(ReturnId, int)
+
+Start a return process.
+
+**Parameters:**
+- `returnId: ReturnId` — The return identifier
+- `version: int` — Current version of the return (for optimistic locking)
+
+**Returns:** `Return`
+
+**Throws:** `FulfillmenttoolsException` on request failure or version conflict
+
+### startAsync(ReturnId, int)
+
+Start a return process asynchronously.
+
+**Parameters:**
+- `returnId: ReturnId` — The return identifier
+- `version: int` — Current version of the return
+
+**Returns:** `CompletableFuture<Return>`
+
+### finish(ReturnId, int)
+
+Finish a return process.
+
+**Parameters:**
+- `returnId: ReturnId` — The return identifier
+- `version: int` — Current version of the return (for optimistic locking)
+
+**Returns:** `Return`
+
+**Throws:** `FulfillmenttoolsException` on request failure or version conflict
+
+### finishAsync(ReturnId, int)
+
+Finish a return process asynchronously.
+
+**Parameters:**
+- `returnId: ReturnId` — The return identifier
+- `version: int` — Current version of the return
+
+**Returns:** `CompletableFuture<Return>`
+
+### restart(ReturnId, int)
+
+Restart a return process.
+
+**Parameters:**
+- `returnId: ReturnId` — The return identifier
+- `version: int` — Current version of the return (for optimistic locking)
+
+**Returns:** `Return`
+
+**Throws:** `FulfillmenttoolsException` on request failure or version conflict
+
+### restartAsync(ReturnId, int)
+
+Restart a return process asynchronously.
+
+**Parameters:**
+- `returnId: ReturnId` — The return identifier
+- `version: int` — Current version of the return
+
+**Returns:** `CompletableFuture<Return>`
