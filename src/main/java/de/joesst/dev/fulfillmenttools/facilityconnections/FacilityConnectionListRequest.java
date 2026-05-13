@@ -27,15 +27,28 @@ public final class FacilityConnectionListRequest {
         this.targetFacilityRef = builder.targetFacilityRef;
     }
 
-    /** Returns the page size limit. @return the size limit */
+    /**
+     * Returns the page size limit.
+     * @return the size limit, or {@code null} if not set
+     */
     public Integer size() { return size; }
 
-    /** Returns the cursor for pagination. @return the start after ID */
+    /**
+     * Returns the cursor for pagination.
+     * @return the start-after ID, or {@code null} if not set
+     */
     public String startAfterId() { return startAfterId; }
 
-    /** Returns the target facility reference filter. @return the target facility reference */
+    /**
+     * Returns the target facility reference filter.
+     * @return the target facility reference, or {@code null} if not set
+     */
     public String targetFacilityRef() { return targetFacilityRef; }
 
+    /**
+     * Returns a new builder initialized with this request's current values.
+     * @return a new builder
+     */
     public Builder toBuilder() {
         Builder b = new Builder();
         b.size = this.size;
@@ -44,33 +57,47 @@ public final class FacilityConnectionListRequest {
         return b;
     }
 
+    /**
+     * Returns a new builder for constructing a {@code FacilityConnectionListRequest}.
+     * @return a new builder
+     */
     public static Builder builder() { return new Builder(); }
 
-    /** Builder for FacilityConnectionListRequest. */
+    /** Builder for {@code FacilityConnectionListRequest}. */
     public static final class Builder {
 
-        /** The page size limit. */
         private Integer size;
-
-        /** The cursor for pagination. */
         private String startAfterId;
-
-        /** The target facility reference filter. */
         private String targetFacilityRef;
 
-        /** Creates a new Builder. */
+        /** Creates a new Builder instance. */
         public Builder() {}
 
-        /** Sets the page size limit. @param size the page size. @return this builder */
+        /**
+         * Sets the page size limit.
+         * @param size the page size
+         * @return this builder
+         */
         public Builder size(Integer size) { this.size = size; return this; }
 
-        /** Sets the cursor for pagination. @param startAfterId the start after ID. @return this builder */
+        /**
+         * Sets the cursor for pagination.
+         * @param startAfterId the start-after ID
+         * @return this builder
+         */
         public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
 
-        /** Sets the target facility reference filter. @param targetFacilityRef the target facility reference. @return this builder */
+        /**
+         * Sets the target facility reference filter.
+         * @param targetFacilityRef the target facility reference
+         * @return this builder
+         */
         public Builder targetFacilityRef(String targetFacilityRef) { this.targetFacilityRef = targetFacilityRef; return this; }
 
-        /** Builds and returns a new FacilityConnectionListRequest. @return the built request */
+        /**
+         * Builds and returns a new {@code FacilityConnectionListRequest}.
+         * @return the built request
+         */
         public FacilityConnectionListRequest build() { return new FacilityConnectionListRequest(this); }
     }
 }

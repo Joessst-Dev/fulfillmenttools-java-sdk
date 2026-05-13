@@ -15,11 +15,6 @@ public final class UpdateHandoverJobRequest {
     private final String status;
     private final Map<String, Object> customAttributes;
 
-    /**
-     * @param version The optimistic-locking version counter (required).
-     * @param status The new status for the handover job.
-     * @param customAttributes Free-form custom attributes to set or update.
-     */
     private UpdateHandoverJobRequest(Builder builder) {
         this.version = Objects.requireNonNull(builder.version, "version must not be null");
         this.status = builder.status;
@@ -27,23 +22,25 @@ public final class UpdateHandoverJobRequest {
     }
 
     /**
-     * @return the optimistic-locking version counter
+     * Returns the optimistic-locking version counter.
+     * @return the version counter; never {@code null}
      */
     public Integer version() { return version; }
 
     /**
-     * @return the new status for the handover job
+     * Returns the new status for the handover job.
+     * @return the status, or {@code null} if not set
      */
     public String status() { return status; }
 
     /**
-     * @return free-form custom attributes
+     * Returns the free-form custom attributes.
+     * @return the custom attributes, or {@code null} if not set
      */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
     /**
      * Returns a new builder for constructing {@code UpdateHandoverJobRequest} instances.
-     *
      * @return a new builder
      */
     public static Builder builder() { return new Builder(); }
@@ -60,27 +57,32 @@ public final class UpdateHandoverJobRequest {
         private String status;
         private Map<String, Object> customAttributes;
 
+        /** Creates a new Builder instance. */
+        public Builder() {}
+
         /**
-         * @param version the optimistic-locking version counter (required)
+         * Sets the optimistic-locking version counter (required).
+         * @param version the version counter
          * @return this builder
          */
         public Builder version(Integer version) { this.version = version; return this; }
 
         /**
-         * @param status the new status for the handover job
+         * Sets the new status for the handover job.
+         * @param status the status
          * @return this builder
          */
         public Builder status(String status) { this.status = status; return this; }
 
         /**
-         * @param customAttributes free-form custom attributes to set or update
+         * Sets the free-form custom attributes to set or update.
+         * @param customAttributes the custom attributes
          * @return this builder
          */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@code UpdateHandoverJobRequest}.
-         *
          * @return the constructed request
          * @throws NullPointerException if version has not been set
          */

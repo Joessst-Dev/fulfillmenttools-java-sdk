@@ -35,22 +35,40 @@ public final class UpdateStowJobRequest {
         this.customAttributes = builder.customAttributes;
     }
 
-    /** The current version of the stow job; used for optimistic locking. */
+    /**
+     * Returns the current version of the stow job; used for optimistic locking.
+     * @return the version; never {@code null}
+     */
     public Integer version() { return version; }
 
-    /** New priority level of the job. */
+    /**
+     * Returns the new priority level of the job.
+     * @return the priority, or {@code null} if not set
+     */
     public Integer priority() { return priority; }
 
-    /** New target completion time for the job. */
+    /**
+     * Returns the new target completion time for the job.
+     * @return the target time, or {@code null} if not set
+     */
     public Instant targetTime() { return targetTime; }
 
-    /** Replacement list of users assigned to the stow job (at most 20). */
+    /**
+     * Returns the replacement list of users assigned to the stow job.
+     * @return the assigned users, or {@code null} if not set
+     */
     public List<AssignedUserInput> assignedUsers() { return assignedUsers; }
 
-    /** Free-form custom attributes. */
+    /**
+     * Returns the free-form custom attributes.
+     * @return the custom attributes, or {@code null} if not set
+     */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
-    /** Returns a new {@link Builder} for constructing an {@code UpdateStowJobRequest}. */
+    /**
+     * Returns a new {@link Builder} for constructing an {@code UpdateStowJobRequest}.
+     * @return a new builder
+     */
     public static Builder builder() { return new Builder(); }
 
     /**
@@ -64,22 +82,49 @@ public final class UpdateStowJobRequest {
         private List<AssignedUserInput> assignedUsers;
         private Map<String, Object> customAttributes;
 
-        /** @see UpdateStowJobRequest#version() */
+        /** Creates a new Builder instance. */
+        public Builder() {}
+
+        /**
+         * Sets the optimistic-locking version counter (required).
+         * @param version the version counter
+         * @return this builder
+         */
         public Builder version(Integer version) { this.version = version; return this; }
 
-        /** @see UpdateStowJobRequest#priority() */
+        /**
+         * Sets the new priority level of the job.
+         * @param priority the priority
+         * @return this builder
+         */
         public Builder priority(Integer priority) { this.priority = priority; return this; }
 
-        /** @see UpdateStowJobRequest#targetTime() */
+        /**
+         * Sets the new target completion time for the job.
+         * @param targetTime the target time
+         * @return this builder
+         */
         public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
 
-        /** @see UpdateStowJobRequest#assignedUsers() */
+        /**
+         * Sets the replacement list of users assigned to the stow job.
+         * @param assignedUsers the assigned users
+         * @return this builder
+         */
         public Builder assignedUsers(List<AssignedUserInput> assignedUsers) { this.assignedUsers = assignedUsers; return this; }
 
-        /** @see UpdateStowJobRequest#customAttributes() */
+        /**
+         * Sets the free-form custom attributes.
+         * @param customAttributes the custom attributes
+         * @return this builder
+         */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
-        /** Builds the {@link UpdateStowJobRequest}. Throws {@link NullPointerException} if version is absent. */
+        /**
+         * Builds the {@link UpdateStowJobRequest}.
+         * @return a new {@code UpdateStowJobRequest}
+         * @throws NullPointerException if version is absent
+         */
         public UpdateStowJobRequest build() { return new UpdateStowJobRequest(this); }
     }
 }

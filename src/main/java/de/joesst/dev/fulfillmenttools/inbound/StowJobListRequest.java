@@ -154,6 +154,9 @@ public final class StowJobListRequest {
         private List<String> shortId;
         private List<Integer> priority;
 
+        /** Creates a new Builder instance. */
+        public Builder() {}
+
         /**
          * Sets the maximum number of stow jobs to return per page.
          *

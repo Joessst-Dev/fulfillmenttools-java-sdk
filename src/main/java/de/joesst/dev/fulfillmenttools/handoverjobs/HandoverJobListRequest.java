@@ -27,22 +27,6 @@ public final class HandoverJobListRequest {
     private final String startTargetTime;
     private final String endTargetTime;
 
-    /**
-     * @param size Maximum number of results to return; defaults to 100.
-     * @param startAfterId Pagination cursor: return results after this handover job ID.
-     * @param facilityRef Filter by facility reference.
-     * @param status Filter by handover job status (one or more).
-     * @param pickJobRef Filter by pick job reference.
-     * @param shipmentRef Filter by shipment reference.
-     * @param assignedUser Filter by assigned user ID.
-     * @param carrierRefs Filter by carrier reference (one or more).
-     * @param channel Filter by delivery channel (e.g. {@code DELIVERY}, {@code COLLECT}).
-     * @param anonymized Filter by anonymization status.
-     * @param tenantOrderId Filter by tenant order ID.
-     * @param searchTerm General text search across order metadata.
-     * @param startTargetTime Filter by target time (inclusive start).
-     * @param endTargetTime Filter by target time (inclusive end).
-     */
     private HandoverJobListRequest(Builder builder) {
         this.size = builder.size;
         this.startAfterId = builder.startAfterId;
@@ -61,78 +45,91 @@ public final class HandoverJobListRequest {
     }
 
     /**
-     * @return Maximum number of results to return.
+     * Returns the maximum number of results to return.
+     * @return the page size, or {@code null} if not set
      */
     public Integer size() { return size; }
 
     /**
-     * @return Pagination cursor ID.
+     * Returns the pagination cursor ID.
+     * @return the start-after ID, or {@code null} if not set
      */
     public String startAfterId() { return startAfterId; }
 
     /**
-     * @return Facility reference filter.
+     * Returns the facility reference filter.
+     * @return the facility reference, or {@code null} if not set
      */
     public String facilityRef() { return facilityRef; }
 
     /**
-     * @return Status filter values.
+     * Returns the status filter values.
+     * @return the status list, or {@code null} if not set
      */
     public List<String> status() { return status; }
 
     /**
-     * @return Pick job reference filter.
+     * Returns the pick job reference filter.
+     * @return the pick job reference, or {@code null} if not set
      */
     public String pickJobRef() { return pickJobRef; }
 
     /**
-     * @return Shipment reference filter.
+     * Returns the shipment reference filter.
+     * @return the shipment reference, or {@code null} if not set
      */
     public String shipmentRef() { return shipmentRef; }
 
     /**
-     * @return Assigned user ID filter.
+     * Returns the assigned user ID filter.
+     * @return the assigned user ID, or {@code null} if not set
      */
     public String assignedUser() { return assignedUser; }
 
     /**
-     * @return Carrier reference filters.
+     * Returns the carrier reference filters.
+     * @return the carrier reference list, or {@code null} if not set
      */
     public List<String> carrierRefs() { return carrierRefs; }
 
     /**
-     * @return Delivery channel filter.
+     * Returns the delivery channel filter.
+     * @return the channel, or {@code null} if not set
      */
     public String channel() { return channel; }
 
     /**
-     * @return Anonymization status filter.
+     * Returns the anonymization status filter.
+     * @return the anonymized flag, or {@code null} if not set
      */
     public Boolean anonymized() { return anonymized; }
 
     /**
-     * @return Tenant order ID filter.
+     * Returns the tenant order ID filter.
+     * @return the tenant order ID, or {@code null} if not set
      */
     public String tenantOrderId() { return tenantOrderId; }
 
     /**
-     * @return Text search filter.
+     * Returns the text search filter.
+     * @return the search term, or {@code null} if not set
      */
     public String searchTerm() { return searchTerm; }
 
     /**
-     * @return Target time start filter.
+     * Returns the target time start filter (inclusive).
+     * @return the start target time, or {@code null} if not set
      */
     public String startTargetTime() { return startTargetTime; }
 
     /**
-     * @return Target time end filter.
+     * Returns the target time end filter (inclusive).
+     * @return the end target time, or {@code null} if not set
      */
     public String endTargetTime() { return endTargetTime; }
 
     /**
      * Returns a new builder initialized with this request's current values.
-     *
      * @return a new builder
      */
     public Builder toBuilder() {
@@ -156,7 +153,6 @@ public final class HandoverJobListRequest {
 
     /**
      * Returns a new builder for constructing {@code HandoverJobListRequest} instances.
-     *
      * @return a new builder
      */
     public static Builder builder() { return new Builder(); }
@@ -185,93 +181,109 @@ public final class HandoverJobListRequest {
         private String startTargetTime;
         private String endTargetTime;
 
+        /** Creates a new Builder instance. */
+        public Builder() {}
+
         /**
-         * @param size Maximum number of results to return.
+         * Sets the maximum number of results to return.
+         * @param size the page size
          * @return this builder
          */
         public Builder size(Integer size) { this.size = size; return this; }
 
         /**
-         * @param startAfterId Pagination cursor ID.
+         * Sets the pagination cursor ID.
+         * @param startAfterId the start-after ID
          * @return this builder
          */
         public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
 
         /**
-         * @param facilityRef Facility reference to filter by.
+         * Sets the facility reference to filter by.
+         * @param facilityRef the facility reference
          * @return this builder
          */
         public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
-         * @param status Status values to filter by.
+         * Sets the status values to filter by.
+         * @param status the status list
          * @return this builder
          */
         public Builder status(List<String> status) { this.status = status; return this; }
 
         /**
-         * @param pickJobRef Pick job reference to filter by.
+         * Sets the pick job reference to filter by.
+         * @param pickJobRef the pick job reference
          * @return this builder
          */
         public Builder pickJobRef(String pickJobRef) { this.pickJobRef = pickJobRef; return this; }
 
         /**
-         * @param shipmentRef Shipment reference to filter by.
+         * Sets the shipment reference to filter by.
+         * @param shipmentRef the shipment reference
          * @return this builder
          */
         public Builder shipmentRef(String shipmentRef) { this.shipmentRef = shipmentRef; return this; }
 
         /**
-         * @param assignedUser Assigned user ID to filter by.
+         * Sets the assigned user ID to filter by.
+         * @param assignedUser the assigned user ID
          * @return this builder
          */
         public Builder assignedUser(String assignedUser) { this.assignedUser = assignedUser; return this; }
 
         /**
-         * @param carrierRefs Carrier references to filter by.
+         * Sets the carrier references to filter by.
+         * @param carrierRefs the carrier reference list
          * @return this builder
          */
         public Builder carrierRefs(List<String> carrierRefs) { this.carrierRefs = carrierRefs; return this; }
 
         /**
-         * @param channel Delivery channel to filter by.
+         * Sets the delivery channel to filter by.
+         * @param channel the delivery channel
          * @return this builder
          */
         public Builder channel(String channel) { this.channel = channel; return this; }
 
         /**
-         * @param anonymized Anonymization status to filter by.
+         * Sets the anonymization status to filter by.
+         * @param anonymized the anonymized flag
          * @return this builder
          */
         public Builder anonymized(Boolean anonymized) { this.anonymized = anonymized; return this; }
 
         /**
-         * @param tenantOrderId Tenant order ID to filter by.
+         * Sets the tenant order ID to filter by.
+         * @param tenantOrderId the tenant order ID
          * @return this builder
          */
         public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
-         * @param searchTerm Text search term.
+         * Sets the text search term.
+         * @param searchTerm the search term
          * @return this builder
          */
         public Builder searchTerm(String searchTerm) { this.searchTerm = searchTerm; return this; }
 
         /**
-         * @param startTargetTime Target time start (inclusive) to filter by.
+         * Sets the target time start filter (inclusive).
+         * @param startTargetTime the start target time
          * @return this builder
          */
         public Builder startTargetTime(String startTargetTime) { this.startTargetTime = startTargetTime; return this; }
 
         /**
-         * @param endTargetTime Target time end (inclusive) to filter by.
+         * Sets the target time end filter (inclusive).
+         * @param endTargetTime the end target time
          * @return this builder
          */
         public Builder endTargetTime(String endTargetTime) { this.endTargetTime = endTargetTime; return this; }
 
         /**
          * Builds the {@code HandoverJobListRequest}.
-         *
          * @return the constructed request
          */
         public HandoverJobListRequest build() { return new HandoverJobListRequest(this); }

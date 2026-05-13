@@ -73,84 +73,170 @@ public final class ListingUpsertItem {
         this.customAttributes = builder.customAttributes;
     }
 
-    /** @return The facility this listing belongs to. */
+    /**
+     * Returns the facility this listing belongs to.
+     * @return the facility ID; never {@code null}
+     */
     public String facilityId() { return facilityId; }
 
-    /** @return The tenant-assigned article identifier. */
+    /**
+     * Returns the tenant-assigned article identifier.
+     * @return the tenant article ID; never {@code null}
+     */
     public String tenantArticleId() { return tenantArticleId; }
 
-    /** @return The human-readable title of the article. */
+    /**
+     * Returns the human-readable title of the article.
+     * @return the title, or {@code null} if not set
+     */
     public String title() { return title; }
 
-    /** @return Locale-keyed translations of the title. */
+    /**
+     * Returns the locale-keyed translations of the title.
+     * @return the localized titles, or {@code null} if not set
+     */
     public Map<String, String> titleLocalized() { return titleLocalized; }
 
-    /** @return URL to an image of the article. */
+    /**
+     * Returns the URL to an image of the article.
+     * @return the image URL, or {@code null} if not set
+     */
     public String imageUrl() { return imageUrl; }
 
-    /** @return Identifier for the article's unit of measurement. */
+    /**
+     * Returns the identifier for the article's unit of measurement.
+     * @return the measurement unit key, or {@code null} if not set
+     */
     public String measurementUnitKey() { return measurementUnitKey; }
 
-    /** @return Default out-of-stock behaviour. */
+    /**
+     * Returns the default out-of-stock behaviour.
+     * @return the out-of-stock behaviour, or {@code null} if not set
+     */
     public String outOfStockBehaviour() { return outOfStockBehaviour; }
 
-    /** @return ISO 4217 currency code. Deprecated — use attributes instead. */
+    /**
+     * Returns the ISO 4217 currency code.
+     * @deprecated use attributes instead
+     * @return the currency, or {@code null} if not set
+     */
+    @Deprecated
     public String currency() { return currency; }
 
-    /** @return Article price. Deprecated — use attributes instead. */
+    /**
+     * Returns the article price.
+     * @deprecated use attributes instead
+     * @return the price, or {@code null} if not set
+     */
+    @Deprecated
     public Double price() { return price; }
 
-    /** @return Article weight. Deprecated — use attributes instead. */
+    /**
+     * Returns the article weight.
+     * @deprecated use attributes instead
+     * @return the weight, or {@code null} if not set
+     */
+    @Deprecated
     public Double weight() { return weight; }
 
-    /** @return Category references for this listing. */
+    /**
+     * Returns the category references for this listing.
+     * @return the category references, or {@code null} if not set
+     */
     public List<String> categoryRefs() { return categoryRefs; }
 
-    /** @return Barcodes that identify this article. */
+    /**
+     * Returns the barcodes that identify this article.
+     * @return the scannable codes, or {@code null} if not set
+     */
     public List<String> scannableCodes() { return scannableCodes; }
 
-    /** @return Custom attributes attached to this listing. */
+    /**
+     * Returns the custom attributes attached to this listing.
+     * @return the attributes, or {@code null} if not set
+     */
     public List<ArticleAttribute> attributes() { return attributes; }
 
-    /** @return Attributes whose values are recorded during picking. */
+    /**
+     * Returns the attributes whose values are recorded during picking.
+     * @return the recordable attributes, or {@code null} if not set
+     */
     public List<ListingRecordableAttribute> recordableAttributes() { return recordableAttributes; }
 
-    /** @return Context-specific out-of-stock behaviour overrides. */
+    /**
+     * Returns the context-specific out-of-stock behaviour overrides.
+     * @return the out-of-stock behaviour by context, or {@code null} if not set
+     */
     public List<ListingOutOfStockBehaviourByContext> outOfStockBehaviourByContexts() { return outOfStockBehaviourByContexts; }
 
-    /** @return Deprecated partial stock entries. Use {@code /api/stocks} instead. */
+    /**
+     * Returns the deprecated partial stock entries.
+     * @deprecated use {@code /api/stocks} instead
+     * @return the partial stocks, or {@code null} if not set
+     */
+    @Deprecated
     public List<ListingPartialStock> partialStocks() { return partialStocks; }
 
-    /** @return Tag references attached to this listing. */
+    /**
+     * Returns the tag references attached to this listing.
+     * @return the tags, or {@code null} if not set
+     */
     public List<ListingTag> tags() { return tags; }
 
-    /** @return Legal information for this listing. */
+    /**
+     * Returns the legal information for this listing.
+     * @return the legal info, or {@code null} if not set
+     */
     public ListingLegal legal() { return legal; }
 
-    /** @return Configuration for PREORDER/RESTOCK out-of-stock behaviours. */
+    /**
+     * Returns the configuration for PREORDER/RESTOCK out-of-stock behaviours.
+     * @return the out-of-stock config, or {@code null} if not set
+     */
     public ListingOutOfStockConfig outOfStockConfig() { return outOfStockConfig; }
 
-    /** @return Scanning configuration for this listing. */
+    /**
+     * Returns the scanning configuration for this listing.
+     * @return the scanning rule, or {@code null} if not set
+     */
     public ListingScanningRule scanningRule() { return scanningRule; }
 
-    /** @return Definition of how the "available until" date is calculated. */
+    /**
+     * Returns the definition of how the "available until" date is calculated.
+     * @return the stock available until config, or {@code null} if not set
+     */
     public ListingStockAvailableUntil stockAvailableUntil() { return stockAvailableUntil; }
 
-    /** @return Deprecated stock information. Use {@code /api/stocks} instead. */
+    /**
+     * Returns the deprecated stock information.
+     * @deprecated use {@code /api/stocks} instead
+     * @return the stock information, or {@code null} if not set
+     */
+    @Deprecated
     public ListingStockInformation stockinformation() { return stockinformation; }
 
-    /** @return Key-value definitions for recordable stock properties. */
+    /**
+     * Returns the key-value definitions for recordable stock properties.
+     * @return the stock property definitions, or {@code null} if not set
+     */
     public Map<String, ListingStockPropertyDefinition> stockProperties() { return stockProperties; }
 
-    /** @return Deprecated availability timeframe. Use {@code outOfStockConfig} instead. */
+    /**
+     * Returns the deprecated availability timeframe.
+     * @deprecated use {@code outOfStockConfig} instead
+     * @return the availability timeframe, or {@code null} if not set
+     */
+    @Deprecated
     public ListingAvailabilityTimeframe availabilityTimeframe() { return availabilityTimeframe; }
 
-    /** @return Arbitrary caller-defined metadata; not usable in fulfillment processes. */
+    /**
+     * Returns the arbitrary caller-defined metadata.
+     * @return the custom attributes, or {@code null} if not set
+     */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
     /**
      * Creates a new {@link Builder} for constructing a {@link ListingUpsertItem}.
-     *
      * @return a new builder instance
      */
     public static Builder builder() { return new Builder(); }
@@ -187,35 +273,183 @@ public final class ListingUpsertItem {
 
         private Builder() {}
 
+        /**
+         * Sets the facility ID (required).
+         * @param facilityId the facility ID
+         * @return this builder
+         */
         public Builder facilityId(String facilityId) { this.facilityId = facilityId; return this; }
+
+        /**
+         * Sets the tenant article ID (required).
+         * @param tenantArticleId the tenant article ID
+         * @return this builder
+         */
         public Builder tenantArticleId(String tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+
+        /**
+         * Sets the human-readable title of the article.
+         * @param title the title
+         * @return this builder
+         */
         public Builder title(String title) { this.title = title; return this; }
+
+        /**
+         * Sets the locale-keyed translations of the title.
+         * @param titleLocalized the localized titles
+         * @return this builder
+         */
         public Builder titleLocalized(Map<String, String> titleLocalized) { this.titleLocalized = titleLocalized; return this; }
+
+        /**
+         * Sets the URL to an image of the article.
+         * @param imageUrl the image URL
+         * @return this builder
+         */
         public Builder imageUrl(String imageUrl) { this.imageUrl = imageUrl; return this; }
+
+        /**
+         * Sets the identifier for the article's unit of measurement.
+         * @param measurementUnitKey the measurement unit key
+         * @return this builder
+         */
         public Builder measurementUnitKey(String measurementUnitKey) { this.measurementUnitKey = measurementUnitKey; return this; }
+
+        /**
+         * Sets the default out-of-stock behaviour.
+         * @param outOfStockBehaviour the out-of-stock behaviour
+         * @return this builder
+         */
         public Builder outOfStockBehaviour(String outOfStockBehaviour) { this.outOfStockBehaviour = outOfStockBehaviour; return this; }
+
+        /**
+         * Sets the ISO 4217 currency code.
+         * @param currency the currency code
+         * @return this builder
+         */
         public Builder currency(String currency) { this.currency = currency; return this; }
+
+        /**
+         * Sets the article price.
+         * @param price the price
+         * @return this builder
+         */
         public Builder price(Double price) { this.price = price; return this; }
+
+        /**
+         * Sets the article weight.
+         * @param weight the weight
+         * @return this builder
+         */
         public Builder weight(Double weight) { this.weight = weight; return this; }
+
+        /**
+         * Sets the category references for this listing.
+         * @param categoryRefs the category references
+         * @return this builder
+         */
         public Builder categoryRefs(List<String> categoryRefs) { this.categoryRefs = categoryRefs; return this; }
+
+        /**
+         * Sets the barcodes that identify this article.
+         * @param scannableCodes the scannable codes
+         * @return this builder
+         */
         public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+
+        /**
+         * Sets the custom attributes attached to this listing.
+         * @param attributes the attributes
+         * @return this builder
+         */
         public Builder attributes(List<ArticleAttribute> attributes) { this.attributes = attributes; return this; }
+
+        /**
+         * Sets the attributes whose values are recorded during picking.
+         * @param recordableAttributes the recordable attributes
+         * @return this builder
+         */
         public Builder recordableAttributes(List<ListingRecordableAttribute> recordableAttributes) { this.recordableAttributes = recordableAttributes; return this; }
+
+        /**
+         * Sets the context-specific out-of-stock behaviour overrides.
+         * @param outOfStockBehaviourByContexts the out-of-stock behaviour by context
+         * @return this builder
+         */
         public Builder outOfStockBehaviourByContexts(List<ListingOutOfStockBehaviourByContext> outOfStockBehaviourByContexts) { this.outOfStockBehaviourByContexts = outOfStockBehaviourByContexts; return this; }
+
+        /**
+         * Sets the partial stock entries.
+         * @param partialStocks the partial stocks
+         * @return this builder
+         */
         public Builder partialStocks(List<ListingPartialStock> partialStocks) { this.partialStocks = partialStocks; return this; }
+
+        /**
+         * Sets the tag references attached to this listing.
+         * @param tags the tags
+         * @return this builder
+         */
         public Builder tags(List<ListingTag> tags) { this.tags = tags; return this; }
+
+        /**
+         * Sets the legal information for this listing.
+         * @param legal the legal info
+         * @return this builder
+         */
         public Builder legal(ListingLegal legal) { this.legal = legal; return this; }
+
+        /**
+         * Sets the configuration for PREORDER/RESTOCK out-of-stock behaviours.
+         * @param outOfStockConfig the out-of-stock config
+         * @return this builder
+         */
         public Builder outOfStockConfig(ListingOutOfStockConfig outOfStockConfig) { this.outOfStockConfig = outOfStockConfig; return this; }
+
+        /**
+         * Sets the scanning configuration for this listing.
+         * @param scanningRule the scanning rule
+         * @return this builder
+         */
         public Builder scanningRule(ListingScanningRule scanningRule) { this.scanningRule = scanningRule; return this; }
+
+        /**
+         * Sets the definition of how the "available until" date is calculated.
+         * @param stockAvailableUntil the stock available until config
+         * @return this builder
+         */
         public Builder stockAvailableUntil(ListingStockAvailableUntil stockAvailableUntil) { this.stockAvailableUntil = stockAvailableUntil; return this; }
+
+        /**
+         * Sets the stock information.
+         * @param stockinformation the stock information
+         * @return this builder
+         */
         public Builder stockinformation(ListingStockInformation stockinformation) { this.stockinformation = stockinformation; return this; }
+
+        /**
+         * Sets the key-value definitions for recordable stock properties.
+         * @param stockProperties the stock property definitions
+         * @return this builder
+         */
         public Builder stockProperties(Map<String, ListingStockPropertyDefinition> stockProperties) { this.stockProperties = stockProperties; return this; }
+
+        /**
+         * Sets the availability timeframe.
+         * @param availabilityTimeframe the availability timeframe
+         * @return this builder
+         */
         public Builder availabilityTimeframe(ListingAvailabilityTimeframe availabilityTimeframe) { this.availabilityTimeframe = availabilityTimeframe; return this; }
+
+        /**
+         * Sets the arbitrary caller-defined metadata.
+         * @param customAttributes the custom attributes
+         * @return this builder
+         */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link ListingUpsertItem}.
-         *
          * @return a new immutable {@link ListingUpsertItem}
          * @throws NullPointerException if {@code facilityId} or {@code tenantArticleId} is null
          */

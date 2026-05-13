@@ -97,6 +97,9 @@ public final class ListingSearchRequest {
         private String after;
         private String before;
 
+        /** Creates a new Builder instance. */
+        public Builder() {}
+
         /**
          * Sets the search query defining which listings to match.
          *

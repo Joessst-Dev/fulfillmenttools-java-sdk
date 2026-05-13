@@ -27,17 +27,23 @@ public final class UpdatePackJobRequest {
     }
 
     /**
-     * @return the optimistic-locking version counter
+     * Returns the optimistic-locking version counter.
+     *
+     * @return the version counter
      */
     public Integer version() { return version; }
 
     /**
-     * @return the new status for the pack job
+     * Returns the new status for the pack job.
+     *
+     * @return the status, or null if not set
      */
     public String status() { return status; }
 
     /**
-     * @return free-form custom attributes
+     * Returns free-form custom attributes.
+     *
+     * @return the custom attributes map, or null if not set
      */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
@@ -64,19 +70,25 @@ public final class UpdatePackJobRequest {
         private Map<String, Object> customAttributes;
 
         /**
-         * @param version the optimistic-locking version counter (required)
+         * Sets the optimistic-locking version counter (required).
+         *
+         * @param version the version counter
          * @return this builder
          */
         public Builder version(Integer version) { this.version = version; return this; }
 
         /**
-         * @param status the new status for the pack job
+         * Sets the new status for the pack job.
+         *
+         * @param status the status
          * @return this builder
          */
         public Builder status(String status) { this.status = status; return this; }
 
         /**
-         * @param customAttributes free-form custom attributes to set or update
+         * Sets free-form custom attributes.
+         *
+         * @param customAttributes the custom attributes to set or update
          * @return this builder
          */
         public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }

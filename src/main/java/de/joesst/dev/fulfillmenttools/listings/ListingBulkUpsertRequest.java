@@ -44,6 +44,9 @@ public final class ListingBulkUpsertRequest {
     public static final class Builder {
         private List<ListingUpsertItem> listings;
 
+        /** Creates a new Builder instance. */
+        public Builder() {}
+
         /**
          * Sets the listing items to be upserted.
          *

@@ -35,24 +35,46 @@ public final class FacilityListRequest {
         this.orderBy = builder.orderBy;
     }
 
-    /** Returns the page size limit. @return the size limit */
+    /**
+     * Returns the page size limit.
+     * @return the size limit, or {@code null} if not set
+     */
     public Integer size() { return size; }
 
-    /** Returns the cursor for pagination. @return the start after ID */
+    /**
+     * Returns the cursor for pagination.
+     * @return the start-after ID, or {@code null} if not set
+     */
     public String startAfterId() { return startAfterId; }
 
-    /** Returns the facility status filter. @return the status list */
+    /**
+     * Returns the facility status filter.
+     * @return the status list, or {@code null} if not set
+     */
     public List<String> status() { return status; }
 
-    /** Returns the tenant facility ID filter. @return the tenant facility ID */
+    /**
+     * Returns the tenant facility ID filter.
+     * @return the tenant facility ID, or {@code null} if not set
+     */
     public String tenantFacilityId() { return tenantFacilityId; }
 
-    /** Returns the facility type filter. @return the type list */
+    /**
+     * Returns the facility type filter.
+     * @return the type list, or {@code null} if not set
+     */
     public List<String> type() { return type; }
 
-    /** Returns the order by field. @return the order by field */
+    /**
+     * Returns the order-by field.
+     * @return the order-by field, or {@code null} if not set
+     */
     public String orderBy() { return orderBy; }
 
+    /**
+     * Returns a new builder initialized with this request's current values.
+     * @return a new builder
+     */
     public Builder toBuilder() {
         Builder b = new Builder();
         b.size = this.size;
@@ -64,51 +86,71 @@ public final class FacilityListRequest {
         return b;
     }
 
+    /**
+     * Returns a new builder for constructing a {@code FacilityListRequest}.
+     * @return a new builder
+     */
     public static Builder builder() { return new Builder(); }
 
-    /** Builder for FacilityListRequest. */
+    /** Builder for {@code FacilityListRequest}. */
     public static final class Builder {
 
-        /** The page size limit. */
         private Integer size;
-
-        /** The cursor for pagination. */
         private String startAfterId;
-
-        /** The facility status filter. */
         private List<String> status;
-
-        /** The tenant facility ID filter. */
         private String tenantFacilityId;
-
-        /** The facility type filter. */
         private List<String> type;
-
-        /** The order by field. */
         private String orderBy;
 
-        /** Creates a new Builder. */
+        /** Creates a new Builder instance. */
         public Builder() {}
 
-        /** Sets the page size limit. @param size the page size. @return this builder */
+        /**
+         * Sets the page size limit.
+         * @param size the page size
+         * @return this builder
+         */
         public Builder size(Integer size) { this.size = size; return this; }
 
-        /** Sets the cursor for pagination. @param startAfterId the start after ID. @return this builder */
+        /**
+         * Sets the cursor for pagination.
+         * @param startAfterId the start-after ID
+         * @return this builder
+         */
         public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
 
-        /** Sets the facility status filter. @param status the status list. @return this builder */
+        /**
+         * Sets the facility status filter.
+         * @param status the status list
+         * @return this builder
+         */
         public Builder status(List<String> status) { this.status = status; return this; }
 
-        /** Sets the tenant facility ID filter. @param tenantFacilityId the tenant facility ID. @return this builder */
+        /**
+         * Sets the tenant facility ID filter.
+         * @param tenantFacilityId the tenant facility ID
+         * @return this builder
+         */
         public Builder tenantFacilityId(String tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
 
-        /** Sets the facility type filter. @param type the type list. @return this builder */
+        /**
+         * Sets the facility type filter.
+         * @param type the type list
+         * @return this builder
+         */
         public Builder type(List<String> type) { this.type = type; return this; }
 
-        /** Sets the order by field. @param orderBy the order by field. @return this builder */
+        /**
+         * Sets the order-by field.
+         * @param orderBy the order-by field
+         * @return this builder
+         */
         public Builder orderBy(String orderBy) { this.orderBy = orderBy; return this; }
 
-        /** Builds and returns a new FacilityListRequest. @return the built request */
+        /**
+         * Builds and returns a new {@code FacilityListRequest}.
+         * @return the built request
+         */
         public FacilityListRequest build() { return new FacilityListRequest(this); }
     }
 }
