@@ -24,4 +24,33 @@ public record HandoverSubstituteLineItemStockLocation(
         Double ratingScore,
         Double sequenceScore,
         String locationRef
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String tenantPartialStockId;
+        private String stockRef;
+        private Double quantity;
+        private Double picked;
+        private Double ratingScore;
+        private Double sequenceScore;
+        private String locationRef;
+
+        private Builder() {}
+
+        public Builder tenantPartialStockId(String tenantPartialStockId) { this.tenantPartialStockId = tenantPartialStockId; return this; }
+        public Builder stockRef(String stockRef) { this.stockRef = stockRef; return this; }
+        public Builder quantity(Double quantity) { this.quantity = quantity; return this; }
+        public Builder picked(Double picked) { this.picked = picked; return this; }
+        public Builder ratingScore(Double ratingScore) { this.ratingScore = ratingScore; return this; }
+        public Builder sequenceScore(Double sequenceScore) { this.sequenceScore = sequenceScore; return this; }
+        public Builder locationRef(String locationRef) { this.locationRef = locationRef; return this; }
+
+        public HandoverSubstituteLineItemStockLocation build() {
+            return new HandoverSubstituteLineItemStockLocation(tenantPartialStockId, stockRef, quantity, picked, ratingScore, sequenceScore, locationRef);
+        }
+    }
+}

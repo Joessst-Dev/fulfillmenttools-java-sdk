@@ -14,4 +14,23 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 public record SourcingOptionNonAssignedOrderLineItem(
         String orderLineItemRef,
         String reason
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String orderLineItemRef;
+        private String reason;
+
+        private Builder() {}
+
+        public Builder orderLineItemRef(String orderLineItemRef) { this.orderLineItemRef = orderLineItemRef; return this; }
+        public Builder reason(String reason) { this.reason = reason; return this; }
+
+        public SourcingOptionNonAssignedOrderLineItem build() {
+            return new SourcingOptionNonAssignedOrderLineItem(orderLineItemRef, reason);
+        }
+    }
+}

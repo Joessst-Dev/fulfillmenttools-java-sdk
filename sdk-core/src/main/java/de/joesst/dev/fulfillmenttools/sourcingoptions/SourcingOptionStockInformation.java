@@ -16,4 +16,25 @@ public record SourcingOptionStockInformation(
         Integer available,
         Integer reserved,
         String shelfCode
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Integer available;
+        private Integer reserved;
+        private String shelfCode;
+
+        private Builder() {}
+
+        public Builder available(Integer available) { this.available = available; return this; }
+        public Builder reserved(Integer reserved) { this.reserved = reserved; return this; }
+        public Builder shelfCode(String shelfCode) { this.shelfCode = shelfCode; return this; }
+
+        public SourcingOptionStockInformation build() {
+            return new SourcingOptionStockInformation(available, reserved, shelfCode);
+        }
+    }
+}

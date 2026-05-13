@@ -19,4 +19,25 @@ public record ParcelLabelClassificationForCreation(
         Map<String, String> nameLocalized,
         ParcelDimensions dimensions,
         ParcelLabelClassificationServices services
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Map<String, String> nameLocalized;
+        private ParcelDimensions dimensions;
+        private ParcelLabelClassificationServices services;
+
+        private Builder() {}
+
+        public Builder nameLocalized(Map<String, String> nameLocalized) { this.nameLocalized = nameLocalized; return this; }
+        public Builder dimensions(ParcelDimensions dimensions) { this.dimensions = dimensions; return this; }
+        public Builder services(ParcelLabelClassificationServices services) { this.services = services; return this; }
+
+        public ParcelLabelClassificationForCreation build() {
+            return new ParcelLabelClassificationForCreation(nameLocalized, dimensions, services);
+        }
+    }
+}

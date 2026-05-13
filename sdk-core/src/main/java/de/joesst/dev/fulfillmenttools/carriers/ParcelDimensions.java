@@ -24,4 +24,29 @@ public record ParcelDimensions(
         Double length,
         Double weight,
         Double width
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Double customWeight;
+        private Double height;
+        private Double length;
+        private Double weight;
+        private Double width;
+
+        private Builder() {}
+
+        public Builder customWeight(Double customWeight) { this.customWeight = customWeight; return this; }
+        public Builder height(Double height) { this.height = height; return this; }
+        public Builder length(Double length) { this.length = length; return this; }
+        public Builder weight(Double weight) { this.weight = weight; return this; }
+        public Builder width(Double width) { this.width = width; return this; }
+
+        public ParcelDimensions build() {
+            return new ParcelDimensions(customWeight, height, length, weight, width);
+        }
+    }
+}

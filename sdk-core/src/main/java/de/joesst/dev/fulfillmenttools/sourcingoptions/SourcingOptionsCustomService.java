@@ -21,4 +21,25 @@ public record SourcingOptionsCustomService(
         String type,
         Map<String, Object> attributes,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String type;
+        private Map<String, Object> attributes;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder type(String type) { this.type = type; return this; }
+        public Builder attributes(Map<String, Object> attributes) { this.attributes = attributes; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public SourcingOptionsCustomService build() {
+            return new SourcingOptionsCustomService(type, attributes, customAttributes);
+        }
+    }
+}

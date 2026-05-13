@@ -33,5 +33,46 @@ public record StrippedPackingSourceContainer(
     public record PreviousModuleContainerInfo(
             String containerRef,
             String type
-    ) {}
+    ) {
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public static final class Builder {
+            private String containerRef;
+            private String type;
+
+            private Builder() {}
+
+            public Builder containerRef(String containerRef) { this.containerRef = containerRef; return this; }
+            public Builder type(String type) { this.type = type; return this; }
+
+            public PreviousModuleContainerInfo build() {
+                return new PreviousModuleContainerInfo(containerRef, type);
+            }
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String id;
+        private List<String> codes;
+        private String loadUnitRef;
+        private PreviousModuleContainerInfo previousModuleContainerInfo;
+
+        private Builder() {}
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder codes(List<String> codes) { this.codes = codes; return this; }
+        public Builder loadUnitRef(String loadUnitRef) { this.loadUnitRef = loadUnitRef; return this; }
+        public Builder previousModuleContainerInfo(PreviousModuleContainerInfo previousModuleContainerInfo) { this.previousModuleContainerInfo = previousModuleContainerInfo; return this; }
+
+        public StrippedPackingSourceContainer build() {
+            return new StrippedPackingSourceContainer(id, codes, loadUnitRef, previousModuleContainerInfo);
+        }
+    }
 }

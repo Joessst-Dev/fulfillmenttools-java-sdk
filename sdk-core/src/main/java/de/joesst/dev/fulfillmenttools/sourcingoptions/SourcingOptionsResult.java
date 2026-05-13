@@ -15,4 +15,23 @@ import java.util.List;
 public record SourcingOptionsResult(
         SourcingOptionsRequestId id,
         List<SourcingOption> options
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private SourcingOptionsRequestId id;
+        private List<SourcingOption> options;
+
+        private Builder() {}
+
+        public Builder id(SourcingOptionsRequestId id) { this.id = id; return this; }
+        public Builder options(List<SourcingOption> options) { this.options = options; return this; }
+
+        public SourcingOptionsResult build() {
+            return new SourcingOptionsResult(id, options);
+        }
+    }
+}

@@ -29,4 +29,31 @@ public record SourcingOptionListingDetails(
         TenantArticleId tenantArticleId,
         SourcingOptionStockInformation stockInformation,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private ListingId listingRef;
+        private FacilityId facilityRef;
+        private TenantFacilityId tenantFacilityId;
+        private TenantArticleId tenantArticleId;
+        private SourcingOptionStockInformation stockInformation;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder listingRef(ListingId listingRef) { this.listingRef = listingRef; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder stockInformation(SourcingOptionStockInformation stockInformation) { this.stockInformation = stockInformation; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public SourcingOptionListingDetails build() {
+            return new SourcingOptionListingDetails(listingRef, facilityRef, tenantFacilityId, tenantArticleId, stockInformation, customAttributes);
+        }
+    }
+}

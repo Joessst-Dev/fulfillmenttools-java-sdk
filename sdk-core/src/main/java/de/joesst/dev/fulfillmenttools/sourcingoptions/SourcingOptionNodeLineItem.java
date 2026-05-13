@@ -30,4 +30,33 @@ public record SourcingOptionNodeLineItem(
         List<String> scannableCodes,
         List<PickJobLineItemPartialStockLocation> partialStockLocations,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String id;
+        private String orderLineItemRef;
+        private Integer quantity;
+        private String measurementUnitKey;
+        private List<String> scannableCodes;
+        private List<PickJobLineItemPartialStockLocation> partialStockLocations;
+        private Map<String, Object> customAttributes;
+
+        private Builder() {}
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder orderLineItemRef(String orderLineItemRef) { this.orderLineItemRef = orderLineItemRef; return this; }
+        public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
+        public Builder measurementUnitKey(String measurementUnitKey) { this.measurementUnitKey = measurementUnitKey; return this; }
+        public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
+        public Builder partialStockLocations(List<PickJobLineItemPartialStockLocation> partialStockLocations) { this.partialStockLocations = partialStockLocations; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public SourcingOptionNodeLineItem build() {
+            return new SourcingOptionNodeLineItem(id, orderLineItemRef, quantity, measurementUnitKey, scannableCodes, partialStockLocations, customAttributes);
+        }
+    }
+}

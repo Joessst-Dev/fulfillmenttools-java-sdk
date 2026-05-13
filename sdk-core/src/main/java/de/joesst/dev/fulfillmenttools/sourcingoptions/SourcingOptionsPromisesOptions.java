@@ -20,4 +20,25 @@ public record SourcingOptionsPromisesOptions(
         Boolean calculatePromises,
         CarrierId carrierId,
         String carrierProductId
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Boolean calculatePromises;
+        private CarrierId carrierId;
+        private String carrierProductId;
+
+        private Builder() {}
+
+        public Builder calculatePromises(Boolean calculatePromises) { this.calculatePromises = calculatePromises; return this; }
+        public Builder carrierId(CarrierId carrierId) { this.carrierId = carrierId; return this; }
+        public Builder carrierProductId(String carrierProductId) { this.carrierProductId = carrierProductId; return this; }
+
+        public SourcingOptionsPromisesOptions build() {
+            return new SourcingOptionsPromisesOptions(calculatePromises, carrierId, carrierProductId);
+        }
+    }
+}

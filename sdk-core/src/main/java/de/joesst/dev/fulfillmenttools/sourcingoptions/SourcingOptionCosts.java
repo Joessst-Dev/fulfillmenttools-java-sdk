@@ -13,4 +13,23 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 public record SourcingOptionCosts(
         String currency,
         Double total
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String currency;
+        private Double total;
+
+        private Builder() {}
+
+        public Builder currency(String currency) { this.currency = currency; return this; }
+        public Builder total(Double total) { this.total = total; return this; }
+
+        public SourcingOptionCosts build() {
+            return new SourcingOptionCosts(currency, total);
+        }
+    }
+}
