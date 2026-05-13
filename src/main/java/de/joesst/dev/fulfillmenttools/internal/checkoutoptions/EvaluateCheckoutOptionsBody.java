@@ -1,15 +1,21 @@
 package de.joesst.dev.fulfillmenttools.internal.checkoutoptions;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.checkoutoptions.CheckoutOptionsConsumerAddress;
+import de.joesst.dev.fulfillmenttools.checkoutoptions.GeoFence;
+import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
+
 import java.util.List;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 record EvaluateCheckoutOptionsBody(
-        Map<String, Object> deliveryPreferences,
+        DeliveryPreferences deliveryPreferences,
         List<Map<String, Object>> orderLineItems,
-        Map<String, Object> consumerAddress,
+        CheckoutOptionsConsumerAddress consumerAddress,
         Map<String, Object> customAttributes,
         Boolean filterDuplicates,
         List<Map<String, Object>> customServices,
-        Map<String, Object> geoFence,
+        GeoFence geoFence,
         List<Map<String, Object>> tags
 ) {}

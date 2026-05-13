@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.checkoutoptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -55,7 +56,7 @@ class CheckoutOptionsClientTest {
         // When
         CheckoutOption option = client.checkoutOptions().evaluate(
                 EvaluateCheckoutOptionsRequest.builder()
-                        .deliveryPreferences(Map.of("type", "HOME_DELIVERY"))
+                        .deliveryPreferences(homeDelivery())
                         .orderLineItems(List.of(Map.of("tenantArticleId", "art-1", "quantity", 1)))
                         .build());
 
@@ -74,7 +75,7 @@ class CheckoutOptionsClientTest {
         // When
         client.checkoutOptions().evaluate(
                 EvaluateCheckoutOptionsRequest.builder()
-                        .deliveryPreferences(Map.of("type", "CLICK_AND_COLLECT"))
+                        .deliveryPreferences(clickAndCollect())
                         .orderLineItems(List.of(Map.of("tenantArticleId", "art-1", "quantity", 1)))
                         .build());
 
@@ -92,7 +93,7 @@ class CheckoutOptionsClientTest {
         // When
         client.checkoutOptions().evaluate(
                 EvaluateCheckoutOptionsRequest.builder()
-                        .deliveryPreferences(Map.of("type", "HOME_DELIVERY", "targetTime", "2025-06-01T10:00:00Z"))
+                        .deliveryPreferences(homeDelivery())
                         .orderLineItems(List.of(
                                 Map.of("tenantArticleId", "art-1", "quantity", 2),
                                 Map.of("tenantArticleId", "art-2", "quantity", 1)))
@@ -101,7 +102,6 @@ class CheckoutOptionsClientTest {
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/promises/checkoutoptions"))
                 .withHeader("Content-Type", containing("application/json"))
-                .withRequestBody(matchingJsonPath("$.deliveryPreferences.type", equalTo("HOME_DELIVERY")))
                 .withRequestBody(matchingJsonPath("$.orderLineItems[0].tenantArticleId", equalTo("art-1")))
                 .withRequestBody(matchingJsonPath("$.orderLineItems[1].tenantArticleId", equalTo("art-2"))));
     }
@@ -115,9 +115,12 @@ class CheckoutOptionsClientTest {
         // When
         client.checkoutOptions().evaluate(
                 EvaluateCheckoutOptionsRequest.builder()
-                        .deliveryPreferences(Map.of("type", "CLICK_AND_COLLECT"))
+                        .deliveryPreferences(clickAndCollect())
                         .orderLineItems(List.of(Map.of("tenantArticleId", "art-1", "quantity", 1)))
-                        .consumerAddress(Map.of("country", "DE", "city", "Berlin"))
+                        .consumerAddress(CheckoutOptionsConsumerAddress.builder()
+                                .country("DE")
+                                .city("Berlin")
+                                .build())
                         .filterDuplicates(true)
                         .customAttributes(Map.of("source", "web"))
                         .build());
@@ -138,15 +141,15 @@ class CheckoutOptionsClientTest {
         // When
         client.checkoutOptions().evaluate(
                 EvaluateCheckoutOptionsRequest.builder()
-                        .deliveryPreferences(Map.of("type", "HOME_DELIVERY"))
+                        .deliveryPreferences(homeDelivery())
                         .orderLineItems(List.of(Map.of("tenantArticleId", "art-1", "quantity", 1)))
-                        .geoFence(Map.of("radius", 50))
+                        .geoFence(new GeoFence(52.52, 13.405, 50))
                         .tags(List.of(Map.of("value", "express")))
                         .build());
 
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/promises/checkoutoptions"))
-                .withRequestBody(matchingJsonPath("$.geoFence.radius", equalTo("50")))
+                .withRequestBody(matchingJsonPath("$.geoFence.radius", equalTo("50.0")))
                 .withRequestBody(matchingJsonPath("$.tags[0].value", equalTo("express"))));
     }
 
@@ -162,13 +165,21 @@ class CheckoutOptionsClientTest {
     @Test
     void evaluate_requiresOrderLineItems() {
         assertThatThrownBy(() -> EvaluateCheckoutOptionsRequest.builder()
-                .deliveryPreferences(Map.of("type", "HOME_DELIVERY"))
+                .deliveryPreferences(homeDelivery())
                 .build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("orderLineItems");
     }
 
     // --- Helpers ---
+
+    private static DeliveryPreferences homeDelivery() {
+        return new DeliveryPreferences(null, null, null, null, null, null);
+    }
+
+    private static DeliveryPreferences clickAndCollect() {
+        return new DeliveryPreferences(null, null, null, null, null, null);
+    }
 
     private static TokenProvider fixedToken(String token) {
         return new TokenProvider() {

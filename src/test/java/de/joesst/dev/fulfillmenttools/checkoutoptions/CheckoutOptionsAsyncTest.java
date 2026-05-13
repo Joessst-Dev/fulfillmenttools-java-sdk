@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.checkoutoptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -44,7 +45,7 @@ class CheckoutOptionsAsyncTest {
                 .willReturn(okJson("{\"facilities\":[{\"facilityRef\":\"fac-1\",\"name\":\"Facility 1\"}]}")));
 
         EvaluateCheckoutOptionsRequest request = EvaluateCheckoutOptionsRequest.builder()
-                .deliveryPreferences(Map.of("type", "HOME_DELIVERY"))
+                .deliveryPreferences(homeDelivery())
                 .orderLineItems(List.of(Map.of("tenantArticleId", "article-1", "quantity", 1)))
                 .build();
 
@@ -63,10 +64,10 @@ class CheckoutOptionsAsyncTest {
                 .willReturn(okJson("{\"facilities\":[]}")));
 
         EvaluateCheckoutOptionsRequest request = EvaluateCheckoutOptionsRequest.builder()
-                .deliveryPreferences(Map.of("type", "HOME_DELIVERY"))
+                .deliveryPreferences(homeDelivery())
                 .orderLineItems(List.of(Map.of("tenantArticleId", "art-1", "quantity", 2)))
                 .filterDuplicates(true)
-                .consumerAddress(Map.of("country", "DE"))
+                .consumerAddress(CheckoutOptionsConsumerAddress.ofCountry("DE"))
                 .build();
 
         // When
@@ -75,12 +76,15 @@ class CheckoutOptionsAsyncTest {
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/promises/checkoutoptions"))
                 .withHeader("Authorization", equalTo("Bearer test-bearer"))
-                .withRequestBody(matchingJsonPath("$.deliveryPreferences.type", equalTo("HOME_DELIVERY")))
                 .withRequestBody(matchingJsonPath("$.filterDuplicates", equalTo("true")))
                 .withRequestBody(matchingJsonPath("$.consumerAddress.country", equalTo("DE"))));
     }
 
     // --- Helpers ---
+
+    private static DeliveryPreferences homeDelivery() {
+        return new DeliveryPreferences(null, null, null, null, null, null);
+    }
 
     private static TokenProvider fixedToken(String token) {
         return new TokenProvider() {
