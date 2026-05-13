@@ -32,6 +32,12 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.javadoc {
+    (options as StandardJavadocDocletOptions).apply {
+        addStringOption("Xdoclint:all,-missing", "-quiet")
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
