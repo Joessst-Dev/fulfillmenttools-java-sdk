@@ -27,4 +27,31 @@ public record SourcingOptionNode(
         String type,
         Boolean isPickUpLocation,
         List<SourcingOptionNodeLineItem> lineItems
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String id;
+        private FacilityId facilityRef;
+        private TenantFacilityId tenantFacilityId;
+        private String type;
+        private Boolean isPickUpLocation;
+        private List<SourcingOptionNodeLineItem> lineItems;
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
+        public Builder type(String type) { this.type = type; return this; }
+        public Builder isPickUpLocation(Boolean isPickUpLocation) { this.isPickUpLocation = isPickUpLocation; return this; }
+        public Builder lineItems(List<SourcingOptionNodeLineItem> lineItems) { this.lineItems = lineItems; return this; }
+
+        public SourcingOptionNode build() {
+            return new SourcingOptionNode(id, facilityRef, tenantFacilityId, type, isPickUpLocation, lineItems);
+        }
+    }
+}

@@ -13,4 +13,23 @@ package de.joesst.dev.fulfillmenttools.packjobs;
 public record OperativeTransfer(
         String id,
         String type
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String id;
+        private String type;
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder type(String type) { this.type = type; return this; }
+
+        public OperativeTransfer build() {
+            return new OperativeTransfer(id, type);
+        }
+    }
+}

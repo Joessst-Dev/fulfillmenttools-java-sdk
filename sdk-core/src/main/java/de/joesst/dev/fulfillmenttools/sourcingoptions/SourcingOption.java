@@ -36,4 +36,43 @@ public record SourcingOption(
         List<SourcingOptionNonAssignedOrderLineItem> nonAssignedOrderLineItems,
         List<SourcingOptionRatingResult> ratingResults,
         SourcingOptionCosts totalCosts
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String id;
+        private String runId;
+        private Double totalPenalty;
+        private String estimatedDeliveryDate;
+        private String estimatedPickupDate;
+        private String validUntil;
+        private List<SourcingOptionNode> nodes;
+        private List<SourcingOptionTransfer> transfers;
+        private List<SourcingOptionListingDetails> listingDetails;
+        private List<SourcingOptionNonAssignedOrderLineItem> nonAssignedOrderLineItems;
+        private List<SourcingOptionRatingResult> ratingResults;
+        private SourcingOptionCosts totalCosts;
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder runId(String runId) { this.runId = runId; return this; }
+        public Builder totalPenalty(Double totalPenalty) { this.totalPenalty = totalPenalty; return this; }
+        public Builder estimatedDeliveryDate(String estimatedDeliveryDate) { this.estimatedDeliveryDate = estimatedDeliveryDate; return this; }
+        public Builder estimatedPickupDate(String estimatedPickupDate) { this.estimatedPickupDate = estimatedPickupDate; return this; }
+        public Builder validUntil(String validUntil) { this.validUntil = validUntil; return this; }
+        public Builder nodes(List<SourcingOptionNode> nodes) { this.nodes = nodes; return this; }
+        public Builder transfers(List<SourcingOptionTransfer> transfers) { this.transfers = transfers; return this; }
+        public Builder listingDetails(List<SourcingOptionListingDetails> listingDetails) { this.listingDetails = listingDetails; return this; }
+        public Builder nonAssignedOrderLineItems(List<SourcingOptionNonAssignedOrderLineItem> nonAssignedOrderLineItems) { this.nonAssignedOrderLineItems = nonAssignedOrderLineItems; return this; }
+        public Builder ratingResults(List<SourcingOptionRatingResult> ratingResults) { this.ratingResults = ratingResults; return this; }
+        public Builder totalCosts(SourcingOptionCosts totalCosts) { this.totalCosts = totalCosts; return this; }
+
+        public SourcingOption build() {
+            return new SourcingOption(id, runId, totalPenalty, estimatedDeliveryDate, estimatedPickupDate, validUntil, nodes, transfers, listingDetails, nonAssignedOrderLineItems, ratingResults, totalCosts);
+        }
+    }
+}

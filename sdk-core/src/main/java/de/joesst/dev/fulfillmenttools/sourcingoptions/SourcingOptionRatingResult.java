@@ -15,4 +15,25 @@ public record SourcingOptionRatingResult(
         String name,
         Double penalty,
         Double score
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String name;
+        private Double penalty;
+        private Double score;
+
+        public Builder name(String name) { this.name = name; return this; }
+        public Builder penalty(Double penalty) { this.penalty = penalty; return this; }
+        public Builder score(Double score) { this.score = score; return this; }
+
+        public SourcingOptionRatingResult build() {
+            return new SourcingOptionRatingResult(name, penalty, score);
+        }
+    }
+}

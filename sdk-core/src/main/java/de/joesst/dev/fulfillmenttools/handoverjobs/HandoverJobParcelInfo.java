@@ -26,4 +26,33 @@ public record HandoverJobParcelInfo(
         String carrierTrackingNumber,
         String parcelRef,
         String shipmentRef
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String carrierKey;
+        private String carrierLogoUrl;
+        private String carrierParcelRef;
+        private CarrierId carrierRef;
+        private String carrierTrackingNumber;
+        private String parcelRef;
+        private String shipmentRef;
+
+        public Builder carrierKey(String carrierKey) { this.carrierKey = carrierKey; return this; }
+        public Builder carrierLogoUrl(String carrierLogoUrl) { this.carrierLogoUrl = carrierLogoUrl; return this; }
+        public Builder carrierParcelRef(String carrierParcelRef) { this.carrierParcelRef = carrierParcelRef; return this; }
+        public Builder carrierRef(CarrierId carrierRef) { this.carrierRef = carrierRef; return this; }
+        public Builder carrierTrackingNumber(String carrierTrackingNumber) { this.carrierTrackingNumber = carrierTrackingNumber; return this; }
+        public Builder parcelRef(String parcelRef) { this.parcelRef = parcelRef; return this; }
+        public Builder shipmentRef(String shipmentRef) { this.shipmentRef = shipmentRef; return this; }
+
+        public HandoverJobParcelInfo build() {
+            return new HandoverJobParcelInfo(carrierKey, carrierLogoUrl, carrierParcelRef, carrierRef, carrierTrackingNumber, parcelRef, shipmentRef);
+        }
+    }
+}

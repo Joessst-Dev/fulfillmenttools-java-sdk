@@ -35,4 +35,37 @@ public record HandoverJobDocument(
         Double priority,
         List<String> operations,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String id;
+        private String documentType;
+        private String documentCategory;
+        private String status;
+        private String name;
+        private String path;
+        private Double priority;
+        private List<String> operations;
+        private Map<String, Object> customAttributes;
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder documentType(String documentType) { this.documentType = documentType; return this; }
+        public Builder documentCategory(String documentCategory) { this.documentCategory = documentCategory; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder name(String name) { this.name = name; return this; }
+        public Builder path(String path) { this.path = path; return this; }
+        public Builder priority(Double priority) { this.priority = priority; return this; }
+        public Builder operations(List<String> operations) { this.operations = operations; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+
+        public HandoverJobDocument build() {
+            return new HandoverJobDocument(id, documentType, documentCategory, status, name, path, priority, operations, customAttributes);
+        }
+    }
+}

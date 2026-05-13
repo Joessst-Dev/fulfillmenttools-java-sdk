@@ -20,4 +20,27 @@ public record HandoverRefusedItem(
         String reason,
         Map<String, String> reasonLocalized,
         String comment
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private Integer quantity;
+        private String reason;
+        private Map<String, String> reasonLocalized;
+        private String comment;
+
+        public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
+        public Builder reason(String reason) { this.reason = reason; return this; }
+        public Builder reasonLocalized(Map<String, String> reasonLocalized) { this.reasonLocalized = reasonLocalized; return this; }
+        public Builder comment(String comment) { this.comment = comment; return this; }
+
+        public HandoverRefusedItem build() {
+            return new HandoverRefusedItem(quantity, reason, reasonLocalized, comment);
+        }
+    }
+}

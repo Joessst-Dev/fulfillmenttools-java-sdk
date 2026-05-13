@@ -11,4 +11,21 @@ package de.joesst.dev.fulfillmenttools.carriers;
  */
 public record ParcelLabelClassificationServices(
         Boolean bulkyGoods
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private Boolean bulkyGoods;
+
+        public Builder bulkyGoods(Boolean bulkyGoods) { this.bulkyGoods = bulkyGoods; return this; }
+
+        public ParcelLabelClassificationServices build() {
+            return new ParcelLabelClassificationServices(bulkyGoods);
+        }
+    }
+}

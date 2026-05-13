@@ -32,4 +32,37 @@ public record PackLineItem(
         List<String> serviceJobRefs,
         List<Sticker> stickers,
         List<TagReference> tags
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String id;
+        private Integer quantity;
+        private PackLineItemArticle article;
+        private Integer packed;
+        private String measurementUnitKey;
+        private String originId;
+        private List<String> serviceJobRefs;
+        private List<Sticker> stickers;
+        private List<TagReference> tags;
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
+        public Builder article(PackLineItemArticle article) { this.article = article; return this; }
+        public Builder packed(Integer packed) { this.packed = packed; return this; }
+        public Builder measurementUnitKey(String measurementUnitKey) { this.measurementUnitKey = measurementUnitKey; return this; }
+        public Builder originId(String originId) { this.originId = originId; return this; }
+        public Builder serviceJobRefs(List<String> serviceJobRefs) { this.serviceJobRefs = serviceJobRefs; return this; }
+        public Builder stickers(List<Sticker> stickers) { this.stickers = stickers; return this; }
+        public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
+
+        public PackLineItem build() {
+            return new PackLineItem(id, quantity, article, packed, measurementUnitKey, originId, serviceJobRefs, stickers, tags);
+        }
+    }
+}

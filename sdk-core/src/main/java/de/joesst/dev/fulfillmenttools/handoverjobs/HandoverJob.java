@@ -90,4 +90,81 @@ public record HandoverJob(
         List<TagReference> tags,
         Boolean anonymized,
         Boolean paid
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private HandoverJobId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityRef;
+        private String status;
+        private String channel;
+        private Instant targetTime;
+        private Instant orderDate;
+        private TenantOrderId tenantOrderId;
+        private ProcessId processId;
+        private String shortIdentifier;
+        private String fullIdentifier;
+        private PickJobId pickJobRef;
+        private ProcessId operativeProcessRef;
+        private String documentsRef;
+        private String cancelReason;
+        private List<HandoverLineItem> handoverJobLineItems;
+        private List<ExpectedHandoverLineItem> expectedHandoverJobLineItems;
+        private List<HandoverJobDocument> documents;
+        private List<AssignedUser> assignedUsers;
+        private ConsumerAddress recipientAddress;
+        private ConsumerAddress invoiceAddress;
+        private HandoverJobParcelInfo handoverJobParcelInfo;
+        private WorkflowInformation workflowInformation;
+        private Map<String, Object> customAttributes;
+        private List<Sticker> stickers;
+        private List<OperativeTransfer> transfers;
+        private List<TagReference> tags;
+        private Boolean anonymized;
+        private Boolean paid;
+
+        public Builder id(HandoverJobId id) { this.id = id; return this; }
+        public Builder version(Integer version) { this.version = version; return this; }
+        public Builder created(Instant created) { this.created = created; return this; }
+        public Builder lastModified(Instant lastModified) { this.lastModified = lastModified; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder channel(String channel) { this.channel = channel; return this; }
+        public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
+        public Builder orderDate(Instant orderDate) { this.orderDate = orderDate; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder processId(ProcessId processId) { this.processId = processId; return this; }
+        public Builder shortIdentifier(String shortIdentifier) { this.shortIdentifier = shortIdentifier; return this; }
+        public Builder fullIdentifier(String fullIdentifier) { this.fullIdentifier = fullIdentifier; return this; }
+        public Builder pickJobRef(PickJobId pickJobRef) { this.pickJobRef = pickJobRef; return this; }
+        public Builder operativeProcessRef(ProcessId operativeProcessRef) { this.operativeProcessRef = operativeProcessRef; return this; }
+        public Builder documentsRef(String documentsRef) { this.documentsRef = documentsRef; return this; }
+        public Builder cancelReason(String cancelReason) { this.cancelReason = cancelReason; return this; }
+        public Builder handoverJobLineItems(List<HandoverLineItem> handoverJobLineItems) { this.handoverJobLineItems = handoverJobLineItems; return this; }
+        public Builder expectedHandoverJobLineItems(List<ExpectedHandoverLineItem> expectedHandoverJobLineItems) { this.expectedHandoverJobLineItems = expectedHandoverJobLineItems; return this; }
+        public Builder documents(List<HandoverJobDocument> documents) { this.documents = documents; return this; }
+        public Builder assignedUsers(List<AssignedUser> assignedUsers) { this.assignedUsers = assignedUsers; return this; }
+        public Builder recipientAddress(ConsumerAddress recipientAddress) { this.recipientAddress = recipientAddress; return this; }
+        public Builder invoiceAddress(ConsumerAddress invoiceAddress) { this.invoiceAddress = invoiceAddress; return this; }
+        public Builder handoverJobParcelInfo(HandoverJobParcelInfo handoverJobParcelInfo) { this.handoverJobParcelInfo = handoverJobParcelInfo; return this; }
+        public Builder workflowInformation(WorkflowInformation workflowInformation) { this.workflowInformation = workflowInformation; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder stickers(List<Sticker> stickers) { this.stickers = stickers; return this; }
+        public Builder transfers(List<OperativeTransfer> transfers) { this.transfers = transfers; return this; }
+        public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
+        public Builder anonymized(Boolean anonymized) { this.anonymized = anonymized; return this; }
+        public Builder paid(Boolean paid) { this.paid = paid; return this; }
+
+        public HandoverJob build() {
+            return new HandoverJob(id, version, created, lastModified, facilityRef, status, channel, targetTime, orderDate, tenantOrderId, processId, shortIdentifier, fullIdentifier, pickJobRef, operativeProcessRef, documentsRef, cancelReason, handoverJobLineItems, expectedHandoverJobLineItems, documents, assignedUsers, recipientAddress, invoiceAddress, handoverJobParcelInfo, workflowInformation, customAttributes, stickers, transfers, tags, anonymized, paid);
+        }
+    }
+}

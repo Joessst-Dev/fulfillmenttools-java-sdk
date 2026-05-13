@@ -87,4 +87,79 @@ public record PackJob(
         List<StrippedPackingSourceContainer> packingSourceContainers,
         List<TagReference> tags,
         Boolean anonymized
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private PackJobId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityRef;
+        private String status;
+        private String shortId;
+        private ProcessId processId;
+        private ProcessId operativeProcessRef;
+        private String documentsRef;
+        private OrderId orderRef;
+        private Instant orderDate;
+        private TenantOrderId tenantOrderId;
+        private PickJobId pickJobRef;
+        private String deliveryChannel;
+        private String recipientName;
+        private Instant targetTime;
+        private List<PackLineItem> lineItems;
+        private List<AssignedUser> assignedUsers;
+        private ConsumerAddress recipient;
+        private ConsumerAddress invoice;
+        private Map<String, Object> customAttributes;
+        private PickJobEditor editor;
+        private DocumentHandling documentHandling;
+        private WorkflowInformation workflowInformation;
+        private List<Sticker> stickers;
+        private List<OperativeTransfer> transfers;
+        private List<StrippedPackingSourceContainer> packingSourceContainers;
+        private List<TagReference> tags;
+        private Boolean anonymized;
+
+        public Builder id(PackJobId id) { this.id = id; return this; }
+        public Builder version(Integer version) { this.version = version; return this; }
+        public Builder created(Instant created) { this.created = created; return this; }
+        public Builder lastModified(Instant lastModified) { this.lastModified = lastModified; return this; }
+        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+        public Builder shortId(String shortId) { this.shortId = shortId; return this; }
+        public Builder processId(ProcessId processId) { this.processId = processId; return this; }
+        public Builder operativeProcessRef(ProcessId operativeProcessRef) { this.operativeProcessRef = operativeProcessRef; return this; }
+        public Builder documentsRef(String documentsRef) { this.documentsRef = documentsRef; return this; }
+        public Builder orderRef(OrderId orderRef) { this.orderRef = orderRef; return this; }
+        public Builder orderDate(Instant orderDate) { this.orderDate = orderDate; return this; }
+        public Builder tenantOrderId(TenantOrderId tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
+        public Builder pickJobRef(PickJobId pickJobRef) { this.pickJobRef = pickJobRef; return this; }
+        public Builder deliveryChannel(String deliveryChannel) { this.deliveryChannel = deliveryChannel; return this; }
+        public Builder recipientName(String recipientName) { this.recipientName = recipientName; return this; }
+        public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
+        public Builder lineItems(List<PackLineItem> lineItems) { this.lineItems = lineItems; return this; }
+        public Builder assignedUsers(List<AssignedUser> assignedUsers) { this.assignedUsers = assignedUsers; return this; }
+        public Builder recipient(ConsumerAddress recipient) { this.recipient = recipient; return this; }
+        public Builder invoice(ConsumerAddress invoice) { this.invoice = invoice; return this; }
+        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder editor(PickJobEditor editor) { this.editor = editor; return this; }
+        public Builder documentHandling(DocumentHandling documentHandling) { this.documentHandling = documentHandling; return this; }
+        public Builder workflowInformation(WorkflowInformation workflowInformation) { this.workflowInformation = workflowInformation; return this; }
+        public Builder stickers(List<Sticker> stickers) { this.stickers = stickers; return this; }
+        public Builder transfers(List<OperativeTransfer> transfers) { this.transfers = transfers; return this; }
+        public Builder packingSourceContainers(List<StrippedPackingSourceContainer> packingSourceContainers) { this.packingSourceContainers = packingSourceContainers; return this; }
+        public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
+        public Builder anonymized(Boolean anonymized) { this.anonymized = anonymized; return this; }
+
+        public PackJob build() {
+            return new PackJob(id, version, created, lastModified, facilityRef, status, shortId, processId, operativeProcessRef, documentsRef, orderRef, orderDate, tenantOrderId, pickJobRef, deliveryChannel, recipientName, targetTime, lineItems, assignedUsers, recipient, invoice, customAttributes, editor, documentHandling, workflowInformation, stickers, transfers, packingSourceContainers, tags, anonymized);
+        }
+    }
+}
