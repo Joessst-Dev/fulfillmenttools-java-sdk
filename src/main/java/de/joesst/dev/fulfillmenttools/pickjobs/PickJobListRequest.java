@@ -85,112 +85,156 @@ public final class PickJobListRequest {
     }
 
     /**
-     * @return Maximum number of results to return.
+     * Returns the maximum number of results to return.
+     *
+     * @return the page size, or null if not set
      */
     public Integer size() { return size; }
 
     /**
-     * @return Pagination cursor ID.
+     * Returns the pagination cursor ID.
+     *
+     * @return the start after ID, or null if not set
      */
     public String startAfterId() { return startAfterId; }
 
     /**
-     * @return Facility reference filter.
+     * Returns the facility reference filter.
+     *
+     * @return the facility reference, or null if not set
      */
     public String facilityRef() { return facilityRef; }
 
     /**
-     * @return Status filter values.
+     * Returns the status filter values.
+     *
+     * @return the status list, or null if not set
      */
     public List<String> status() { return status; }
 
     /**
-     * @return Order reference filter.
+     * Returns the order reference filter.
+     *
+     * @return the order reference, or null if not set
      */
     public String orderRef() { return orderRef; }
 
     /**
-     * @return Tenant order ID filter.
+     * Returns the tenant order ID filter.
+     *
+     * @return the tenant order ID, or null if not set
      */
     public String tenantOrderId() { return tenantOrderId; }
 
     /**
-     * @return Assigned user ID filter.
+     * Returns the assigned user ID filter.
+     *
+     * @return the assigned user ID, or null if not set
      */
     public String assignedUser() { return assignedUser; }
 
     /**
-     * @return Text search filter.
+     * Returns the text search filter.
+     *
+     * @return the search term, or null if not set
      */
     public String searchTerm() { return searchTerm; }
 
     /**
-     * @return Delivery channel filter.
+     * Returns the delivery channel filter.
+     *
+     * @return the channel, or null if not set
      */
     public String channel() { return channel; }
 
     /**
-     * @return Consumer name filter.
+     * Returns the consumer name filter.
+     *
+     * @return the consumer name, or null if not set
      */
     public String consumerName() { return consumerName; }
 
     /**
-     * @return Short ID filter.
+     * Returns the short ID filter.
+     *
+     * @return the short ID, or null if not set
      */
     public String shortId() { return shortId; }
 
     /**
-     * @return Article title filter.
+     * Returns the article title filter.
+     *
+     * @return the article title, or null if not set
      */
     public String articleTitle() { return articleTitle; }
 
     /**
-     * @return Anonymization status filter.
+     * Returns the anonymization status filter.
+     *
+     * @return the anonymization status, or null if not set
      */
     public Boolean anonymized() { return anonymized; }
 
     /**
-     * @return Sort key and direction.
+     * Returns the sort key and direction.
+     *
+     * @return the order by clause, or null if not set
      */
     public String orderBy() { return orderBy; }
 
     /**
-     * @return Username of the last modifier.
+     * Returns the username of the last modifier.
+     *
+     * @return the modified by username, or null if not set
      */
     public String modifiedByUsername() { return modifiedByUsername; }
 
     /**
-     * @return Order date start filter.
+     * Returns the order date start filter.
+     *
+     * @return the start order date, or null if not set
      */
     public String startOrderDate() { return startOrderDate; }
 
     /**
-     * @return Order date end filter.
+     * Returns the order date end filter.
+     *
+     * @return the end order date, or null if not set
      */
     public String endOrderDate() { return endOrderDate; }
 
     /**
-     * @return Target time start filter.
+     * Returns the target time start filter.
+     *
+     * @return the start target time, or null if not set
      */
     public String startTargetTime() { return startTargetTime; }
 
     /**
-     * @return Target time end filter.
+     * Returns the target time end filter.
+     *
+     * @return the end target time, or null if not set
      */
     public String endTargetTime() { return endTargetTime; }
 
     /**
-     * @return Carrier key filters.
+     * Returns the carrier key filters.
+     *
+     * @return the carrier keys list, or null if not set
      */
     public List<String> carrierKeys() { return carrierKeys; }
 
     /**
-     * @return Zone reference filters.
+     * Returns the zone reference filters.
+     *
+     * @return the zone references list, or null if not set
      */
     public List<String> zoneRefs() { return zoneRefs; }
 
     /**
-     * @return Pick job reference filters.
+     * Returns the pick job reference filters.
+     *
+     * @return the pick job references list, or null if not set
      */
     public List<String> pickJobRefs() { return pickJobRefs; }
 
@@ -269,133 +313,177 @@ public final class PickJobListRequest {
         private List<String> pickJobRefs;
 
         /**
-         * @param size Maximum number of results to return.
+         * Sets the page size.
+         *
+         * @param size the maximum number of results to return
          * @return this builder
          */
         public Builder size(Integer size) { this.size = size; return this; }
 
         /**
-         * @param startAfterId Pagination cursor ID.
+         * Sets the pagination cursor ID.
+         *
+         * @param startAfterId the cursor ID
          * @return this builder
          */
         public Builder startAfterId(String startAfterId) { this.startAfterId = startAfterId; return this; }
 
         /**
-         * @param facilityRef Facility reference to filter by.
+         * Sets the facility reference filter.
+         *
+         * @param facilityRef the facility reference
          * @return this builder
          */
         public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
 
         /**
-         * @param status Status values to filter by.
+         * Sets the status filter.
+         *
+         * @param status the status values
          * @return this builder
          */
         public Builder status(List<String> status) { this.status = status; return this; }
 
         /**
-         * @param orderRef Order reference to filter by.
+         * Sets the order reference filter.
+         *
+         * @param orderRef the order reference
          * @return this builder
          */
         public Builder orderRef(String orderRef) { this.orderRef = orderRef; return this; }
 
         /**
-         * @param tenantOrderId Tenant order ID to filter by.
+         * Sets the tenant order ID filter.
+         *
+         * @param tenantOrderId the tenant order ID
          * @return this builder
          */
         public Builder tenantOrderId(String tenantOrderId) { this.tenantOrderId = tenantOrderId; return this; }
 
         /**
-         * @param assignedUser Assigned user ID to filter by.
+         * Sets the assigned user ID filter.
+         *
+         * @param assignedUser the assigned user ID
          * @return this builder
          */
         public Builder assignedUser(String assignedUser) { this.assignedUser = assignedUser; return this; }
 
         /**
-         * @param searchTerm Text search term.
+         * Sets the text search filter.
+         *
+         * @param searchTerm the search term
          * @return this builder
          */
         public Builder searchTerm(String searchTerm) { this.searchTerm = searchTerm; return this; }
 
         /**
-         * @param channel Delivery channel to filter by.
+         * Sets the delivery channel filter.
+         *
+         * @param channel the delivery channel
          * @return this builder
          */
         public Builder channel(String channel) { this.channel = channel; return this; }
 
         /**
-         * @param consumerName Consumer name to filter by.
+         * Sets the consumer name filter.
+         *
+         * @param consumerName the consumer name
          * @return this builder
          */
         public Builder consumerName(String consumerName) { this.consumerName = consumerName; return this; }
 
         /**
-         * @param shortId Short ID to filter by.
+         * Sets the short ID filter.
+         *
+         * @param shortId the short ID
          * @return this builder
          */
         public Builder shortId(String shortId) { this.shortId = shortId; return this; }
 
         /**
-         * @param articleTitle Article title to filter by.
+         * Sets the article title filter.
+         *
+         * @param articleTitle the article title
          * @return this builder
          */
         public Builder articleTitle(String articleTitle) { this.articleTitle = articleTitle; return this; }
 
         /**
-         * @param anonymized Anonymization status to filter by.
+         * Sets the anonymization status filter.
+         *
+         * @param anonymized the anonymization status
          * @return this builder
          */
         public Builder anonymized(Boolean anonymized) { this.anonymized = anonymized; return this; }
 
         /**
-         * @param orderBy Sort key and direction (e.g. {@code "created,desc"}).
+         * Sets the sort key and direction.
+         *
+         * @param orderBy the sort key and direction (e.g. {@code "created,desc"})
          * @return this builder
          */
         public Builder orderBy(String orderBy) { this.orderBy = orderBy; return this; }
 
         /**
-         * @param modifiedByUsername Username of the last modifier to filter by.
+         * Sets the username of the last modifier filter.
+         *
+         * @param modifiedByUsername the username of the last modifier
          * @return this builder
          */
         public Builder modifiedByUsername(String modifiedByUsername) { this.modifiedByUsername = modifiedByUsername; return this; }
 
         /**
-         * @param startOrderDate Order date start (inclusive) to filter by.
+         * Sets the order date start filter.
+         *
+         * @param startOrderDate the order date start (inclusive)
          * @return this builder
          */
         public Builder startOrderDate(String startOrderDate) { this.startOrderDate = startOrderDate; return this; }
 
         /**
-         * @param endOrderDate Order date end (inclusive) to filter by.
+         * Sets the order date end filter.
+         *
+         * @param endOrderDate the order date end (inclusive)
          * @return this builder
          */
         public Builder endOrderDate(String endOrderDate) { this.endOrderDate = endOrderDate; return this; }
 
         /**
-         * @param startTargetTime Target time start (inclusive) to filter by.
+         * Sets the target time start filter.
+         *
+         * @param startTargetTime the target time start (inclusive)
          * @return this builder
          */
         public Builder startTargetTime(String startTargetTime) { this.startTargetTime = startTargetTime; return this; }
 
         /**
-         * @param endTargetTime Target time end (inclusive) to filter by.
+         * Sets the target time end filter.
+         *
+         * @param endTargetTime the target time end (inclusive)
          * @return this builder
          */
         public Builder endTargetTime(String endTargetTime) { this.endTargetTime = endTargetTime; return this; }
 
         /**
-         * @param carrierKeys Carrier keys to filter by.
+         * Sets the carrier key filters.
+         *
+         * @param carrierKeys the carrier keys
          * @return this builder
          */
         public Builder carrierKeys(List<String> carrierKeys) { this.carrierKeys = carrierKeys; return this; }
 
         /**
-         * @param zoneRefs Zone references to filter by.
+         * Sets the zone reference filters.
+         *
+         * @param zoneRefs the zone references
          * @return this builder
          */
         public Builder zoneRefs(List<String> zoneRefs) { this.zoneRefs = zoneRefs; return this; }
 
         /**
-         * @param pickJobRefs Pick job references to filter by.
+         * Sets the pick job reference filters.
+         *
+         * @param pickJobRefs the pick job references
          * @return this builder
          */
         public Builder pickJobRefs(List<String> pickJobRefs) { this.pickJobRefs = pickJobRefs; return this; }
