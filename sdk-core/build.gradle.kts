@@ -103,6 +103,6 @@ nmcp {
     publish("mavenJava") {
         username = System.getenv("SONATYPE_USERNAME") ?: ""
         password = System.getenv("SONATYPE_TOKEN") ?: ""
-        publicationType = "AUTOMATIC"
+        publicationType = "USER_MANAGED"
     }
 }
