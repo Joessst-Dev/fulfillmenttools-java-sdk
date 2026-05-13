@@ -9,7 +9,7 @@ Add the starter to your Spring Boot 3.x project:
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("de.joesst.dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0-SNAPSHOT")
+    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0-SNAPSHOT")
 }
 ```
 
@@ -17,7 +17,7 @@ Or with Maven:
 
 ```xml
 <dependency>
-    <groupId>de.joesst.dev</groupId>
+    <groupId>io.github.joessst-dev</groupId>
     <artifactId>fulfillmenttools-java-sdk-springboot-starter</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -50,8 +50,8 @@ The starter automatically creates and configures a `FulfillmenttoolsClient` bean
 
 ```java
 import org.springframework.stereotype.Service;
-import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
-import de.joesst.dev.fulfillmenttools.id.OrderId;
+import io.github.joessst-dev.fulfillmenttools.FulfillmenttoolsClient;
+import io.github.joessst-dev.fulfillmenttools.id.OrderId;
 
 @Service
 public class OrderService {
@@ -81,8 +81,8 @@ Override the default bean by defining your own in a `@Configuration` class:
 ```java
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
-import de.joesst.dev.fulfillmenttools.auth.EmailPasswordCredentials;
+import io.github.joessst-dev.fulfillmenttools.FulfillmenttoolsClient;
+import io.github.joessst-dev.fulfillmenttools.auth.EmailPasswordCredentials;
 
 @Configuration
 public class FulfillmenttoolsConfiguration {
