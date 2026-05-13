@@ -1,0 +1,36 @@
+package de.joesst.dev.fulfillmenttools.routingstrategies;
+
+/**
+ * The possible operator types that can be used on toolkit entities when building predicates.
+ */
+public enum ToolkitEntityOperatorType {
+    VALUE_EQUALS,
+    VALUE_NOT_EQUALS,
+    ANY_VALUE_EQUALS,
+    ANY_VALUE_GREATER_EQUALS,
+    ANY_VALUE_GREATER_THAN,
+    ANY_VALUE_LESS_EQUALS,
+    ANY_VALUE_LESS_THAN,
+    ANY_VALUE_CONTAINS,
+    ANY_VALUE_NOT_CONTAINS,
+    EVERY_VALUE_EQUALS,
+    EVERY_VALUE_GREATER_EQUALS,
+    EVERY_VALUE_GREATER_THAN,
+    EVERY_VALUE_LESS_EQUALS,
+    EVERY_VALUE_LESS_THAN,
+    EVERY_VALUE_CONTAINS,
+    EVERY_VALUE_NOT_CONTAINS,
+    NO_VALUE_EQUALS,
+    NO_VALUE_GREATER_EQUALS,
+    NO_VALUE_GREATER_THAN,
+    NO_VALUE_LESS_EQUALS,
+    NO_VALUE_LESS_THAN,
+    NO_VALUE_CONTAINS,
+    NO_VALUE_NOT_CONTAINS,
+    VALUE_CONTAINS,
+    VALUE_NOT_CONTAINS,
+    GREATER_THAN,
+    GREATER_EQUALS,
+    LESS_THAN,
+    LESS_EQUALS
+}

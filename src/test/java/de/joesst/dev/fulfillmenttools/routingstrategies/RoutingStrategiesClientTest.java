@@ -206,7 +206,7 @@ class RoutingStrategiesClientTest {
                 UpdateRoutingStrategyRequest.builder()
                         .version(1)
                         .nameLocalized(Map.of("en_US", "Updated Strategy"))
-                        .rootNode(Map.of("active", true))
+                        .rootNode(minimalNode(true))
                         .build());
 
         // Then
@@ -222,7 +222,7 @@ class RoutingStrategiesClientTest {
     void update_requiresVersion() {
         assertThatThrownBy(() -> UpdateRoutingStrategyRequest.builder()
                 .nameLocalized(Map.of("en_US", "x"))
-                .rootNode(Map.of())
+                .rootNode(minimalNode(true))
                 .build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("version");
@@ -232,7 +232,7 @@ class RoutingStrategiesClientTest {
     void update_requiresNameLocalized() {
         assertThatThrownBy(() -> UpdateRoutingStrategyRequest.builder()
                 .version(1)
-                .rootNode(Map.of())
+                .rootNode(minimalNode(true))
                 .build())
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("nameLocalized");
@@ -249,6 +249,19 @@ class RoutingStrategiesClientTest {
     }
 
     // --- Helpers ---
+
+    /**
+     * Builds a minimal {@link RoutingStrategyNode} suitable for use in tests that only care
+     * about the {@code active} flag being serialised correctly.
+     */
+    private static RoutingStrategyNode minimalNode(boolean active) {
+        RoutingStrategyNodeConfig config = new RoutingStrategyNodeConfig(
+                List.of(), List.of(), null, null, null);
+        return new RoutingStrategyNode(
+                null, active, config,
+                Map.of("en_US", "Test Node"),
+                null, null, null, null, null, null);
+    }
 
     private static TokenProvider fixedToken(String token) {
         return new TokenProvider() {

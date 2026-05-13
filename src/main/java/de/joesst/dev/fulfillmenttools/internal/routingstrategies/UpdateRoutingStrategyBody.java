@@ -1,10 +1,15 @@
 package de.joesst.dev.fulfillmenttools.internal.routingstrategies;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.routingstrategies.RoutingStrategyGlobalConfiguration;
+import de.joesst.dev.fulfillmenttools.routingstrategies.RoutingStrategyNode;
+
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 record UpdateRoutingStrategyBody(
         Integer version,
-        Map<String, Object> nameLocalized,
-        Map<String, Object> rootNode,
-        Map<String, Object> globalConfiguration
+        Map<String, String> nameLocalized,
+        RoutingStrategyNode rootNode,
+        RoutingStrategyGlobalConfiguration globalConfiguration
 ) {}
