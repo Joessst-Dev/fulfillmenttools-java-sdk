@@ -19,4 +19,22 @@ public record Page<T>(List<T> items, String nextCursor) {
     public boolean hasMore() {
         return nextCursor != null && !nextCursor.isEmpty();
     }
+
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
+    }
+
+    public static final class Builder<T> {
+        private Builder() {}
+
+        private List<T> items;
+        private String nextCursor;
+
+        public Builder<T> items(List<T> items) { this.items = items; return this; }
+        public Builder<T> nextCursor(String nextCursor) { this.nextCursor = nextCursor; return this; }
+
+        public Page<T> build() {
+            return new Page<>(items, nextCursor);
+        }
+    }
 }
