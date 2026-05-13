@@ -40,6 +40,8 @@ public record HandoverLineItemArticle(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private TenantArticleId tenantArticleId;
         private String title;
         private String imageUrl;
@@ -47,8 +49,6 @@ public record HandoverLineItemArticle(
         private Map<String, String> titleLocalized;
         private Map<String, Object> customAttributes;
         private List<ArticleAttribute> attributes;
-
-        private Builder() {}
 
         public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
         public Builder title(String title) { this.title = title; return this; }

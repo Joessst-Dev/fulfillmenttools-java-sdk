@@ -12,9 +12,9 @@ public record SourcingOptionsRequestAdditionalInfo(Boolean includeListingCustomA
     }
 
     public static final class Builder {
-        private Boolean includeListingCustomAttributes;
-
         private Builder() {}
+
+        private Boolean includeListingCustomAttributes;
 
         public Builder includeListingCustomAttributes(Boolean includeListingCustomAttributes) { this.includeListingCustomAttributes = includeListingCustomAttributes; return this; }
 

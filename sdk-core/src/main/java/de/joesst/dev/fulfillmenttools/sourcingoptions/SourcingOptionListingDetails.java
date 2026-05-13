@@ -36,14 +36,14 @@ public record SourcingOptionListingDetails(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private ListingId listingRef;
         private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
         private TenantArticleId tenantArticleId;
         private SourcingOptionStockInformation stockInformation;
         private Map<String, Object> customAttributes;
-
-        private Builder() {}
 
         public Builder listingRef(ListingId listingRef) { this.listingRef = listingRef; return this; }
         public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }

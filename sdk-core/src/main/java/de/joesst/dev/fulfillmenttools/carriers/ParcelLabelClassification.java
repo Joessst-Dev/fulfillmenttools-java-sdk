@@ -29,12 +29,12 @@ public record ParcelLabelClassification(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private Map<String, String> nameLocalized;
         private ParcelDimensions dimensions;
         private ParcelLabelClassificationServices services;
         private String name;
-
-        private Builder() {}
 
         public Builder nameLocalized(Map<String, String> nameLocalized) { this.nameLocalized = nameLocalized; return this; }
         public Builder dimensions(ParcelDimensions dimensions) { this.dimensions = dimensions; return this; }

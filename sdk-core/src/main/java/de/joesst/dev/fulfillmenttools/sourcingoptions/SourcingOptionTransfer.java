@@ -27,12 +27,12 @@ public record SourcingOptionTransfer(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private String sourceNodeRef;
         private String targetNodeRef;
         private List<String> lineItemRefs;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder sourceNodeRef(String sourceNodeRef) { this.sourceNodeRef = sourceNodeRef; return this; }

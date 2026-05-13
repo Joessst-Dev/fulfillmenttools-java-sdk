@@ -94,6 +94,8 @@ public record PackJob(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private PackJobId id;
         private Integer version;
         private Instant created;
@@ -124,8 +126,6 @@ public record PackJob(
         private List<StrippedPackingSourceContainer> packingSourceContainers;
         private List<TagReference> tags;
         private Boolean anonymized;
-
-        private Builder() {}
 
         public Builder id(PackJobId id) { this.id = id; return this; }
         public Builder version(Integer version) { this.version = version; return this; }

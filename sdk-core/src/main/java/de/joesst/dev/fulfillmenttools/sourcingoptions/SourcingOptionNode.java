@@ -34,14 +34,14 @@ public record SourcingOptionNode(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
         private String type;
         private Boolean isPickUpLocation;
         private List<SourcingOptionNodeLineItem> lineItems;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }

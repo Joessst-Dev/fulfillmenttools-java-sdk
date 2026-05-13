@@ -20,10 +20,10 @@ public record SourcingOptionCosts(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String currency;
         private Double total;
-
-        private Builder() {}
 
         public Builder currency(String currency) { this.currency = currency; return this; }
         public Builder total(Double total) { this.total = total; return this; }

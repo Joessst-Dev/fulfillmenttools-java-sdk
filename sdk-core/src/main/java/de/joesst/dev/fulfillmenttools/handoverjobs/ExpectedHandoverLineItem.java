@@ -41,6 +41,8 @@ public record ExpectedHandoverLineItem(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private Integer quantity;
         private String transferId;
@@ -50,8 +52,6 @@ public record ExpectedHandoverLineItem(
         private List<String> scannableCodes;
         private List<TagReference> tags;
         private Map<String, Object> customAttributes;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }

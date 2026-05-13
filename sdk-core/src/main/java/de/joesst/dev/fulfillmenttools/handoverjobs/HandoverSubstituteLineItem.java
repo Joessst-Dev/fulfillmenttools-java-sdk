@@ -38,6 +38,8 @@ public record HandoverSubstituteLineItem(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private Integer quantity;
         private Integer handedOverQuantity;
@@ -47,8 +49,6 @@ public record HandoverSubstituteLineItem(
         private List<HandoverSubstituteLineItemStockLocation> partialStockLocations;
         private List<HandoverRefusedItem> refused;
         private List<String> scannableCodes;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }

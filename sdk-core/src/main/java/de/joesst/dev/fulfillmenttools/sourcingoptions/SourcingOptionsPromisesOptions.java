@@ -27,11 +27,11 @@ public record SourcingOptionsPromisesOptions(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private Boolean calculatePromises;
         private CarrierId carrierId;
         private String carrierProductId;
-
-        private Builder() {}
 
         public Builder calculatePromises(Boolean calculatePromises) { this.calculatePromises = calculatePromises; return this; }
         public Builder carrierId(CarrierId carrierId) { this.carrierId = carrierId; return this; }

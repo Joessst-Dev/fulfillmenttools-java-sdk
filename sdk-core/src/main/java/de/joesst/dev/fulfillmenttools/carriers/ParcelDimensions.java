@@ -31,13 +31,13 @@ public record ParcelDimensions(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private Double customWeight;
         private Double height;
         private Double length;
         private Double weight;
         private Double width;
-
-        private Builder() {}
 
         public Builder customWeight(Double customWeight) { this.customWeight = customWeight; return this; }
         public Builder height(Double height) { this.height = height; return this; }

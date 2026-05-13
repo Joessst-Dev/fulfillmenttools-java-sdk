@@ -13,10 +13,10 @@ public record OptimizationHints(Boolean includeCalculationHints, Integer request
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private Boolean includeCalculationHints;
         private Integer requestedResultCount;
-
-        private Builder() {}
 
         public Builder includeCalculationHints(Boolean includeCalculationHints) { this.includeCalculationHints = includeCalculationHints; return this; }
         public Builder requestedResultCount(Integer requestedResultCount) { this.requestedResultCount = requestedResultCount; return this; }

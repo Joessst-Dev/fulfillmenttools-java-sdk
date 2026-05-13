@@ -21,10 +21,10 @@ public record SourcingOptionNonAssignedOrderLineItem(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String orderLineItemRef;
         private String reason;
-
-        private Builder() {}
 
         public Builder orderLineItemRef(String orderLineItemRef) { this.orderLineItemRef = orderLineItemRef; return this; }
         public Builder reason(String reason) { this.reason = reason; return this; }

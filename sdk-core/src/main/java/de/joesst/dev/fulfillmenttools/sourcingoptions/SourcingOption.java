@@ -43,6 +43,8 @@ public record SourcingOption(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private String runId;
         private Double totalPenalty;
@@ -55,8 +57,6 @@ public record SourcingOption(
         private List<SourcingOptionNonAssignedOrderLineItem> nonAssignedOrderLineItems;
         private List<SourcingOptionRatingResult> ratingResults;
         private SourcingOptionCosts totalCosts;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder runId(String runId) { this.runId = runId; return this; }

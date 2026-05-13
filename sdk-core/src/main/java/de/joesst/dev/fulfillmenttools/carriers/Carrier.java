@@ -52,6 +52,8 @@ public record Carrier(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private CarrierId id;
         private Integer version;
         private Instant created;
@@ -69,8 +71,6 @@ public record Carrier(
         private Boolean productValueNeeded;
         private Map<String, Object> credentials;
         private List<ParcelLabelClassification> parcelLabelClassifications;
-
-        private Builder() {}
 
         public Builder id(CarrierId id) { this.id = id; return this; }
         public Builder version(Integer version) { this.version = version; return this; }

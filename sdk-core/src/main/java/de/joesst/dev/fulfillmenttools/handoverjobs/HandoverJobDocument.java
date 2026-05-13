@@ -42,6 +42,8 @@ public record HandoverJobDocument(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private String documentType;
         private String documentCategory;
@@ -51,8 +53,6 @@ public record HandoverJobDocument(
         private Double priority;
         private List<String> operations;
         private Map<String, Object> customAttributes;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder documentType(String documentType) { this.documentType = documentType; return this; }

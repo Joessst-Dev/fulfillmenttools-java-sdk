@@ -20,10 +20,10 @@ public record OperativeTransfer(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private String type;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder type(String type) { this.type = type; return this; }

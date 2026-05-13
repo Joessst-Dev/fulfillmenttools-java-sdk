@@ -27,12 +27,12 @@ public record HandoverRefusedItem(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private Integer quantity;
         private String reason;
         private Map<String, String> reasonLocalized;
         private String comment;
-
-        private Builder() {}
 
         public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
         public Builder reason(String reason) { this.reason = reason; return this; }

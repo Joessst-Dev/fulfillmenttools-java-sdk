@@ -22,10 +22,10 @@ public record SourcingOptionsResult(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private SourcingOptionsRequestId id;
         private List<SourcingOption> options;
-
-        private Builder() {}
 
         public Builder id(SourcingOptionsRequestId id) { this.id = id; return this; }
         public Builder options(List<SourcingOption> options) { this.options = options; return this; }

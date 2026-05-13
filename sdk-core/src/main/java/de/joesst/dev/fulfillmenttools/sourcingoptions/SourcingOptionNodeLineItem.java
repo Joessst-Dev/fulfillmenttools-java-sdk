@@ -37,6 +37,8 @@ public record SourcingOptionNodeLineItem(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private String orderLineItemRef;
         private Integer quantity;
@@ -44,8 +46,6 @@ public record SourcingOptionNodeLineItem(
         private List<String> scannableCodes;
         private List<PickJobLineItemPartialStockLocation> partialStockLocations;
         private Map<String, Object> customAttributes;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder orderLineItemRef(String orderLineItemRef) { this.orderLineItemRef = orderLineItemRef; return this; }

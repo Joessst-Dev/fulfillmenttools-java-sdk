@@ -33,6 +33,8 @@ public record HandoverJobParcelInfo(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String carrierKey;
         private String carrierLogoUrl;
         private String carrierParcelRef;
@@ -40,8 +42,6 @@ public record HandoverJobParcelInfo(
         private String carrierTrackingNumber;
         private String parcelRef;
         private String shipmentRef;
-
-        private Builder() {}
 
         public Builder carrierKey(String carrierKey) { this.carrierKey = carrierKey; return this; }
         public Builder carrierLogoUrl(String carrierLogoUrl) { this.carrierLogoUrl = carrierLogoUrl; return this; }

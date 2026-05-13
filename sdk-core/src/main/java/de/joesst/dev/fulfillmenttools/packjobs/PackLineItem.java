@@ -39,6 +39,8 @@ public record PackLineItem(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private Integer quantity;
         private PackLineItemArticle article;
@@ -48,8 +50,6 @@ public record PackLineItem(
         private List<String> serviceJobRefs;
         private List<Sticker> stickers;
         private List<TagReference> tags;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }

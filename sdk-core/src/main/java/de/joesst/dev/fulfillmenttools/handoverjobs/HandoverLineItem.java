@@ -43,6 +43,8 @@ public record HandoverLineItem(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String id;
         private Integer quantity;
         private Integer handedOverQuantity;
@@ -53,8 +55,6 @@ public record HandoverLineItem(
         private List<Sticker> stickers;
         private List<HandoverSubstituteLineItem> substituteLineItems;
         private List<TagReference> tags;
-
-        private Builder() {}
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }

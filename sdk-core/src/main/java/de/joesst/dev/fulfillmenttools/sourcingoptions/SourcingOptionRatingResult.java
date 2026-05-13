@@ -22,11 +22,11 @@ public record SourcingOptionRatingResult(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String name;
         private Double penalty;
         private Double score;
-
-        private Builder() {}
 
         public Builder name(String name) { this.name = name; return this; }
         public Builder penalty(Double penalty) { this.penalty = penalty; return this; }

@@ -97,6 +97,8 @@ public record HandoverJob(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private HandoverJobId id;
         private Integer version;
         private Instant created;
@@ -128,8 +130,6 @@ public record HandoverJob(
         private List<TagReference> tags;
         private Boolean anonymized;
         private Boolean paid;
-
-        private Builder() {}
 
         public Builder id(HandoverJobId id) { this.id = id; return this; }
         public Builder version(Integer version) { this.version = version; return this; }

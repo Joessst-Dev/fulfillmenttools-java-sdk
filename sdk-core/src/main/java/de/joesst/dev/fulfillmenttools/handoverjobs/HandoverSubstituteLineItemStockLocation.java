@@ -31,6 +31,8 @@ public record HandoverSubstituteLineItemStockLocation(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String tenantPartialStockId;
         private String stockRef;
         private Double quantity;
@@ -38,8 +40,6 @@ public record HandoverSubstituteLineItemStockLocation(
         private Double ratingScore;
         private Double sequenceScore;
         private String locationRef;
-
-        private Builder() {}
 
         public Builder tenantPartialStockId(String tenantPartialStockId) { this.tenantPartialStockId = tenantPartialStockId; return this; }
         public Builder stockRef(String stockRef) { this.stockRef = stockRef; return this; }

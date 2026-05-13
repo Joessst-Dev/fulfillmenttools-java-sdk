@@ -23,11 +23,11 @@ public record SourcingOptionStockInformation(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private Integer available;
         private Integer reserved;
         private String shelfCode;
-
-        private Builder() {}
 
         public Builder available(Integer available) { this.available = available; return this; }
         public Builder reserved(Integer reserved) { this.reserved = reserved; return this; }

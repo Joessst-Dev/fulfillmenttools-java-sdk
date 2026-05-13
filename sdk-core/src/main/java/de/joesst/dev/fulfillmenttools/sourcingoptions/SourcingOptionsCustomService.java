@@ -28,11 +28,11 @@ public record SourcingOptionsCustomService(
     }
 
     public static final class Builder {
+        private Builder() {}
+
         private String type;
         private Map<String, Object> attributes;
         private Map<String, Object> customAttributes;
-
-        private Builder() {}
 
         public Builder type(String type) { this.type = type; return this; }
         public Builder attributes(Map<String, Object> attributes) { this.attributes = attributes; return this; }

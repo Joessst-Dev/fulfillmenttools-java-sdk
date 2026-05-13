@@ -18,9 +18,9 @@ public record ParcelLabelClassificationServices(
     }
 
     public static final class Builder {
-        private Boolean bulkyGoods;
-
         private Builder() {}
+
+        private Boolean bulkyGoods;
 
         public Builder bulkyGoods(Boolean bulkyGoods) { this.bulkyGoods = bulkyGoods; return this; }
 
