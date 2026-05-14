@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FulfillmenttoolsPropertiesTest {
 
     @Test
-    void defaultValues_areNull() {
+    void defaultValuesAreNull() {
         // Given / When: a new properties instance with no values set
         FulfillmenttoolsProperties props = new FulfillmenttoolsProperties();
 
@@ -19,7 +19,7 @@ class FulfillmenttoolsPropertiesTest {
     }
 
     @Test
-    void setterAndGetter_projectId() {
+    void setterAndGetterProjectId() {
         // Given
         FulfillmenttoolsProperties props = new FulfillmenttoolsProperties();
 
@@ -31,7 +31,7 @@ class FulfillmenttoolsPropertiesTest {
     }
 
     @Test
-    void setterAndGetter_apiKey() {
+    void setterAndGetterApiKey() {
         // Given
         FulfillmenttoolsProperties props = new FulfillmenttoolsProperties();
 
@@ -43,7 +43,7 @@ class FulfillmenttoolsPropertiesTest {
     }
 
     @Test
-    void setterAndGetter_username() {
+    void setterAndGetterUsername() {
         // Given
         FulfillmenttoolsProperties props = new FulfillmenttoolsProperties();
 
@@ -55,7 +55,7 @@ class FulfillmenttoolsPropertiesTest {
     }
 
     @Test
-    void setterAndGetter_password() {
+    void setterAndGetterPassword() {
         // Given
         FulfillmenttoolsProperties props = new FulfillmenttoolsProperties();
 

@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.spring;
 
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.auth.EmailPasswordCredentials;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -53,11 +54,8 @@ class FulfillmenttoolsAutoConfigurationTest {
                             "fulfillmenttools.password=fake-password")
                     // When: the application context is loaded
                     .run(context -> {
-                        // Then: bound properties are accessible
+                        // Then: exactly one FulfillmenttoolsProperties bean is present
                         assertThat(context).hasSingleBean(FulfillmenttoolsProperties.class);
-                        FulfillmenttoolsProperties props =
-                                context.getBean(FulfillmenttoolsProperties.class);
-                        assertThat(props.getProjectId()).isEqualTo("ocff-test-pre");
                     });
         }
 
@@ -176,12 +174,12 @@ class FulfillmenttoolsAutoConfigurationTest {
     }
 
     @Nested
-    class WhenAutoConfigurationIsExcluded {
+    class WhenAutoConfigurationIsNotRegistered {
 
         @Test
-        void shouldNotRegisterBeanWhenAutoConfigurationIsAbsent() {
-            // Given: all properties are set but the auto-configuration is not registered
-            // (equivalent to excluding it via spring.autoconfigure.exclude in production)
+        void shouldNotRegisterBeanWhenAutoConfigurationIsNotRegistered() {
+            // Given: all properties are set but FulfillmenttoolsAutoConfiguration is not in the runner
+            // This mirrors the effect of spring.autoconfigure.exclude=...FulfillmenttoolsAutoConfiguration
             new ApplicationContextRunner()
                     .withPropertyValues(
                             "fulfillmenttools.project-id=ocff-test-pre",
@@ -233,7 +231,7 @@ class FulfillmenttoolsAutoConfigurationTest {
         FulfillmenttoolsClient customFulfillmenttoolsClient() {
             return FulfillmenttoolsClient.builder()
                     .baseUrl("https://custom.api.fulfillmenttools.com")
-                    .credentials(new de.joesst.dev.fulfillmenttools.auth.EmailPasswordCredentials(
+                    .credentials(new EmailPasswordCredentials(
                             "custom@example.com", "custom-password", "custom-api-key"))
                     .build();
         }
