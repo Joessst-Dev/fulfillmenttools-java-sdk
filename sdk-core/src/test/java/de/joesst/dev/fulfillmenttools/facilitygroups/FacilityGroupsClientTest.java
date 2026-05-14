@@ -175,7 +175,7 @@ class FacilityGroupsClientTest {
         // When
         FacilityGroup group = client.facilityGroups().create(CreateFacilityGroupRequest.builder()
                 .tenantFacilityGroupId("tg-1")
-                .facilityRefs(List.of("fac-1"))
+                .facilityRefs(List.of(FacilityId.builder().value("fac-1").build()))
                 .nameLocalized(Map.of("en", "New Group"))
                 .build());
 
@@ -193,7 +193,7 @@ class FacilityGroupsClientTest {
         // When
         client.facilityGroups().create(CreateFacilityGroupRequest.builder()
                 .tenantFacilityGroupId("tg-1")
-                .facilityRefs(List.of("fac-1"))
+                .facilityRefs(List.of(FacilityId.builder().value("fac-1").build()))
                 .nameLocalized(Map.of("en", "My Group"))
                 .build());
 
@@ -208,7 +208,7 @@ class FacilityGroupsClientTest {
     void create_requiresTenantFacilityGroupId() {
         assertThatNullPointerException().isThrownBy(() ->
                 CreateFacilityGroupRequest.builder()
-                        .facilityRefs(List.of("fac-1"))
+                        .facilityRefs(List.of(FacilityId.builder().value("fac-1").build()))
                         .nameLocalized(Map.of("en", "G"))
                         .build()
         ).withMessageContaining("tenantFacilityGroupId");
@@ -229,7 +229,7 @@ class FacilityGroupsClientTest {
         assertThatNullPointerException().isThrownBy(() ->
                 CreateFacilityGroupRequest.builder()
                         .tenantFacilityGroupId("tg-1")
-                        .facilityRefs(List.of("fac-1"))
+                        .facilityRefs(List.of(FacilityId.builder().value("fac-1").build()))
                         .build()
         ).withMessageContaining("nameLocalized");
     }
@@ -394,7 +394,7 @@ class FacilityGroupsClientTest {
         client.facilityGroups().search(FacilityGroupSearchRequest.builder()
                 .query(FacilityGroupSearchQuery.builder()
                         .tenantFacilityGroupIdEq("tg-1")
-                        .facilityRefsContains("fac-1")
+                        .facilityRefsContains(FacilityId.builder().value("fac-1").build())
                         .build())
                 .size(10)
                 .build());

@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilitygroups;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -11,7 +13,7 @@ public final class UpdateFacilityGroupRequest {
 
     private final Integer version;
     private final String tenantFacilityGroupId;
-    private final List<String> facilityRefs;
+    private final List<FacilityId> facilityRefs;
     private final Map<String, String> nameLocalized;
     private final Map<String, Object> customAttributes;
 
@@ -42,7 +44,7 @@ public final class UpdateFacilityGroupRequest {
      *
      * @return the list of facility references, or null if not set
      */
-    public List<String> facilityRefs() { return facilityRefs; }
+    public List<FacilityId> facilityRefs() { return facilityRefs; }
 
     /**
      * Returns the localized names of the group.
@@ -69,14 +71,11 @@ public final class UpdateFacilityGroupRequest {
      * Builder for constructing UpdateFacilityGroupRequest.
      */
     public static final class Builder {
-        /**
-         * Creates a new Builder.
-         */
-        public Builder() {}
+        private Builder() {}
 
         private Integer version;
         private String tenantFacilityGroupId;
-        private List<String> facilityRefs;
+        private List<FacilityId> facilityRefs;
         private Map<String, String> nameLocalized;
         private Map<String, Object> customAttributes;
 
@@ -102,7 +101,7 @@ public final class UpdateFacilityGroupRequest {
          * @param facilityRefs the list of facility references
          * @return this builder instance
          */
-        public Builder facilityRefs(List<String> facilityRefs) { this.facilityRefs = facilityRefs; return this; }
+        public Builder facilityRefs(List<FacilityId> facilityRefs) { this.facilityRefs = facilityRefs; return this; }
 
         /**
          * Sets the localized names of the group.
