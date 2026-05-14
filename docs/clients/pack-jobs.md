@@ -99,7 +99,7 @@ Page<PackJob> shippingJobs = client.packing().list(
         .build()
 );
 
-// Text search and filter by associated pick job
+// Filter by associated pick job
 import de.joesst.dev.fulfillmenttools.id.PickJobId;
 
 Page<PackJob> results = client.packing().list(
