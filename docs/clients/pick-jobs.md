@@ -127,19 +127,23 @@ System.out.println("Updated status: " + updated.status());
 
 ## State Transitions
 
-Pick jobs move through a workflow lifecycle. Each transition requires the current `version` for optimistic locking:
+Pick jobs move through a workflow lifecycle. Each transition requires the current `version` for optimistic locking. Transitions are mutually exclusive — always use the version from the most recent state of the job:
 
 ```java
 PickJob job = client.pickJobs().get(PickJobId.builder().value("pjob-001").build());
 PickJobId id = job.id();
 int version = job.version();
 
-// Start picking
+// Start picking — use the version from the current job state
 PickJob started = client.pickJobs().start(id, version);
 
-// Pause an in-progress job
+// Pause an in-progress job — use the version returned by start()
 PickJob paused = client.pickJobs().pause(id, started.version());
+```
 
+Other available transitions (each called independently with the current version):
+
+```java
 // Abort a job
 PickJob aborted = client.pickJobs().abort(id, version);
 
