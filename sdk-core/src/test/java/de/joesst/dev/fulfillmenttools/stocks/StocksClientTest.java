@@ -62,7 +62,7 @@ class StocksClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("s-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("s-1");
         assertThat(page.items().get(0).facilityRef().value()).isEqualTo("fac-1");
         assertThat(page.items().get(0).tenantArticleId().value()).isEqualTo("art-1");
         assertThat(page.items().get(0).value()).isEqualTo(10);

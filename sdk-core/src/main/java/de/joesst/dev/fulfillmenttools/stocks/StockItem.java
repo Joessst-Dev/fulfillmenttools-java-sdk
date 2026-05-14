@@ -1,7 +1,10 @@
 package de.joesst.dev.fulfillmenttools.stocks;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StockId;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+import de.joesst.dev.fulfillmenttools.id.TenantStockId;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.time.Instant;
@@ -15,18 +18,18 @@ import java.util.Map;
  *
  * <p>Thread-safety: immutable record; safe for concurrent use.
  *
- * @param id                   Platform-generated unique identifier for this stock record.
+ * @param id                   Platform-generated unique identifier for this stock record ({@link StockId}).
  * @param version              Optimistic-locking version counter.
  * @param created              Timestamp when this stock record was created.
  * @param lastModified         Timestamp when this stock record was last modified.
  * @param facilityRef          {@link FacilityId} reference to the owning facility.
  * @param tenantArticleId      The tenant's own article identifier.
- * @param tenantStockId        The tenant's own stock identifier.
+ * @param tenantStockId        The tenant's own stock identifier ({@link TenantStockId}).
  * @param value                Total quantity of this stock (integer).
  * @param available            The available quantity (not reserved).
  * @param reserved             The quantity reserved for active orders.
  * @param facilityWideReserved Quantity reserved across the entire facility.
- * @param locationRef          Reference to the storage location holding this stock.
+ * @param locationRef          Reference to the storage location holding this stock ({@link StorageLocationId}).
  * @param receiptDate          Date the stock was received at the facility.
  * @param availableUntil       Date until which this stock is considered available (e.g. expiry).
  * @param conditions           Condition tags applied to this stock (e.g. {@code NEW}, {@code USED}).
@@ -41,18 +44,18 @@ import java.util.Map;
  * @param customAttributes     Free-form custom metadata; values may be of any JSON type.
  */
 public record StockItem(
-        String id,
+        StockId id,
         Integer version,
         Instant created,
         Instant lastModified,
         FacilityId facilityRef,
         TenantArticleId tenantArticleId,
-        String tenantStockId,
+        TenantStockId tenantStockId,
         Integer value,
         Double available,
         Double reserved,
         Double facilityWideReserved,
-        String locationRef,
+        StorageLocationId locationRef,
         Instant receiptDate,
         Instant availableUntil,
         List<String> conditions,
@@ -73,18 +76,18 @@ public record StockItem(
     public static final class Builder {
         private Builder() {}
 
-        private String id;
+        private StockId id;
         private Integer version;
         private Instant created;
         private Instant lastModified;
         private FacilityId facilityRef;
         private TenantArticleId tenantArticleId;
-        private String tenantStockId;
+        private TenantStockId tenantStockId;
         private Integer value;
         private Double available;
         private Double reserved;
         private Double facilityWideReserved;
-        private String locationRef;
+        private StorageLocationId locationRef;
         private Instant receiptDate;
         private Instant availableUntil;
         private List<String> conditions;
@@ -97,7 +100,7 @@ public record StockItem(
         private Map<String, String> properties;
         private Map<String, Object> customAttributes;
 
-        public Builder id(String id) {
+        public Builder id(StockId id) {
             this.id = id;
             return this;
         }
@@ -127,7 +130,7 @@ public record StockItem(
             return this;
         }
 
-        public Builder tenantStockId(String tenantStockId) {
+        public Builder tenantStockId(TenantStockId tenantStockId) {
             this.tenantStockId = tenantStockId;
             return this;
         }
@@ -152,7 +155,7 @@ public record StockItem(
             return this;
         }
 
-        public Builder locationRef(String locationRef) {
+        public Builder locationRef(StorageLocationId locationRef) {
             this.locationRef = locationRef;
             return this;
         }
