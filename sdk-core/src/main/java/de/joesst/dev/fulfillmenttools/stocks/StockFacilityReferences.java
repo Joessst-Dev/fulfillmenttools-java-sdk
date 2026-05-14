@@ -18,4 +18,30 @@ import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 public record StockFacilityReferences(
         FacilityId facilityRef,
         TenantFacilityId tenantFacilityId
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private FacilityId facilityRef;
+        private TenantFacilityId tenantFacilityId;
+
+        public Builder facilityRef(FacilityId facilityRef) {
+            this.facilityRef = facilityRef;
+            return this;
+        }
+
+        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) {
+            this.tenantFacilityId = tenantFacilityId;
+            return this;
+        }
+
+        public StockFacilityReferences build() {
+            return new StockFacilityReferences(facilityRef, tenantFacilityId);
+        }
+    }
+}

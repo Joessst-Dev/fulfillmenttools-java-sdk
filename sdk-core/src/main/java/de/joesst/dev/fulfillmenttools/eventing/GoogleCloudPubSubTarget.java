@@ -22,4 +22,36 @@ public record GoogleCloudPubSubTarget(
         String type,
         String projectId,
         String topicId
-) implements SubscriptionTarget {}
+) implements SubscriptionTarget {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String type;
+        private String projectId;
+        private String topicId;
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder projectId(String projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        public Builder topicId(String topicId) {
+            this.topicId = topicId;
+            return this;
+        }
+
+        public GoogleCloudPubSubTarget build() {
+            return new GoogleCloudPubSubTarget(type, projectId, topicId);
+        }
+    }
+}

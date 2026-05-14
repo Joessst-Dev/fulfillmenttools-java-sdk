@@ -64,4 +64,159 @@ public record StockItem(
         StockFacilityReferences facility,
         Map<String, String> properties,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityRef;
+        private TenantArticleId tenantArticleId;
+        private String tenantStockId;
+        private Integer value;
+        private Double available;
+        private Double reserved;
+        private Double facilityWideReserved;
+        private String locationRef;
+        private Instant receiptDate;
+        private Instant availableUntil;
+        private List<String> conditions;
+        private List<String> scannableCodes;
+        private List<String> scores;
+        private List<String> traits;
+        private List<StorageLocationTraitConfigEntry> traitConfig;
+        private String serializedProperties;
+        private StockFacilityReferences facility;
+        private Map<String, String> properties;
+        private Map<String, Object> customAttributes;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder version(Integer version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder lastModified(Instant lastModified) {
+            this.lastModified = lastModified;
+            return this;
+        }
+
+        public Builder facilityRef(FacilityId facilityRef) {
+            this.facilityRef = facilityRef;
+            return this;
+        }
+
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) {
+            this.tenantArticleId = tenantArticleId;
+            return this;
+        }
+
+        public Builder tenantStockId(String tenantStockId) {
+            this.tenantStockId = tenantStockId;
+            return this;
+        }
+
+        public Builder value(Integer value) {
+            this.value = value;
+            return this;
+        }
+
+        public Builder available(Double available) {
+            this.available = available;
+            return this;
+        }
+
+        public Builder reserved(Double reserved) {
+            this.reserved = reserved;
+            return this;
+        }
+
+        public Builder facilityWideReserved(Double facilityWideReserved) {
+            this.facilityWideReserved = facilityWideReserved;
+            return this;
+        }
+
+        public Builder locationRef(String locationRef) {
+            this.locationRef = locationRef;
+            return this;
+        }
+
+        public Builder receiptDate(Instant receiptDate) {
+            this.receiptDate = receiptDate;
+            return this;
+        }
+
+        public Builder availableUntil(Instant availableUntil) {
+            this.availableUntil = availableUntil;
+            return this;
+        }
+
+        public Builder conditions(List<String> conditions) {
+            this.conditions = conditions;
+            return this;
+        }
+
+        public Builder scannableCodes(List<String> scannableCodes) {
+            this.scannableCodes = scannableCodes;
+            return this;
+        }
+
+        public Builder scores(List<String> scores) {
+            this.scores = scores;
+            return this;
+        }
+
+        public Builder traits(List<String> traits) {
+            this.traits = traits;
+            return this;
+        }
+
+        public Builder traitConfig(List<StorageLocationTraitConfigEntry> traitConfig) {
+            this.traitConfig = traitConfig;
+            return this;
+        }
+
+        public Builder serializedProperties(String serializedProperties) {
+            this.serializedProperties = serializedProperties;
+            return this;
+        }
+
+        public Builder facility(StockFacilityReferences facility) {
+            this.facility = facility;
+            return this;
+        }
+
+        public Builder properties(Map<String, String> properties) {
+            this.properties = properties;
+            return this;
+        }
+
+        public Builder customAttributes(Map<String, Object> customAttributes) {
+            this.customAttributes = customAttributes;
+            return this;
+        }
+
+        public StockItem build() {
+            return new StockItem(id, version, created, lastModified, facilityRef, tenantArticleId,
+                    tenantStockId, value, available, reserved, facilityWideReserved, locationRef,
+                    receiptDate, availableUntil, conditions, scannableCodes, scores, traits,
+                    traitConfig, serializedProperties, facility, properties, customAttributes);
+        }
+    }
+}

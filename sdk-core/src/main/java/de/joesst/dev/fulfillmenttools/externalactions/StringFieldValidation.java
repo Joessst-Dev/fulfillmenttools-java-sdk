@@ -20,4 +20,36 @@ public record StringFieldValidation(
         ValidationType validationType,
         Double minLength,
         Double maxLength
-) implements FieldValidation {}
+) implements FieldValidation {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ValidationType validationType;
+        private Double minLength;
+        private Double maxLength;
+
+        public Builder validationType(ValidationType validationType) {
+            this.validationType = validationType;
+            return this;
+        }
+
+        public Builder minLength(Double minLength) {
+            this.minLength = minLength;
+            return this;
+        }
+
+        public Builder maxLength(Double maxLength) {
+            this.maxLength = maxLength;
+            return this;
+        }
+
+        public StringFieldValidation build() {
+            return new StringFieldValidation(validationType, minLength, maxLength);
+        }
+    }
+}

@@ -14,4 +14,24 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 @Deprecated
 public record UserAssignedFacility(
         FacilityId facilityRef
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private FacilityId facilityRef;
+
+        public Builder facilityRef(FacilityId facilityRef) {
+            this.facilityRef = facilityRef;
+            return this;
+        }
+
+        public UserAssignedFacility build() {
+            return new UserAssignedFacility(facilityRef);
+        }
+    }
+}

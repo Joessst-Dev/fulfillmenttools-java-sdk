@@ -19,4 +19,30 @@ import java.util.Map;
 public record ExternalFormActionButton(
         Map<String, String> labelLocalized,
         String label
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private Map<String, String> labelLocalized;
+        private String label;
+
+        public Builder labelLocalized(Map<String, String> labelLocalized) {
+            this.labelLocalized = labelLocalized;
+            return this;
+        }
+
+        public Builder label(String label) {
+            this.label = label;
+            return this;
+        }
+
+        public ExternalFormActionButton build() {
+            return new ExternalFormActionButton(labelLocalized, label);
+        }
+    }
+}

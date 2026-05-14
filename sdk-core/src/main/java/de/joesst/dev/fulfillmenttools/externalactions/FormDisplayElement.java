@@ -27,4 +27,42 @@ public record FormDisplayElement(
         Map<String, String> titleLocalized,
         String title,
         ExternalFormActionElementStyle style
-) implements FormElement {}
+) implements FormElement {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ExternalFormActionElementType elementType;
+        private Map<String, String> titleLocalized;
+        private String title;
+        private ExternalFormActionElementStyle style;
+
+        public Builder elementType(ExternalFormActionElementType elementType) {
+            this.elementType = elementType;
+            return this;
+        }
+
+        public Builder titleLocalized(Map<String, String> titleLocalized) {
+            this.titleLocalized = titleLocalized;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder style(ExternalFormActionElementStyle style) {
+            this.style = style;
+            return this;
+        }
+
+        public FormDisplayElement build() {
+            return new FormDisplayElement(elementType, titleLocalized, title, style);
+        }
+    }
+}

@@ -16,4 +16,30 @@ import java.util.List;
 public record ContextLimitation(
         String type,
         List<String> values
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String type;
+        private List<String> values;
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder values(List<String> values) {
+            this.values = values;
+            return this;
+        }
+
+        public ContextLimitation build() {
+            return new ContextLimitation(type, values);
+        }
+    }
+}

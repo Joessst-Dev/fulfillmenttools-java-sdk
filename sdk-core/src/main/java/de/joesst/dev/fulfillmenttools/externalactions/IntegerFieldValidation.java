@@ -20,4 +20,36 @@ public record IntegerFieldValidation(
         ValidationType validationType,
         Double minValue,
         Double maxValue
-) implements FieldValidation {}
+) implements FieldValidation {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ValidationType validationType;
+        private Double minValue;
+        private Double maxValue;
+
+        public Builder validationType(ValidationType validationType) {
+            this.validationType = validationType;
+            return this;
+        }
+
+        public Builder minValue(Double minValue) {
+            this.minValue = minValue;
+            return this;
+        }
+
+        public Builder maxValue(Double maxValue) {
+            this.maxValue = maxValue;
+            return this;
+        }
+
+        public IntegerFieldValidation build() {
+            return new IntegerFieldValidation(validationType, minValue, maxValue);
+        }
+    }
+}

@@ -50,4 +50,122 @@ public record StorageLocation(
         Double schemaVersion,
         List<StorageLocationTraitConfigEntry> traitConfig,
         List<StorageLocationSequenceItem> runningSequences
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private StorageLocationId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityRef;
+        private String name;
+        private String type;
+        private String tenantLocationId;
+        private String zoneName;
+        private String zoneRef;
+        private String information;
+        private List<String> traits;
+        private List<String> scannableCodes;
+        private Map<String, Object> customAttributes;
+        private Double schemaVersion;
+        private List<StorageLocationTraitConfigEntry> traitConfig;
+        private List<StorageLocationSequenceItem> runningSequences;
+
+        public Builder id(StorageLocationId id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder version(Integer version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder lastModified(Instant lastModified) {
+            this.lastModified = lastModified;
+            return this;
+        }
+
+        public Builder facilityRef(FacilityId facilityRef) {
+            this.facilityRef = facilityRef;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder tenantLocationId(String tenantLocationId) {
+            this.tenantLocationId = tenantLocationId;
+            return this;
+        }
+
+        public Builder zoneName(String zoneName) {
+            this.zoneName = zoneName;
+            return this;
+        }
+
+        public Builder zoneRef(String zoneRef) {
+            this.zoneRef = zoneRef;
+            return this;
+        }
+
+        public Builder information(String information) {
+            this.information = information;
+            return this;
+        }
+
+        public Builder traits(List<String> traits) {
+            this.traits = traits;
+            return this;
+        }
+
+        public Builder scannableCodes(List<String> scannableCodes) {
+            this.scannableCodes = scannableCodes;
+            return this;
+        }
+
+        public Builder customAttributes(Map<String, Object> customAttributes) {
+            this.customAttributes = customAttributes;
+            return this;
+        }
+
+        public Builder schemaVersion(Double schemaVersion) {
+            this.schemaVersion = schemaVersion;
+            return this;
+        }
+
+        public Builder traitConfig(List<StorageLocationTraitConfigEntry> traitConfig) {
+            this.traitConfig = traitConfig;
+            return this;
+        }
+
+        public Builder runningSequences(List<StorageLocationSequenceItem> runningSequences) {
+            this.runningSequences = runningSequences;
+            return this;
+        }
+
+        public StorageLocation build() {
+            return new StorageLocation(id, version, created, lastModified, facilityRef, name, type,
+                    tenantLocationId, zoneName, zoneRef, information, traits, scannableCodes,
+                    customAttributes, schemaVersion, traitConfig, runningSequences);
+        }
+    }
+}

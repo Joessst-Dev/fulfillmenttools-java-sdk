@@ -38,4 +38,79 @@ public record Reservation(
         ReservationHost host,
         RelatedRefs relatedRefs,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ReservationId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityRef;
+        private TenantArticleId tenantArticleId;
+        private int quantity;
+        private ReservationHost host;
+        private RelatedRefs relatedRefs;
+        private Map<String, Object> customAttributes;
+
+        public Builder id(ReservationId id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder version(Integer version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder lastModified(Instant lastModified) {
+            this.lastModified = lastModified;
+            return this;
+        }
+
+        public Builder facilityRef(FacilityId facilityRef) {
+            this.facilityRef = facilityRef;
+            return this;
+        }
+
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) {
+            this.tenantArticleId = tenantArticleId;
+            return this;
+        }
+
+        public Builder quantity(int quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public Builder host(ReservationHost host) {
+            this.host = host;
+            return this;
+        }
+
+        public Builder relatedRefs(RelatedRefs relatedRefs) {
+            this.relatedRefs = relatedRefs;
+            return this;
+        }
+
+        public Builder customAttributes(Map<String, Object> customAttributes) {
+            this.customAttributes = customAttributes;
+            return this;
+        }
+
+        public Reservation build() {
+            return new Reservation(id, version, created, lastModified, facilityRef, tenantArticleId,
+                    quantity, host, relatedRefs, customAttributes);
+        }
+    }
+}

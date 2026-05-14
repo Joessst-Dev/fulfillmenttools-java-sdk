@@ -31,4 +31,66 @@ public record Subscription(
         List<SubscriptionContext> contexts,
         List<CallbackHeader> headers,
         SubscriptionTarget target
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private SubscriptionId id;
+        private Instant created;
+        private String name;
+        private String event;
+        private String callbackUrl;
+        private List<SubscriptionContext> contexts;
+        private List<CallbackHeader> headers;
+        private SubscriptionTarget target;
+
+        public Builder id(SubscriptionId id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder event(String event) {
+            this.event = event;
+            return this;
+        }
+
+        public Builder callbackUrl(String callbackUrl) {
+            this.callbackUrl = callbackUrl;
+            return this;
+        }
+
+        public Builder contexts(List<SubscriptionContext> contexts) {
+            this.contexts = contexts;
+            return this;
+        }
+
+        public Builder headers(List<CallbackHeader> headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public Builder target(SubscriptionTarget target) {
+            this.target = target;
+            return this;
+        }
+
+        public Subscription build() {
+            return new Subscription(id, created, name, event, callbackUrl, contexts, headers, target);
+        }
+    }
+}

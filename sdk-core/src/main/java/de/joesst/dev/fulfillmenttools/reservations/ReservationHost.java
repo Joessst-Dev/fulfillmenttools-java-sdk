@@ -13,4 +13,30 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @param type      the type of host system; required
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ReservationHost(String reference, HostType type) {}
+public record ReservationHost(String reference, HostType type) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String reference;
+        private HostType type;
+
+        public Builder reference(String reference) {
+            this.reference = reference;
+            return this;
+        }
+
+        public Builder type(HostType type) {
+            this.type = type;
+            return this;
+        }
+
+        public ReservationHost build() {
+            return new ReservationHost(reference, type);
+        }
+    }
+}

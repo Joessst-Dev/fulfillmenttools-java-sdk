@@ -18,4 +18,30 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record StorageLocationTraitConfigEntry(
         String trait,
         Boolean enabled
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String trait;
+        private Boolean enabled;
+
+        public Builder trait(String trait) {
+            this.trait = trait;
+            return this;
+        }
+
+        public Builder enabled(Boolean enabled) {
+            this.enabled = enabled;
+            return this;
+        }
+
+        public StorageLocationTraitConfigEntry build() {
+            return new StorageLocationTraitConfigEntry(trait, enabled);
+        }
+    }
+}
