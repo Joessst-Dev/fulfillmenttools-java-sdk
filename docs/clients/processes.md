@@ -32,8 +32,6 @@ List processes with optional filters:
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.processes.Process;
 import de.joesst.dev.fulfillmenttools.processes.ProcessListRequest;
-import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
-import java.util.List;
 
 Page<Process> page = client.processes().list(
     ProcessListRequest.builder()
@@ -77,30 +75,6 @@ Iterable<Process> allProcesses = client.processes().listAll(
 
 for (Process process : allProcesses) {
     System.out.println(process.id().value() + " — " + process.status());
-}
-```
-
-Manual pagination using `nextCursor()`:
-
-```java
-import de.joesst.dev.fulfillmenttools.model.Page;
-import de.joesst.dev.fulfillmenttools.processes.Process;
-import de.joesst.dev.fulfillmenttools.processes.ProcessListRequest;
-
-Page<Process> page = client.processes().list(
-    ProcessListRequest.builder().size(20).build()
-);
-
-while (page.hasMore()) {
-    page = client.processes().list(
-        ProcessListRequest.builder()
-            .size(20)
-            .startAfterId(page.nextCursor())
-            .build()
-    );
-    for (Process process : page.items()) {
-        System.out.println(process.id().value());
-    }
 }
 ```
 
