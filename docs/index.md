@@ -23,7 +23,7 @@ features:
   - icon: 🔑
     title: Automatic Token Refresh
     details: Built-in authentication via Google Identity Toolkit with transparent token management.
-  - icon: 🚀
+  - icon: ⚙️
     title: Spring Boot Ready
     details: Drop-in starter module with auto-configuration and property injection.
   - icon: 🛡️
