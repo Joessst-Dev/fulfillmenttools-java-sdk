@@ -146,6 +146,8 @@ ConnectionTarget target = ConnectionTarget.Supplier.of(
 `ConnectionTarget` is a sealed interface — use pattern matching to handle each variant:
 
 ```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
 import de.joesst.dev.fulfillmenttools.facilityconnections.ConnectionTarget;
 import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
 
