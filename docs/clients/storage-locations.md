@@ -121,7 +121,6 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocation;
 import de.joesst.dev.fulfillmenttools.storagelocations.UpdateStorageLocationRequest;
-import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
 StorageLocation location = client.storageLocations().get(
     FacilityId.builder().value("fac-001").build(),
@@ -144,7 +143,6 @@ System.out.println("Updated name: " + updated.name());
 ```java
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
-import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
 client.storageLocations().delete(
     FacilityId.builder().value("fac-001").build(),
