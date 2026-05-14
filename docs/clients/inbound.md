@@ -98,8 +98,6 @@ import de.joesst.dev.fulfillmenttools.inbound.StowJob;
 import de.joesst.dev.fulfillmenttools.inbound.CreateStowJobRequest;
 import de.joesst.dev.fulfillmenttools.inbound.StowLineItemForCreation;
 import de.joesst.dev.fulfillmenttools.inbound.StowLineItemArticle;
-import de.joesst.dev.fulfillmenttools.inbound.StowLineItemTakeFrom;
-import de.joesst.dev.fulfillmenttools.inbound.StowLineItemStowToForCreation;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
