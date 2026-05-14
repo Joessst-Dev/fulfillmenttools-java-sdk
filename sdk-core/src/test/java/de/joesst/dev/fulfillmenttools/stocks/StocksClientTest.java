@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -62,7 +64,7 @@ class StocksClientTest {
 
         // Then
         assertThat(page.items()).hasSize(2);
-        assertThat(page.items().get(0).id()).isEqualTo("s-1");
+        assertThat(page.items().get(0).id().value()).isEqualTo("s-1");
         assertThat(page.items().get(0).facilityRef().value()).isEqualTo("fac-1");
         assertThat(page.items().get(0).tenantArticleId().value()).isEqualTo("art-1");
         assertThat(page.items().get(0).value()).isEqualTo(10);
@@ -114,8 +116,8 @@ class StocksClientTest {
         // When
         client.stocks().list(StockListRequest.builder()
                 .tenantFacilityId(new TenantFacilityId("tenant-fac-1"))
-                .tenantArticleId(List.of("art-1", "art-2"))
-                .locationRef(List.of("loc-A"))
+                .tenantArticleId(List.of(new TenantArticleId("art-1"), new TenantArticleId("art-2")))
+                .locationRef(List.of(new StorageLocationId("loc-A")))
                 .build());
 
         // Then
@@ -274,6 +276,26 @@ class StocksClientTest {
         assertThat(item.facility()).isNull();
         assertThat(item.properties()).isNull();
         assertThat(item.traitConfig()).isNull();
+    }
+
+    @Test
+    void list_deserializesTenantStockIdAndLocationRefAsTypedIds() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("""
+                        {"stocks":[{
+                          "id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":3,
+                          "tenantStockId":"tenant-stock-42",
+                          "locationRef":"loc-A1"
+                        }]}
+                        """)));
+
+        // When
+        StockItem item = client.stocks().list(StockListRequest.builder().build()).items().get(0);
+
+        // Then
+        assertThat(item.tenantStockId().value()).isEqualTo("tenant-stock-42");
+        assertThat(item.locationRef().value()).isEqualTo("loc-A1");
     }
 
     // --- Helpers ---
