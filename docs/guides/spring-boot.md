@@ -50,8 +50,13 @@ The starter automatically creates and configures a `FulfillmenttoolsClient` bean
 
 ```java
 import org.springframework.stereotype.Service;
-import io.github.joessst-dev.fulfillmenttools.FulfillmenttoolsClient;
-import io.github.joessst-dev.fulfillmenttools.id.OrderId;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.orders.Order;
+import de.joesst.dev.fulfillmenttools.orders.OrderListRequest;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class OrderService {
@@ -62,13 +67,14 @@ public class OrderService {
     }
 
     public Order getOrder(String orderId) {
-        return client.orders().get(new OrderId(orderId));
+        return client.orders().get(OrderId.builder().value(orderId).build());
     }
 
     public List<Order> listOrders() {
-        return client.orders()
-            .listAll(OrderListRequest.builder().size(100).build())
-            .stream()
+        return StreamSupport.stream(
+            client.orders()
+                .listAll(OrderListRequest.builder().size(100).build())
+                .spliterator(), false)
             .collect(Collectors.toList());
     }
 }
@@ -81,8 +87,8 @@ Override the default bean by defining your own in a `@Configuration` class:
 ```java
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import io.github.joessst-dev.fulfillmenttools.FulfillmenttoolsClient;
-import io.github.joessst-dev.fulfillmenttools.auth.EmailPasswordCredentials;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.auth.EmailPasswordCredentials;
 
 @Configuration
 public class FulfillmenttoolsConfiguration {
@@ -108,6 +114,10 @@ Use Spring's `@Async` with the SDK's async methods:
 
 ```java
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.orders.Order;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -121,18 +131,26 @@ public class AsyncOrderService {
     @Async
     public CompletableFuture<Order> fetchOrder(String orderId) {
         return client.orders()
-            .getAsync(new OrderId(orderId));
+            .getAsync(OrderId.builder().value(orderId).build());
     }
 }
 ```
 
 ## Testing
 
-Mock the `FulfillmenttoolsClient` bean in tests:
+Mock the `FulfillmenttoolsClient` bean in tests. `Order` is an immutable record — build stub responses with `Order.builder()` and assert with record accessors:
 
 ```java
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.orders.Order;
+import de.joesst.dev.fulfillmenttools.orders.OrdersClient;
+import de.joesst.dev.fulfillmenttools.id.OrderId;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -146,17 +164,19 @@ public class OrderServiceTest {
 
     @Test
     public void testGetOrder() {
-        // Mock the client behavior
-        Order mockOrder = new Order();
-        mockOrder.setOrderNumber("ORD-123");
-        
-        when(client.orders().get(any()))
-            .thenReturn(mockOrder);
+        OrdersClient orders = mock(OrdersClient.class);
+        when(client.orders()).thenReturn(orders);
 
-        Order order = orderService.getOrder("ord-123");
-        
-        assertEquals("ORD-123", order.getOrderNumber());
-        verify(client.orders()).get(any());
+        Order expected = Order.builder()
+            .id(OrderId.builder().value("ord-123").build())
+            .status("OPEN")
+            .build();
+        when(orders.get(any())).thenReturn(expected);
+
+        Order result = orderService.getOrder("ord-123");
+
+        assertEquals("OPEN", result.status());
+        verify(orders).get(any());
     }
 }
 ```
