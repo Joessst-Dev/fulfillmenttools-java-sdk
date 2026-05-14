@@ -2,6 +2,8 @@ package de.joesst.dev.fulfillmenttools.checkoutoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 /**
  * Consumer delivery address supplied as part of a checkout options evaluation request.
  *
@@ -31,6 +33,10 @@ public record CheckoutOptionsConsumerAddress(
         String addressType
 ) {
 
+    public CheckoutOptionsConsumerAddress {
+        Objects.requireNonNull(country, "country must not be null");
+    }
+
     /**
      * Creates a minimal consumer address with only the required {@code country} field.
      *
@@ -39,9 +45,6 @@ public record CheckoutOptionsConsumerAddress(
      * @throws NullPointerException if {@code country} is {@code null}.
      */
     public static CheckoutOptionsConsumerAddress ofCountry(String country) {
-        if (country == null) {
-            throw new NullPointerException("country must not be null");
-        }
         return new CheckoutOptionsConsumerAddress(country, null, null, null, null, null, null);
     }
 
@@ -147,9 +150,6 @@ public record CheckoutOptionsConsumerAddress(
          * @throws NullPointerException if {@code country} has not been set.
          */
         public CheckoutOptionsConsumerAddress build() {
-            if (country == null) {
-                throw new NullPointerException("country must not be null");
-            }
             return new CheckoutOptionsConsumerAddress(
                     country, city, houseNumber, postalCode, province, street, addressType);
         }
