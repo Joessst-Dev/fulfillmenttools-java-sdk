@@ -16,4 +16,20 @@ public record SourcingOptionsRequestId(String value) implements PlatformId {
         this.value = Objects.requireNonNull(value, "value");
     }
     @Override public String toString() { return value; }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String value;
+
+        public Builder value(String value) { this.value = value; return this; }
+
+        public SourcingOptionsRequestId build() {
+            return new SourcingOptionsRequestId(value);
+        }
+    }
 }

@@ -20,4 +20,24 @@ public record EmailPasswordCredentials(String email, String password, String api
         Objects.requireNonNull(password, "password must not be null");
         Objects.requireNonNull(apiKey, "apiKey must not be null");
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String email;
+        private String password;
+        private String apiKey;
+
+        public Builder email(String email) { this.email = email; return this; }
+        public Builder password(String password) { this.password = password; return this; }
+        public Builder apiKey(String apiKey) { this.apiKey = apiKey; return this; }
+
+        public EmailPasswordCredentials build() {
+            return new EmailPasswordCredentials(email, password, apiKey);
+        }
+    }
 }
