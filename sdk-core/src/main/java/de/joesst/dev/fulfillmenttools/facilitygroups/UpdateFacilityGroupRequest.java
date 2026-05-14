@@ -42,7 +42,7 @@ public final class UpdateFacilityGroupRequest {
     /**
      * Returns the facility references in this group.
      *
-     * @return the list of facility references, or null if not set
+     * @return the list of {@link FacilityId} references, or null if not set
      */
     public List<FacilityId> facilityRefs() { return facilityRefs; }
 
