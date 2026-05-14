@@ -135,7 +135,6 @@ try {
 import de.joesst.dev.fulfillmenttools.id.UserId;
 import de.joesst.dev.fulfillmenttools.users.User;
 import de.joesst.dev.fulfillmenttools.users.UpdateUserRequest;
-import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
 User user = client.users().get(
     UserId.builder().value("usr-001").build()
