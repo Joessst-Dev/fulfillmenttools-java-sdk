@@ -1,12 +1,15 @@
 package de.joesst.dev.fulfillmenttools.spring;
 
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.auth.EmailPasswordCredentials;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,11 +54,47 @@ class FulfillmenttoolsAutoConfigurationTest {
                             "fulfillmenttools.password=fake-password")
                     // When: the application context is loaded
                     .run(context -> {
-                        // Then: bound properties are accessible
+                        // Then: exactly one FulfillmenttoolsProperties bean is present
                         assertThat(context).hasSingleBean(FulfillmenttoolsProperties.class);
+                    });
+        }
+
+        @Test
+        void shouldBindAllPropertyFields() {
+            // Given: all required properties are present
+            runner.withPropertyValues(
+                            "fulfillmenttools.project-id=ocff-test-pre",
+                            "fulfillmenttools.api-key=fake-api-key",
+                            "fulfillmenttools.username=service@ocff-test-pre.com",
+                            "fulfillmenttools.password=fake-password")
+                    // When: the application context is loaded
+                    .run(context -> {
+                        // Then: all four fields are bound correctly
                         FulfillmenttoolsProperties props =
                                 context.getBean(FulfillmenttoolsProperties.class);
                         assertThat(props.getProjectId()).isEqualTo("ocff-test-pre");
+                        assertThat(props.getApiKey()).isEqualTo("fake-api-key");
+                        assertThat(props.getUsername()).isEqualTo("service@ocff-test-pre.com");
+                        assertThat(props.getPassword()).isEqualTo("fake-password");
+                    });
+        }
+
+        @Test
+        void shouldDeriveBaseUrlFromProjectId() throws Exception {
+            // Given: a project-id of "ocff-myproject-pre"
+            runner.withPropertyValues(
+                            "fulfillmenttools.project-id=ocff-myproject-pre",
+                            "fulfillmenttools.api-key=fake-api-key",
+                            "fulfillmenttools.username=service@ocff-myproject-pre.com",
+                            "fulfillmenttools.password=fake-password")
+                    // When: the application context is loaded
+                    .run(context -> {
+                        // Then: the client's baseUrl is derived as https://<project-id>.api.fulfillmenttools.com
+                        FulfillmenttoolsClient client = context.getBean(FulfillmenttoolsClient.class);
+                        Field baseUrlField = FulfillmenttoolsClient.class.getDeclaredField("baseUrl");
+                        baseUrlField.setAccessible(true);
+                        assertThat(baseUrlField.get(client))
+                                .isEqualTo("https://ocff-myproject-pre.api.fulfillmenttools.com");
                     });
         }
     }
@@ -85,6 +124,73 @@ class FulfillmenttoolsAutoConfigurationTest {
                 // Then: no FulfillmenttoolsClient bean is registered
                 assertThat(context).doesNotHaveBean(FulfillmenttoolsClient.class);
             });
+        }
+    }
+
+    @Nested
+    class WhenCredentialIsMissing {
+
+        @Test
+        void shouldFailToStartWhenApiKeyIsAbsent() {
+            // Given: project-id, username, and password are present but api-key is absent
+            runner.withPropertyValues(
+                            "fulfillmenttools.project-id=ocff-test-pre",
+                            "fulfillmenttools.username=service@ocff-test-pre.com",
+                            "fulfillmenttools.password=fake-password")
+                    // When: the application context is loaded
+                    .run(context -> {
+                        // Then: the context fails because EmailPasswordCredentials rejects a null apiKey
+                        assertThat(context).hasFailed();
+                    });
+        }
+
+        @Test
+        void shouldFailToStartWhenUsernameIsAbsent() {
+            // Given: project-id, api-key, and password are present but username is absent
+            runner.withPropertyValues(
+                            "fulfillmenttools.project-id=ocff-test-pre",
+                            "fulfillmenttools.api-key=fake-api-key",
+                            "fulfillmenttools.password=fake-password")
+                    // When: the application context is loaded
+                    .run(context -> {
+                        // Then: the context fails because EmailPasswordCredentials rejects a null email
+                        assertThat(context).hasFailed();
+                    });
+        }
+
+        @Test
+        void shouldFailToStartWhenPasswordIsAbsent() {
+            // Given: project-id, api-key, and username are present but password is absent
+            runner.withPropertyValues(
+                            "fulfillmenttools.project-id=ocff-test-pre",
+                            "fulfillmenttools.api-key=fake-api-key",
+                            "fulfillmenttools.username=service@ocff-test-pre.com")
+                    // When: the application context is loaded
+                    .run(context -> {
+                        // Then: the context fails because EmailPasswordCredentials rejects a null password
+                        assertThat(context).hasFailed();
+                    });
+        }
+    }
+
+    @Nested
+    class WhenAutoConfigurationIsNotRegistered {
+
+        @Test
+        void shouldNotRegisterBeanWhenAutoConfigurationIsNotRegistered() {
+            // Given: all properties are set but FulfillmenttoolsAutoConfiguration is not in the runner
+            // This mirrors the effect of spring.autoconfigure.exclude=...FulfillmenttoolsAutoConfiguration
+            new ApplicationContextRunner()
+                    .withPropertyValues(
+                            "fulfillmenttools.project-id=ocff-test-pre",
+                            "fulfillmenttools.api-key=fake-api-key",
+                            "fulfillmenttools.username=service@ocff-test-pre.com",
+                            "fulfillmenttools.password=fake-password")
+                    // When: the application context is loaded without the auto-configuration
+                    .run(context -> {
+                        // Then: no FulfillmenttoolsClient bean is registered
+                        assertThat(context).doesNotHaveBean(FulfillmenttoolsClient.class);
+                    });
         }
     }
 
@@ -125,7 +231,7 @@ class FulfillmenttoolsAutoConfigurationTest {
         FulfillmenttoolsClient customFulfillmenttoolsClient() {
             return FulfillmenttoolsClient.builder()
                     .baseUrl("https://custom.api.fulfillmenttools.com")
-                    .credentials(new de.joesst.dev.fulfillmenttools.auth.EmailPasswordCredentials(
+                    .credentials(new EmailPasswordCredentials(
                             "custom@example.com", "custom-password", "custom-api-key"))
                     .build();
         }
