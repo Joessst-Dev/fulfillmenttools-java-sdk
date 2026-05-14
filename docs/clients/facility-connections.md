@@ -1,59 +1,211 @@
 # Facility Connections Client
 
-The Facility Connections client manages facility connection configurations. Manage integrations and connections between facilities.
+The Facility Connections client manages facility connection configurations — define how a source facility links to a carrier and a typed target (customer, managed facility, or supplier), along with routing rules such as cutoff times and delivery costs.
 
 ## Basic Usage
 
 ```java
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
+import de.joesst.dev.fulfillmenttools.NotFoundException;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
-// Get a facility connection
-FacilityConnection connection = client.facilityConnections().get(
-    new FacilityId("fac-001"),
-    new ConnectionId("conn-001")
-);
-System.out.println("Type: " + connection.getType());
+try {
+    FacilityConnection connection = client.facilityConnections().get(
+        FacilityId.builder().value("fac-001").build(),
+        ConnectionId.builder().value("conn-001").build()
+    );
+    System.out.println("Carrier key: " + connection.carrierKey());
+    System.out.println("Carrier name: " + connection.carrierName());
+    System.out.println("Version: " + connection.version());
+} catch (NotFoundException e) {
+    System.out.println("Connection not found");
+} catch (FulfillmenttoolsException e) {
+    System.out.println("Request failed: " + e.getMessage());
+}
 ```
 
 ## Listing Facility Connections
 
 ```java
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionListRequest;
 
 Page<FacilityConnection> page = client.facilityConnections().list(
-    new FacilityId("fac-001"),
+    FacilityId.builder().value("fac-001").build(),
     FacilityConnectionListRequest.builder()
         .size(50)
         .build()
 );
+
+for (FacilityConnection connection : page.items()) {
+    System.out.println(connection.id().value() + " — " + connection.carrierKey());
+}
 ```
 
-## Creating and Managing Connections
+Filter by target facility reference:
 
 ```java
-FacilityConnection connection = client.facilityConnections().create(
-    new FacilityId("fac-001"),
-    CreateFacilityConnectionRequest.builder()
-        .carrier("UPS")
-        .cutoffTime("18:00")
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionListRequest;
+
+Page<FacilityConnection> page = client.facilityConnections().list(
+    FacilityId.builder().value("fac-001").build(),
+    FacilityConnectionListRequest.builder()
+        .targetFacilityRef("fac-456")
+        .build()
+);
+```
+
+Iterate through all facility connections automatically:
+
+```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnectionListRequest;
+
+Iterable<FacilityConnection> allConnections = client.facilityConnections().listAll(
+    FacilityId.builder().value("fac-001").build(),
+    FacilityConnectionListRequest.builder()
+        .size(100)
         .build()
 );
 
-// Update a connection
+for (FacilityConnection connection : allConnections) {
+    System.out.println(connection.id().value() + " — " + connection.carrierKey());
+}
+```
+
+## Connection Targets
+
+Every connection has a typed `target` that describes its destination. There are three variants, each constructed with a static factory method:
+
+### Customer target
+
+A connection whose target is an end customer:
+
+```java
+import de.joesst.dev.fulfillmenttools.facilityconnections.ConnectionTarget;
+
+ConnectionTarget target = ConnectionTarget.Customer.of();
+```
+
+### Managed facility target
+
+A connection pointing to another managed facility:
+
+```java
+import de.joesst.dev.fulfillmenttools.facilityconnections.ConnectionTarget;
+
+ConnectionTarget target = ConnectionTarget.ManagedFacility.of("fac-456");
+```
+
+### Supplier target
+
+A connection pointing to a supplier facility:
+
+```java
+import de.joesst.dev.fulfillmenttools.facilityconnections.ConnectionTarget;
+
+ConnectionTarget target = ConnectionTarget.Supplier.of("fac-789");
+```
+
+## Creating a Facility Connection
+
+`target` is the only required field:
+
+```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
+import de.joesst.dev.fulfillmenttools.facilityconnections.CreateFacilityConnectionRequest;
+import de.joesst.dev.fulfillmenttools.facilityconnections.ConnectionTarget;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+
+try {
+    FacilityConnection connection = client.facilityConnections().create(
+        FacilityId.builder().value("fac-001").build(),
+        CreateFacilityConnectionRequest.builder()
+            .target(ConnectionTarget.Customer.of())
+            .carrierKey("DHL")
+            .build()
+    );
+    System.out.println("Created: " + connection.id().value());
+} catch (FulfillmenttoolsException e) {
+    System.out.println("Creation failed: " + e.getMessage());
+}
+```
+
+## Updating a Facility Connection
+
+`version` and `target` are both required for the update (full replacement):
+
+```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
+import de.joesst.dev.fulfillmenttools.facilityconnections.UpdateFacilityConnectionRequest;
+import de.joesst.dev.fulfillmenttools.facilityconnections.ConnectionTarget;
+
+FacilityConnection connection = client.facilityConnections().get(
+    FacilityId.builder().value("fac-001").build(),
+    ConnectionId.builder().value("conn-001").build()
+);
+
 FacilityConnection updated = client.facilityConnections().update(
-    new FacilityId("fac-001"),
-    new ConnectionId("conn-001"),
+    FacilityId.builder().value("fac-001").build(),
+    ConnectionId.builder().value("conn-001").build(),
     UpdateFacilityConnectionRequest.builder()
-        .cutoffTime("17:00")
+        .version(connection.version())
+        .target(ConnectionTarget.Customer.of())
+        .carrierKey("FedEx")
         .build()
 );
+System.out.println("Updated carrier: " + updated.carrierKey());
+```
 
-// Delete a connection
+## Deleting a Facility Connection
+
+```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+
 client.facilityConnections().delete(
-    new FacilityId("fac-001"),
-    new ConnectionId("conn-001")
+    FacilityId.builder().value("fac-001").build(),
+    ConnectionId.builder().value("conn-001").build()
 );
+```
+
+## Async Usage
+
+All methods have async variants returning `CompletableFuture`:
+
+```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
+import de.joesst.dev.fulfillmenttools.facilityconnections.FacilityConnection;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+
+CompletableFuture<FacilityConnection> future = client.facilityConnections().getAsync(
+    FacilityId.builder().value("fac-001").build(),
+    ConnectionId.builder().value("conn-001").build()
+);
+
+future.whenComplete((connection, ex) -> {
+    if (ex != null) {
+        Throwable cause = ex instanceof CompletionException && ex.getCause() != null
+            ? ex.getCause() : ex;
+        System.out.println("Error: " + cause.getMessage());
+    } else {
+        System.out.println("Carrier key: " + connection.carrierKey());
+        System.out.println("Version: " + connection.version());
+    }
+});
 ```
 
 ## API Reference
@@ -63,98 +215,98 @@ client.facilityConnections().delete(
 Get a facility connection by ID.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `connectionId: ConnectionId` — The connection ID
+- `facilityId: FacilityId` — The source facility identifier
+- `connectionId: ConnectionId` — The connection identifier
 
 **Returns:** `FacilityConnection`
 
-**Throws:** `FulfillmenttoolsException` if not found
+**Throws:** `NotFoundException` (404), `FulfillmenttoolsException` if the request fails
 
 ### getAsync(FacilityId, ConnectionId)
 
-Get a facility connection asynchronously.
+Get a facility connection by ID asynchronously.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `connectionId: ConnectionId` — The connection ID
+- `facilityId: FacilityId` — The source facility identifier
+- `connectionId: ConnectionId` — The connection identifier
 
 **Returns:** `CompletableFuture<FacilityConnection>`
 
 ### list(FacilityId, FacilityConnectionListRequest)
 
-List facility connections with optional filtering and pagination.
+List facility connections with optional filtering and pagination. Filters include `targetFacilityRef`.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `request: FacilityConnectionListRequest` — List request with filters and pagination
+- `facilityId: FacilityId` — The source facility identifier
+- `request: FacilityConnectionListRequest` — List request with `size`, `startAfterId`, and optional filters
 
 **Returns:** `Page<FacilityConnection>`
 
-**Throws:** `FulfillmenttoolsException` if a request error occurs
+**Throws:** `FulfillmenttoolsException` if the request fails
 
 ### listAsync(FacilityId, FacilityConnectionListRequest)
 
 List facility connections asynchronously.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `request: FacilityConnectionListRequest` — List request with filters and pagination
+- `facilityId: FacilityId` — The source facility identifier
+- `request: FacilityConnectionListRequest` — List request
 
 **Returns:** `CompletableFuture<Page<FacilityConnection>>`
 
 ### listAll(FacilityId, FacilityConnectionListRequest)
 
-List all facility connections, automatically handling pagination.
+List all facility connections, automatically iterating through pages.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `request: FacilityConnectionListRequest` — List request with filters
+- `facilityId: FacilityId` — The source facility identifier
+- `request: FacilityConnectionListRequest` — List request
 
 **Returns:** `Iterable<FacilityConnection>`
 
 ### create(FacilityId, CreateFacilityConnectionRequest)
 
-Create a new facility connection.
+Create a new facility connection. `target` is the only required field.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `request: CreateFacilityConnectionRequest` — Connection creation payload
+- `facilityId: FacilityId` — The source facility identifier
+- `request: CreateFacilityConnectionRequest` — Creation request. Optional fields: `carrierKey`, `carrierName`, `context`, `fallbackCosts`, `nonDeliveryDays`, `packagingUnitsByContexts`, `cutoffTimes`, `fallbackTransitTime`, `customAttributes`
 
 **Returns:** `FacilityConnection`
 
-**Throws:** `FulfillmenttoolsException` if validation fails or request error occurs
+**Throws:** `FulfillmenttoolsException` if the request fails
 
 ### createAsync(FacilityId, CreateFacilityConnectionRequest)
 
 Create a facility connection asynchronously.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `request: CreateFacilityConnectionRequest` — Connection creation payload
+- `facilityId: FacilityId` — The source facility identifier
+- `request: CreateFacilityConnectionRequest` — Creation request
 
 **Returns:** `CompletableFuture<FacilityConnection>`
 
 ### update(FacilityId, ConnectionId, UpdateFacilityConnectionRequest)
 
-Update an existing facility connection with partial changes.
+Update an existing facility connection. `version` and `target` are required for optimistic locking and full replacement. Other updatable fields: `carrierKey`, `carrierName`, `context`, `fallbackCosts`, `nonDeliveryDays`, `packagingUnitsByContexts`, `cutoffTimes`, `fallbackTransitTime`, `customAttributes`.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `connectionId: ConnectionId` — The connection ID to update
-- `request: UpdateFacilityConnectionRequest` — Update payload with new field values
+- `facilityId: FacilityId` — The source facility identifier
+- `connectionId: ConnectionId` — The connection identifier
+- `request: UpdateFacilityConnectionRequest` — Update request with current version, target, and new values
 
 **Returns:** `FacilityConnection`
 
-**Throws:** `FulfillmenttoolsException` if not found or request error occurs
+**Throws:** `FulfillmenttoolsException` if the request fails or a version conflict occurs
 
 ### updateAsync(FacilityId, ConnectionId, UpdateFacilityConnectionRequest)
 
 Update a facility connection asynchronously.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `connectionId: ConnectionId` — The connection ID to update
-- `request: UpdateFacilityConnectionRequest` — Update payload with new field values
+- `facilityId: FacilityId` — The source facility identifier
+- `connectionId: ConnectionId` — The connection identifier
+- `request: UpdateFacilityConnectionRequest` — Update request
 
 **Returns:** `CompletableFuture<FacilityConnection>`
 
@@ -163,17 +315,30 @@ Update a facility connection asynchronously.
 Delete a facility connection.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `connectionId: ConnectionId` — The connection ID to delete
+- `facilityId: FacilityId` — The source facility identifier
+- `connectionId: ConnectionId` — The connection identifier
 
-**Throws:** `FulfillmenttoolsException` if not found or request error occurs
+**Returns:** `void`
+
+**Throws:** `FulfillmenttoolsException` if the request fails
 
 ### deleteAsync(FacilityId, ConnectionId)
 
 Delete a facility connection asynchronously.
 
 **Parameters:**
-- `facilityId: FacilityId` — The source facility ID
-- `connectionId: ConnectionId` — The connection ID to delete
+- `facilityId: FacilityId` — The source facility identifier
+- `connectionId: ConnectionId` — The connection identifier
 
 **Returns:** `CompletableFuture<Void>`
+
+## ConnectionTarget Variants
+
+| Variant | Factory | Type discriminator |
+|---------|---------|-------------------|
+| `ConnectionTarget.Customer` | `Customer.of()` | `"CUSTOMER"` |
+| `ConnectionTarget.ManagedFacility` | `ManagedFacility.of(facilityRef)` | `"MANAGED_FACILITY"` |
+| `ConnectionTarget.Supplier` | `Supplier.of(facilityRef)` | `"SUPPLIER"` |
+
+`ManagedFacility` and `Supplier` also accept exclusion lists:
+`ManagedFacility.of(facilityRef, excludedFacilityRefs, excludedFacilityGroupRefs)`
