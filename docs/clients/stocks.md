@@ -195,7 +195,8 @@ future
         }
     })
     .exceptionally(ex -> {
-        System.err.println("Failed to fetch stocks: " + ex.getMessage());
+        Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+        System.err.println("Failed to fetch stocks: " + cause.getMessage());
         return null;
     });
 ```
@@ -366,15 +367,15 @@ The `StockItem` record exposes the following accessor methods (via record compon
 
 ## StockListRequest Parameters
 
-The `StockListRequest.builder()` accepts the following options:
+The `StockListRequest.builder()` accepts the following options. All parameters are optional.
 
-| Method | Type | Description |
-|--------|------|-------------|
-| `size(Integer)` | Optional | Maximum number of entries per page. Defaults to server-defined limit if not set |
-| `startAfterId(String)` | Optional | Cursor for pagination; retrieves the next page after this ID |
-| `facilityRef(FacilityId)` | Optional | Filter by facility (exact match) |
-| `tenantFacilityId(TenantFacilityId)` | Optional | Filter by tenant's facility ID |
-| `tenantArticleId(List<TenantArticleId>)` | Optional | Filter by one or more article IDs (OR logic) |
-| `locationRef(List<StorageLocationId>)` | Optional | Filter by one or more storage locations (OR logic) |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `size(Integer)` | `Integer` | Maximum number of entries per page. Defaults to server-defined limit if not set |
+| `startAfterId(String)` | `String` | Cursor for pagination; retrieves the next page after this ID |
+| `facilityRef(FacilityId)` | `FacilityId` | Filter by facility (exact match) |
+| `tenantFacilityId(TenantFacilityId)` | `TenantFacilityId` | Filter by tenant's facility ID |
+| `tenantArticleId(List<TenantArticleId>)` | `List<TenantArticleId>` | Filter by one or more article IDs (OR logic) |
+| `locationRef(List<StorageLocationId>)` | `List<StorageLocationId>` | Filter by one or more storage locations (OR logic) |
 
 Filters are applied with AND logic (all specified filters must match). Within a multi-value filter (like `tenantArticleId`), OR logic applies.
