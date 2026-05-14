@@ -50,12 +50,19 @@ try {
 Include `orderLineItems` and shipping `deliveryPreferences` to get facility routing for home delivery:
 
 ```java
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsRequest;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsResult;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.OrderForSourcingOptionsRequest;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.ConsumerAddressesForSourcingOptions;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.ConsumerAddressForSourcingOptions;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.DeliveryPreferences;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferencesShipping;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticleForCreation;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import java.util.List;
 
 SourcingOptionsResult result = client.sourcingOptions().evaluate(
     SourcingOptionsRequest.builder()
@@ -118,8 +125,18 @@ SourcingOptionsResult result = client.sourcingOptions().evaluate(
 Use `collect` delivery preferences when the customer picks up in store:
 
 ```java
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsRequest;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsResult;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.OrderForSourcingOptionsRequest;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.ConsumerAddressesForSourcingOptions;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.DeliveryPreferences;
+import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
+import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticleForCreation;
 import de.joesst.dev.fulfillmenttools.orders.CollectDelivery;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import java.util.List;
 
 SourcingOptionsResult result = client.sourcingOptions().evaluate(
     SourcingOptionsRequest.builder()
@@ -160,9 +177,14 @@ SourcingOptionsResult result = client.sourcingOptions().evaluate(
 Use `optimizationHints` to request a specific number of options, and `resourceInvestment` to trade off computation time vs. result quality (0.0–1.0, higher = more computation):
 
 ```java
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsRequest;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsResult;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.OrderForSourcingOptionsRequest;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.ConsumerAddressesForSourcingOptions;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.OptimizationHints;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.ResourceInvestment;
 import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsRequestAdditionalInfo;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
 SourcingOptionsResult result = client.sourcingOptions().evaluate(
     SourcingOptionsRequest.builder()
@@ -200,6 +222,8 @@ SourcingOptionsResult result = client.sourcingOptions().evaluate(
 Each `SourcingOption` in the result represents one feasible fulfillment plan, ranked by `totalPenalty` (lower is better):
 
 ```java
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOption;
+
 for (SourcingOption option : result.options()) {
     System.out.println("Option: " + option.id());
     System.out.println("  Penalty: " + option.totalPenalty());
@@ -240,8 +264,14 @@ try {
 All methods have async variants returning `CompletableFuture`:
 
 ```java
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsRequest;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsResult;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.OrderForSourcingOptionsRequest;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.ConsumerAddressesForSourcingOptions;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.ConsumerAddressForSourcingOptions;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.List;
 
 CompletableFuture<SourcingOptionsResult> future = client.sourcingOptions().evaluateAsync(
     SourcingOptionsRequest.builder()
