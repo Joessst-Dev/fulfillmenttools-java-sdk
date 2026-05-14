@@ -81,7 +81,7 @@ class FacilityGroupsAsyncTest {
         // When
         FacilityGroup group = client.facilityGroups().createAsync(CreateFacilityGroupRequest.builder()
                 .tenantFacilityGroupId("tg-1")
-                .facilityRefs(List.of("fac-1"))
+                .facilityRefs(List.of(FacilityId.builder().value("fac-1").build()))
                 .nameLocalized(Map.of("en", "G"))
                 .build()).get();
 

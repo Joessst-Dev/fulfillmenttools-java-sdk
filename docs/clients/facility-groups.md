@@ -88,6 +88,7 @@ for (FacilityGroup group : allGroups) {
 `tenantFacilityGroupId`, `facilityRefs`, and `nameLocalized` are required:
 
 ```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroup;
 import de.joesst.dev.fulfillmenttools.facilitygroups.CreateFacilityGroupRequest;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
@@ -98,7 +99,10 @@ try {
     FacilityGroup group = client.facilityGroups().create(
         CreateFacilityGroupRequest.builder()
             .tenantFacilityGroupId("western-region")
-            .facilityRefs(List.of("fac-001", "fac-002"))
+            .facilityRefs(List.of(
+                FacilityId.builder().value("fac-001").build(),
+                FacilityId.builder().value("fac-002").build()
+            ))
             .nameLocalized(Map.of("en_US", "Western Region"))
             .build()
     );
@@ -222,6 +226,7 @@ try {
 Search by facility reference:
 
 ```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroup;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroupSearchRequest;
@@ -231,7 +236,7 @@ Page<FacilityGroup> results = client.facilityGroups().search(
     FacilityGroupSearchRequest.builder()
         .query(
             FacilityGroupSearchQuery.builder()
-                .facilityRefsContains("fac-001")
+                .facilityRefsContains(FacilityId.builder().value("fac-001").build())
                 .build()
         )
         .build()
@@ -489,7 +494,7 @@ Search all facility groups matching a query, automatically iterating through pag
 | `nameEq(String)` | Match exact name |
 | `nameLike(String)` | Match name by pattern |
 | `nameIn(String...)` | Match any of the given names |
-| `facilityRefsContains(String)` | Group contains the given facility ref |
-| `facilityRefsContainsAll(String...)` | Group contains all of the given facility refs |
+| `facilityRefsContains(FacilityId)` | Group contains the given facility |
+| `facilityRefsContainsAll(FacilityId...)` | Group contains all of the given facilities |
 | `and(FacilityGroupSearchQuery...)` | Combine multiple queries with AND logic |
 | `or(FacilityGroupSearchQuery...)` | Combine multiple queries with OR logic |

@@ -161,25 +161,29 @@ public final class FacilityGroupsClientImpl implements FacilityGroupsClient {
     }
 
     private SdkHttpRequest buildCreateRequest(CreateFacilityGroupRequest request) {
+        List<String> facilityRefs = request.facilityRefs().stream().map(FacilityId::value).toList();
         return SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
                 .url(baseUrl + "/api/facilitygroups")
                 .body(responseHandler.encode(new CreateFacilityGroupBody(
                         request.tenantFacilityGroupId(),
-                        request.facilityRefs(),
+                        facilityRefs,
                         request.nameLocalized(),
                         request.customAttributes())))
                 .build();
     }
 
     private SdkHttpRequest buildUpdateRequest(FacilityGroupId facilityGroupId, UpdateFacilityGroupRequest request) {
+        List<String> facilityRefs = request.facilityRefs() != null
+                ? request.facilityRefs().stream().map(FacilityId::value).toList()
+                : null;
         return SdkHttpRequest.builder()
                 .method(HttpMethod.PUT)
                 .url(baseUrl + "/api/facilitygroups/" + facilityGroupId.value())
                 .body(responseHandler.encode(new UpdateFacilityGroupBody(
                         request.version(),
                         request.tenantFacilityGroupId(),
-                        request.facilityRefs(),
+                        facilityRefs,
                         request.nameLocalized(),
                         request.customAttributes())))
                 .build();

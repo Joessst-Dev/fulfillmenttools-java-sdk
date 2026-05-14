@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilitygroups;
 
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +13,7 @@ import java.util.Map;
  * <pre>{@code
  * FacilityGroupSearchQuery query = FacilityGroupSearchQuery.builder()
  *     .tenantFacilityGroupIdEq("my-group")
- *     .facilityRefsContains("fac-1")
+ *     .facilityRefsContains(FacilityId.builder().value("fac-1").build())
  *     .build();
  * }</pre>
  */
@@ -91,10 +93,7 @@ public final class FacilityGroupSearchQuery {
      * Builder for constructing FacilityGroupSearchQuery with fluent condition methods.
      */
     public static final class Builder {
-        /**
-         * Creates a new Builder.
-         */
-        public Builder() {}
+        private Builder() {}
 
         private Map<String, Object> id;
         private Map<String, Object> tenantFacilityGroupId;
@@ -208,28 +207,28 @@ public final class FacilityGroupSearchQuery {
         // --- facilityRefs ---
 
         /**
-         * Filters by facilityRefs containing the given value.
+         * Filters by facilityRefs containing the given facility ID.
          *
-         * @param value the facility ref to match
+         * @param value the facility ID to match
          * @return this builder instance
          */
-        public Builder facilityRefsContains(String value) { facilityRefs = Map.of("contains", value); return this; }
+        public Builder facilityRefsContains(FacilityId value) { facilityRefs = Map.of("contains", value.value()); return this; }
 
         /**
          * Filters by facilityRefs containing all of the given values.
          *
-         * @param values the facility refs to match
+         * @param values the facility IDs to match
          * @return this builder instance
          */
-        public Builder facilityRefsContainsAll(String... values) { facilityRefs = Map.of("containsAll", List.of(values)); return this; }
+        public Builder facilityRefsContainsAll(FacilityId... values) { facilityRefs = Map.of("containsAll", Arrays.stream(values).map(FacilityId::value).toList()); return this; }
 
         /**
          * Filters by facilityRefs containing all of the given values.
          *
-         * @param values the facility refs to match
+         * @param values the facility IDs to match
          * @return this builder instance
          */
-        public Builder facilityRefsContainsAll(List<String> values) { facilityRefs = Map.of("containsAll", values); return this; }
+        public Builder facilityRefsContainsAll(List<FacilityId> values) { facilityRefs = Map.of("containsAll", values.stream().map(FacilityId::value).toList()); return this; }
 
         // --- logical combinators ---
 
