@@ -35,7 +35,6 @@ export default defineConfig({
           { text: 'Facility Groups', link: '/clients/facility-groups' },
           { text: 'Handover Jobs', link: '/clients/handover-jobs' },
           { text: 'Health', link: '/clients/health' },
-          { text: 'Inbound (Stow Jobs)', link: '/clients/inbound' },
           { text: 'Listings', link: '/clients/listings' },
           { text: 'Orders', link: '/clients/orders' },
           { text: 'Pack Jobs', link: '/clients/pack-jobs' },
@@ -48,6 +47,7 @@ export default defineConfig({
           { text: 'Sourcing Options', link: '/clients/sourcing-options' },
           { text: 'Stocks', link: '/clients/stocks' },
           { text: 'Storage Locations', link: '/clients/storage-locations' },
+          { text: 'Stow Jobs (Inbound)', link: '/clients/inbound' },
           { text: 'Tags', link: '/clients/tags' },
           { text: 'User Management', link: '/clients/users' }
         ]
