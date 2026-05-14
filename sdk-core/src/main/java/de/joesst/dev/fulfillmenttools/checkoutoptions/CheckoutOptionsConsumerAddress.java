@@ -33,6 +33,7 @@ public record CheckoutOptionsConsumerAddress(
         String addressType
 ) {
 
+    /** Validates that {@code country} is present. */
     public CheckoutOptionsConsumerAddress {
         Objects.requireNonNull(country, "country must not be null");
     }
