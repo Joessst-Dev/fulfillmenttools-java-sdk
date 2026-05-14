@@ -54,8 +54,9 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.orders.Order;
 import de.joesst.dev.fulfillmenttools.orders.OrderListRequest;
 import de.joesst.dev.fulfillmenttools.id.OrderId;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class OrderService {
@@ -70,11 +71,11 @@ public class OrderService {
     }
 
     public List<Order> listOrders() {
-        List<Order> all = new ArrayList<>();
-        client.orders()
-            .listAll(OrderListRequest.builder().size(100).build())
-            .forEach(all::add);
-        return all;
+        return StreamSupport.stream(
+            client.orders()
+                .listAll(OrderListRequest.builder().size(100).build())
+                .spliterator(), false)
+            .collect(Collectors.toList());
     }
 }
 ```
