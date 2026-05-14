@@ -10,6 +10,7 @@ The Checkout Options client evaluates available checkout options based on order 
 import de.joesst.dev.fulfillmenttools.checkoutoptions.CheckoutOption;
 import de.joesst.dev.fulfillmenttools.checkoutoptions.EvaluateCheckoutOptionsRequest;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
+import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferencesShipping;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,21 @@ import java.util.Map;
 try {
     CheckoutOption option = client.checkoutOptions().evaluate(
         EvaluateCheckoutOptionsRequest.builder()
-            .deliveryPreferences(/* delivery preferences */)
-            .orderLineItems(List.of(/* line items */))
+            .deliveryPreferences(
+                DeliveryPreferences.builder()
+                    .shipping(
+                        DeliveryPreferencesShipping.builder()
+                            .serviceLevel("DELIVERY")
+                            .build()
+                    )
+                    .build()
+            )
+            .orderLineItems(List.of(
+                Map.<String, Object>of(
+                    "tenantArticleId", "SKU-12345",
+                    "quantity", 2
+                )
+            ))
             .build()
     );
 
@@ -33,11 +47,30 @@ try {
 ```java
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import de.joesst.dev.fulfillmenttools.checkoutoptions.CheckoutOption;
+import de.joesst.dev.fulfillmenttools.checkoutoptions.EvaluateCheckoutOptionsRequest;
+import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
+import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferencesShipping;
+import java.util.List;
+import java.util.Map;
 
 CompletableFuture<CheckoutOption> future = client.checkoutOptions().evaluateAsync(
     EvaluateCheckoutOptionsRequest.builder()
-        .deliveryPreferences(/* delivery preferences */)
-        .orderLineItems(List.of(/* line items */))
+        .deliveryPreferences(
+            DeliveryPreferences.builder()
+                .shipping(
+                    DeliveryPreferencesShipping.builder()
+                        .serviceLevel("DELIVERY")
+                        .build()
+                )
+                .build()
+        )
+        .orderLineItems(List.of(
+            Map.<String, Object>of(
+                "tenantArticleId", "SKU-12345",
+                "quantity", 2
+            )
+        ))
         .build()
 );
 
