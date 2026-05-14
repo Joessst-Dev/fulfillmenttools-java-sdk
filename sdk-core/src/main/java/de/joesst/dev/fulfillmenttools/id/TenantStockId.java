@@ -14,9 +14,7 @@ public record TenantStockId(String value) implements TenantId {
     public TenantStockId(String value) {
         this.value = Objects.requireNonNull(value, "value");
     }
-
-    @Override
-    public String toString() { return value; }
+    @Override public String toString() { return value; }
 
     public static Builder builder() {
         return new Builder();

@@ -276,6 +276,26 @@ class StocksClientTest {
         assertThat(item.traitConfig()).isNull();
     }
 
+    @Test
+    void list_deserializesTenantStockIdAndLocationRefAsTypedIds() {
+        // Given
+        server.stubFor(get(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("""
+                        {"stocks":[{
+                          "id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":3,
+                          "tenantStockId":"tenant-stock-42",
+                          "locationRef":"loc-A1"
+                        }]}
+                        """)));
+
+        // When
+        StockItem item = client.stocks().list(StockListRequest.builder().build()).items().get(0);
+
+        // Then
+        assertThat(item.tenantStockId().value()).isEqualTo("tenant-stock-42");
+        assertThat(item.locationRef().value()).isEqualTo("loc-A1");
+    }
+
     // --- Helpers ---
 
     private static TokenProvider fixedToken(String token) {

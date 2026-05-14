@@ -14,9 +14,7 @@ public record StockId(String value) implements PlatformId {
     public StockId(String value) {
         this.value = Objects.requireNonNull(value, "value");
     }
-
-    @Override
-    public String toString() { return value; }
+    @Override public String toString() { return value; }
 
     public static Builder builder() {
         return new Builder();
