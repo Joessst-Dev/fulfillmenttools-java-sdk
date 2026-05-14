@@ -165,12 +165,16 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroup;
 import java.util.List;
 
+FacilityGroup current = client.facilityGroups().get(
+    FacilityGroupId.builder().value("fgrp-001").build()
+);
+
 FacilityGroup reduced = client.facilityGroups().removeFacilities(
     FacilityGroupId.builder().value("fgrp-001").build(),
     List.of(
         FacilityId.builder().value("fac-004").build()
     ),
-    withFacilities.version()
+    current.version()
 );
 ```
 
