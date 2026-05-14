@@ -59,6 +59,8 @@ public record CheckoutOptionsConsumerAddress(
      */
     public static final class Builder {
 
+        private Builder() {}
+
         private String country;
         private String city;
         private String houseNumber;
@@ -66,8 +68,6 @@ public record CheckoutOptionsConsumerAddress(
         private String province;
         private String street;
         private String addressType;
-
-        private Builder() {}
 
         /**
          * Sets the ISO 3166-1 alpha-2 country code (required).

@@ -106,6 +106,9 @@ public final class EvaluateCheckoutOptionsRequest {
      */
     public static final class Builder {
 
+        /** Creates a new Builder. */
+        private Builder() {}
+
         private DeliveryPreferences deliveryPreferences;
         private List<Map<String, Object>> orderLineItems;
         private CheckoutOptionsConsumerAddress consumerAddress;
@@ -114,9 +117,6 @@ public final class EvaluateCheckoutOptionsRequest {
         private List<Map<String, Object>> customServices;
         private GeoFence geoFence;
         private List<Map<String, Object>> tags;
-
-        /** Creates a new Builder. */
-        private Builder() {}
 
         /**
          * Sets the delivery preferences (required).
