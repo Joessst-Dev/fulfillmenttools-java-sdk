@@ -113,6 +113,28 @@ Subscription subscription = client.eventing().create(
 );
 ```
 
+### Google Cloud Pub/Sub target
+
+```java
+import de.joesst.dev.fulfillmenttools.eventing.Subscription;
+import de.joesst.dev.fulfillmenttools.eventing.CreateSubscriptionRequest;
+import de.joesst.dev.fulfillmenttools.eventing.GoogleCloudPubSubTarget;
+
+Subscription subscription = client.eventing().create(
+    CreateSubscriptionRequest.builder()
+        .name("order-pubsub")
+        .event("ORDER_CREATED")
+        .target(
+            GoogleCloudPubSubTarget.builder()
+                .type("GOOGLE_CLOUD_PUB_SUB")
+                .projectId("my-gcp-project")
+                .topicId("my-topic")
+                .build()
+        )
+        .build()
+);
+```
+
 ## Updating a Subscription
 
 ```java
