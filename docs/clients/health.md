@@ -1,30 +1,79 @@
 # Health Client
 
-The Health client provides system health and status checks. Monitor the health of the fulfillmenttools platform.
+The Health client checks the health of the fulfillmenttools platform. `health()` returns detailed per-dependency status; `status()` returns the overall system status.
 
 ## Basic Usage
 
 ```java
-// Get detailed health information
-HealthResult healthResult = client.health().health();
-System.out.println("Status: " + healthResult.getStatus());
+import de.joesst.dev.fulfillmenttools.health.HealthResult;
+import de.joesst.dev.fulfillmenttools.health.HealthDependencyStatus;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
-// Get overall system status
-SystemStatus status = client.health().status();
-System.out.println("System Status: " + status.getStatus());
+try {
+    HealthResult result = client.health().health();
+    System.out.println("Status: " + result.status());
+    for (HealthDependencyStatus dep : result.dependencies()) {
+        System.out.println(dep.name() + ": " + dep.status());
+    }
+} catch (FulfillmenttoolsException e) {
+    System.out.println("Health check failed: " + e.getMessage());
+}
 ```
 
-## Async Health Checks
+## Overall System Status
 
 ```java
-CompletableFuture<HealthResult> futureHealth = client.health().healthAsync();
-futureHealth.thenAccept(result -> {
-    System.out.println("System is " + result.getStatus());
-});
+import de.joesst.dev.fulfillmenttools.health.SystemStatus;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
-CompletableFuture<SystemStatus> futureStatus = client.health().statusAsync();
-futureStatus.thenAccept(status -> {
-    System.out.println("System is " + status.getStatus());
+try {
+    SystemStatus status = client.health().status();
+    System.out.println("System: " + status.status());
+} catch (FulfillmenttoolsException e) {
+    System.out.println("Status check failed: " + e.getMessage());
+}
+```
+
+## Async Usage
+
+All methods have async variants returning `CompletableFuture`:
+
+```java
+import de.joesst.dev.fulfillmenttools.health.HealthResult;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+
+CompletableFuture<HealthResult> future = client.health().healthAsync();
+
+future.whenComplete((result, ex) -> {
+    if (ex != null) {
+        Throwable cause = ex instanceof CompletionException && ex.getCause() != null
+            ? ex.getCause() : ex;
+        System.out.println("Error: " + cause.getMessage());
+    } else {
+        System.out.println("Status: " + result.status());
+        result.dependencies().forEach(dep ->
+            System.out.println(dep.name() + ": " + dep.status())
+        );
+    }
+});
+```
+
+```java
+import de.joesst.dev.fulfillmenttools.health.SystemStatus;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+
+CompletableFuture<SystemStatus> future = client.health().statusAsync();
+
+future.whenComplete((status, ex) -> {
+    if (ex != null) {
+        Throwable cause = ex instanceof CompletionException && ex.getCause() != null
+            ? ex.getCause() : ex;
+        System.out.println("Error: " + cause.getMessage());
+    } else {
+        System.out.println("System: " + status.status());
+    }
 });
 ```
 
@@ -34,23 +83,23 @@ futureStatus.thenAccept(status -> {
 
 Retrieve detailed health information including the status of all dependencies.
 
-**Returns:** `HealthResult`
+**Returns:** `HealthResult` — contains `status()` (overall) and `dependencies()` (list of `HealthDependencyStatus`)
 
-**Throws:** `FulfillmenttoolsException` if the health check request fails
+**Throws:** `FulfillmenttoolsException` if the request fails
 
 ### healthAsync()
 
-Retrieve health information asynchronously.
+Retrieve detailed health information asynchronously.
 
 **Returns:** `CompletableFuture<HealthResult>`
 
 ### status()
 
-Retrieve the overall system status of the fulfillmenttools platform.
+Retrieve the overall system status.
 
-**Returns:** `SystemStatus`
+**Returns:** `SystemStatus` — contains `status()` (e.g. `"UP"`, `"DOWN"`, `"DEGRADED"`)
 
-**Throws:** `FulfillmenttoolsException` if the status check request fails
+**Throws:** `FulfillmenttoolsException` if the request fails
 
 ### statusAsync()
 
