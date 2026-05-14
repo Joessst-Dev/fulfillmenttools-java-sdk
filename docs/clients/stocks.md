@@ -49,7 +49,7 @@ for (StockItem item : allStocks) {
 - `reserved()` — Quantity reserved for active orders
 - `locationRef()` — Optional storage location within the facility
 - `value()` — Total quantity (Integer)
-- `conditions` — List of condition tags (e.g., "NEW", "USED")
+- `conditions()` — List of condition tags (e.g., "NEW", "USED")
 
 **StockListRequest**: Builder-based immutable request object for filtering and pagination. Use `StockListRequest.builder()` to construct.
 
@@ -139,11 +139,21 @@ Page<StockItem> page1 = client.stocks().list(
     StockListRequest.builder().size(50).build()
 );
 
-String cursor = page1.cursor();
+String cursor = page1.nextCursor();
 if (cursor != null) {
     Page<StockItem> page2 = client.stocks().list(
         StockListRequest.builder()
             .startAfterId(cursor)
+            .size(50)
+            .build()
+    );
+}
+
+// Or use the convenience method:
+if (page1.hasMore()) {
+    Page<StockItem> page2 = client.stocks().list(
+        StockListRequest.builder()
+            .startAfterId(page1.nextCursor())
             .size(50)
             .build()
     );
@@ -198,20 +208,16 @@ The stocks client throws `FulfillmenttoolsException` for HTTP and transport erro
 
 ```java
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
-import de.joesst.dev.fulfillmenttools.NotFoundException;
 
 try {
     Page<StockItem> page = client.stocks().list(
         StockListRequest.builder()
-            .facilityRef(FacilityId.builder().value("unknown-fac").build())
+            .facilityRef(FacilityId.builder().value("fac-1").build())
             .size(50)
             .build()
     );
-} catch (NotFoundException ex) {
-    // Facility not found (HTTP 404)
-    System.out.println("Facility not found. Request ID: " + ex.requestId());
 } catch (FulfillmenttoolsException ex) {
-    // Other fulfillmenttools API error
+    // Fulfillmenttools API error
     System.out.println("API Error (" + ex.statusCode() + "): " + ex.getMessage());
     for (var error : ex.errors()) {
         System.out.println("  - " + error.summary());
@@ -231,10 +237,11 @@ CompletableFuture<Page<StockItem>> future = client.stocks().listAsync(
 
 future.handle((page, ex) -> {
     if (ex != null) {
-        if (ex instanceof FulfillmenttoolsException fte) {
+        Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+        if (cause instanceof FulfillmenttoolsException fte) {
             System.out.println("API error: " + fte.statusCode());
         } else {
-            System.out.println("Unexpected error: " + ex.getMessage());
+            System.out.println("Unexpected error: " + cause.getMessage());
         }
         return null;
     }
@@ -354,6 +361,7 @@ The `StockItem` record exposes the following accessor methods (via record compon
 | `traitConfig()` | `List<StorageLocationTraitConfigEntry>` | Per-trait configuration entries |
 | `properties()` | `Map<String, String>` | Tracking properties (key-value pairs) |
 | `customAttributes()` | `Map<String, Object>` | Free-form custom metadata |
+| `serializedProperties()` | `String` | Serialised representation of the stock properties (JSON string) |
 | `facility()` | `StockFacilityReferences` | Embedded facility reference data (nullable) |
 
 ## StockListRequest Parameters
