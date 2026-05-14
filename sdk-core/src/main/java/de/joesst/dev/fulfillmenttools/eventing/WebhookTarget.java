@@ -24,4 +24,36 @@ public record WebhookTarget(
         String type,
         String callbackUrl,
         List<CallbackHeader> headers
-) implements SubscriptionTarget {}
+) implements SubscriptionTarget {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String type;
+        private String callbackUrl;
+        private List<CallbackHeader> headers;
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder callbackUrl(String callbackUrl) {
+            this.callbackUrl = callbackUrl;
+            return this;
+        }
+
+        public Builder headers(List<CallbackHeader> headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public WebhookTarget build() {
+            return new WebhookTarget(type, callbackUrl, headers);
+        }
+    }
+}

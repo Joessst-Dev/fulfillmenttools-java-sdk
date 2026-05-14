@@ -26,4 +26,48 @@ public record DomainStatusHistoryItem(
         DomainStatus domainEntityProcessStatus,
         String domainRef,
         String statusChangeReasonKey
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private Instant timestamp;
+        private DomainType domain;
+        private DomainStatus domainEntityProcessStatus;
+        private String domainRef;
+        private String statusChangeReasonKey;
+
+        public Builder timestamp(Instant timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder domain(DomainType domain) {
+            this.domain = domain;
+            return this;
+        }
+
+        public Builder domainEntityProcessStatus(DomainStatus domainEntityProcessStatus) {
+            this.domainEntityProcessStatus = domainEntityProcessStatus;
+            return this;
+        }
+
+        public Builder domainRef(String domainRef) {
+            this.domainRef = domainRef;
+            return this;
+        }
+
+        public Builder statusChangeReasonKey(String statusChangeReasonKey) {
+            this.statusChangeReasonKey = statusChangeReasonKey;
+            return this;
+        }
+
+        public DomainStatusHistoryItem build() {
+            return new DomainStatusHistoryItem(timestamp, domain, domainEntityProcessStatus, domainRef, statusChangeReasonKey);
+        }
+    }
+}

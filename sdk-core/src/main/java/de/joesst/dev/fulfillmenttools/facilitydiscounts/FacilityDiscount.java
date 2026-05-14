@@ -29,4 +29,73 @@ public record FacilityDiscount(
         Integer priority,
         FacilityDiscountValue discount,
         List<FacilityDiscountContext> context
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private FacilityDiscountId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private FacilityId facilityRef;
+        private String type;
+        private Integer priority;
+        private FacilityDiscountValue discount;
+        private List<FacilityDiscountContext> context;
+
+        public Builder id(FacilityDiscountId id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder version(Integer version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder lastModified(Instant lastModified) {
+            this.lastModified = lastModified;
+            return this;
+        }
+
+        public Builder facilityRef(FacilityId facilityRef) {
+            this.facilityRef = facilityRef;
+            return this;
+        }
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder priority(Integer priority) {
+            this.priority = priority;
+            return this;
+        }
+
+        public Builder discount(FacilityDiscountValue discount) {
+            this.discount = discount;
+            return this;
+        }
+
+        public Builder context(List<FacilityDiscountContext> context) {
+            this.context = context;
+            return this;
+        }
+
+        public FacilityDiscount build() {
+            return new FacilityDiscount(id, version, created, lastModified, facilityRef, type,
+                    priority, discount, context);
+        }
+    }
+}

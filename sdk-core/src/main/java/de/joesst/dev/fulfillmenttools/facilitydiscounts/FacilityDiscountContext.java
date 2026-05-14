@@ -14,6 +14,37 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record FacilityDiscountContext(String type, List<String> values, String operator) {
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String type;
+        private List<String> values;
+        private String operator;
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder values(List<String> values) {
+            this.values = values;
+            return this;
+        }
+
+        public Builder operator(String operator) {
+            this.operator = operator;
+            return this;
+        }
+
+        public FacilityDiscountContext build() {
+            return new FacilityDiscountContext(type, values, operator);
+        }
+    }
+
     /**
      * Creates a context condition with the given type and values.
      *

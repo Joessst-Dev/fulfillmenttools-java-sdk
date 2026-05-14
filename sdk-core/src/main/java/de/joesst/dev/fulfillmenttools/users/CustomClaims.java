@@ -14,4 +14,24 @@ import java.util.List;
 @Deprecated
 public record CustomClaims(
         List<UserRole> roles
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private List<UserRole> roles;
+
+        public Builder roles(List<UserRole> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public CustomClaims build() {
+            return new CustomClaims(roles);
+        }
+    }
+}

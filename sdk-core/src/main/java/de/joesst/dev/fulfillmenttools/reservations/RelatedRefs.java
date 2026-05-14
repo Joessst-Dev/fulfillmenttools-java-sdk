@@ -30,4 +30,48 @@ public record RelatedRefs(
         List<ProcessId> processRefs,
         List<RoutingPlanId> routingPlanRefs,
         List<String> transferRefs
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private List<OrderId> orderRefs;
+        private List<PickJobId> pickJobRefs;
+        private List<ProcessId> processRefs;
+        private List<RoutingPlanId> routingPlanRefs;
+        private List<String> transferRefs;
+
+        public Builder orderRefs(List<OrderId> orderRefs) {
+            this.orderRefs = orderRefs;
+            return this;
+        }
+
+        public Builder pickJobRefs(List<PickJobId> pickJobRefs) {
+            this.pickJobRefs = pickJobRefs;
+            return this;
+        }
+
+        public Builder processRefs(List<ProcessId> processRefs) {
+            this.processRefs = processRefs;
+            return this;
+        }
+
+        public Builder routingPlanRefs(List<RoutingPlanId> routingPlanRefs) {
+            this.routingPlanRefs = routingPlanRefs;
+            return this;
+        }
+
+        public Builder transferRefs(List<String> transferRefs) {
+            this.transferRefs = transferRefs;
+            return this;
+        }
+
+        public RelatedRefs build() {
+            return new RelatedRefs(orderRefs, pickJobRefs, processRefs, routingPlanRefs, transferRefs);
+        }
+    }
+}

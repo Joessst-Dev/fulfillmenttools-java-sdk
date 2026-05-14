@@ -31,4 +31,54 @@ public record AzureServiceBusTarget(
         String clientSecret,
         String namespace,
         String queueOrTopicName
-) implements SubscriptionTarget {}
+) implements SubscriptionTarget {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String type;
+        private String tenantId;
+        private String clientId;
+        private String clientSecret;
+        private String namespace;
+        private String queueOrTopicName;
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder tenantId(String tenantId) {
+            this.tenantId = tenantId;
+            return this;
+        }
+
+        public Builder clientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        public Builder clientSecret(String clientSecret) {
+            this.clientSecret = clientSecret;
+            return this;
+        }
+
+        public Builder namespace(String namespace) {
+            this.namespace = namespace;
+            return this;
+        }
+
+        public Builder queueOrTopicName(String queueOrTopicName) {
+            this.queueOrTopicName = queueOrTopicName;
+            return this;
+        }
+
+        public AzureServiceBusTarget build() {
+            return new AzureServiceBusTarget(type, tenantId, clientId, clientSecret, namespace, queueOrTopicName);
+        }
+    }
+}

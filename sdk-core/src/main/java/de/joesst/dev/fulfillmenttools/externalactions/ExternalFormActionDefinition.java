@@ -24,4 +24,42 @@ public record ExternalFormActionDefinition(
         List<FormElement> elements,
         ExternalFormActionButton cancel,
         ExternalFormActionButton success
-) implements ExternalActionDefinition {}
+) implements ExternalActionDefinition {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ExternalActionType type;
+        private List<FormElement> elements;
+        private ExternalFormActionButton cancel;
+        private ExternalFormActionButton success;
+
+        public Builder type(ExternalActionType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder elements(List<FormElement> elements) {
+            this.elements = elements;
+            return this;
+        }
+
+        public Builder cancel(ExternalFormActionButton cancel) {
+            this.cancel = cancel;
+            return this;
+        }
+
+        public Builder success(ExternalFormActionButton success) {
+            this.success = success;
+            return this;
+        }
+
+        public ExternalFormActionDefinition build() {
+            return new ExternalFormActionDefinition(type, elements, cancel, success);
+        }
+    }
+}

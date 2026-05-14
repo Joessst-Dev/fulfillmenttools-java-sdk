@@ -21,4 +21,42 @@ public record UserRole(
         List<ContextLimitation> context,
         List<ContextLimitation> contextLimitations,
         List<String> facilities
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private String name;
+        private List<ContextLimitation> context;
+        private List<ContextLimitation> contextLimitations;
+        private List<String> facilities;
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder context(List<ContextLimitation> context) {
+            this.context = context;
+            return this;
+        }
+
+        public Builder contextLimitations(List<ContextLimitation> contextLimitations) {
+            this.contextLimitations = contextLimitations;
+            return this;
+        }
+
+        public Builder facilities(List<String> facilities) {
+            this.facilities = facilities;
+            return this;
+        }
+
+        public UserRole build() {
+            return new UserRole(name, context, contextLimitations, facilities);
+        }
+    }
+}

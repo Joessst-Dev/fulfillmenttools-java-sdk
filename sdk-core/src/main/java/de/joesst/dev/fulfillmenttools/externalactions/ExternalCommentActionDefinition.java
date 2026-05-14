@@ -21,4 +21,30 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record ExternalCommentActionDefinition(
         ExternalActionType type,
         Boolean isInternal
-) implements ExternalActionDefinition {}
+) implements ExternalActionDefinition {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ExternalActionType type;
+        private Boolean isInternal;
+
+        public Builder type(ExternalActionType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder isInternal(Boolean isInternal) {
+            this.isInternal = isInternal;
+            return this;
+        }
+
+        public ExternalCommentActionDefinition build() {
+            return new ExternalCommentActionDefinition(type, isInternal);
+        }
+    }
+}

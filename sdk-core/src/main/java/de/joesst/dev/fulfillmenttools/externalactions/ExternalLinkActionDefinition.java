@@ -18,4 +18,30 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record ExternalLinkActionDefinition(
         ExternalActionType type,
         String linkUrl
-) implements ExternalActionDefinition {}
+) implements ExternalActionDefinition {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ExternalActionType type;
+        private String linkUrl;
+
+        public Builder type(ExternalActionType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder linkUrl(String linkUrl) {
+            this.linkUrl = linkUrl;
+            return this;
+        }
+
+        public ExternalLinkActionDefinition build() {
+            return new ExternalLinkActionDefinition(type, linkUrl);
+        }
+    }
+}

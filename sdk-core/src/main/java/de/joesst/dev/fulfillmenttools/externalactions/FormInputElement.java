@@ -33,4 +33,60 @@ public record FormInputElement(
         Boolean isMandatory,
         ExternalFormActionElementStyle style,
         FieldValidation validation
-) implements FormElement {}
+) implements FormElement {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ExternalFormActionElementType elementType;
+        private String elementId;
+        private Map<String, String> titleLocalized;
+        private String title;
+        private Boolean isMandatory;
+        private ExternalFormActionElementStyle style;
+        private FieldValidation validation;
+
+        public Builder elementType(ExternalFormActionElementType elementType) {
+            this.elementType = elementType;
+            return this;
+        }
+
+        public Builder elementId(String elementId) {
+            this.elementId = elementId;
+            return this;
+        }
+
+        public Builder titleLocalized(Map<String, String> titleLocalized) {
+            this.titleLocalized = titleLocalized;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder isMandatory(Boolean isMandatory) {
+            this.isMandatory = isMandatory;
+            return this;
+        }
+
+        public Builder style(ExternalFormActionElementStyle style) {
+            this.style = style;
+            return this;
+        }
+
+        public Builder validation(FieldValidation validation) {
+            this.validation = validation;
+            return this;
+        }
+
+        public FormInputElement build() {
+            return new FormInputElement(elementType, elementId, titleLocalized, title, isMandatory, style, validation);
+        }
+    }
+}

@@ -30,4 +30,73 @@ public record FacilityGroup(
         Map<String, String> nameLocalized,
         String name,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private FacilityGroupId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private String tenantFacilityGroupId;
+        private List<FacilityId> facilityRefs;
+        private Map<String, String> nameLocalized;
+        private String name;
+        private Map<String, Object> customAttributes;
+
+        public Builder id(FacilityGroupId id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder version(Integer version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder lastModified(Instant lastModified) {
+            this.lastModified = lastModified;
+            return this;
+        }
+
+        public Builder tenantFacilityGroupId(String tenantFacilityGroupId) {
+            this.tenantFacilityGroupId = tenantFacilityGroupId;
+            return this;
+        }
+
+        public Builder facilityRefs(List<FacilityId> facilityRefs) {
+            this.facilityRefs = facilityRefs;
+            return this;
+        }
+
+        public Builder nameLocalized(Map<String, String> nameLocalized) {
+            this.nameLocalized = nameLocalized;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder customAttributes(Map<String, Object> customAttributes) {
+            this.customAttributes = customAttributes;
+            return this;
+        }
+
+        public FacilityGroup build() {
+            return new FacilityGroup(id, version, created, lastModified, tenantFacilityGroupId,
+                    facilityRefs, nameLocalized, name, customAttributes);
+        }
+    }
+}

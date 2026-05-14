@@ -39,4 +39,79 @@ public record ExternalAction(
         ExternalActionDefinition action,
         List<String> groups,
         Map<String, Object> customAttributes
-) {}
+) {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {}
+
+        private ExternalActionId id;
+        private Integer version;
+        private Instant created;
+        private Instant lastModified;
+        private String name;
+        private ProcessId processRef;
+        private Map<String, String> nameLocalized;
+        private ExternalActionDefinition action;
+        private List<String> groups;
+        private Map<String, Object> customAttributes;
+
+        public Builder id(ExternalActionId id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder version(Integer version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder lastModified(Instant lastModified) {
+            this.lastModified = lastModified;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder processRef(ProcessId processRef) {
+            this.processRef = processRef;
+            return this;
+        }
+
+        public Builder nameLocalized(Map<String, String> nameLocalized) {
+            this.nameLocalized = nameLocalized;
+            return this;
+        }
+
+        public Builder action(ExternalActionDefinition action) {
+            this.action = action;
+            return this;
+        }
+
+        public Builder groups(List<String> groups) {
+            this.groups = groups;
+            return this;
+        }
+
+        public Builder customAttributes(Map<String, Object> customAttributes) {
+            this.customAttributes = customAttributes;
+            return this;
+        }
+
+        public ExternalAction build() {
+            return new ExternalAction(id, version, created, lastModified, name, processRef,
+                    nameLocalized, action, groups, customAttributes);
+        }
+    }
+}
