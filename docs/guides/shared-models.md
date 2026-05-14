@@ -140,6 +140,7 @@ FulfillmenttoolsException  (base — all SDK errors)
 The base class provides structured access to the error response:
 
 ```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 import de.joesst.dev.fulfillmenttools.ApiError;
 
@@ -166,6 +167,7 @@ try {
 Thrown for 404 responses. Catch it before `FulfillmenttoolsException` when you want to handle "not found" separately:
 
 ```java
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
