@@ -203,7 +203,7 @@ Iterable<Listing> allListings = client.listings().searchAll(
 );
 
 for (Listing listing : allListings) {
-    System.out.println(listing.tenantArticleId() + ": " + listing.title());
+    System.out.println(listing.tenantArticleId().value() + ": " + listing.title());
 }
 ```
 
@@ -238,6 +238,7 @@ Listing listing = upserted.get(0);
 
 // Identity and status
 ListingId listingId = listing.id();
+String rawId = listingId.value();  // Extract the raw string from the typed ID
 TenantArticleId articleId = listing.tenantArticleId();
 FacilityId facilityId = listing.facilityId();
 String status = listing.status();  // "ACTIVE" or "INACTIVE"
@@ -265,6 +266,9 @@ All synchronous operations throw `FulfillmenttoolsException` on failure. This in
 ### Catching API Errors
 
 ```java
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
+import de.joesst.dev.fulfillmenttools.ApiError;
+
 try {
     List<Listing> upserted = client.listings().bulkUpsert(
         ListingBulkUpsertRequest.builder()
