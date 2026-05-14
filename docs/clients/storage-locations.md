@@ -91,6 +91,7 @@ for (StorageLocation location : allLocations) {
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocation;
 import de.joesst.dev.fulfillmenttools.storagelocations.CreateStorageLocationRequest;
+import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationSequenceItem;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 import java.util.List;
 
@@ -101,7 +102,7 @@ try {
             .name("Aisle 1")
             .type("AISLE")
             .scannableCodes(List.of("A1"))
-            .runningSequences(List.of())
+            .runningSequences(List.<StorageLocationSequenceItem>of())
             .zoneName("Zone A")
             .build()
     );
