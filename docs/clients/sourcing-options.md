@@ -18,7 +18,11 @@ try {
         SourcingOptionsRequest.builder()
             .order(
                 OrderForSourcingOptionsRequest.builder()
-                    .consumer(/* consumer address */)
+                    .consumer(
+                        ConsumerAddressesForSourcingOptions.builder()
+                            .consumerId("consumer-001")
+                            .build()
+                    )
                     .build()
             )
             .build()
@@ -63,7 +67,11 @@ CompletableFuture<SourcingOptionsResult> future = client.sourcingOptions().evalu
     SourcingOptionsRequest.builder()
         .order(
             OrderForSourcingOptionsRequest.builder()
-                .consumer(/* consumer address */)
+                .consumer(
+                    ConsumerAddressesForSourcingOptions.builder()
+                        .consumerId("consumer-001")
+                        .build()
+                )
                 .build()
         )
         .build()
