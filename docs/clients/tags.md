@@ -77,6 +77,7 @@ while (page.hasMore()) {
 
 ```java
 import de.joesst.dev.fulfillmenttools.tags.CreateTagRequest;
+import java.util.List;
 
 Tag tag = client.tags().create(
     CreateTagRequest.builder()
@@ -159,6 +160,7 @@ Determine whether tags require packing by passing a list of `TagReference` objec
 ```java
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.tags.NeedsPacking;
+import java.util.List;
 
 List<NeedsPacking> results = client.tags().needsPacking(
     List.of(
@@ -231,6 +233,8 @@ List tags with pagination.
 - `request: TagListRequest` — List request with pagination
 
 **Returns:** `Page<Tag>`
+
+**Throws:** `FulfillmenttoolsException` if the request fails
 
 ### listAsync(TagListRequest)
 
