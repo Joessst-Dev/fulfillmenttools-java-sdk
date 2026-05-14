@@ -52,8 +52,8 @@ Filter by status and type:
 ```java
 Page<Facility> page = client.facilities().list(
     FacilityListRequest.builder()
-        .status(Arrays.asList("ONLINE", "SUSPENDED"))
-        .type(Arrays.asList("MANAGED_FACILITY"))
+        .status(List.of("ONLINE", "SUSPENDED"))
+        .type(List.of("MANAGED_FACILITY"))
         .size(50)
         .build()
 );
@@ -127,6 +127,8 @@ System.out.println("Created facility: " + created.id());
 With full details:
 
 ```java
+import de.joesst.dev.fulfillmenttools.facilities.FacilityAddress;
+
 FacilityAddress address = FacilityAddress.builder()
     .street("123 Main St")
     .city("Berlin")
@@ -140,7 +142,7 @@ CreateFacilityRequest request = CreateFacilityRequest.builder()
     .type("MANAGED_FACILITY")
     .locationType("WAREHOUSE")
     .address(address)
-    .pickingMethods(Arrays.asList("FIFO", "LIFO"))
+    .pickingMethods(List.of("FIFO", "LIFO"))
     .capacityEnabled(true)
     .capacityPlanningTimeframe(30)
     .build();
@@ -198,7 +200,7 @@ try {
     Facility facility = client.facilities().get(facilityId);
 } catch (FulfillmenttoolsException e) {
     System.err.println("Error: " + e.getMessage());
-    if (e.getStatusCode() == 404) {
+    if (e.statusCode() == 404) {
         System.err.println("Facility not found");
     }
 }
@@ -274,7 +276,7 @@ Retrieve a single page of facilities with optional filtering and pagination.
 Page<Facility> page = client.facilities().list(
     FacilityListRequest.builder()
         .size(50)
-        .status(Arrays.asList("ONLINE"))
+        .status(List.of("ONLINE"))
         .build()
 );
 ```
@@ -287,6 +289,13 @@ Asynchronously retrieve a single page of facilities.
 - `request: FacilityListRequest` — The list request
 
 **Returns:** `CompletableFuture<Page<Facility>>` — A future that completes with the page
+
+**Example:**
+```java
+client.facilities().listAsync(
+        FacilityListRequest.builder().size(50).build())
+    .thenAccept(page -> page.items().forEach(f -> System.out.println(f.name())));
+```
 
 ### listAll(FacilityListRequest)
 
@@ -344,6 +353,14 @@ Asynchronously search facilities using a complex query.
 - `request: FacilitySearchRequest` — The search request
 
 **Returns:** `CompletableFuture<Page<Facility>>` — A future that completes with the page of results
+
+**Example:**
+```java
+FacilitySearchQuery query = FacilitySearchQuery.builder().nameLike("Berlin*").build();
+client.facilities().searchAsync(
+        FacilitySearchRequest.builder().query(query).size(25).build())
+    .thenAccept(page -> page.items().forEach(f -> System.out.println(f.name())));
+```
 
 ### searchAll(FacilitySearchRequest)
 
