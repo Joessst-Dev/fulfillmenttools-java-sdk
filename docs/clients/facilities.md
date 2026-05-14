@@ -190,18 +190,21 @@ client.facilities().delete(facilityId, true);
 
 ## Error Handling
 
-The SDK throws `FulfillmenttoolsException` for any request errors:
+The SDK throws specific exception types for different error conditions. Catch them by their types for precise error handling:
 
 ```java
+import de.joesst.dev.fulfillmenttools.NotFoundException;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
 try {
     FacilityId facilityId = FacilityId.builder().value("nonexistent").build();
     Facility facility = client.facilities().get(facilityId);
+} catch (NotFoundException e) {
+    System.err.println("Facility not found: " + e.getMessage());
 } catch (FulfillmenttoolsException e) {
-    System.err.println("Error: " + e.getMessage());
-    if (e.statusCode() == 404) {
-        System.err.println("Facility not found");
+    System.err.println("Request failed: " + e.getMessage());
+    if (e.requestId() != null) {
+        System.err.println("Request ID: " + e.requestId());
     }
 }
 ```
@@ -235,7 +238,9 @@ Retrieve a single facility by ID.
 
 **Returns:** `Facility` — The facility object
 
-**Throws:** `FulfillmenttoolsException` if the facility is not found or a request error occurs
+**Throws:**
+- `NotFoundException` if the facility with the given ID does not exist
+- `FulfillmenttoolsException` for other request errors
 
 **Example:**
 ```java
@@ -251,6 +256,10 @@ Asynchronously retrieve a single facility by ID.
 - `facilityId: FacilityId` — The facility identifier
 
 **Returns:** `CompletableFuture<Facility>` — A future that completes with the facility
+
+**Throws:**
+- `NotFoundException` if the facility with the given ID does not exist
+- `FulfillmenttoolsException` for other request errors
 
 **Example:**
 ```java
