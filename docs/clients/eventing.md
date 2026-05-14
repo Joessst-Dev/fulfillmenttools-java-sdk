@@ -94,7 +94,6 @@ try {
 import de.joesst.dev.fulfillmenttools.eventing.Subscription;
 import de.joesst.dev.fulfillmenttools.eventing.CreateSubscriptionRequest;
 import de.joesst.dev.fulfillmenttools.eventing.AzureServiceBusTarget;
-import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 
 Subscription subscription = client.eventing().create(
     CreateSubscriptionRequest.builder()
