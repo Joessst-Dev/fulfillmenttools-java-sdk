@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
@@ -114,8 +116,8 @@ class StocksClientTest {
         // When
         client.stocks().list(StockListRequest.builder()
                 .tenantFacilityId(new TenantFacilityId("tenant-fac-1"))
-                .tenantArticleId(List.of("art-1", "art-2"))
-                .locationRef(List.of("loc-A"))
+                .tenantArticleId(List.of(new TenantArticleId("art-1"), new TenantArticleId("art-2")))
+                .locationRef(List.of(new StorageLocationId("loc-A")))
                 .build());
 
         // Then

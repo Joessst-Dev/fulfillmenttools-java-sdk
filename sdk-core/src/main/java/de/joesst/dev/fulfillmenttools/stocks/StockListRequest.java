@@ -1,6 +1,8 @@
 package de.joesst.dev.fulfillmenttools.stocks;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  * <pre>{@code
  * StockListRequest request = StockListRequest.builder()
  *     .size(50)
- *     .facilityRef("fac-1")
+ *     .facilityRef(FacilityId.builder().value("fac-1").build())
  *     .build();
  * }</pre>
  *
@@ -24,8 +26,8 @@ public final class StockListRequest {
     private final String startAfterId;
     private final FacilityId facilityRef;
     private final TenantFacilityId tenantFacilityId;
-    private final List<String> tenantArticleId;
-    private final List<String> locationRef;
+    private final List<TenantArticleId> tenantArticleId;
+    private final List<StorageLocationId> locationRef;
 
     private StockListRequest(Builder builder) {
         this.size = builder.size;
@@ -69,14 +71,14 @@ public final class StockListRequest {
      *
      * @return the tenant article ID list, or {@code null} if not set
      */
-    public List<String> tenantArticleId() { return tenantArticleId; }
+    public List<TenantArticleId> tenantArticleId() { return tenantArticleId; }
 
     /**
      * Returns the storage location references to filter by.
      *
      * @return the location reference list, or {@code null} if not set
      */
-    public List<String> locationRef() { return locationRef; }
+    public List<StorageLocationId> locationRef() { return locationRef; }
 
     /**
      * Returns a new builder initialized with the current values of this request.
@@ -115,8 +117,8 @@ public final class StockListRequest {
         private String startAfterId;
         private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
-        private List<String> tenantArticleId;
-        private List<String> locationRef;
+        private List<TenantArticleId> tenantArticleId;
+        private List<StorageLocationId> locationRef;
 
         /**
          * Sets the maximum number of stock entries to return per page.
@@ -156,7 +158,7 @@ public final class StockListRequest {
          * @param tenantArticleId the tenant article ID list
          * @return this builder
          */
-        public Builder tenantArticleId(List<String> tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder tenantArticleId(List<TenantArticleId> tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
 
         /**
          * Sets the storage location references to filter by.
@@ -164,7 +166,7 @@ public final class StockListRequest {
          * @param locationRef the location reference list
          * @return this builder
          */
-        public Builder locationRef(List<String> locationRef) { this.locationRef = locationRef; return this; }
+        public Builder locationRef(List<StorageLocationId> locationRef) { this.locationRef = locationRef; return this; }
 
         /**
          * Builds the {@link StockListRequest}.
