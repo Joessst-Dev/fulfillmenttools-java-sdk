@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -52,17 +51,23 @@ public class FulfillmenttoolsEventingAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(FulfillmenttoolsEventHandler.class)
+    public FulfillmenttoolsEventHandler fulfillmenttoolsEventHandler() {
+        return new AnnotationDrivenEventHandler();
+    }
+
+    @Bean
     @ConditionalOnMissingBean
     public FulfillmenttoolsEventDispatcher fulfillmenttoolsEventDispatcher(
             FulfillmenttoolsEventTypeRegistry registry,
-            ApplicationEventPublisher eventPublisher) {
+            FulfillmenttoolsEventHandler handler) {
         ObjectMapper mapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule())
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
                 .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        return new FulfillmenttoolsEventDispatcher(mapper, registry, eventPublisher);
+        return new FulfillmenttoolsEventDispatcher(mapper, registry, handler);
     }
 
     /**

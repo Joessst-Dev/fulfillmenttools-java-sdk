@@ -9,6 +9,7 @@ import org.springframework.context.SmartLifecycle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Manages one GCP Pub/Sub {@link Subscriber} per configured subscription.
@@ -42,15 +43,18 @@ public class FulfillmenttoolsSubscriberManager implements SmartLifecycle {
         for (String subscription : subscriptions) {
             log.info("Subscribing to fulfillmenttools events on: {}", subscription);
             Subscriber subscriber = pubSubTemplate.subscribe(subscription, message -> {
+                AtomicBoolean acknowledged = new AtomicBoolean(false);
+                Runnable safeAck = () -> { if (acknowledged.compareAndSet(false, true)) message.ack(); };
+                Runnable safeNack = () -> { if (acknowledged.compareAndSet(false, true)) message.nack(); };
                 try {
                     dispatcher.dispatch(
                             message.getPubsubMessage().getData().toByteArray(),
-                            message::ack,
-                            message::nack);
+                            safeAck,
+                            safeNack);
                 } catch (Exception e) {
                     log.error("Failed to parse fulfillmenttools event from '{}': {}",
                             subscription, e.getMessage(), e);
-                    message.nack();
+                    safeNack.run();
                 }
             });
             activeSubscribers.add(subscriber);

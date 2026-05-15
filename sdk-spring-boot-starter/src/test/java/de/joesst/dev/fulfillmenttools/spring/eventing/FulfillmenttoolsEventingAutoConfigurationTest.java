@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 
 class FulfillmenttoolsEventingAutoConfigurationTest {
 
@@ -102,6 +103,27 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
         }
     }
 
+    @Nested
+    class WhenUserProvidesCustomEventHandler {
+
+        @Test
+        void shouldUseUserHandlerAndNotRegisterAnnotationDrivenDefault() {
+            // Given: the user supplies their own FulfillmenttoolsEventHandler bean
+            runner.withUserConfiguration(
+                            MockPubSubTemplateConfiguration.class,
+                            CustomEventHandlerConfiguration.class)
+                    // When: the application context is loaded
+                    .run(context -> {
+                        // Then: exactly one handler bean exists and it is the user's instance
+                        assertThat(context).hasSingleBean(FulfillmenttoolsEventHandler.class);
+                        assertThat(context.getBean(FulfillmenttoolsEventHandler.class))
+                                .isSameAs(context.getBean(
+                                        CustomEventHandlerConfiguration.CUSTOM_HANDLER_BEAN_NAME,
+                                        FulfillmenttoolsEventHandler.class));
+                    });
+        }
+    }
+
     @Configuration
     static class MockPubSubTemplateConfiguration {
 
@@ -132,6 +154,17 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
             FulfillmenttoolsEventTypeRegistry registry = new FulfillmenttoolsEventTypeRegistry();
             registry.register("CUSTOM_EVENT", String.class);
             return registry;
+        }
+    }
+
+    @Configuration
+    static class CustomEventHandlerConfiguration {
+
+        static final String CUSTOM_HANDLER_BEAN_NAME = "customFulfillmenttoolsEventHandler";
+
+        @Bean(CUSTOM_HANDLER_BEAN_NAME)
+        FulfillmenttoolsEventHandler customFulfillmenttoolsEventHandler() {
+            return mock(FulfillmenttoolsEventHandler.class);
         }
     }
 }

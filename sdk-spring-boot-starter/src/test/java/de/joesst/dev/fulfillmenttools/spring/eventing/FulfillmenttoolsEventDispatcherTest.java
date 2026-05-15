@@ -10,7 +10,6 @@ import de.joesst.dev.fulfillmenttools.orders.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -25,8 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class FulfillmenttoolsEventDispatcherTest {
 
     private final List<FulfillmenttoolsEvent<?>> publishedEvents = new ArrayList<>();
-    private final ApplicationEventPublisher eventPublisher =
-            event -> publishedEvents.add((FulfillmenttoolsEvent<?>) event);
+    private final FulfillmenttoolsEventHandler eventHandler = publishedEvents::add;
 
     private final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
@@ -41,7 +39,7 @@ class FulfillmenttoolsEventDispatcherTest {
     @BeforeEach
     void setUp() {
         registry = new FulfillmenttoolsEventTypeRegistry();
-        dispatcher = new FulfillmenttoolsEventDispatcher(objectMapper, registry, eventPublisher);
+        dispatcher = new FulfillmenttoolsEventDispatcher(objectMapper, registry, eventHandler);
         publishedEvents.clear();
     }
 

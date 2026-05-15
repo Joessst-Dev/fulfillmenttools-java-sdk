@@ -3,7 +3,6 @@ package de.joesst.dev.fulfillmenttools.spring.eventing;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -11,8 +10,8 @@ import java.util.Map;
 
 /**
  * Parses raw GCP Pub/Sub message bytes, resolves the entity class from the
- * {@link FulfillmenttoolsEventTypeRegistry}, deserializes the payload, and publishes a
- * {@link FulfillmenttoolsEvent} to Spring's {@link ApplicationEventPublisher}.
+ * {@link FulfillmenttoolsEventTypeRegistry}, deserializes the payload, and forwards the
+ * resulting {@link FulfillmenttoolsEvent} to the registered {@link FulfillmenttoolsEventHandler}.
  *
  * <p>Payload deserialization rules:
  * <ul>
@@ -20,13 +19,10 @@ import java.util.Map;
  *   <li>If the event type is unknown, the payload is deserialized to
  *       {@code Map<String, Object>}.</li>
  *   <li>If the raw message contains no {@code payload} field (or it is JSON {@code null}),
- *       the published event carries a {@code null} payload.</li>
+ *       the event carries a {@code null} payload.</li>
  * </ul>
  *
  * <p>A malformed (non-parseable) message causes an {@link UncheckedIOException} to be thrown.
- *
- * <p>This class is not thread-safe by itself; thread-safety of the underlying
- * {@link ApplicationEventPublisher} depends on the Spring context implementation.
  */
 public class FulfillmenttoolsEventDispatcher {
 
@@ -34,22 +30,15 @@ public class FulfillmenttoolsEventDispatcher {
 
     private final ObjectMapper objectMapper;
     private final FulfillmenttoolsEventTypeRegistry registry;
-    private final ApplicationEventPublisher eventPublisher;
+    private final FulfillmenttoolsEventHandler handler;
 
-    /**
-     * Creates a new dispatcher.
-     *
-     * @param objectMapper   the Jackson mapper used for deserialization
-     * @param registry       the registry that maps event type strings to entity classes
-     * @param eventPublisher the Spring event publisher to dispatch events to
-     */
     public FulfillmenttoolsEventDispatcher(
             ObjectMapper objectMapper,
             FulfillmenttoolsEventTypeRegistry registry,
-            ApplicationEventPublisher eventPublisher) {
+            FulfillmenttoolsEventHandler handler) {
         this.objectMapper = objectMapper;
         this.registry = registry;
-        this.eventPublisher = eventPublisher;
+        this.handler = handler;
     }
 
     /**
@@ -69,8 +58,7 @@ public class FulfillmenttoolsEventDispatcher {
     public void dispatch(byte[] rawMessage, Runnable ack, Runnable nack) {
         RawEventMessage raw = parse(rawMessage);
         Object payload = deserializePayload(raw.event(), raw.payload());
-        eventPublisher.publishEvent(
-                new FulfillmenttoolsEvent<>(raw.event(), raw.eventId(), payload, ack, nack));
+        handler.onEvent(new FulfillmenttoolsEvent<>(raw.event(), raw.eventId(), payload, ack, nack));
     }
 
     private RawEventMessage parse(byte[] rawMessage) {
