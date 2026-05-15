@@ -728,6 +728,8 @@ class StocksClientTest {
 
         // Then — unset filters must not appear
         server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(not(matchingJsonPath("$.query.id")))
+                .withRequestBody(not(matchingJsonPath("$.query.tenantStockId")))
                 .withRequestBody(not(matchingJsonPath("$.query.facilityRef")))
                 .withRequestBody(not(matchingJsonPath("$.query.tenantFacilityId")))
                 .withRequestBody(not(matchingJsonPath("$.query.locationRef")))
@@ -769,6 +771,28 @@ class StocksClientTest {
         // Then
         server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
                 .withRequestBody(matchingJsonPath("$.query.value.gte", equalTo("5"))));
+    }
+
+    @Test
+    void search_sendsLogicalOrQuery() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("{\"stocks\":[]}")));
+
+        // When
+        client.stocks().search(StockSearchRequest.builder()
+                .query(StockSearchQuery.builder()
+                        .or(
+                                StockSearchQuery.builder().facilityRefEq(new FacilityId("fac-1")).build(),
+                                StockSearchQuery.builder().tenantFacilityIdEq(new TenantFacilityId("tf-1")).build()
+                        )
+                        .build())
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(matchingJsonPath("$.query.or[0].facilityRef.eq", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.query.or[1].tenantFacilityId.eq", equalTo("tf-1"))));
     }
 
     @Test
