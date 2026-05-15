@@ -74,7 +74,7 @@ class AnnotationDrivenEventHandler
     public void onEvent(FulfillmenttoolsEvent<?> event) {
         List<HandlerMethod> handlers = handlerMap.get(event.eventType());
         if (handlers == null || handlers.isEmpty()) {
-            log.debug("No handler for event type '{}', auto-acking", event.eventType());
+            log.warn("No @FulfillmenttoolsEventListener registered for event type '{}', auto-acking", event.eventType());
             event.ack();
             return;
         }
