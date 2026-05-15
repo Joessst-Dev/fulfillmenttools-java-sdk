@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * <p>Declare the event type(s) to handle in {@link #value()}. The SDK scans all Spring beans
  * for methods carrying this annotation and dispatches matching events to them.
  *
- * <h3>Method signatures</h3>
+ * <h2>Method signatures</h2>
  *
  * <p><b>Payload only</b> — the SDK auto-acks on success and auto-nacks on exception:
  * <pre>{@code
