@@ -54,7 +54,8 @@ public final class UpdateStockRequest {
     public Integer value() { return value; }
 
     /**
-     * Returns the storage location reference.
+     * Returns the storage location reference. When {@code null}, the field is omitted from the
+     * request body and the existing server value is preserved.
      *
      * @return the location reference, or {@code null} if not set
      */
@@ -127,7 +128,7 @@ public final class UpdateStockRequest {
         public Builder value(Integer value) { this.value = value; return this; }
 
         /**
-         * Sets the storage location reference (may be {@code null} to clear the location).
+         * Sets the storage location reference. If not set, the existing location on the server is preserved.
          *
          * @param locationRef the location reference
          * @return this builder

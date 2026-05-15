@@ -325,7 +325,7 @@ class StocksClientTest {
     }
 
     @Test
-    void create_sendsRequiredFields() {
+    void create_sendsBodyFields() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/stocks"))
                 .willReturn(okJson("{\"id\":\"s-1\",\"version\":1,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":50}")));
@@ -356,7 +356,7 @@ class StocksClientTest {
                 .facilityRef(new FacilityId("fac-1"))
                 .value(10)
                 .locationRef(new StorageLocationId("loc-A"))
-                .conditions(java.util.List.of("DEFECTIVE"))
+                .conditions(List.of("DEFECTIVE"))
                 .build());
 
         // Then: request body contains optional fields
@@ -417,7 +417,7 @@ class StocksClientTest {
         client.stocks().update(new StockId("s-1"), UpdateStockRequest.builder()
                 .version(1)
                 .value(10)
-                .conditions(java.util.List.of("DEFECTIVE"))
+                .conditions(List.of("DEFECTIVE"))
                 .locationRef(new StorageLocationId("loc-B"))
                 .build());
 

@@ -16,6 +16,8 @@ import de.joesst.dev.fulfillmenttools.stocks.StocksClient;
 import de.joesst.dev.fulfillmenttools.stocks.UpdateStockRequest;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
@@ -148,6 +150,7 @@ public final class StocksClientImpl implements StocksClient {
         }
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private record CreateStockBody(
             String tenantArticleId,
             Integer value,
@@ -162,6 +165,7 @@ public final class StocksClientImpl implements StocksClient {
             Map<String, String> properties,
             Object customAttributes) {}
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpdateStockBody(
             Integer version,
             Integer value,
