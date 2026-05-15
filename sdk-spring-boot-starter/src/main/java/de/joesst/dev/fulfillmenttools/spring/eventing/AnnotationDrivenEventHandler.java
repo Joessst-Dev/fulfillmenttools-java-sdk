@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,19 @@ class AnnotationDrivenEventHandler
             this.method = method;
             this.hasEventParam = detectEventParam(method);
             ReflectionUtils.makeAccessible(method);
+            validateSignature(method);
+        }
+
+        private static void validateSignature(Method method) {
+            long nonEventParams = Arrays.stream(method.getParameters())
+                    .filter(p -> !FulfillmenttoolsEvent.class.isAssignableFrom(p.getType()))
+                    .count();
+            if (nonEventParams > 1) {
+                throw new IllegalStateException(
+                        "@FulfillmenttoolsEventListener method '"
+                        + method.getDeclaringClass().getName() + "#" + method.getName()
+                        + "' has " + nonEventParams + " non-event parameters; at most 1 is supported");
+            }
         }
 
         private static boolean detectEventParam(Method method) {

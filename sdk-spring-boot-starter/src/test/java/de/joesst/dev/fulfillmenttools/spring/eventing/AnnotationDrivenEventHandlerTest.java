@@ -11,6 +11,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,14 +36,6 @@ class AnnotationDrivenEventHandlerTest {
         beans.forEach((name, bean) -> when(ctx.getBean(name)).thenReturn(bean));
         handler.setApplicationContext(ctx);
         handler.afterSingletonsInstantiated();
-    }
-
-    private FulfillmenttoolsEvent<String> event(String eventType, String payload) {
-        AtomicBoolean acked = new AtomicBoolean(false);
-        AtomicBoolean nacked = new AtomicBoolean(false);
-        return new FulfillmenttoolsEvent<>(
-                eventType, "evt-id", payload,
-                () -> acked.set(true), () -> nacked.set(true));
     }
 
     @Nested
@@ -201,10 +195,29 @@ class AnnotationDrivenEventHandlerTest {
     }
 
     @Nested
+    class WhenHandlerMethodHasInvalidSignature {
+
+        @Test
+        void shouldThrowAtStartupWhenMethodHasMoreThanOneNonEventParam() {
+            // Given: a method with two non-event parameters
+            Object listener = new Object() {
+                @FulfillmenttoolsEventListener("ORDER_CREATED")
+                public void handle(String first, String second) {}
+            };
+
+            // When / Then: startup fails immediately, not at message time
+            assertThatThrownBy(() -> registerBean("listener", listener))
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessageContaining("handle")
+                    .hasMessageContaining("2 non-event parameters");
+        }
+    }
+
+    @Nested
     class WhenMultipleHandlersAreRegisteredForSameEventType {
 
         @Test
-        void shouldCallAllHandlersAndAckOnlyOnce() {
+        void shouldCallAllHandlersEachAckingSeparately_idempotencyEnforcedBySubscriberManager() {
             // Given: two separate beans both handle ORDER_CREATED
             List<String> callOrder = new java.util.ArrayList<>();
             Object listenerA = new Object() {

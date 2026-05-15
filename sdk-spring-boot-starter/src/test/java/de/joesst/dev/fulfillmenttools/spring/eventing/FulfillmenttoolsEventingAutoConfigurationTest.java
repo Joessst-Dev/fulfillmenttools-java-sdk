@@ -29,8 +29,9 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
             runner.withUserConfiguration(MockPubSubTemplateConfiguration.class)
                     // When: the application context is loaded
                     .run(context -> {
-                        // Then: both core eventing beans are registered
+                        // Then: core eventing beans are registered, including the default annotation-driven handler
                         assertThat(context).hasSingleBean(FulfillmenttoolsEventTypeRegistry.class);
+                        assertThat(context).hasSingleBean(FulfillmenttoolsEventHandler.class);
                         assertThat(context).hasSingleBean(FulfillmenttoolsEventDispatcher.class);
                     });
         }
@@ -104,6 +105,25 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
     }
 
     @Nested
+    class WhenUserProvidesCustomObjectMapper {
+
+        @Test
+        void shouldUseUserObjectMapperAndNotRegisterDefault() {
+            // Given: the user supplies a bean named fulfillmenttoolsObjectMapper
+            runner.withUserConfiguration(
+                            MockPubSubTemplateConfiguration.class,
+                            CustomObjectMapperConfiguration.class)
+                    // When: the application context is loaded
+                    .run(context -> {
+                        // Then: exactly one ObjectMapper with that name exists and it is the user's
+                        assertThat(context.getBean("fulfillmenttoolsObjectMapper"))
+                                .isSameAs(context.getBean(
+                                        CustomObjectMapperConfiguration.CUSTOM_MAPPER_BEAN_NAME));
+                    });
+        }
+    }
+
+    @Nested
     class WhenUserProvidesCustomEventHandler {
 
         @Test
@@ -154,6 +174,17 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
             FulfillmenttoolsEventTypeRegistry registry = new FulfillmenttoolsEventTypeRegistry();
             registry.register("CUSTOM_EVENT", String.class);
             return registry;
+        }
+    }
+
+    @Configuration
+    static class CustomObjectMapperConfiguration {
+
+        static final String CUSTOM_MAPPER_BEAN_NAME = "fulfillmenttoolsObjectMapper";
+
+        @Bean(CUSTOM_MAPPER_BEAN_NAME)
+        com.fasterxml.jackson.databind.ObjectMapper fulfillmenttoolsObjectMapper() {
+            return new com.fasterxml.jackson.databind.ObjectMapper();
         }
     }
 

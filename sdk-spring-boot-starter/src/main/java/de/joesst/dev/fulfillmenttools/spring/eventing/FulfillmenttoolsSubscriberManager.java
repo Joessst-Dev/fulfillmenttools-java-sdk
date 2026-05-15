@@ -52,7 +52,7 @@ public class FulfillmenttoolsSubscriberManager implements SmartLifecycle {
                             safeAck,
                             safeNack);
                 } catch (Exception e) {
-                    log.error("Failed to parse fulfillmenttools event from '{}': {}",
+                    log.error("Failed to process fulfillmenttools event from '{}': {}",
                             subscription, e.getMessage(), e);
                     safeNack.run();
                 }
