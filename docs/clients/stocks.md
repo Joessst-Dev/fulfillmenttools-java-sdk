@@ -536,7 +536,7 @@ Asynchronously updates an existing stock entry.
 
 **Throws:** Exception propagated via `CompletableFuture`; call `.exceptionally()` or `.handle()` to catch
 
-### upsertStocks(List<VersionlessStockOperation>)
+### upsertStocks(List&lt;VersionlessStockOperation&gt;)
 
 Creates or updates multiple stock entries in a single batch call without version constraints. Supports mixing create and update operations. Results are returned in the same order as the input operations.
 
@@ -569,7 +569,7 @@ for (StockUpsertResult result : results) {
 }
 ```
 
-### upsertStocksAsync(List<VersionlessStockOperation>)
+### upsertStocksAsync(List&lt;VersionlessStockOperation&gt;)
 
 Asynchronously creates or updates multiple stock entries in a single batch call.
 
