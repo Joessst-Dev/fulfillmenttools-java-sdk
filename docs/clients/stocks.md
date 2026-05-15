@@ -55,7 +55,7 @@ for (StockItem item : allStocks) {
 
 ## Creating Stock
 
-Create a new stock entry with the required `tenantArticleId`, `facilityRef`, and `value`:
+Create a new stock entry with the required `tenantArticleId` and `value`. Either `facilityRef` or `tenantFacilityId` must also be provided to identify the facility:
 
 ```java
 import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
@@ -470,8 +470,8 @@ Asynchronously updates an existing stock entry.
 |-----------|------|----------|-------------|
 | `tenantArticleId(TenantArticleId)` | `TenantArticleId` | Yes | Your article identifier |
 | `value(Integer)` | `Integer` | Yes | Initial stock quantity |
-| `facilityRef(FacilityId)` | `FacilityId` | Recommended | The facility where the stock is located |
-| `tenantFacilityId(TenantFacilityId)` | `TenantFacilityId` | — | Alternative to `facilityRef` |
+| `facilityRef(FacilityId)` | `FacilityId` | One of | The facility where the stock is located |
+| `tenantFacilityId(TenantFacilityId)` | `TenantFacilityId` | One of | Alternative to `facilityRef`; one of the two must be set |
 | `locationRef(StorageLocationId)` | `StorageLocationId` | No | Storage location within the facility |
 | `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
 | `availableUntil(Instant)` | `Instant` | No | Expiry date for routing availability |

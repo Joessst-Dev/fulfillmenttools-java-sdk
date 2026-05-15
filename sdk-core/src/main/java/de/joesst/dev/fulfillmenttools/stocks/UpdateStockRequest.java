@@ -101,8 +101,6 @@ public final class UpdateStockRequest {
      */
     public static final class Builder {
 
-        private Builder() {}
-
         private Integer version;
         private Integer value;
         private StorageLocationId locationRef;
@@ -110,6 +108,8 @@ public final class UpdateStockRequest {
         private List<String> conditions;
         private List<StorageLocationTraitConfigEntry> traitConfig;
         private Map<String, Object> customAttributes;
+
+        private Builder() {}
 
         /**
          * Sets the optimistic-locking version. Required.

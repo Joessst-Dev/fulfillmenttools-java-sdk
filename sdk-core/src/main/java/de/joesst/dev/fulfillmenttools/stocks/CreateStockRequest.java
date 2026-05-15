@@ -18,8 +18,8 @@ import java.util.Objects;
  * <p>Example:
  * <pre>{@code
  * CreateStockRequest request = CreateStockRequest.builder()
- *     .tenantArticleId(TenantArticleId.builder().value("art-1").build())
- *     .facilityRef(FacilityId.builder().value("fac-1").build())
+ *     .tenantArticleId(new TenantArticleId("art-1"))
+ *     .facilityRef(new FacilityId("fac-1"))
  *     .value(100)
  *     .build();
  * }</pre>
@@ -42,6 +42,9 @@ public final class CreateStockRequest {
     private CreateStockRequest(Builder builder) {
         this.tenantArticleId = Objects.requireNonNull(builder.tenantArticleId, "tenantArticleId must not be null");
         this.value = Objects.requireNonNull(builder.value, "value must not be null");
+        if (builder.facilityRef == null && builder.tenantFacilityId == null) {
+            throw new IllegalArgumentException("either facilityRef or tenantFacilityId must be set");
+        }
         this.facilityRef = builder.facilityRef;
         this.tenantFacilityId = builder.tenantFacilityId;
         this.locationRef = builder.locationRef;
@@ -150,8 +153,6 @@ public final class CreateStockRequest {
      */
     public static final class Builder {
 
-        private Builder() {}
-
         private TenantArticleId tenantArticleId;
         private Integer value;
         private FacilityId facilityRef;
@@ -164,6 +165,8 @@ public final class CreateStockRequest {
         private List<StorageLocationTraitConfigEntry> traitConfig;
         private Map<String, String> properties;
         private Map<String, Object> customAttributes;
+
+        private Builder() {}
 
         /**
          * Sets the tenant article ID. Required.

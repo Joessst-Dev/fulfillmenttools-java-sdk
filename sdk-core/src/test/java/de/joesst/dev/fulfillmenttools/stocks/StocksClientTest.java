@@ -414,7 +414,7 @@ class StocksClientTest {
                 .willReturn(okJson("{\"id\":\"s-1\",\"version\":2,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":10,\"conditions\":[\"DEFECTIVE\"]}")));
 
         // When
-        client.stocks().update(new StockId("s-1"), UpdateStockRequest.builder()
+        StockItem item = client.stocks().update(new StockId("s-1"), UpdateStockRequest.builder()
                 .version(1)
                 .value(10)
                 .conditions(List.of("DEFECTIVE"))
@@ -425,6 +425,8 @@ class StocksClientTest {
         server.verify(putRequestedFor(urlPathEqualTo("/api/stocks/s-1"))
                 .withRequestBody(matchingJsonPath("$.conditions[0]", equalTo("DEFECTIVE")))
                 .withRequestBody(matchingJsonPath("$.locationRef", equalTo("loc-B"))));
+        assertThat(item.value()).isEqualTo(10);
+        assertThat(item.conditions()).containsExactly("DEFECTIVE");
     }
 
     @Test

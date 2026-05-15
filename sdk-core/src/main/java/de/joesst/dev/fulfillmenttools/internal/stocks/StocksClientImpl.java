@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public final class StocksClientImpl implements StocksClient {
@@ -120,6 +121,7 @@ public final class StocksClientImpl implements StocksClient {
     }
 
     private SdkHttpRequest buildUpdateRequest(StockId stockId, UpdateStockRequest request) {
+        Objects.requireNonNull(stockId, "stockId must not be null");
         String locationRef = request.locationRef() != null ? request.locationRef().value() : null;
         String tenantStockId = request.tenantStockId() != null ? request.tenantStockId().value() : null;
         return SdkHttpRequest.builder()
@@ -163,7 +165,7 @@ public final class StocksClientImpl implements StocksClient {
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
             Map<String, String> properties,
-            Object customAttributes) {}
+            Map<String, Object> customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpdateStockBody(
@@ -173,5 +175,5 @@ public final class StocksClientImpl implements StocksClient {
             String tenantStockId,
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
-            Object customAttributes) {}
+            Map<String, Object> customAttributes) {}
 }
