@@ -49,9 +49,16 @@ public final class VersionlessStockUpdate implements VersionlessStockOperation {
 
     /** Returns the storage location; if not set, the server value is preserved. */
     public StorageLocationId locationRef() { return locationRef; }
+    /** Returns the tenant-defined stock identifier, or {@code null} if not set. */
     public TenantStockId tenantStockId() { return tenantStockId; }
+
+    /** Returns the condition tags (e.g. {@code DEFECTIVE}), or {@code null} if not set. */
     public List<String> conditions() { return conditions; }
+
+    /** Returns the trait configuration entries, or {@code null} if not set. */
     public List<StorageLocationTraitConfigEntry> traitConfig() { return traitConfig; }
+
+    /** Returns the custom attributes, or {@code null} if not set. */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
     public static Builder builder() { return new Builder(); }

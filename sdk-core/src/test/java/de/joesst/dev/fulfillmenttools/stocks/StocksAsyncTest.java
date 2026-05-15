@@ -7,8 +7,6 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StockId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.Page;
-import de.joesst.dev.fulfillmenttools.stocks.StockUpsertResult;
-import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockUpdate;
 import org.junit.jupiter.api.*;
 
 import java.util.List;

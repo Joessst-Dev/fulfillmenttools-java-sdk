@@ -57,17 +57,40 @@ public final class VersionlessStockCreate implements VersionlessStockOperation {
         this.customAttributes = builder.customAttributes;
     }
 
+    /** Returns the tenant article ID. */
     public TenantArticleId tenantArticleId() { return tenantArticleId; }
+
+    /** Returns the initial stock quantity. Zero is a valid value. */
     public Integer value() { return value; }
+
+    /** Returns the facility reference, or {@code null} if {@link #tenantFacilityId()} is used instead. */
     public FacilityId facilityRef() { return facilityRef; }
+
+    /** Returns the tenant facility ID, or {@code null} if {@link #facilityRef()} is used instead. */
     public TenantFacilityId tenantFacilityId() { return tenantFacilityId; }
+
+    /** Returns the storage location reference, or {@code null} if not set. */
     public StorageLocationId locationRef() { return locationRef; }
+
+    /** Returns the tenant-defined stock identifier, or {@code null} if not set. */
     public TenantStockId tenantStockId() { return tenantStockId; }
+
+    /** Returns the date until which this stock is available for routing, or {@code null} if not set. */
     public Instant availableUntil() { return availableUntil; }
+
+    /** Returns the date when this stock was received, or {@code null} if not set. */
     public Instant receiptDate() { return receiptDate; }
+
+    /** Returns the condition tags (e.g. {@code DEFECTIVE}), or {@code null} if not set. */
     public List<String> conditions() { return conditions; }
+
+    /** Returns the trait configuration entries, or {@code null} if not set. */
     public List<StorageLocationTraitConfigEntry> traitConfig() { return traitConfig; }
+
+    /** Returns the tracking properties (e.g. expiry dates), or {@code null} if not set. */
     public Map<String, String> properties() { return properties; }
+
+    /** Returns the custom attributes, or {@code null} if not set. */
     public Map<String, Object> customAttributes() { return customAttributes; }
 
     public static Builder builder() { return new Builder(); }

@@ -91,6 +91,7 @@ public interface StocksClient {
      *
      * @param operations the list of create/update operations (1–25 items; must not be empty)
      * @return a {@code CompletableFuture} that resolves to a list of results
+     * @throws IllegalArgumentException if {@code operations} is null or empty
      */
     CompletableFuture<List<StockUpsertResult>> upsertStocksAsync(List<VersionlessStockOperation> operations);
 }

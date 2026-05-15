@@ -9,9 +9,6 @@ import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
-import de.joesst.dev.fulfillmenttools.stocks.StockUpsertResult;
-import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockCreate;
-import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockUpdate;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
