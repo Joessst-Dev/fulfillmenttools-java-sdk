@@ -5,9 +5,11 @@ import de.joesst.dev.fulfillmenttools.facilities.Facility;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroup;
 import de.joesst.dev.fulfillmenttools.handoverjobs.HandoverJob;
 import de.joesst.dev.fulfillmenttools.inbound.StowJob;
+import de.joesst.dev.fulfillmenttools.listings.Listing;
 import de.joesst.dev.fulfillmenttools.orders.Order;
 import de.joesst.dev.fulfillmenttools.packjobs.PackJob;
 import de.joesst.dev.fulfillmenttools.pickjobs.PickJob;
+import de.joesst.dev.fulfillmenttools.processes.Process;
 import de.joesst.dev.fulfillmenttools.reservations.Reservation;
 import de.joesst.dev.fulfillmenttools.returns.Return;
 import de.joesst.dev.fulfillmenttools.routingplans.RoutingPlan;
@@ -42,6 +44,9 @@ public class FulfillmenttoolsEventTypeRegistry {
         register("ORDER_FORCE_CANCELLED", Order.class);
         register("ORDER_UNLOCKED", Order.class);
 
+        register("PROCESS_ANONYMIZED", Process.class);
+        register("PROCESS_DELETED", Process.class);
+
         register("PICK_JOB_CREATED", PickJob.class);
         register("PICK_JOB_PICKING_COMMENCED", PickJob.class);
         register("PICK_JOB_PICKING_FINISHED", PickJob.class);
@@ -52,7 +57,8 @@ public class FulfillmenttoolsEventTypeRegistry {
         register("PICK_JOB_REROUTED", PickJob.class);
         register("PICK_JOB_RESET", PickJob.class);
         register("PICK_JOB_OPENED", PickJob.class);
-        register("PICKING_COMPLETED", PickJob.class);
+        register("PICKING_COMPLETED", PickJob.class); // legacy name, retained for backward compatibility
+        register("PICKING_PICK_JOB_COMPLETE", PickJob.class);
 
         register("PACK_JOB_CREATED", PackJob.class);
         register("PACK_JOB_UPDATED", PackJob.class);
@@ -89,6 +95,7 @@ public class FulfillmenttoolsEventTypeRegistry {
         register("INVENTORY_STOCKS_DELETED", StockItem.class);
         register("INVENTORY_STOCKS_VALUE_CHANGED", StockItem.class);
         register("INVENTORY_STOCKS_LOCATION_CHANGED", StockItem.class);
+        register("INVENTORY_FACILITY_STOCK_CHANGED", StockItem.class);
 
         register("INVENTORY_RESERVATIONS_CREATED", Reservation.class);
         register("INVENTORY_RESERVATIONS_DELETED", Reservation.class);
@@ -115,6 +122,12 @@ public class FulfillmenttoolsEventTypeRegistry {
         register("STOW_JOB_CANCELED", StowJob.class);
 
         register("EXTERNAL_ACTION_EXECUTED", ExternalAction.class);
+
+        register("LISTINGS_CREATED", Listing.class);
+        register("LISTINGS_DELETED", Listing.class);
+        register("LISTINGS_INFORMATION_CHANGED", Listing.class);
+        register("LISTINGS_STATUS_CHANGED", Listing.class);
+        register("LISTINGS_STOCK_CONFIGURATIONS_CHANGED", Listing.class);
     }
 
     /**
