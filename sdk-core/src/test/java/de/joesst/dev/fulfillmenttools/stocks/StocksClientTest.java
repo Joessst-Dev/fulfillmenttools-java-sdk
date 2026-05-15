@@ -643,7 +643,22 @@ class StocksClientTest {
                 .withRequestBody(not(matchingJsonPath("$.stocks[0].availableUntil")))
                 .withRequestBody(not(matchingJsonPath("$.stocks[0].receiptDate")))
                 .withRequestBody(not(matchingJsonPath("$.stocks[0].traitConfig")))
-                .withRequestBody(not(matchingJsonPath("$.stocks[0].properties"))));
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].properties")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].customAttributes"))));
+    }
+
+    @Test
+    void upsertStocks_throwsOnNullOperations() {
+        // When / Then
+        assertThatThrownBy(() -> client.stocks().upsertStocks(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void upsertStocks_throwsOnEmptyOperations() {
+        // When / Then
+        assertThatThrownBy(() -> client.stocks().upsertStocks(List.of()))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     // --- Helpers ---

@@ -149,7 +149,11 @@ client.stocks().updateAsync(
 
 ## Bulk Upsert
 
-For scenarios where you need to create or update multiple stocks without tracking versions, use the bulk upsert endpoint. This is ideal for batch synchronization operations where version conflicts should not occur. Each operation can be either a create (new stock) or an update (existing stock by ID). The server applies updates unconditionally, without optimistic locking. You can mix creates and updates in a single call, and results are returned in the same order as the input operations. A list must contain 1–25 operations.
+For scenarios where you need to create or update multiple stocks without tracking versions, use the bulk upsert endpoint. The server applies all operations unconditionally — no optimistic locking, no version required.
+
+- Mix create and update operations in a single call
+- Results are returned in the same order as the input operations
+- Each call accepts 1–25 operations
 
 Create and update stocks in a single batch call:
 
@@ -498,7 +502,7 @@ for (StockItem item : allStocks) {
 Creates a new stock entry.
 
 **Parameters:**
-- `request: CreateStockRequest` — Create request with required fields (`tenantArticleId`, `value`) and optional fields (`facilityRef`, `locationRef`, `conditions`, etc.)
+- `request: CreateStockRequest` — Create request with required fields (`tenantArticleId`, `value`, and one of `facilityRef`/`tenantFacilityId`) and optional fields (`locationRef`, `conditions`, etc.)
 
 **Returns:** `StockItem` — The newly created stock entry
 
@@ -509,6 +513,8 @@ Creates a new stock entry.
 Asynchronously creates a new stock entry.
 
 **Returns:** `CompletableFuture<StockItem>`
+
+**Throws:** Exception propagated via `CompletableFuture`; call `.exceptionally()` or `.handle()` to catch
 
 ### update(StockId, UpdateStockRequest)
 
@@ -527,6 +533,8 @@ Updates an existing stock entry. Uses optimistic locking — the `version` in th
 Asynchronously updates an existing stock entry.
 
 **Returns:** `CompletableFuture<StockItem>`
+
+**Throws:** Exception propagated via `CompletableFuture`; call `.exceptionally()` or `.handle()` to catch
 
 ### upsertStocks(List<VersionlessStockOperation>)
 

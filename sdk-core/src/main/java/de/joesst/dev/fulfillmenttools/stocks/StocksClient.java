@@ -90,7 +90,8 @@ public interface StocksClient {
      * Creates or updates multiple stock entries asynchronously (versionless bulk upsert).
      *
      * @param operations the list of create/update operations (1–25 items; must not be empty)
-     * @return a {@code CompletableFuture} that resolves to a list of results
+     * @return a {@code CompletableFuture} that resolves to a list of results; completes exceptionally
+     *         with {@link de.joesst.dev.fulfillmenttools.FulfillmenttoolsException} if the request fails
      * @throws IllegalArgumentException if {@code operations} is null or empty
      */
     CompletableFuture<List<StockUpsertResult>> upsertStocksAsync(List<VersionlessStockOperation> operations);

@@ -49,6 +49,7 @@ public final class VersionlessStockUpdate implements VersionlessStockOperation {
 
     /** Returns the storage location; if not set, the server value is preserved. */
     public StorageLocationId locationRef() { return locationRef; }
+
     /** Returns the tenant-defined stock identifier, or {@code null} if not set. */
     public TenantStockId tenantStockId() { return tenantStockId; }
 
