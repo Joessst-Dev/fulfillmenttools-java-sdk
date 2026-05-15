@@ -427,6 +427,48 @@ class StocksClientTest {
                 .withRequestBody(matchingJsonPath("$.locationRef", equalTo("loc-B"))));
     }
 
+    @Test
+    void create_omitsUnsetOptionalFieldsFromBody() {
+        // Given — only required fields set; optional fields must not appear in the body
+        server.stubFor(post(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("{\"id\":\"s-1\",\"version\":1,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":5}")));
+
+        // When
+        client.stocks().create(CreateStockRequest.builder()
+                .tenantArticleId(new TenantArticleId("art-1"))
+                .facilityRef(new FacilityId("fac-1"))
+                .value(5)
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks"))
+                .withRequestBody(not(matchingJsonPath("$.locationRef")))
+                .withRequestBody(not(matchingJsonPath("$.tenantStockId")))
+                .withRequestBody(not(matchingJsonPath("$.conditions")))
+                .withRequestBody(not(matchingJsonPath("$.availableUntil")))
+                .withRequestBody(not(matchingJsonPath("$.receiptDate"))));
+    }
+
+    @Test
+    void update_omitsUnsetOptionalFieldsFromBody() {
+        // Given — only required fields set; optional fields must not appear in the body
+        server.stubFor(put(urlPathEqualTo("/api/stocks/s-1"))
+                .willReturn(okJson("{\"id\":\"s-1\",\"version\":2,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":30}")));
+
+        // When
+        client.stocks().update(new StockId("s-1"), UpdateStockRequest.builder()
+                .version(1)
+                .value(30)
+                .build());
+
+        // Then
+        server.verify(putRequestedFor(urlPathEqualTo("/api/stocks/s-1"))
+                .withRequestBody(not(matchingJsonPath("$.locationRef")))
+                .withRequestBody(not(matchingJsonPath("$.tenantStockId")))
+                .withRequestBody(not(matchingJsonPath("$.conditions")))
+                .withRequestBody(not(matchingJsonPath("$.customAttributes"))));
+    }
+
     // --- Helpers ---
 
     private static TokenProvider fixedToken(String token) {

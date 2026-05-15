@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.internal.stocks;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import de.joesst.dev.fulfillmenttools.TransportException;
 import de.joesst.dev.fulfillmenttools.id.StockId;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
@@ -15,8 +17,6 @@ import de.joesst.dev.fulfillmenttools.stocks.StockListRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StocksClient;
 import de.joesst.dev.fulfillmenttools.stocks.UpdateStockRequest;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.IOException;
 import java.time.Instant;
