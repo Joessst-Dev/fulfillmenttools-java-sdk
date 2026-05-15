@@ -492,6 +492,175 @@ class StocksClientTest {
                 .withRequestBody(not(matchingJsonPath("$.customAttributes"))));
     }
 
+    // --- upsertStocks ---
+
+    @Test
+    void upsertStocks_sendsUpdateVersionlessAction() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":50},"status":"UPDATED"}
+                        ]}}
+                        """)));
+
+        // When
+        client.stocks().upsertStocks(List.of(
+                VersionlessStockUpdate.builder()
+                        .stockId(new StockId("s-1"))
+                        .value(50)
+                        .build()));
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("UPDATE_VERSIONLESS")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].operationType", equalTo("UPDATE")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].id", equalTo("s-1")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].value", equalTo("50"))));
+    }
+
+    @Test
+    void upsertStocks_returnsResults() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-new","facilityRef":"fac-1","tenantArticleId":"art-1","value":100},"status":"CREATED"},
+                          {"stock":{"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-2","value":50},"status":"UPDATED"}
+                        ]}}
+                        """)));
+
+        // When
+        List<StockUpsertResult> results = client.stocks().upsertStocks(List.of(
+                VersionlessStockCreate.builder()
+                        .tenantArticleId(new TenantArticleId("art-1"))
+                        .facilityRef(new FacilityId("fac-1"))
+                        .value(100)
+                        .build(),
+                VersionlessStockUpdate.builder()
+                        .stockId(new StockId("s-1"))
+                        .value(50)
+                        .build()));
+
+        // Then
+        assertThat(results).hasSize(2);
+        assertThat(results.get(0).status()).isEqualTo("CREATED");
+        assertThat(results.get(0).stock().id().value()).isEqualTo("s-new");
+        assertThat(results.get(1).status()).isEqualTo("UPDATED");
+        assertThat(results.get(1).stock().value()).isEqualTo(50);
+    }
+
+    @Test
+    void upsertStocks_sendsCreateOperationFields() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-new","facilityRef":"fac-1","tenantArticleId":"art-1","value":10},"status":"CREATED"}
+                        ]}}
+                        """)));
+
+        // When
+        client.stocks().upsertStocks(List.of(
+                VersionlessStockCreate.builder()
+                        .tenantArticleId(new TenantArticleId("art-1"))
+                        .facilityRef(new FacilityId("fac-1"))
+                        .value(10)
+                        .build()));
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/actions"))
+                .withRequestBody(matchingJsonPath("$.stocks[0].operationType", equalTo("CREATE")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].tenantArticleId", equalTo("art-1")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].facilityRef", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].value", equalTo("10"))));
+    }
+
+    @Test
+    void upsertStocks_createWithTenantFacilityId_sendsTenantFacilityIdInBody() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-new","facilityRef":"fac-1","tenantArticleId":"art-1","value":5},"status":"CREATED"}
+                        ]}}
+                        """)));
+
+        // When
+        client.stocks().upsertStocks(List.of(
+                VersionlessStockCreate.builder()
+                        .tenantArticleId(new TenantArticleId("art-1"))
+                        .tenantFacilityId(new TenantFacilityId("tenant-fac-1"))
+                        .value(5)
+                        .build()));
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/actions"))
+                .withRequestBody(matchingJsonPath("$.stocks[0].tenantFacilityId", equalTo("tenant-fac-1")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].facilityRef"))));
+    }
+
+    @Test
+    void upsertStocks_returnsEmptyListWhenResultIsEmpty() {
+        // Given — server returns a response with no operationResults
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("{\"name\":\"UPDATE_VERSIONLESS\",\"result\":{}}")));
+
+        // When
+        List<StockUpsertResult> results = client.stocks().upsertStocks(List.of(
+                VersionlessStockUpdate.builder()
+                        .stockId(new StockId("s-1"))
+                        .value(0)
+                        .build()));
+
+        // Then
+        assertThat(results).isEmpty();
+    }
+
+    @Test
+    void upsertStocks_omitsUnsetOptionalFieldsFromCreateOperation() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-new","facilityRef":"fac-1","tenantArticleId":"art-1","value":5},"status":"CREATED"}
+                        ]}}
+                        """)));
+
+        // When
+        client.stocks().upsertStocks(List.of(
+                VersionlessStockCreate.builder()
+                        .tenantArticleId(new TenantArticleId("art-1"))
+                        .facilityRef(new FacilityId("fac-1"))
+                        .value(5)
+                        .build()));
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/actions"))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].locationRef")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].tenantStockId")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].conditions")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].availableUntil")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].receiptDate")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].traitConfig")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].properties")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].customAttributes"))));
+    }
+
+    @Test
+    void upsertStocks_throwsOnNullOperations() {
+        // When / Then
+        assertThatThrownBy(() -> client.stocks().upsertStocks(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void upsertStocks_throwsOnEmptyOperations() {
+        // When / Then
+        assertThatThrownBy(() -> client.stocks().upsertStocks(List.of()))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     // --- Helpers ---
 
     private static TokenProvider fixedToken(String token) {

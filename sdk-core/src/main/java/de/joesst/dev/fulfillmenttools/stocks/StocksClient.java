@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.stocks;
 import de.joesst.dev.fulfillmenttools.id.StockId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -73,4 +74,25 @@ public interface StocksClient {
      * @return a {@code CompletableFuture} that resolves to the updated stock entry
      */
     CompletableFuture<StockItem> updateAsync(StockId stockId, UpdateStockRequest request);
+
+    /**
+     * Creates or updates multiple stock entries in a single request (versionless bulk upsert).
+     * Each operation is either a {@link VersionlessStockCreate} or a {@link VersionlessStockUpdate}.
+     *
+     * @param operations the list of create/update operations (1–25 items; must not be empty)
+     * @return a list of results in the same order as the input operations
+     * @throws IllegalArgumentException if {@code operations} is null or empty
+     * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
+     */
+    List<StockUpsertResult> upsertStocks(List<VersionlessStockOperation> operations);
+
+    /**
+     * Creates or updates multiple stock entries asynchronously (versionless bulk upsert).
+     *
+     * @param operations the list of create/update operations (1–25 items; must not be empty)
+     * @return a {@code CompletableFuture} that resolves to a list of results; completes exceptionally
+     *         with {@link de.joesst.dev.fulfillmenttools.FulfillmenttoolsException} if the request fails
+     * @throws IllegalArgumentException if {@code operations} is null or empty
+     */
+    CompletableFuture<List<StockUpsertResult>> upsertStocksAsync(List<VersionlessStockOperation> operations);
 }

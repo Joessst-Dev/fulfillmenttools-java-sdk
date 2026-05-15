@@ -1,6 +1,6 @@
 # Stocks Client
 
-The Stocks client provides access to inventory and stock management across your fulfillment network. Create new stock entries, update existing ones, and query stock levels for articles at different facilities and storage locations.
+The Stocks client provides access to inventory and stock management across your fulfillment network. Create new stock entries, update existing ones, perform bulk upserts without version constraints, and query stock levels for articles at different facilities and storage locations.
 
 ## Quick Start
 
@@ -145,6 +145,74 @@ client.stocks().updateAsync(
         .value(60)
         .build()
 ).thenAccept(stock -> System.out.println("Updated version: " + stock.version()));
+```
+
+## Bulk Upsert
+
+For scenarios where you need to create or update multiple stocks without tracking versions, use the bulk upsert endpoint. The server applies all operations unconditionally — no optimistic locking, no version required.
+
+- Mix create and update operations in a single call
+- Results are returned in the same order as the input operations
+- Each call accepts 1–25 operations
+
+Create and update stocks in a single batch call:
+
+```java
+import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockCreate;
+import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockUpdate;
+import de.joesst.dev.fulfillmenttools.stocks.StockUpsertResult;
+import de.joesst.dev.fulfillmenttools.id.StockId;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+import java.util.List;
+
+List<StockUpsertResult> results = client.stocks().upsertStocks(
+    List.of(
+        VersionlessStockCreate.builder()
+            .tenantArticleId(new TenantArticleId("art-001"))
+            .facilityRef(new FacilityId("fac-1"))
+            .value(100)
+            .build(),
+        VersionlessStockUpdate.builder()
+            .stockId(new StockId("s-existing-001"))
+            .value(150)
+            .build()
+    )
+);
+
+for (StockUpsertResult result : results) {
+    System.out.println("Stock: " + result.stock().id().value() 
+        + ", Status: " + result.status());
+}
+```
+
+Asynchronously:
+
+```java
+import java.util.concurrent.CompletableFuture;
+
+client.stocks().upsertStocksAsync(
+    List.of(
+        VersionlessStockCreate.builder()
+            .tenantArticleId(new TenantArticleId("art-002"))
+            .facilityRef(new FacilityId("fac-1"))
+            .value(50)
+            .build(),
+        VersionlessStockUpdate.builder()
+            .stockId(new StockId("s-existing-002"))
+            .value(75)
+            .build()
+    )
+)
+    .thenAccept(results -> {
+        for (StockUpsertResult result : results) {
+            System.out.println(result.status() + ": " + result.stock().id().value());
+        }
+    })
+    .exceptionally(ex -> {
+        System.err.println("Upsert failed: " + ex.getMessage());
+        return null;
+    });
 ```
 
 ## Filtering
@@ -434,7 +502,7 @@ for (StockItem item : allStocks) {
 Creates a new stock entry.
 
 **Parameters:**
-- `request: CreateStockRequest` — Create request with required fields (`tenantArticleId`, `value`) and optional fields (`facilityRef`, `locationRef`, `conditions`, etc.)
+- `request: CreateStockRequest` — Create request with required fields (`tenantArticleId`, `value`, and one of `facilityRef`/`tenantFacilityId`) and optional fields (`locationRef`, `conditions`, etc.)
 
 **Returns:** `StockItem` — The newly created stock entry
 
@@ -445,6 +513,8 @@ Creates a new stock entry.
 Asynchronously creates a new stock entry.
 
 **Returns:** `CompletableFuture<StockItem>`
+
+**Throws:** Exception propagated via `CompletableFuture`; call `.exceptionally()` or `.handle()` to catch
 
 ### update(StockId, UpdateStockRequest)
 
@@ -463,6 +533,73 @@ Updates an existing stock entry. Uses optimistic locking — the `version` in th
 Asynchronously updates an existing stock entry.
 
 **Returns:** `CompletableFuture<StockItem>`
+
+**Throws:** Exception propagated via `CompletableFuture`; call `.exceptionally()` or `.handle()` to catch
+
+### upsertStocks(List<VersionlessStockOperation>)
+
+Creates or updates multiple stock entries in a single batch call without version constraints. Supports mixing create and update operations. Results are returned in the same order as the input operations.
+
+**Parameters:**
+- `operations: List<VersionlessStockOperation>` — A list of 1–25 operations, each either `VersionlessStockCreate` or `VersionlessStockUpdate`
+
+**Returns:** `List<StockUpsertResult>` — A list of results, each containing the resulting `StockItem` and the operation status (`"CREATED"`, `"UPDATED"`, or `"UNCHANGED"`)
+
+**Throws:** `IllegalArgumentException` if the list is null or empty; `FulfillmenttoolsException` (or subclass) if the request fails
+
+**Example:**
+
+```java
+List<StockUpsertResult> results = client.stocks().upsertStocks(
+    List.of(
+        VersionlessStockCreate.builder()
+            .tenantArticleId(new TenantArticleId("art-001"))
+            .facilityRef(new FacilityId("fac-1"))
+            .value(100)
+            .build(),
+        VersionlessStockUpdate.builder()
+            .stockId(new StockId("s-abc123"))
+            .value(200)
+            .build()
+    )
+);
+
+for (StockUpsertResult result : results) {
+    System.out.println(result.status() + ": " + result.stock().id().value());
+}
+```
+
+### upsertStocksAsync(List<VersionlessStockOperation>)
+
+Asynchronously creates or updates multiple stock entries in a single batch call.
+
+**Parameters:**
+- `operations: List<VersionlessStockOperation>` — A list of 1–25 operations, each either `VersionlessStockCreate` or `VersionlessStockUpdate`
+
+**Returns:** `CompletableFuture<List<StockUpsertResult>>` — A future that resolves to a list of results
+
+**Throws:** Exception propagated via `CompletableFuture`; call `.exceptionally()` or `.handle()` to catch
+
+**Example:**
+
+```java
+client.stocks().upsertStocksAsync(
+    List.of(
+        VersionlessStockCreate.builder()
+            .tenantArticleId(new TenantArticleId("art-003"))
+            .facilityRef(new FacilityId("fac-1"))
+            .value(75)
+            .build()
+    )
+)
+    .thenAccept(results -> {
+        System.out.println("Upserted " + results.size() + " stocks");
+    })
+    .exceptionally(ex -> {
+        System.err.println("Upsert failed: " + ex.getMessage());
+        return null;
+    });
+```
 
 ## CreateStockRequest Parameters
 
@@ -492,6 +629,44 @@ Asynchronously updates an existing stock entry.
 | `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
 | `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
 | `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+
+## VersionlessStockCreate Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `tenantArticleId(TenantArticleId)` | `TenantArticleId` | Yes | Your article identifier |
+| `value(Integer)` | `Integer` | Yes | Initial stock quantity (zero is valid) |
+| `facilityRef(FacilityId)` | `FacilityId` | One of | The facility where the stock is located |
+| `tenantFacilityId(TenantFacilityId)` | `TenantFacilityId` | One of | Alternative to `facilityRef`; one of the two must be set |
+| `locationRef(StorageLocationId)` | `StorageLocationId` | No | Storage location within the facility |
+| `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
+| `availableUntil(Instant)` | `Instant` | No | Expiry date for routing availability |
+| `receiptDate(Instant)` | `Instant` | No | When the stock arrived |
+| `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
+| `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
+| `properties(Map<String,String>)` | `Map<String,String>` | No | Tracking properties (e.g. expiry dates) |
+| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+
+## VersionlessStockUpdate Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `stockId(StockId)` | `StockId` | Yes | ID of the stock to update |
+| `value(Integer)` | `Integer` | Yes | New stock quantity (zero is valid) |
+| `locationRef(StorageLocationId)` | `StorageLocationId` | No | Storage location; if not set, the server value is preserved |
+| `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
+| `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
+| `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
+| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+
+## StockUpsertResult Fields
+
+The `StockUpsertResult` record exposes the following accessor methods (via record components):
+
+| Accessor | Type | Description |
+|----------|------|-------------|
+| `stock()` | `StockItem` | The resulting stock entry after the create or update operation |
+| `status()` | `String` | The operation status: `"CREATED"` (new stock), `"UPDATED"` (existing stock modified), or `"UNCHANGED"` (existing stock unchanged) |
 
 ## StockItem Fields
 
