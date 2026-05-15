@@ -181,6 +181,10 @@ public class OrderServiceTest {
 }
 ```
 
+## Receiving Events (Pub/Sub)
+
+The starter includes a full Pub/Sub event-receiver pipeline. See [Spring Boot Eventing](./spring-boot-eventing) for the complete guide covering `@FulfillmenttoolsEventListener`, ack/nack conventions, available event types, and customization options.
+
 ## Environment Variables
 
 For production deployments, use environment variables:

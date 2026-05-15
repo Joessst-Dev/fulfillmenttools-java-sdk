@@ -59,6 +59,7 @@ export default defineConfig({
           { text: 'Pagination', link: '/guides/pagination' },
           { text: 'Shared Models', link: '/guides/shared-models' },
           { text: 'Spring Boot', link: '/guides/spring-boot' },
+          { text: 'Spring Boot Eventing', link: '/guides/spring-boot-eventing' },
           { text: 'Typed IDs', link: '/guides/typed-ids' }
         ]
       },

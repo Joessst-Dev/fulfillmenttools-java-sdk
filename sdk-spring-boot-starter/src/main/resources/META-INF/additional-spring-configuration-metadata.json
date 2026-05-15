@@ -19,6 +19,11 @@
       "name": "fulfillmenttools.password",
       "type": "java.lang.String",
       "description": "Service account password for authentication."
+    },
+    {
+      "name": "fulfillmenttools.eventing.subscriptions",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Fully-qualified GCP Pub/Sub subscription names from which fulfillmenttools platform events are consumed. One subscriber is started per entry. Example: projects/my-gcp-project/subscriptions/my-subscription."
     }
   ]
 }

@@ -114,4 +114,67 @@ public class FulfillmenttoolsProperties {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    /**
+     * Eventing configuration properties.
+     */
+    private Eventing eventing = new Eventing();
+
+    /**
+     * Returns the eventing configuration.
+     *
+     * @return the eventing properties
+     */
+    public Eventing getEventing() {
+        return eventing;
+    }
+
+    /**
+     * Sets the eventing configuration.
+     *
+     * @param eventing the eventing properties
+     */
+    public void setEventing(Eventing eventing) {
+        this.eventing = eventing;
+    }
+
+    /**
+     * Eventing-specific configuration properties, bound from the
+     * {@code fulfillmenttools.eventing.*} namespace.
+     */
+    public static class Eventing {
+
+        /**
+         * Fully-qualified GCP Pub/Sub subscription names from which fulfillmenttools platform
+         * events are consumed. Multiple subscriptions are supported.
+         *
+         * <p>Example (YAML):
+         * <pre>
+         * fulfillmenttools:
+         *   eventing:
+         *     subscriptions:
+         *       - projects/my-gcp-project/subscriptions/orders-sub
+         *       - projects/my-gcp-project/subscriptions/stocks-sub
+         * </pre>
+         */
+        private java.util.List<String> subscriptions = new java.util.ArrayList<>();
+
+        /**
+         * Returns the list of Pub/Sub subscription names.
+         *
+         * @return the subscription names; empty list if none configured
+         */
+        public java.util.List<String> getSubscriptions() {
+            return subscriptions;
+        }
+
+        /**
+         * Sets the list of Pub/Sub subscription names.
+         *
+         * @param subscriptions the fully-qualified subscription names
+         */
+        public void setSubscriptions(java.util.List<String> subscriptions) {
+            this.subscriptions = subscriptions;
+        }
+    }
 }
