@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -218,7 +219,7 @@ class AnnotationDrivenEventHandlerTest {
         @Test
         void shouldCallAllHandlersEachAckingSeparately_idempotencyEnforcedBySubscriberManager() {
             // Given: two separate beans both handle ORDER_CREATED
-            List<String> callOrder = new java.util.ArrayList<>();
+            List<String> callOrder = new ArrayList<>();
             Object listenerA = new Object() {
                 @FulfillmenttoolsEventListener("ORDER_CREATED")
                 public void handle(Object payload) {

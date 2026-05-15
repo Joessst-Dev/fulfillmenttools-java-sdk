@@ -1,16 +1,14 @@
 package de.joesst.dev.fulfillmenttools.spring.eventing;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.cloud.spring.pubsub.core.PubSubTemplate;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -151,7 +149,7 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
 
         @Bean
         PubSubTemplate pubSubTemplate() {
-            return Mockito.mock(PubSubTemplate.class);
+            return mock(PubSubTemplate.class);
         }
     }
 
@@ -160,8 +158,8 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
 
         @Bean
         PubSubTemplate pubSubTemplate() {
-            PubSubTemplate mock = Mockito.mock(PubSubTemplate.class);
-            when(mock.subscribe(any(), any())).thenReturn(Mockito.mock(Subscriber.class));
+            PubSubTemplate mock = mock(PubSubTemplate.class);
+            when(mock.subscribe(any(), any())).thenReturn(mock(Subscriber.class));
             return mock;
         }
     }
