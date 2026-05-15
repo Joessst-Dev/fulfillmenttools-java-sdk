@@ -1,31 +1,27 @@
 package de.joesst.dev.fulfillmenttools.spring.eventing;
 
 /**
- * Spring application event published for each fulfillmenttools platform event received from
- * GCP Pub/Sub.
+ * Carries a deserialized fulfillmenttools platform event received from GCP Pub/Sub.
  *
  * <p>The type parameter {@code T} is the deserialized entity type. For known event types it
  * will be the concrete entity class (e.g. {@code Order}, {@code PickJob}). For unrecognised
  * event types it will be {@code java.util.Map<String, Object>}. The payload may be
  * {@code null} when the raw message carries no {@code payload} field.
  *
- * <p>The consumer is responsible for acknowledging the message by calling {@link #ack()} on
- * success or {@link #nack()} when processing fails (so the message is redelivered):
+ * <p>The consumer is responsible for acknowledging the message. With
+ * {@link FulfillmenttoolsEventListener} the SDK handles this automatically for payload-only
+ * methods. Explicit control is available via the two-parameter form:
  * <pre>{@code
- * @EventListener
- * public void onOrderCreated(FulfillmenttoolsEvent<Order> event) {
+ * @FulfillmenttoolsEventListener("ORDER_CREATED")
+ * public void onOrderCreated(Order order, FulfillmenttoolsEvent<?> event) {
  *     try {
- *         process(event.payload());
+ *         process(order);
  *         event.ack();
- *     } catch (Exception e) {
+ *     } catch (RetryableException e) {
  *         event.nack();
  *     }
  * }
  * }</pre>
- *
- * <p>Note: {@code @EventListener} methods are called synchronously by default. If you use
- * {@code @Async}, ensure you call {@code ack()} or {@code nack()} before the method returns
- * so the Pub/Sub lease does not expire.
  *
  * @param <T> the type of the deserialized payload
  */

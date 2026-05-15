@@ -3,10 +3,12 @@ package de.joesst.dev.fulfillmenttools.spring.eventing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,11 +25,13 @@ class AnnotationDrivenEventHandlerTest {
     }
 
     private void registerBean(String name, Object bean) {
+        registerBeans(Map.of(name, bean));
+    }
+
+    private void registerBeans(Map<String, Object> beans) {
         ConfigurableApplicationContext ctx = mock(ConfigurableApplicationContext.class);
-        ConfigurableListableBeanFactory factory = mock(ConfigurableListableBeanFactory.class);
-        when(ctx.getBeanDefinitionNames()).thenReturn(new String[]{name});
-        when(ctx.getBean(name)).thenReturn(bean);
-        when(ctx.getAutowireCapableBeanFactory()).thenReturn(factory);
+        when(ctx.getBeanDefinitionNames()).thenReturn(beans.keySet().toArray(new String[0]));
+        beans.forEach((name, bean) -> when(ctx.getBean(name)).thenReturn(bean));
         handler.setApplicationContext(ctx);
         handler.afterSingletonsInstantiated();
     }
@@ -193,6 +197,42 @@ class AnnotationDrivenEventHandlerTest {
 
             handler.onEvent(updated);
             assertThat(lastEventType).hasValue("PICK_JOB_UPDATED");
+        }
+    }
+
+    @Nested
+    class WhenMultipleHandlersAreRegisteredForSameEventType {
+
+        @Test
+        void shouldCallAllHandlersAndAckOnlyOnce() {
+            // Given: two separate beans both handle ORDER_CREATED
+            List<String> callOrder = new java.util.ArrayList<>();
+            Object listenerA = new Object() {
+                @FulfillmenttoolsEventListener("ORDER_CREATED")
+                public void handle(Object payload) {
+                    callOrder.add("A");
+                }
+            };
+            Object listenerB = new Object() {
+                @FulfillmenttoolsEventListener("ORDER_CREATED")
+                public void handle(Object payload) {
+                    callOrder.add("B");
+                }
+            };
+            registerBeans(Map.of("listenerA", listenerA, "listenerB", listenerB));
+
+            AtomicInteger ackCount = new AtomicInteger(0);
+            FulfillmenttoolsEvent<String> event = new FulfillmenttoolsEvent<>(
+                    "ORDER_CREATED", "e1", "payload",
+                    () -> ackCount.incrementAndGet(), () -> {});
+
+            // When
+            handler.onEvent(event);
+
+            // Then: both handlers were called
+            assertThat(callOrder).containsExactlyInAnyOrder("A", "B");
+            // And: ack was called twice (idempotency is enforced by SubscriberManager, not here)
+            assertThat(ackCount).hasValue(2);
         }
     }
 }

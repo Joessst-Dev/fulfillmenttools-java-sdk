@@ -69,6 +69,8 @@ public class FulfillmenttoolsSubscriberManager implements SmartLifecycle {
         activeSubscribers.clear();
         for (Subscriber subscriber : toStop) {
             subscriber.stopAsync();
+        }
+        for (Subscriber subscriber : toStop) {
             try {
                 subscriber.awaitTerminated(5, TimeUnit.SECONDS);
             } catch (Exception e) {

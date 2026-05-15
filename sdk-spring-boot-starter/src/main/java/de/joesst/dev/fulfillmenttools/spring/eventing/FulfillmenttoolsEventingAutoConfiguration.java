@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.cloud.spring.pubsub.core.PubSubTemplate;
 import de.joesst.dev.fulfillmenttools.spring.FulfillmenttoolsAutoConfiguration;
 import de.joesst.dev.fulfillmenttools.spring.FulfillmenttoolsProperties;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,7 +25,12 @@ import org.springframework.context.annotation.Bean;
  * <ul>
  *   <li>{@link FulfillmenttoolsEventTypeRegistry} — default event-type-to-entity mappings,
  *       user-extensible via {@code @ConditionalOnMissingBean}.</li>
- *   <li>{@link FulfillmenttoolsEventDispatcher} — parses and publishes events.</li>
+ *   <li>{@code fulfillmenttoolsObjectMapper} — Jackson {@code ObjectMapper} used for event
+ *       deserialization. Configures field-visibility, JavaTimeModule, and lenient unknown
+ *       properties. Override by declaring a bean named {@code fulfillmenttoolsObjectMapper}.</li>
+ *   <li>{@link FulfillmenttoolsEventHandler} — default annotation-driven handler, backs off
+ *       when a user bean is present.</li>
+ *   <li>{@link FulfillmenttoolsEventDispatcher} — parses and dispatches events.</li>
  *   <li>{@link FulfillmenttoolsSubscriberManager} — starts one {@code Subscriber} per
  *       configured subscription when {@code fulfillmenttools.eventing.subscriptions[0]}
  *       is present.</li>
@@ -50,6 +56,17 @@ public class FulfillmenttoolsEventingAutoConfiguration {
         return new FulfillmenttoolsEventTypeRegistry();
     }
 
+    @Bean("fulfillmenttoolsObjectMapper")
+    @ConditionalOnMissingBean(name = "fulfillmenttoolsObjectMapper")
+    public ObjectMapper fulfillmenttoolsObjectMapper() {
+        return new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
+                .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+    }
+
     @Bean
     @ConditionalOnMissingBean(FulfillmenttoolsEventHandler.class)
     public FulfillmenttoolsEventHandler fulfillmenttoolsEventHandler() {
@@ -60,13 +77,8 @@ public class FulfillmenttoolsEventingAutoConfiguration {
     @ConditionalOnMissingBean
     public FulfillmenttoolsEventDispatcher fulfillmenttoolsEventDispatcher(
             FulfillmenttoolsEventTypeRegistry registry,
-            FulfillmenttoolsEventHandler handler) {
-        ObjectMapper mapper = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
-                .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+            FulfillmenttoolsEventHandler handler,
+            @Qualifier("fulfillmenttoolsObjectMapper") ObjectMapper mapper) {
         return new FulfillmenttoolsEventDispatcher(mapper, registry, handler);
     }
 

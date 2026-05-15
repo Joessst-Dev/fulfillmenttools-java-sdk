@@ -7,6 +7,7 @@ import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,7 +27,7 @@ import java.util.Map;
  *   <li><b>Payload only</b> — SDK auto-acks on success, auto-nacks on exception.</li>
  *   <li><b>Payload + {@link FulfillmenttoolsEvent}</b> — caller controls ack/nack explicitly.</li>
  * </ul>
- * Events with no registered handler are silently auto-acked.
+ * Events with no registered handler are auto-acked with a warning log.
  */
 class AnnotationDrivenEventHandler
         implements FulfillmenttoolsEventHandler, ApplicationContextAware, SmartInitializingSingleton {
@@ -48,6 +49,8 @@ class AnnotationDrivenEventHandler
             try {
                 bean = applicationContext.getBean(beanName);
             } catch (Exception e) {
+                log.debug("Skipping bean '{}' during @FulfillmenttoolsEventListener scan: {}",
+                        beanName, e.getMessage());
                 continue;
             }
             Class<?> targetClass = AopUtils.getTargetClass(bean);
@@ -93,6 +96,7 @@ class AnnotationDrivenEventHandler
             this.bean = bean;
             this.method = method;
             this.hasEventParam = detectEventParam(method);
+            ReflectionUtils.makeAccessible(method);
         }
 
         private static boolean detectEventParam(Method method) {
@@ -122,11 +126,10 @@ class AnnotationDrivenEventHandler
                             method.getName(), cause);
                 }
             } catch (IllegalAccessException e) {
-                log.error("Cannot invoke @FulfillmenttoolsEventListener method '{}'",
-                        method.getName(), e);
-                if (!hasEventParam) {
-                    event.nack();
-                }
+                throw new IllegalStateException(
+                        "@FulfillmenttoolsEventListener method '"
+                        + method.getDeclaringClass().getName() + "#" + method.getName()
+                        + "' is not accessible — this is a configuration error", e);
             }
         }
 

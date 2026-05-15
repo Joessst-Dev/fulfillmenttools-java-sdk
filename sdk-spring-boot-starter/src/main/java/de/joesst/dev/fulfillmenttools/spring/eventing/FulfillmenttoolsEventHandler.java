@@ -17,15 +17,10 @@ package de.joesst.dev.fulfillmenttools.spring.eventing;
  * }</pre>
  *
  * <p>When no bean is declared, the auto-configuration registers a default handler that
- * publishes each event to Spring's {@code ApplicationEventPublisher}, making
- * {@code @EventListener} work out of the box:
- * <pre>{@code
- * @EventListener(condition = "#event.eventType() == 'ORDER_CREATED'")
- * public void onOrderCreated(FulfillmenttoolsEvent<?> event) {
- *     Order order = (Order) event.payload();
- *     event.ack();
- * }
- * }</pre>
+ * scans all Spring beans for methods carrying {@link FulfillmenttoolsEventListener} and
+ * routes each incoming event to the matching method(s). Declare a bean of this type only
+ * when you need full control over event routing — for most use cases
+ * {@link FulfillmenttoolsEventListener} is sufficient.
  *
  * <p>The handler is always called on a GCP Pub/Sub subscriber thread. If processing is
  * slow, consider handing off to an executor inside the handler and calling
