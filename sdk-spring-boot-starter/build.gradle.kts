@@ -27,6 +27,11 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.assertj:assertj-core:3.26.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2")
+    compileOnly("com.google.cloud:spring-cloud-gcp-pubsub:6.2.1")
+    testImplementation("com.google.cloud:spring-cloud-gcp-pubsub:6.2.1")
+    testImplementation("org.mockito:mockito-core:5.14.2")
 }
 
 tasks.test {

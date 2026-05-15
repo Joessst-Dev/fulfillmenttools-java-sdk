@@ -1,1 +1,2 @@
 de.joesst.dev.fulfillmenttools.spring.FulfillmenttoolsAutoConfiguration
+de.joesst.dev.fulfillmenttools.spring.eventing.FulfillmenttoolsEventingAutoConfiguration
