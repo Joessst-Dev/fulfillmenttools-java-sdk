@@ -14,6 +14,7 @@ import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StockItem;
 import de.joesst.dev.fulfillmenttools.stocks.StockListRequest;
+import de.joesst.dev.fulfillmenttools.stocks.StockSearchRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StockUpsertResult;
 import de.joesst.dev.fulfillmenttools.stocks.StocksClient;
 import de.joesst.dev.fulfillmenttools.stocks.UpdateStockRequest;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 public final class StocksClientImpl implements StocksClient {
 
@@ -140,6 +142,46 @@ public final class StocksClientImpl implements StocksClient {
                         request.traitConfig(),
                         request.customAttributes())))
                 .build();
+    }
+
+    @Override
+    public Page<StockItem> searchStocks(StockSearchRequest request) {
+        StockListResponse body = responseHandler.handle(execute(buildSearchRequest(request)), StockListResponse.class);
+        return toPage(body);
+    }
+
+    @Override
+    public CompletableFuture<Page<StockItem>> searchStocksAsync(StockSearchRequest request) {
+        return transport.executeAsync(buildSearchRequest(request))
+                .thenApply(r -> toPage(responseHandler.handle(r, StockListResponse.class)));
+    }
+
+    @Override
+    public Iterable<StockItem> searchAll(StockSearchRequest request) {
+        return Pages.all(cursor -> {
+            StockSearchRequest r = cursor == null
+                    ? request
+                    : request.toBuilder().after(cursor).build();
+            return searchStocks(r);
+        });
+    }
+
+    private SdkHttpRequest buildSearchRequest(StockSearchRequest request) {
+        StockSearchQueryBody query = new StockSearchQueryBody(
+                toStringInFilter(request.tenantArticleId(), id -> id.value()),
+                toStringInFilter(request.facilityRef(), id -> id.value()),
+                toStringInFilter(request.tenantFacilityId(), id -> id.value()),
+                toStringInFilter(request.locationRef(), id -> id.value()));
+        return SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/stocks/search")
+                .body(responseHandler.encode(new StockSearchBody(query, request.size(), request.after())))
+                .build();
+    }
+
+    private <T> StringInFilter toStringInFilter(List<T> values, Function<T, String> extractor) {
+        if (values == null || values.isEmpty()) return null;
+        return new StringInFilter(values.stream().map(extractor).toList());
     }
 
     @Override
@@ -278,4 +320,17 @@ public final class StocksClientImpl implements StocksClient {
     private record VersionlessUpsertResult(List<UpsertOperationResult> operationResults) {}
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpsertOperationResult(StockItem stock, String status) {}
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private record StockSearchBody(StockSearchQueryBody query, Integer size, String after) {}
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private record StockSearchQueryBody(
+            StringInFilter tenantArticleId,
+            StringInFilter facilityRef,
+            StringInFilter tenantFacilityId,
+            StringInFilter locationRef) {}
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private record StringInFilter(List<String> in) {}
 }

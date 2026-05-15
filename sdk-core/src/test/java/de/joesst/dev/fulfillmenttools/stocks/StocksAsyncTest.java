@@ -116,6 +116,32 @@ class StocksAsyncTest {
         assertThat(item.value()).isEqualTo(50);
     }
 
+    // --- searchStocksAsync ---
+
+    @Test
+    void searchStocksAsync_returnsPage() throws Exception {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("""
+                        {"stocks":[
+                          {"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":5}
+                        ],"pageInfo":{"endCursor":"c2","hasNextPage":false,"hasPreviousPage":false,"startCursor":"c1"}}
+                        """)));
+
+        // When
+        Page<StockItem> page = client.stocks()
+                .searchStocksAsync(StockSearchRequest.builder()
+                        .tenantArticleId(List.of(new TenantArticleId("art-1")))
+                        .build())
+                .get();
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(matchingJsonPath("$.query.tenantArticleId.in[0]", equalTo("art-1"))));
+        assertThat(page.items()).hasSize(1);
+        assertThat(page.items().get(0).id().value()).isEqualTo("s-1");
+    }
+
     // --- upsertStocksAsync ---
 
     @Test
