@@ -79,8 +79,9 @@ public interface StocksClient {
      * Creates or updates multiple stock entries in a single request (versionless bulk upsert).
      * Each operation is either a {@link VersionlessStockCreate} or a {@link VersionlessStockUpdate}.
      *
-     * @param operations the list of create/update operations (max 25)
+     * @param operations the list of create/update operations (1–25 items; must not be empty)
      * @return a list of results in the same order as the input operations
+     * @throws IllegalArgumentException if {@code operations} is null or empty
      * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
      */
     List<StockUpsertResult> upsertStocks(List<VersionlessStockOperation> operations);
@@ -88,7 +89,7 @@ public interface StocksClient {
     /**
      * Creates or updates multiple stock entries asynchronously (versionless bulk upsert).
      *
-     * @param operations the list of create/update operations (max 25)
+     * @param operations the list of create/update operations (1–25 items; must not be empty)
      * @return a {@code CompletableFuture} that resolves to a list of results
      */
     CompletableFuture<List<StockUpsertResult>> upsertStocksAsync(List<VersionlessStockOperation> operations);

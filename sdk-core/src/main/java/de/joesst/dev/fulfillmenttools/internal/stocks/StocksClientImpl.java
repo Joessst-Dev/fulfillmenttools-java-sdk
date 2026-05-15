@@ -155,6 +155,9 @@ public final class StocksClientImpl implements StocksClient {
 
     private SdkHttpRequest buildUpsertRequest(List<VersionlessStockOperation> operations) {
         Objects.requireNonNull(operations, "operations must not be null");
+        if (operations.isEmpty()) {
+            throw new IllegalArgumentException("operations must not be empty");
+        }
         List<Object> bodies = operations.stream().map(this::toOperationBody).toList();
         return SdkHttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -164,8 +167,8 @@ public final class StocksClientImpl implements StocksClient {
     }
 
     private Object toOperationBody(VersionlessStockOperation op) {
-        if (op instanceof VersionlessStockCreate c) {
-            return new CreateOperationBody(
+        return switch (op) {
+            case VersionlessStockCreate c -> new CreateOperationBody(
                     "CREATE",
                     c.tenantArticleId().value(),
                     c.value(),
@@ -179,8 +182,7 @@ public final class StocksClientImpl implements StocksClient {
                     c.traitConfig(),
                     c.properties(),
                     c.customAttributes());
-        } else if (op instanceof VersionlessStockUpdate u) {
-            return new UpdateOperationBody(
+            case VersionlessStockUpdate u -> new UpdateOperationBody(
                     "UPDATE",
                     u.stockId().value(),
                     u.value(),
@@ -189,8 +191,7 @@ public final class StocksClientImpl implements StocksClient {
                     u.conditions(),
                     u.traitConfig(),
                     u.customAttributes());
-        }
-        throw new IllegalArgumentException("Unknown operation type: " + op.getClass());
+        };
     }
 
     private List<StockUpsertResult> toUpsertResults(UpsertActionResponse response) {
@@ -271,7 +272,10 @@ public final class StocksClientImpl implements StocksClient {
             List<StorageLocationTraitConfigEntry> traitConfig,
             Map<String, Object> customAttributes) {}
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpsertActionResponse(VersionlessUpsertResult result) {}
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private record VersionlessUpsertResult(List<UpsertOperationResult> operationResults) {}
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpsertOperationResult(StockItem stock, String status) {}
 }
