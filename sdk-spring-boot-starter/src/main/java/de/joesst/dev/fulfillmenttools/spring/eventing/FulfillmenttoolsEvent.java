@@ -9,22 +9,57 @@ package de.joesst.dev.fulfillmenttools.spring.eventing;
  * event types it will be {@code java.util.Map<String, Object>}. The payload may be
  * {@code null} when the raw message carries no {@code payload} field.
  *
- * <p>Consumers listen via Spring's standard {@code @EventListener} mechanism:
+ * <p>The consumer is responsible for acknowledging the message by calling {@link #ack()} on
+ * success or {@link #nack()} when processing fails (so the message is redelivered):
  * <pre>{@code
  * @EventListener
  * public void onOrderCreated(FulfillmenttoolsEvent<Order> event) {
- *     Order order = event.payload();
- *     // ...
+ *     try {
+ *         process(event.payload());
+ *         event.ack();
+ *     } catch (Exception e) {
+ *         event.nack();
+ *     }
  * }
  * }</pre>
  *
- * @param <T>       the type of the deserialized payload
- * @param eventType the platform event name (e.g. {@code "ORDER_CREATED"})
- * @param eventId   the unique identifier of the event
- * @param payload   the deserialized payload, or {@code null} when absent in the raw message
+ * <p>Note: {@code @EventListener} methods are called synchronously by default. If you use
+ * {@code @Async}, ensure you call {@code ack()} or {@code nack()} before the method returns
+ * so the Pub/Sub lease does not expire.
+ *
+ * @param <T> the type of the deserialized payload
  */
-public record FulfillmenttoolsEvent<T>(
-        String eventType,
-        String eventId,
-        T payload
-) {}
+public final class FulfillmenttoolsEvent<T> {
+
+    private final String eventType;
+    private final String eventId;
+    private final T payload;
+    private final Runnable ackAction;
+    private final Runnable nackAction;
+
+    public FulfillmenttoolsEvent(String eventType, String eventId, T payload,
+                                  Runnable ackAction, Runnable nackAction) {
+        this.eventType = eventType;
+        this.eventId = eventId;
+        this.payload = payload;
+        this.ackAction = ackAction;
+        this.nackAction = nackAction;
+    }
+
+    /** Returns the platform event name (e.g. {@code "ORDER_CREATED"}). */
+    public String eventType() { return eventType; }
+
+    /** Returns the unique identifier of this event. */
+    public String eventId() { return eventId; }
+
+    /**
+     * Returns the deserialized payload, or {@code null} when absent in the raw message.
+     */
+    public T payload() { return payload; }
+
+    /** Acknowledges the underlying Pub/Sub message. Call this on successful processing. */
+    public void ack() { ackAction.run(); }
+
+    /** Negatively acknowledges the message, causing it to be redelivered. */
+    public void nack() { nackAction.run(); }
+}

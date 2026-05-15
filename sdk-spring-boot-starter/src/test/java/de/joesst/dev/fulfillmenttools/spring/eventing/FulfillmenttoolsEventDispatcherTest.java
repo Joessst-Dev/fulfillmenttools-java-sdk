@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -56,7 +57,7 @@ class FulfillmenttoolsEventDispatcherTest {
                     """);
 
             // When
-            dispatcher.dispatch(message);
+            dispatcher.dispatch(message, () -> {}, () -> {});
 
             // Then
             assertThat(publishedEvents).hasSize(1);
@@ -64,6 +65,60 @@ class FulfillmenttoolsEventDispatcherTest {
             assertThat(event.eventType()).isEqualTo("ORDER_CREATED");
             assertThat(event.eventId()).isEqualTo("order-evt-1");
             assertThat(event.payload()).isInstanceOf(Order.class);
+        }
+
+        @Test
+        void dispatch_doesNotAutoAck_afterPublish() {
+            // Given: the dispatcher must NOT ack/nack automatically — listener is responsible
+            registry.register("ORDER_CREATED", Order.class);
+            AtomicBoolean ackCalled = new AtomicBoolean(false);
+            AtomicBoolean nackCalled = new AtomicBoolean(false);
+            byte[] message = json("""
+                    {"eventId":"e1","event":"ORDER_CREATED","payload":{}}
+                    """);
+
+            // When
+            dispatcher.dispatch(message, () -> ackCalled.set(true), () -> nackCalled.set(true));
+
+            // Then
+            assertThat(ackCalled).isFalse();
+            assertThat(nackCalled).isFalse();
+        }
+    }
+
+    @Nested
+    class WhenAckOrNackIsCalledOnEvent {
+
+        @Test
+        void ack_invokesAckCallback() {
+            // Given
+            AtomicBoolean ackCalled = new AtomicBoolean(false);
+            byte[] message = json("""
+                    {"eventId":"e1","event":"UNKNOWN_EVENT","payload":{}}
+                    """);
+            dispatcher.dispatch(message, () -> ackCalled.set(true), () -> {});
+
+            // When
+            publishedEvents.get(0).ack();
+
+            // Then
+            assertThat(ackCalled).isTrue();
+        }
+
+        @Test
+        void nack_invokesNackCallback() {
+            // Given
+            AtomicBoolean nackCalled = new AtomicBoolean(false);
+            byte[] message = json("""
+                    {"eventId":"e1","event":"UNKNOWN_EVENT","payload":{}}
+                    """);
+            dispatcher.dispatch(message, () -> {}, () -> nackCalled.set(true));
+
+            // When
+            publishedEvents.get(0).nack();
+
+            // Then
+            assertThat(nackCalled).isTrue();
         }
     }
 
@@ -78,7 +133,7 @@ class FulfillmenttoolsEventDispatcherTest {
                     """);
 
             // When
-            dispatcher.dispatch(message);
+            dispatcher.dispatch(message, () -> {}, () -> {});
 
             // Then
             assertThat(publishedEvents).hasSize(1);
@@ -103,7 +158,7 @@ class FulfillmenttoolsEventDispatcherTest {
                     """);
 
             // When
-            dispatcher.dispatch(message);
+            dispatcher.dispatch(message, () -> {}, () -> {});
 
             // Then
             assertThat(publishedEvents).hasSize(1);
@@ -122,7 +177,7 @@ class FulfillmenttoolsEventDispatcherTest {
             byte[] message = "not valid json {{{".getBytes(StandardCharsets.UTF_8);
 
             // When / Then
-            assertThatThrownBy(() -> dispatcher.dispatch(message))
+            assertThatThrownBy(() -> dispatcher.dispatch(message, () -> {}, () -> {}))
                     .isInstanceOf(UncheckedIOException.class);
         }
     }

@@ -53,16 +53,24 @@ public class FulfillmenttoolsEventDispatcher {
     }
 
     /**
-     * Parses the given raw Pub/Sub message bytes and publishes a
-     * {@link FulfillmenttoolsEvent} to the application event bus.
+     * Parses the given raw Pub/Sub message bytes, builds a {@link FulfillmenttoolsEvent}
+     * with the supplied ack/nack callbacks, and publishes it to the application event bus.
+     *
+     * <p>The caller (typically {@link FulfillmenttoolsSubscriberManager}) is responsible for
+     * passing the message's real ack/nack actions. This method does not acknowledge the
+     * message itself — that is the responsibility of the event listener via
+     * {@link FulfillmenttoolsEvent#ack()} or {@link FulfillmenttoolsEvent#nack()}.
      *
      * @param rawMessage the raw UTF-8 JSON bytes from the Pub/Sub message
+     * @param ack        called by the listener to positively acknowledge the message
+     * @param nack       called by the listener to negatively acknowledge the message
      * @throws UncheckedIOException if the bytes cannot be parsed as valid JSON
      */
-    public void dispatch(byte[] rawMessage) {
+    public void dispatch(byte[] rawMessage, Runnable ack, Runnable nack) {
         RawEventMessage raw = parse(rawMessage);
         Object payload = deserializePayload(raw.event(), raw.payload());
-        eventPublisher.publishEvent(new FulfillmenttoolsEvent<>(raw.event(), raw.eventId(), payload));
+        eventPublisher.publishEvent(
+                new FulfillmenttoolsEvent<>(raw.event(), raw.eventId(), payload, ack, nack));
     }
 
     private RawEventMessage parse(byte[] rawMessage) {

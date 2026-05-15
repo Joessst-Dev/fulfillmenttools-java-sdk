@@ -24,7 +24,7 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
 
         @Test
         void shouldRegisterEventTypeRegistryAndDispatcherBeans() {
-            // Given: a PubSubTemplate bean is present (simulates PubSub on classpath + context)
+            // Given: a PubSubTemplate bean is present
             runner.withUserConfiguration(MockPubSubTemplateConfiguration.class)
                     // When: the application context is loaded
                     .run(context -> {
@@ -36,34 +36,47 @@ class FulfillmenttoolsEventingAutoConfigurationTest {
     }
 
     @Nested
-    class WhenSubscriptionPropertyIsConfigured {
+    class WhenSubscriptionsAreConfigured {
 
         @Test
-        void shouldRegisterSubscriberBean() {
-            // Given: PubSubTemplate is available and the subscription property is set
+        void shouldRegisterSubscriberManagerWithSingleSubscription() {
+            // Given: PubSubTemplate is available and one subscription is configured
             runner.withUserConfiguration(MockPubSubTemplateWithSubscribeConfiguration.class)
                     .withPropertyValues(
-                            "fulfillmenttools.eventing.subscription=projects/p/subscriptions/s")
+                            "fulfillmenttools.eventing.subscriptions[0]=projects/p/subscriptions/s1")
                     // When: the application context is loaded
                     .run(context -> {
-                        // Then: a subscriber bean is registered
-                        assertThat(context).hasBean("fulfillmenttoolsPubSubSubscriber");
+                        // Then: a subscriber manager bean is registered
+                        assertThat(context).hasSingleBean(FulfillmenttoolsSubscriberManager.class);
+                    });
+        }
+
+        @Test
+        void shouldRegisterSubscriberManagerWithMultipleSubscriptions() {
+            // Given: PubSubTemplate is available and two subscriptions are configured
+            runner.withUserConfiguration(MockPubSubTemplateWithSubscribeConfiguration.class)
+                    .withPropertyValues(
+                            "fulfillmenttools.eventing.subscriptions[0]=projects/p/subscriptions/s1",
+                            "fulfillmenttools.eventing.subscriptions[1]=projects/p/subscriptions/s2")
+                    // When: the application context is loaded
+                    .run(context -> {
+                        // Then: exactly one manager bean handles both subscriptions
+                        assertThat(context).hasSingleBean(FulfillmenttoolsSubscriberManager.class);
                     });
         }
     }
 
     @Nested
-    class WhenSubscriptionPropertyIsMissing {
+    class WhenSubscriptionsAreMissing {
 
         @Test
-        void shouldNotRegisterSubscriberBean() {
-            // Given: PubSubTemplate is available but no subscription property is set
+        void shouldNotRegisterSubscriberManagerBean() {
+            // Given: PubSubTemplate is available but no subscriptions are configured
             runner.withUserConfiguration(MockPubSubTemplateConfiguration.class)
                     // When: the application context is loaded
                     .run(context -> {
-                        // Then: no subscriber bean is registered
-                        assertThat(context).doesNotHaveBean("fulfillmenttoolsPubSubSubscriber");
-                        assertThat(context).doesNotHaveBean(Subscriber.class);
+                        // Then: no subscriber manager is registered
+                        assertThat(context).doesNotHaveBean(FulfillmenttoolsSubscriberManager.class);
                     });
         }
     }

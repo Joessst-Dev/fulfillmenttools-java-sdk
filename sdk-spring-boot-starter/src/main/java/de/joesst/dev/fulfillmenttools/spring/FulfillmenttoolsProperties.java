@@ -145,29 +145,36 @@ public class FulfillmenttoolsProperties {
     public static class Eventing {
 
         /**
-         * Fully-qualified GCP Pub/Sub subscription name from which fulfillmenttools platform
-         * events are consumed.
+         * Fully-qualified GCP Pub/Sub subscription names from which fulfillmenttools platform
+         * events are consumed. Multiple subscriptions are supported.
          *
-         * <p>Example: {@code projects/my-gcp-project/subscriptions/my-subscription}
+         * <p>Example (YAML):
+         * <pre>
+         * fulfillmenttools:
+         *   eventing:
+         *     subscriptions:
+         *       - projects/my-gcp-project/subscriptions/orders-sub
+         *       - projects/my-gcp-project/subscriptions/stocks-sub
+         * </pre>
          */
-        private String subscription;
+        private java.util.List<String> subscriptions = new java.util.ArrayList<>();
 
         /**
-         * Returns the Pub/Sub subscription name.
+         * Returns the list of Pub/Sub subscription names.
          *
-         * @return the subscription name, or {@code null} if not configured
+         * @return the subscription names; empty list if none configured
          */
-        public String getSubscription() {
-            return subscription;
+        public java.util.List<String> getSubscriptions() {
+            return subscriptions;
         }
 
         /**
-         * Sets the Pub/Sub subscription name.
+         * Sets the list of Pub/Sub subscription names.
          *
-         * @param subscription the fully-qualified subscription name
+         * @param subscriptions the fully-qualified subscription names
          */
-        public void setSubscription(String subscription) {
-            this.subscription = subscription;
+        public void setSubscriptions(java.util.List<String> subscriptions) {
+            this.subscriptions = subscriptions;
         }
     }
 }
