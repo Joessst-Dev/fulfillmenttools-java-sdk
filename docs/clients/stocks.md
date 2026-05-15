@@ -1,6 +1,6 @@
 # Stocks Client
 
-The Stocks client provides access to inventory and stock management across your fulfillment network. Query stock levels for articles at different facilities and storage locations, with support for filtering by facility, article, and location.
+The Stocks client provides access to inventory and stock management across your fulfillment network. Create new stock entries, update existing ones, and query stock levels for articles at different facilities and storage locations.
 
 ## Quick Start
 
@@ -52,6 +52,100 @@ for (StockItem item : allStocks) {
 - `conditions()` — List of condition tags (e.g., "NEW", "USED")
 
 **StockListRequest**: Builder-based immutable request object for filtering and pagination. Use `StockListRequest.builder()` to construct.
+
+## Creating Stock
+
+Create a new stock entry with the required `tenantArticleId`, `facilityRef`, and `value`:
+
+```java
+import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+
+StockItem stock = client.stocks().create(
+    CreateStockRequest.builder()
+        .tenantArticleId(TenantArticleId.builder().value("art-001").build())
+        .facilityRef(FacilityId.builder().value("fac-1").build())
+        .value(100)
+        .build()
+);
+
+System.out.println("Created stock: " + stock.id().value());
+```
+
+With optional fields:
+
+```java
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+import java.util.List;
+
+StockItem stock = client.stocks().create(
+    CreateStockRequest.builder()
+        .tenantArticleId(TenantArticleId.builder().value("art-001").build())
+        .facilityRef(FacilityId.builder().value("fac-1").build())
+        .value(100)
+        .locationRef(StorageLocationId.builder().value("loc-bin-01").build())
+        .conditions(List.of("DEFECTIVE"))
+        .build()
+);
+```
+
+Asynchronously:
+
+```java
+client.stocks().createAsync(
+    CreateStockRequest.builder()
+        .tenantArticleId(TenantArticleId.builder().value("art-001").build())
+        .facilityRef(FacilityId.builder().value("fac-1").build())
+        .value(50)
+        .build()
+).thenAccept(stock -> System.out.println("Created: " + stock.id().value()));
+```
+
+## Updating Stock
+
+Update an existing stock entry by ID, providing the current version for optimistic locking:
+
+```java
+import de.joesst.dev.fulfillmenttools.stocks.UpdateStockRequest;
+import de.joesst.dev.fulfillmenttools.id.StockId;
+
+StockItem updated = client.stocks().update(
+    StockId.builder().value("s-abc123").build(),
+    UpdateStockRequest.builder()
+        .version(1)
+        .value(75)
+        .build()
+);
+
+System.out.println("Updated to version: " + updated.version());
+```
+
+With optional fields:
+
+```java
+StockItem updated = client.stocks().update(
+    StockId.builder().value("s-abc123").build(),
+    UpdateStockRequest.builder()
+        .version(1)
+        .value(75)
+        .locationRef(StorageLocationId.builder().value("loc-bin-02").build())
+        .conditions(List.of("DEFECTIVE"))
+        .build()
+);
+```
+
+Asynchronously:
+
+```java
+client.stocks().updateAsync(
+    StockId.builder().value("s-abc123").build(),
+    UpdateStockRequest.builder()
+        .version(2)
+        .value(60)
+        .build()
+).thenAccept(stock -> System.out.println("Updated version: " + stock.version()));
+```
 
 ## Filtering
 
@@ -334,6 +428,70 @@ for (StockItem item : allStocks) {
     System.out.println(item.tenantArticleId() + ": " + item.value() + " units");
 }
 ```
+
+### create(CreateStockRequest)
+
+Creates a new stock entry.
+
+**Parameters:**
+- `request: CreateStockRequest` — Create request with required fields (`tenantArticleId`, `value`) and optional fields (`facilityRef`, `locationRef`, `conditions`, etc.)
+
+**Returns:** `StockItem` — The newly created stock entry
+
+**Throws:** `FulfillmenttoolsException` (or subclass) if the request fails
+
+### createAsync(CreateStockRequest)
+
+Asynchronously creates a new stock entry.
+
+**Returns:** `CompletableFuture<StockItem>`
+
+### update(StockId, UpdateStockRequest)
+
+Updates an existing stock entry. Uses optimistic locking — the `version` in the request must match the current version on the server.
+
+**Parameters:**
+- `stockId: StockId` — The ID of the stock entry to update
+- `request: UpdateStockRequest` — Update request with required fields (`version`, `value`) and optional fields (`locationRef`, `conditions`, `traitConfig`, `customAttributes`)
+
+**Returns:** `StockItem` — The updated stock entry
+
+**Throws:** `FulfillmenttoolsException` (or subclass) if the request fails or the version does not match
+
+### updateAsync(StockId, UpdateStockRequest)
+
+Asynchronously updates an existing stock entry.
+
+**Returns:** `CompletableFuture<StockItem>`
+
+## CreateStockRequest Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `tenantArticleId(TenantArticleId)` | `TenantArticleId` | Yes | Your article identifier |
+| `value(Integer)` | `Integer` | Yes | Initial stock quantity |
+| `facilityRef(FacilityId)` | `FacilityId` | Recommended | The facility where the stock is located |
+| `tenantFacilityId(TenantFacilityId)` | `TenantFacilityId` | — | Alternative to `facilityRef` |
+| `locationRef(StorageLocationId)` | `StorageLocationId` | No | Storage location within the facility |
+| `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
+| `availableUntil(Instant)` | `Instant` | No | Expiry date for routing availability |
+| `receiptDate(Instant)` | `Instant` | No | When the stock arrived |
+| `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
+| `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
+| `properties(Map<String,String>)` | `Map<String,String>` | No | Tracking properties (e.g. expiry dates) |
+| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+
+## UpdateStockRequest Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `version(Integer)` | `Integer` | Yes | Current version for optimistic locking |
+| `value(Integer)` | `Integer` | Yes | New stock quantity |
+| `locationRef(StorageLocationId)` | `StorageLocationId` | No | Storage location (nullable to clear) |
+| `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
+| `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
+| `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
+| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
 
 ## StockItem Fields
 

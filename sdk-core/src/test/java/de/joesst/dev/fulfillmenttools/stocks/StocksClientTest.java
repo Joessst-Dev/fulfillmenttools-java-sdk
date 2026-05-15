@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StockId;
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
@@ -296,6 +297,134 @@ class StocksClientTest {
         // Then
         assertThat(item.tenantStockId().value()).isEqualTo("tenant-stock-42");
         assertThat(item.locationRef().value()).isEqualTo("loc-A1");
+    }
+
+    // --- create ---
+
+    @Test
+    void create_returnsCreatedStockItem() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("""
+                        {"id":"s-new","version":1,"facilityRef":"fac-1","tenantArticleId":"art-1","value":100,"available":100.0}
+                        """)));
+
+        // When
+        StockItem item = client.stocks().create(CreateStockRequest.builder()
+                .tenantArticleId(new TenantArticleId("art-1"))
+                .facilityRef(new FacilityId("fac-1"))
+                .value(100)
+                .build());
+
+        // Then
+        assertThat(item.id().value()).isEqualTo("s-new");
+        assertThat(item.tenantArticleId().value()).isEqualTo("art-1");
+        assertThat(item.facilityRef().value()).isEqualTo("fac-1");
+        assertThat(item.value()).isEqualTo(100);
+        assertThat(item.available()).isEqualTo(100.0);
+    }
+
+    @Test
+    void create_sendsRequiredFields() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("{\"id\":\"s-1\",\"version\":1,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":50}")));
+
+        // When
+        client.stocks().create(CreateStockRequest.builder()
+                .tenantArticleId(new TenantArticleId("art-1"))
+                .facilityRef(new FacilityId("fac-1"))
+                .value(50)
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks"))
+                .withRequestBody(matchingJsonPath("$.tenantArticleId", equalTo("art-1")))
+                .withRequestBody(matchingJsonPath("$.value", equalTo("50")))
+                .withRequestBody(matchingJsonPath("$.facilityRef", equalTo("fac-1"))));
+    }
+
+    @Test
+    void create_sendsOptionalFields() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("{\"id\":\"s-1\",\"version\":1,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":10,\"locationRef\":\"loc-A\",\"conditions\":[\"DEFECTIVE\"]}")));
+
+        // When
+        StockItem item = client.stocks().create(CreateStockRequest.builder()
+                .tenantArticleId(new TenantArticleId("art-1"))
+                .facilityRef(new FacilityId("fac-1"))
+                .value(10)
+                .locationRef(new StorageLocationId("loc-A"))
+                .conditions(java.util.List.of("DEFECTIVE"))
+                .build());
+
+        // Then: request body contains optional fields
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks"))
+                .withRequestBody(matchingJsonPath("$.locationRef", equalTo("loc-A")))
+                .withRequestBody(matchingJsonPath("$.conditions[0]", equalTo("DEFECTIVE"))));
+        assertThat(item.locationRef().value()).isEqualTo("loc-A");
+        assertThat(item.conditions()).containsExactly("DEFECTIVE");
+    }
+
+    // --- update ---
+
+    @Test
+    void update_returnsUpdatedStockItem() {
+        // Given
+        server.stubFor(put(urlPathEqualTo("/api/stocks/s-1"))
+                .willReturn(okJson("""
+                        {"id":"s-1","version":2,"facilityRef":"fac-1","tenantArticleId":"art-1","value":75,"available":75.0}
+                        """)));
+
+        // When
+        StockItem item = client.stocks().update(new StockId("s-1"), UpdateStockRequest.builder()
+                .version(1)
+                .value(75)
+                .build());
+
+        // Then
+        assertThat(item.id().value()).isEqualTo("s-1");
+        assertThat(item.version()).isEqualTo(2);
+        assertThat(item.value()).isEqualTo(75);
+    }
+
+    @Test
+    void update_sendsVersionAndValue() {
+        // Given
+        server.stubFor(put(urlPathEqualTo("/api/stocks/s-1"))
+                .willReturn(okJson("{\"id\":\"s-1\",\"version\":3,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":20}")));
+
+        // When
+        client.stocks().update(new StockId("s-1"), UpdateStockRequest.builder()
+                .version(2)
+                .value(20)
+                .build());
+
+        // Then
+        server.verify(putRequestedFor(urlPathEqualTo("/api/stocks/s-1"))
+                .withRequestBody(matchingJsonPath("$.version", equalTo("2")))
+                .withRequestBody(matchingJsonPath("$.value", equalTo("20"))));
+    }
+
+    @Test
+    void update_sendsOptionalFields() {
+        // Given
+        server.stubFor(put(urlPathEqualTo("/api/stocks/s-1"))
+                .willReturn(okJson("{\"id\":\"s-1\",\"version\":2,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":10,\"conditions\":[\"DEFECTIVE\"]}")));
+
+        // When
+        client.stocks().update(new StockId("s-1"), UpdateStockRequest.builder()
+                .version(1)
+                .value(10)
+                .conditions(java.util.List.of("DEFECTIVE"))
+                .locationRef(new StorageLocationId("loc-B"))
+                .build());
+
+        // Then
+        server.verify(putRequestedFor(urlPathEqualTo("/api/stocks/s-1"))
+                .withRequestBody(matchingJsonPath("$.conditions[0]", equalTo("DEFECTIVE")))
+                .withRequestBody(matchingJsonPath("$.locationRef", equalTo("loc-B"))));
     }
 
     // --- Helpers ---
