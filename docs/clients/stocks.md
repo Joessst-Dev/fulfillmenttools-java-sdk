@@ -723,7 +723,7 @@ Searches for stock entries matching a typed query with optional filters and pagi
 **Parameters:**
 - `request: StockSearchRequest` — Search request with optional `query` (if omitted, returns all stocks) and pagination (`size`, `after`)
 
-**Returns:** `Page&lt;StockItem&gt;` — A page containing matching stock entries and a cursor for fetching the next page
+**Returns:** `Page<StockItem>` — A page containing matching stock entries and a cursor for fetching the next page
 
 **Throws:** `FulfillmenttoolsException` (or subclass) if the request fails
 
@@ -755,7 +755,7 @@ Asynchronously searches for stock entries matching a typed query with optional f
 **Parameters:**
 - `request: StockSearchRequest` — Search request with optional `query` and pagination
 
-**Returns:** `CompletableFuture&lt;Page&lt;StockItem&gt;&gt;` — A future that resolves to a page of matching stock entries
+**Returns:** `CompletableFuture<Page<StockItem>>` — A future that resolves to a page of matching stock entries
 
 **Throws:** Exception propagated via `CompletableFuture`; call `.exceptionally()` or `.handle()` to catch
 
@@ -788,9 +788,9 @@ client.stocks().searchAsync(
 Automatically iterates through all pages and returns an `Iterable` over all matching stock entries.
 
 **Parameters:**
-- `request: StockSearchRequest` — Search request with optional `query` (pagination settings are managed internally)
+- `request: StockSearchRequest` — Search request with optional `query` and `size` (the `after` cursor is managed internally)
 
-**Returns:** `Iterable&lt;StockItem&gt;` — An iterable that transparently fetches pages as needed
+**Returns:** `Iterable<StockItem>` — An iterable that transparently fetches pages as needed
 
 **Throws:** `FulfillmenttoolsException` (or subclass) if any page fetch fails
 
@@ -924,7 +924,7 @@ The `StockSearchQuery.builder()` provides typed filter methods. All parameters a
 
 | Method | Parameters | Description |
 |--------|------------|-------------|
-| `conditionsContainsEq(String)` | `String` | Match stocks that have this condition. Use `StockCondition.DEFECTIVE` for the constant |
+| `conditionsContainsEq(String)` | `String` | Match stocks that have this condition. Use `StockCondition` constants for known values |
 | `conditionsContainsIn(String...)` | varargs `String` | Match stocks that have any of these conditions |
 
 **Logical Combinators**:
