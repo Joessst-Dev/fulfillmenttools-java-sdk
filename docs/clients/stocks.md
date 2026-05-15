@@ -215,6 +215,121 @@ client.stocks().upsertStocksAsync(
     });
 ```
 
+## Searching Stock
+
+The search endpoint provides a more expressive alternative to filtering, with typed builders for complex queries, numeric comparisons, logical combinators (AND/OR), and multi-value filters. Use search when you need to find stocks matching specific conditions, ranges, or complex logical expressions. The `query` parameter is optional — omitting it returns all stocks subject to pagination.
+
+Search for stocks by stock value:
+
+```java
+import de.joesst.dev.fulfillmenttools.stocks.StockSearchRequest;
+import de.joesst.dev.fulfillmenttools.stocks.StockSearchQuery;
+import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
+StockSearchQuery query = StockSearchQuery.builder()
+    .facilityRefEq(new FacilityId("fac-1"))
+    .valueGte(50)
+    .build();
+
+Page<StockItem> page = client.stocks().search(
+    StockSearchRequest.builder()
+        .query(query)
+        .size(50)
+        .build()
+);
+
+for (StockItem item : page.items()) {
+    System.out.println("Stock: " + item.id().value() 
+        + ", Value: " + item.value());
+}
+```
+
+Search with multiple values (OR logic within filter):
+
+```java
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+
+StockSearchQuery query = StockSearchQuery.builder()
+    .tenantArticleIdIn(
+        new TenantArticleId("art-001"),
+        new TenantArticleId("art-002"),
+        new TenantArticleId("art-003")
+    )
+    .build();
+
+Page<StockItem> page = client.stocks().search(
+    StockSearchRequest.builder()
+        .query(query)
+        .size(100)
+        .build()
+);
+```
+
+Search with logical combinators:
+
+```java
+// Find stocks with value > 10 OR value < 5
+StockSearchQuery lowOrHigh = StockSearchQuery.builder()
+    .or(
+        StockSearchQuery.builder().valueGt(10).build(),
+        StockSearchQuery.builder().valueLt(5).build()
+    )
+    .build();
+
+Page<StockItem> page = client.stocks().search(
+    StockSearchRequest.builder()
+        .query(lowOrHigh)
+        .size(50)
+        .build()
+);
+```
+
+Paginate through all search results:
+
+```java
+Iterable<StockItem> allResults = client.stocks().searchAll(
+    StockSearchRequest.builder()
+        .query(StockSearchQuery.builder()
+            .facilityRefEq(new FacilityId("fac-1"))
+            .valueGte(10)
+            .build()
+        )
+        .build()
+);
+
+for (StockItem item : allResults) {
+    System.out.println(item.tenantArticleId().value() 
+        + " @ " + item.facilityRef().value() 
+        + ": " + item.value() + " units");
+}
+```
+
+Asynchronously search for stocks:
+
+```java
+import java.util.concurrent.CompletableFuture;
+
+CompletableFuture<Page<StockItem>> future = client.stocks().searchAsync(
+    StockSearchRequest.builder()
+        .query(StockSearchQuery.builder()
+            .conditionsContainsIn(StockCondition.DEFECTIVE)
+            .build()
+        )
+        .size(50)
+        .build()
+);
+
+future
+    .thenAccept(page -> {
+        System.out.println("Found " + page.items().size() + " defective stocks");
+    })
+    .exceptionally(ex -> {
+        System.err.println("Search failed: " + ex.getMessage());
+        return null;
+    });
+```
+
 ## Filtering
 
 Filter stocks by facility, article, or location:
@@ -601,6 +716,102 @@ client.stocks().upsertStocksAsync(
     });
 ```
 
+### search(StockSearchRequest)
+
+Searches for stock entries matching a typed query with optional filters and pagination. Returns one page of results.
+
+**Parameters:**
+- `request: StockSearchRequest` — Search request with optional `query` (if omitted, returns all stocks) and pagination (`size`, `after`)
+
+**Returns:** `Page&lt;StockItem&gt;` — A page containing matching stock entries and a cursor for fetching the next page
+
+**Throws:** `FulfillmenttoolsException` (or subclass) if the request fails
+
+**Example:**
+
+```java
+StockSearchQuery query = StockSearchQuery.builder()
+    .facilityRefEq(new FacilityId("fac-1"))
+    .valueGte(50)
+    .build();
+
+Page<StockItem> page = client.stocks().search(
+    StockSearchRequest.builder()
+        .query(query)
+        .size(50)
+        .build()
+);
+
+for (StockItem item : page.items()) {
+    System.out.println("Stock " + item.id().value() 
+        + ": " + item.value() + " units");
+}
+```
+
+### searchAsync(StockSearchRequest)
+
+Asynchronously searches for stock entries matching a typed query with optional filters and pagination.
+
+**Parameters:**
+- `request: StockSearchRequest` — Search request with optional `query` and pagination
+
+**Returns:** `CompletableFuture&lt;Page&lt;StockItem&gt;&gt;` — A future that resolves to a page of matching stock entries
+
+**Throws:** Exception propagated via `CompletableFuture`; call `.exceptionally()` or `.handle()` to catch
+
+**Example:**
+
+```java
+client.stocks().searchAsync(
+    StockSearchRequest.builder()
+        .query(StockSearchQuery.builder()
+            .tenantArticleIdIn(
+                new TenantArticleId("art-001"),
+                new TenantArticleId("art-002")
+            )
+            .build()
+        )
+        .size(100)
+        .build()
+)
+    .thenAccept(page -> {
+        System.out.println("Found " + page.items().size() + " stocks");
+    })
+    .exceptionally(ex -> {
+        System.err.println("Search failed: " + ex.getMessage());
+        return null;
+    });
+```
+
+### searchAll(StockSearchRequest)
+
+Automatically iterates through all pages and returns an `Iterable` over all matching stock entries.
+
+**Parameters:**
+- `request: StockSearchRequest` — Search request with optional `query` (pagination settings are managed internally)
+
+**Returns:** `Iterable&lt;StockItem&gt;` — An iterable that transparently fetches pages as needed
+
+**Throws:** `FulfillmenttoolsException` (or subclass) if any page fetch fails
+
+**Example:**
+
+```java
+Iterable<StockItem> allResults = client.stocks().searchAll(
+    StockSearchRequest.builder()
+        .query(StockSearchQuery.builder()
+            .facilityRefEq(new FacilityId("fac-1"))
+            .valueGte(10)
+            .build()
+        )
+        .build()
+);
+
+for (StockItem item : allResults) {
+    System.out.println(item.tenantArticleId().value() + ": " + item.value());
+}
+```
+
 ## CreateStockRequest Parameters
 
 | Parameter | Type | Required | Description |
@@ -658,6 +869,80 @@ client.stocks().upsertStocksAsync(
 | `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
 | `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
 | `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+
+## StockSearchRequest Parameters
+
+The `StockSearchRequest.builder()` accepts the following options. All parameters are optional.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `query(StockSearchQuery)` | `StockSearchQuery` | Typed search query with filters, comparisons, and logical combinators. If not set, returns all stocks subject to pagination |
+| `size(Integer)` | `Integer` | Maximum number of entries per page. Defaults to server-defined limit if not set |
+| `after(String)` | `String` | Cursor for pagination; retrieves the next page. Use the `pageInfo.endCursor` from the previous response (not `startAfterId`) |
+
+## StockSearchQuery Parameters
+
+The `StockSearchQuery.builder()` provides typed filter methods. All parameters are optional; unset filters are omitted from the request.
+
+**String Filters** (ID and reference fields):
+
+| Method | Parameters | Description |
+|--------|------------|-------------|
+| `idEq(StockId)` | `StockId` | Match stock by exact ID |
+| `idIn(StockId...)` | varargs `StockId` | Match any stock in the list |
+| `idIn(List<StockId>)` | `List<StockId>` | Match any stock in the list (List variant) |
+| `idNotEq(StockId)` | `StockId` | Exclude stocks with this ID |
+| `tenantArticleIdEq(TenantArticleId)` | `TenantArticleId` | Match by exact tenant article ID |
+| `tenantArticleIdIn(TenantArticleId...)` | varargs `TenantArticleId` | Match any article in the list |
+| `tenantArticleIdIn(List<TenantArticleId>)` | `List<TenantArticleId>` | Match any article in the list (List variant) |
+| `tenantArticleIdNotEq(TenantArticleId)` | `TenantArticleId` | Exclude this article |
+| `tenantStockIdEq(TenantStockId)` | `TenantStockId` | Match by exact tenant stock ID |
+| `tenantStockIdIn(TenantStockId...)` | varargs `TenantStockId` | Match any tenant stock ID in the list |
+| `tenantStockIdIn(List<TenantStockId>)` | `List<TenantStockId>` | Match any tenant stock ID in the list (List variant) |
+| `facilityRefEq(FacilityId)` | `FacilityId` | Match by exact facility |
+| `facilityRefIn(FacilityId...)` | varargs `FacilityId` | Match any facility in the list |
+| `facilityRefIn(List<FacilityId>)` | `List<FacilityId>` | Match any facility in the list (List variant) |
+| `facilityRefNotEq(FacilityId)` | `FacilityId` | Exclude this facility |
+| `tenantFacilityIdEq(TenantFacilityId)` | `TenantFacilityId` | Match by exact tenant facility ID |
+| `tenantFacilityIdIn(TenantFacilityId...)` | varargs `TenantFacilityId` | Match any tenant facility ID in the list |
+| `tenantFacilityIdIn(List<TenantFacilityId>)` | `List<TenantFacilityId>` | Match any tenant facility ID in the list (List variant) |
+| `locationRefEq(StorageLocationId)` | `StorageLocationId` | Match by exact storage location |
+| `locationRefIn(StorageLocationId...)` | varargs `StorageLocationId` | Match any location in the list |
+| `locationRefIn(List<StorageLocationId>)` | `List<StorageLocationId>` | Match any location in the list (List variant) |
+
+**Numeric Filters** (stock quantity):
+
+| Method | Parameters | Description |
+|--------|------------|-------------|
+| `valueEq(int)` | `int` | Match stocks with exact quantity |
+| `valueGt(int)` | `int` | Match stocks with value greater than (exclusive) |
+| `valueGte(int)` | `int` | Match stocks with value greater than or equal (inclusive) |
+| `valueLt(int)` | `int` | Match stocks with value less than (exclusive) |
+| `valueLte(int)` | `int` | Match stocks with value less than or equal (inclusive) |
+
+**Conditions Filters** (condition tags):
+
+| Method | Parameters | Description |
+|--------|------------|-------------|
+| `conditionsContainsEq(String)` | `String` | Match stocks that have this condition. Use `StockCondition.DEFECTIVE` for the constant |
+| `conditionsContainsIn(String...)` | varargs `String` | Match stocks that have any of these conditions |
+
+**Logical Combinators**:
+
+| Method | Parameters | Description |
+|--------|------------|-------------|
+| `and(StockSearchQuery...)` | varargs `StockSearchQuery` | Combine queries with AND logic (all must match) |
+| `and(List<StockSearchQuery>)` | `List<StockSearchQuery>` | Combine queries with AND logic (List variant) |
+| `or(StockSearchQuery...)` | varargs `StockSearchQuery` | Combine queries with OR logic (any may match) |
+| `or(List<StockSearchQuery>)` | `List<StockSearchQuery>` | Combine queries with OR logic (List variant) |
+
+## StockCondition Constants
+
+Use these constants with the conditions filter:
+
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `StockCondition.DEFECTIVE` | `"DEFECTIVE"` | Stock marked as defective |
 
 ## StockUpsertResult Fields
 
