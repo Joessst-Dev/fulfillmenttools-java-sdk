@@ -47,7 +47,7 @@ public final class UpdateStockRequest {
     public Integer version() { return version; }
 
     /**
-     * Returns the new stock quantity.
+     * Returns the new stock quantity. Zero is a valid value to set stock to empty.
      *
      * @return the stock quantity
      */

@@ -325,6 +325,25 @@ class StocksClientTest {
     }
 
     @Test
+    void create_withTenantFacilityId_sendsTenantFacilityIdInBody() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("{\"id\":\"s-1\",\"version\":1,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":10}")));
+
+        // When
+        client.stocks().create(CreateStockRequest.builder()
+                .tenantArticleId(new TenantArticleId("art-1"))
+                .tenantFacilityId(new TenantFacilityId("tenant-fac-1"))
+                .value(10)
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks"))
+                .withRequestBody(matchingJsonPath("$.tenantFacilityId", equalTo("tenant-fac-1")))
+                .withRequestBody(not(matchingJsonPath("$.facilityRef"))));
+    }
+
+    @Test
     void create_sendsBodyFields() {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/stocks"))
@@ -448,7 +467,9 @@ class StocksClientTest {
                 .withRequestBody(not(matchingJsonPath("$.tenantStockId")))
                 .withRequestBody(not(matchingJsonPath("$.conditions")))
                 .withRequestBody(not(matchingJsonPath("$.availableUntil")))
-                .withRequestBody(not(matchingJsonPath("$.receiptDate"))));
+                .withRequestBody(not(matchingJsonPath("$.receiptDate")))
+                .withRequestBody(not(matchingJsonPath("$.traitConfig")))
+                .withRequestBody(not(matchingJsonPath("$.properties"))));
     }
 
     @Test
