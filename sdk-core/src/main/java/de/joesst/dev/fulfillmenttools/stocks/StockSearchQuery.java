@@ -167,9 +167,9 @@ public final class StockSearchQuery {
 
         // --- conditions ---
 
-        /** Filters by condition equal to the given value (e.g. {@code "DEFECTIVE"}). */
+        /** Filters by condition equal to the given value; use {@link StockCondition} for known values. */
         public Builder conditionsContainsEq(String condition) { conditions = Map.of("contains", Map.of("eq", condition)); return this; }
-        /** Filters by condition in the given values. */
+        /** Filters by condition in the given values; use {@link StockCondition} for known values. */
         public Builder conditionsContainsIn(String... conditionValues) { conditions = Map.of("contains", Map.of("in", List.of(conditionValues))); return this; }
 
         // --- logical combinators ---
