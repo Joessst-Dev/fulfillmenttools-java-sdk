@@ -76,6 +76,36 @@ public interface StocksClient {
     CompletableFuture<StockItem> updateAsync(StockId stockId, UpdateStockRequest request);
 
     /**
+     * Searches for stock entries matching the given structured query, returning one page of results.
+     *
+     * <p>Unlike {@link #list}, search accepts a rich {@link StockSearchQuery} with typed filter
+     * objects and logical {@code and}/{@code or} combinators, and always POSTs a JSON body.
+     *
+     * @param request the search request with an optional query and pagination
+     * @return a page of matching stock entries
+     * @throws de.joesst.dev.fulfillmenttools.FulfillmenttoolsException if the request fails
+     */
+    Page<StockItem> search(StockSearchRequest request);
+
+    /**
+     * Searches for stock entries asynchronously, returning one page of results.
+     *
+     * @param request the search request with an optional query and pagination
+     * @return a {@code CompletableFuture} that resolves to a page of matching stock entries;
+     *         completes exceptionally with {@link de.joesst.dev.fulfillmenttools.FulfillmenttoolsException}
+     *         if the request fails
+     */
+    CompletableFuture<Page<StockItem>> searchAsync(StockSearchRequest request);
+
+    /**
+     * Searches for all stock entries matching the given query by automatically iterating through pages.
+     *
+     * @param request the search request with an optional query
+     * @return an {@code Iterable} over all matching stock entries
+     */
+    Iterable<StockItem> searchAll(StockSearchRequest request);
+
+    /**
      * Creates or updates multiple stock entries in a single request (versionless bulk upsert).
      * Each operation is either a {@link VersionlessStockCreate} or a {@link VersionlessStockUpdate}.
      *

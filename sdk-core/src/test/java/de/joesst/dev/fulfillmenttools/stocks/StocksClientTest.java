@@ -647,6 +647,198 @@ class StocksClientTest {
                 .withRequestBody(not(matchingJsonPath("$.stocks[0].customAttributes"))));
     }
 
+    // --- search ---
+
+    @Test
+    void search_sendsQueryBodyWithFilters() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("""
+                        {"stocks":[
+                          {"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":10}
+                        ],"pageInfo":{"endCursor":"c2","hasNextPage":false,"hasPreviousPage":false,"startCursor":"c1"}}
+                        """)));
+
+        // When
+        client.stocks().search(StockSearchRequest.builder()
+                .query(StockSearchQuery.builder()
+                        .tenantArticleIdIn(new TenantArticleId("art-1"), new TenantArticleId("art-2"))
+                        .facilityRefIn(new FacilityId("fac-1"))
+                        .build())
+                .size(25)
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(matchingJsonPath("$.query.tenantArticleId.in[0]", equalTo("art-1")))
+                .withRequestBody(matchingJsonPath("$.query.tenantArticleId.in[1]", equalTo("art-2")))
+                .withRequestBody(matchingJsonPath("$.query.facilityRef.in[0]", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.size", equalTo("25"))));
+    }
+
+    @Test
+    void search_returnsDeserializedPage() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("""
+                        {"stocks":[
+                          {"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":10},
+                          {"id":"s-2","facilityRef":"fac-1","tenantArticleId":"art-2","value":20}
+                        ],"pageInfo":{"endCursor":"cursor-2","hasNextPage":true,"hasPreviousPage":false,"startCursor":"cursor-1"}}
+                        """)));
+
+        // When
+        Page<StockItem> page = client.stocks().search(StockSearchRequest.builder().build());
+
+        // Then
+        assertThat(page.items()).hasSize(2);
+        assertThat(page.items().get(0).id().value()).isEqualTo("s-1");
+        assertThat(page.items().get(1).value()).isEqualTo(20);
+        assertThat(page.hasMore()).isTrue();
+        assertThat(page.nextCursor()).isEqualTo("cursor-2");
+    }
+
+    @Test
+    void search_omitsNullQueryFromBody() {
+        // Given — no query set at all
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("{\"stocks\":[]}")));
+
+        // When
+        client.stocks().search(StockSearchRequest.builder().size(10).build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(not(matchingJsonPath("$.query")))
+                .withRequestBody(not(matchingJsonPath("$.after"))));
+    }
+
+    @Test
+    void search_omitsUnsetFieldsFromQuery() {
+        // Given — query with only one filter set
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("{\"stocks\":[]}")));
+
+        // When
+        client.stocks().search(StockSearchRequest.builder()
+                .query(StockSearchQuery.builder()
+                        .tenantArticleIdIn(new TenantArticleId("art-1"))
+                        .build())
+                .build());
+
+        // Then — unset filters must not appear
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(not(matchingJsonPath("$.query.id")))
+                .withRequestBody(not(matchingJsonPath("$.query.tenantStockId")))
+                .withRequestBody(not(matchingJsonPath("$.query.facilityRef")))
+                .withRequestBody(not(matchingJsonPath("$.query.tenantFacilityId")))
+                .withRequestBody(not(matchingJsonPath("$.query.locationRef")))
+                .withRequestBody(not(matchingJsonPath("$.query.value")))
+                .withRequestBody(not(matchingJsonPath("$.query.conditions"))));
+    }
+
+    @Test
+    void search_sendsTenantFacilityIdAndLocationRef() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("{\"stocks\":[]}")));
+
+        // When
+        client.stocks().search(StockSearchRequest.builder()
+                .query(StockSearchQuery.builder()
+                        .tenantFacilityIdIn(new TenantFacilityId("tenant-fac-1"))
+                        .locationRefIn(new StorageLocationId("loc-A"))
+                        .build())
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(matchingJsonPath("$.query.tenantFacilityId.in[0]", equalTo("tenant-fac-1")))
+                .withRequestBody(matchingJsonPath("$.query.locationRef.in[0]", equalTo("loc-A"))));
+    }
+
+    @Test
+    void search_sendsValueFilter() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("{\"stocks\":[]}")));
+
+        // When
+        client.stocks().search(StockSearchRequest.builder()
+                .query(StockSearchQuery.builder().valueGte(5).build())
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(matchingJsonPath("$.query.value.gte", equalTo("5"))));
+    }
+
+    @Test
+    void search_sendsLogicalOrQuery() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("{\"stocks\":[]}")));
+
+        // When
+        client.stocks().search(StockSearchRequest.builder()
+                .query(StockSearchQuery.builder()
+                        .or(
+                                StockSearchQuery.builder().facilityRefEq(new FacilityId("fac-1")).build(),
+                                StockSearchQuery.builder().tenantFacilityIdEq(new TenantFacilityId("tf-1")).build()
+                        )
+                        .build())
+                .build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(matchingJsonPath("$.query.or[0].facilityRef.eq", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.query.or[1].tenantFacilityId.eq", equalTo("tf-1"))));
+    }
+
+    @Test
+    void search_sendsAfterCursorForPagination() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .willReturn(okJson("{\"stocks\":[]}")));
+
+        // When
+        client.stocks().search(StockSearchRequest.builder().after("cursor-abc").build());
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(matchingJsonPath("$.after", equalTo("cursor-abc"))));
+    }
+
+    @Test
+    void searchAll_traversesMultiplePages() {
+        // Given — page 1 returns a cursor; page 2 returns no cursor
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(not(matchingJsonPath("$.after")))
+                .willReturn(okJson("""
+                        {"stocks":[
+                          {"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":1}
+                        ],"pageInfo":{"endCursor":"cur-2","hasNextPage":true,"hasPreviousPage":false,"startCursor":"cur-1"}}
+                        """)));
+
+        server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
+                .withRequestBody(matchingJsonPath("$.after", equalTo("cur-2")))
+                .willReturn(okJson("""
+                        {"stocks":[
+                          {"id":"s-2","facilityRef":"fac-1","tenantArticleId":"art-2","value":2}
+                        ]}
+                        """)));
+
+        // When
+        List<String> ids = new ArrayList<>();
+        for (StockItem s : client.stocks().searchAll(StockSearchRequest.builder().build())) {
+            ids.add(s.id().value());
+        }
+
+        // Then
+        assertThat(ids).containsExactly("s-1", "s-2");
+        server.verify(2, postRequestedFor(urlPathEqualTo("/api/stocks/search")));
+    }
+
     @Test
     void upsertStocks_throwsOnNullOperations() {
         // When / Then

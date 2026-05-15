@@ -14,6 +14,7 @@ import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StockItem;
 import de.joesst.dev.fulfillmenttools.stocks.StockListRequest;
+import de.joesst.dev.fulfillmenttools.stocks.StockSearchRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StockUpsertResult;
 import de.joesst.dev.fulfillmenttools.stocks.StocksClient;
 import de.joesst.dev.fulfillmenttools.stocks.UpdateStockRequest;
@@ -139,6 +140,36 @@ public final class StocksClientImpl implements StocksClient {
                         request.conditions(),
                         request.traitConfig(),
                         request.customAttributes())))
+                .build();
+    }
+
+    @Override
+    public Page<StockItem> search(StockSearchRequest request) {
+        StockListResponse body = responseHandler.handle(execute(buildSearchRequest(request)), StockListResponse.class);
+        return toPage(body);
+    }
+
+    @Override
+    public CompletableFuture<Page<StockItem>> searchAsync(StockSearchRequest request) {
+        return transport.executeAsync(buildSearchRequest(request))
+                .thenApply(r -> toPage(responseHandler.handle(r, StockListResponse.class)));
+    }
+
+    @Override
+    public Iterable<StockItem> searchAll(StockSearchRequest request) {
+        return Pages.all(cursor -> {
+            StockSearchRequest r = cursor == null
+                    ? request
+                    : request.toBuilder().after(cursor).build();
+            return search(r);
+        });
+    }
+
+    private SdkHttpRequest buildSearchRequest(StockSearchRequest request) {
+        return SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/stocks/search")
+                .body(responseHandler.encode(new StockSearchBody(request.query(), request.size(), request.after())))
                 .build();
     }
 
@@ -278,4 +309,5 @@ public final class StocksClientImpl implements StocksClient {
     private record VersionlessUpsertResult(List<UpsertOperationResult> operationResults) {}
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpsertOperationResult(StockItem stock, String status) {}
+
 }
