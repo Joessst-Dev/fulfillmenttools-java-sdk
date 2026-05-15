@@ -116,10 +116,10 @@ class StocksAsyncTest {
         assertThat(item.value()).isEqualTo(50);
     }
 
-    // --- searchStocksAsync ---
+    // --- searchAsync ---
 
     @Test
-    void searchStocksAsync_returnsPage() throws Exception {
+    void searchAsync_returnsPage() throws Exception {
         // Given
         server.stubFor(post(urlPathEqualTo("/api/stocks/search"))
                 .willReturn(okJson("""
@@ -130,8 +130,10 @@ class StocksAsyncTest {
 
         // When
         Page<StockItem> page = client.stocks()
-                .searchStocksAsync(StockSearchRequest.builder()
-                        .tenantArticleId(List.of(new TenantArticleId("art-1")))
+                .searchAsync(StockSearchRequest.builder()
+                        .query(StockSearchQuery.builder()
+                                .tenantArticleIdIn(new TenantArticleId("art-1"))
+                                .build())
                         .build())
                 .get();
 
