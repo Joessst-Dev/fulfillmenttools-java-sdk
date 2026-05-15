@@ -1,6 +1,9 @@
 package de.joesst.dev.fulfillmenttools.internal.stocks;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import de.joesst.dev.fulfillmenttools.TransportException;
+import de.joesst.dev.fulfillmenttools.id.StockId;
 import de.joesst.dev.fulfillmenttools.internal.Pages;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpMethod;
 import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
@@ -8,12 +11,18 @@ import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StockItem;
 import de.joesst.dev.fulfillmenttools.stocks.StockListRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StocksClient;
+import de.joesst.dev.fulfillmenttools.stocks.UpdateStockRequest;
+import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public final class StocksClientImpl implements StocksClient {
@@ -65,6 +74,70 @@ public final class StocksClientImpl implements StocksClient {
         return builder.build();
     }
 
+    @Override
+    public StockItem create(CreateStockRequest request) {
+        return responseHandler.handle(execute(buildCreateRequest(request)), StockItem.class);
+    }
+
+    @Override
+    public CompletableFuture<StockItem> createAsync(CreateStockRequest request) {
+        return transport.executeAsync(buildCreateRequest(request))
+                .thenApply(r -> responseHandler.handle(r, StockItem.class));
+    }
+
+    @Override
+    public StockItem update(StockId stockId, UpdateStockRequest request) {
+        return responseHandler.handle(execute(buildUpdateRequest(stockId, request)), StockItem.class);
+    }
+
+    @Override
+    public CompletableFuture<StockItem> updateAsync(StockId stockId, UpdateStockRequest request) {
+        return transport.executeAsync(buildUpdateRequest(stockId, request))
+                .thenApply(r -> responseHandler.handle(r, StockItem.class));
+    }
+
+    private SdkHttpRequest buildCreateRequest(CreateStockRequest request) {
+        String facilityRef = request.facilityRef() != null ? request.facilityRef().value() : null;
+        String tenantFacilityId = request.tenantFacilityId() != null ? request.tenantFacilityId().value() : null;
+        String locationRef = request.locationRef() != null ? request.locationRef().value() : null;
+        String tenantStockId = request.tenantStockId() != null ? request.tenantStockId().value() : null;
+        return SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/stocks")
+                .body(responseHandler.encode(new CreateStockBody(
+                        request.tenantArticleId().value(),
+                        request.value(),
+                        facilityRef,
+                        tenantFacilityId,
+                        locationRef,
+                        tenantStockId,
+                        request.availableUntil(),
+                        request.receiptDate(),
+                        request.conditions(),
+                        request.traitConfig(),
+                        request.properties(),
+                        request.customAttributes())))
+                .build();
+    }
+
+    private SdkHttpRequest buildUpdateRequest(StockId stockId, UpdateStockRequest request) {
+        Objects.requireNonNull(stockId, "stockId must not be null");
+        String locationRef = request.locationRef() != null ? request.locationRef().value() : null;
+        String tenantStockId = request.tenantStockId() != null ? request.tenantStockId().value() : null;
+        return SdkHttpRequest.builder()
+                .method(HttpMethod.PUT)
+                .url(baseUrl + "/api/stocks/" + stockId.value())
+                .body(responseHandler.encode(new UpdateStockBody(
+                        request.version(),
+                        request.value(),
+                        locationRef,
+                        tenantStockId,
+                        request.conditions(),
+                        request.traitConfig(),
+                        request.customAttributes())))
+                .build();
+    }
+
     private Page<StockItem> toPage(StockListResponse body) {
         List<StockItem> items = body.stocks() != null ? body.stocks() : List.of();
         String cursor = body.pageInfo() != null ? body.pageInfo().endCursor() : null;
@@ -78,4 +151,29 @@ public final class StocksClientImpl implements StocksClient {
             throw new TransportException("HTTP request failed", e);
         }
     }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private record CreateStockBody(
+            String tenantArticleId,
+            Integer value,
+            String facilityRef,
+            String tenantFacilityId,
+            String locationRef,
+            String tenantStockId,
+            Instant availableUntil,
+            Instant receiptDate,
+            List<String> conditions,
+            List<StorageLocationTraitConfigEntry> traitConfig,
+            Map<String, String> properties,
+            Map<String, Object> customAttributes) {}
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private record UpdateStockBody(
+            Integer version,
+            Integer value,
+            String locationRef,
+            String tenantStockId,
+            List<String> conditions,
+            List<StorageLocationTraitConfigEntry> traitConfig,
+            Map<String, Object> customAttributes) {}
 }

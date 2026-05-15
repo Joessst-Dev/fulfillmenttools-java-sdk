@@ -14,7 +14,7 @@ import java.util.List;
  * <pre>{@code
  * StockListRequest request = StockListRequest.builder()
  *     .size(50)
- *     .facilityRef(FacilityId.builder().value("fac-1").build())
+ *     .facilityRef(new FacilityId("fac-1"))
  *     .build();
  * }</pre>
  *

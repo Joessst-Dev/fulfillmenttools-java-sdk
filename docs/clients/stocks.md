@@ -1,6 +1,6 @@
 # Stocks Client
 
-The Stocks client provides access to inventory and stock management across your fulfillment network. Query stock levels for articles at different facilities and storage locations, with support for filtering by facility, article, and location.
+The Stocks client provides access to inventory and stock management across your fulfillment network. Create new stock entries, update existing ones, and query stock levels for articles at different facilities and storage locations.
 
 ## Quick Start
 
@@ -18,8 +18,8 @@ Page<StockItem> page = client.stocks().list(
 );
 
 for (StockItem item : page.items()) {
-    System.out.println("Stock ID: " + item.id());
-    System.out.println("Facility: " + item.facilityRef());
+    System.out.println("Stock ID: " + item.id().value());
+    System.out.println("Facility: " + item.facilityRef().value());
     System.out.println("Available: " + item.available());
 }
 ```
@@ -34,7 +34,7 @@ Iterable<StockItem> allStocks = client.stocks().listAll(
 );
 
 for (StockItem item : allStocks) {
-    System.out.println(item.tenantArticleId() + " @ " + item.facilityRef() 
+    System.out.println(item.tenantArticleId().value() + " @ " + item.facilityRef().value()
         + ": " + item.available() + " available");
 }
 ```
@@ -53,6 +53,100 @@ for (StockItem item : allStocks) {
 
 **StockListRequest**: Builder-based immutable request object for filtering and pagination. Use `StockListRequest.builder()` to construct.
 
+## Creating Stock
+
+Create a new stock entry with the required `tenantArticleId` and `value`. Either `facilityRef` or `tenantFacilityId` must also be provided to identify the facility:
+
+```java
+import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+
+StockItem stock = client.stocks().create(
+    CreateStockRequest.builder()
+        .tenantArticleId(new TenantArticleId("art-001"))
+        .facilityRef(new FacilityId("fac-1"))
+        .value(100)
+        .build()
+);
+
+System.out.println("Created stock: " + stock.id().value());
+```
+
+With optional fields:
+
+```java
+import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+import java.util.List;
+
+StockItem stock = client.stocks().create(
+    CreateStockRequest.builder()
+        .tenantArticleId(new TenantArticleId("art-001"))
+        .facilityRef(new FacilityId("fac-1"))
+        .value(100)
+        .locationRef(new StorageLocationId("loc-bin-01"))
+        .conditions(List.of("DEFECTIVE"))
+        .build()
+);
+```
+
+Asynchronously:
+
+```java
+client.stocks().createAsync(
+    CreateStockRequest.builder()
+        .tenantArticleId(new TenantArticleId("art-001"))
+        .facilityRef(new FacilityId("fac-1"))
+        .value(50)
+        .build()
+).thenAccept(stock -> System.out.println("Created: " + stock.id().value()));
+```
+
+## Updating Stock
+
+Update an existing stock entry by ID, providing the current version for optimistic locking:
+
+```java
+import de.joesst.dev.fulfillmenttools.stocks.UpdateStockRequest;
+import de.joesst.dev.fulfillmenttools.id.StockId;
+
+StockItem updated = client.stocks().update(
+    new StockId("s-abc123"),
+    UpdateStockRequest.builder()
+        .version(1)
+        .value(75)
+        .build()
+);
+
+System.out.println("Updated to version: " + updated.version());
+```
+
+With optional fields:
+
+```java
+StockItem updated = client.stocks().update(
+    new StockId("s-abc123"),
+    UpdateStockRequest.builder()
+        .version(1)
+        .value(75)
+        .locationRef(new StorageLocationId("loc-bin-02"))
+        .conditions(List.of("DEFECTIVE"))
+        .build()
+);
+```
+
+Asynchronously:
+
+```java
+client.stocks().updateAsync(
+    new StockId("s-abc123"),
+    UpdateStockRequest.builder()
+        .version(2)
+        .value(60)
+        .build()
+).thenAccept(stock -> System.out.println("Updated version: " + stock.version()));
+```
+
 ## Filtering
 
 Filter stocks by facility, article, or location:
@@ -64,7 +158,7 @@ Query stocks in a specific facility:
 ```java
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 
-FacilityId facilityId = FacilityId.builder().value("fac-1").build();
+FacilityId facilityId = new FacilityId("fac-1");
 
 Page<StockItem> facilityStocks = client.stocks().list(
     StockListRequest.builder()
@@ -83,8 +177,8 @@ import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import java.util.List;
 
 List<TenantArticleId> articleIds = List.of(
-    TenantArticleId.builder().value("art-001").build(),
-    TenantArticleId.builder().value("art-002").build()
+    new TenantArticleId("art-001"),
+    new TenantArticleId("art-002")
 );
 
 Page<StockItem> articleStocks = client.stocks().list(
@@ -103,7 +197,7 @@ Query stocks at a specific location within a facility:
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 
 List<StorageLocationId> locations = List.of(
-    StorageLocationId.builder().value("loc-bin-01").build()
+    new StorageLocationId("loc-bin-01")
 );
 
 Page<StockItem> locationStocks = client.stocks().list(
@@ -121,9 +215,9 @@ Filters are combined with AND logic:
 ```java
 Page<StockItem> filtered = client.stocks().list(
     StockListRequest.builder()
-        .facilityRef(FacilityId.builder().value("fac-1").build())
+        .facilityRef(new FacilityId("fac-1"))
         .tenantArticleId(List.of(
-            TenantArticleId.builder().value("art-001").build()
+            new TenantArticleId("art-001")
         ))
         .size(50)
         .build()
@@ -165,7 +259,7 @@ To automatically paginate through all results, use `listAll()`:
 ```java
 Iterable<StockItem> allResults = client.stocks().listAll(
     StockListRequest.builder()
-        .facilityRef(FacilityId.builder().value("fac-1").build())
+        .facilityRef(new FacilityId("fac-1"))
         .build()
 );
 
@@ -183,7 +277,7 @@ import java.util.concurrent.CompletableFuture;
 
 CompletableFuture<Page<StockItem>> future = client.stocks().listAsync(
     StockListRequest.builder()
-        .facilityRef(FacilityId.builder().value("fac-1").build())
+        .facilityRef(new FacilityId("fac-1"))
         .size(50)
         .build()
 );
@@ -191,7 +285,7 @@ CompletableFuture<Page<StockItem>> future = client.stocks().listAsync(
 future
     .thenAccept(page -> {
         for (StockItem item : page.items()) {
-            System.out.println("Stock: " + item.id() + ", Available: " + item.available());
+            System.out.println("Stock: " + item.id().value() + ", Available: " + item.available());
         }
     })
     .exceptionally(ex -> {
@@ -213,7 +307,7 @@ import de.joesst.dev.fulfillmenttools.FulfillmenttoolsException;
 try {
     Page<StockItem> page = client.stocks().list(
         StockListRequest.builder()
-            .facilityRef(FacilityId.builder().value("fac-1").build())
+            .facilityRef(new FacilityId("fac-1"))
             .size(50)
             .build()
     );
@@ -269,13 +363,13 @@ Returns one page of stock entries matching the request filters and pagination se
 ```java
 Page<StockItem> page = client.stocks().list(
     StockListRequest.builder()
-        .facilityRef(FacilityId.builder().value("fac-1").build())
+        .facilityRef(new FacilityId("fac-1"))
         .size(50)
         .build()
 );
 
 for (StockItem item : page.items()) {
-    System.out.println(item.id() + ": " + item.available() + " available");
+    System.out.println(item.id().value() + ": " + item.available() + " available");
 }
 ```
 
@@ -296,7 +390,7 @@ Asynchronously returns one page of stock entries matching the request filters an
 client.stocks().listAsync(
     StockListRequest.builder()
         .tenantArticleId(List.of(
-            TenantArticleId.builder().value("art-001").build()
+            new TenantArticleId("art-001")
         ))
         .size(50)
         .build()
@@ -326,14 +420,78 @@ Automatically iterates through all pages and returns an `Iterable` over all matc
 ```java
 Iterable<StockItem> allStocks = client.stocks().listAll(
     StockListRequest.builder()
-        .facilityRef(FacilityId.builder().value("fac-1").build())
+        .facilityRef(new FacilityId("fac-1"))
         .build()
 );
 
 for (StockItem item : allStocks) {
-    System.out.println(item.tenantArticleId() + ": " + item.value() + " units");
+    System.out.println(item.tenantArticleId().value() + ": " + item.value() + " units");
 }
 ```
+
+### create(CreateStockRequest)
+
+Creates a new stock entry.
+
+**Parameters:**
+- `request: CreateStockRequest` — Create request with required fields (`tenantArticleId`, `value`) and optional fields (`facilityRef`, `locationRef`, `conditions`, etc.)
+
+**Returns:** `StockItem` — The newly created stock entry
+
+**Throws:** `FulfillmenttoolsException` (or subclass) if the request fails
+
+### createAsync(CreateStockRequest)
+
+Asynchronously creates a new stock entry.
+
+**Returns:** `CompletableFuture<StockItem>`
+
+### update(StockId, UpdateStockRequest)
+
+Updates an existing stock entry. Uses optimistic locking — the `version` in the request must match the current version on the server.
+
+**Parameters:**
+- `stockId: StockId` — The ID of the stock entry to update
+- `request: UpdateStockRequest` — Update request with required fields (`version`, `value`) and optional fields (`locationRef`, `conditions`, `traitConfig`, `customAttributes`)
+
+**Returns:** `StockItem` — The updated stock entry
+
+**Throws:** `FulfillmenttoolsException` (or subclass) if the request fails or the version does not match
+
+### updateAsync(StockId, UpdateStockRequest)
+
+Asynchronously updates an existing stock entry.
+
+**Returns:** `CompletableFuture<StockItem>`
+
+## CreateStockRequest Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `tenantArticleId(TenantArticleId)` | `TenantArticleId` | Yes | Your article identifier |
+| `value(Integer)` | `Integer` | Yes | Initial stock quantity |
+| `facilityRef(FacilityId)` | `FacilityId` | One of | The facility where the stock is located |
+| `tenantFacilityId(TenantFacilityId)` | `TenantFacilityId` | One of | Alternative to `facilityRef`; one of the two must be set |
+| `locationRef(StorageLocationId)` | `StorageLocationId` | No | Storage location within the facility |
+| `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
+| `availableUntil(Instant)` | `Instant` | No | Expiry date for routing availability |
+| `receiptDate(Instant)` | `Instant` | No | When the stock arrived |
+| `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
+| `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
+| `properties(Map<String,String>)` | `Map<String,String>` | No | Tracking properties (e.g. expiry dates) |
+| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+
+## UpdateStockRequest Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `version(Integer)` | `Integer` | Yes | Current version for optimistic locking |
+| `value(Integer)` | `Integer` | Yes | New stock quantity |
+| `locationRef(StorageLocationId)` | `StorageLocationId` | No | Storage location; if not set, the server value is preserved |
+| `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
+| `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
+| `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
+| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
 
 ## StockItem Fields
 

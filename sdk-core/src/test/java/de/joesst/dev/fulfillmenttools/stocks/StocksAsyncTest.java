@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.StockId;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
@@ -70,6 +72,46 @@ class StocksAsyncTest {
         server.verify(getRequestedFor(urlPathEqualTo("/api/stocks"))
                 .withQueryParam("size", equalTo("5"))
                 .withQueryParam("facilityRef", equalTo("fac-1")));
+    }
+
+    // --- createAsync ---
+
+    @Test
+    void createAsync_returnsCreatedStockItem() throws Exception {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks"))
+                .willReturn(okJson("{\"id\":\"s-new\",\"version\":1,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":100}")));
+
+        // When
+        StockItem item = client.stocks().createAsync(CreateStockRequest.builder()
+                .tenantArticleId(new TenantArticleId("art-1"))
+                .facilityRef(new FacilityId("fac-1"))
+                .value(100)
+                .build()).get();
+
+        // Then
+        assertThat(item.id().value()).isEqualTo("s-new");
+        assertThat(item.value()).isEqualTo(100);
+    }
+
+    // --- updateAsync ---
+
+    @Test
+    void updateAsync_returnsUpdatedStockItem() throws Exception {
+        // Given
+        server.stubFor(put(urlPathEqualTo("/api/stocks/s-1"))
+                .willReturn(okJson("{\"id\":\"s-1\",\"version\":2,\"facilityRef\":\"fac-1\",\"tenantArticleId\":\"art-1\",\"value\":50}")));
+
+        // When
+        StockItem item = client.stocks().updateAsync(new StockId("s-1"), UpdateStockRequest.builder()
+                .version(1)
+                .value(50)
+                .build()).get();
+
+        // Then
+        assertThat(item.id().value()).isEqualTo("s-1");
+        assertThat(item.version()).isEqualTo(2);
+        assertThat(item.value()).isEqualTo(50);
     }
 
     // --- Helpers ---
