@@ -14,8 +14,12 @@ import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StockItem;
 import de.joesst.dev.fulfillmenttools.stocks.StockListRequest;
+import de.joesst.dev.fulfillmenttools.stocks.StockUpsertResult;
 import de.joesst.dev.fulfillmenttools.stocks.StocksClient;
 import de.joesst.dev.fulfillmenttools.stocks.UpdateStockRequest;
+import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockCreate;
+import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockOperation;
+import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockUpdate;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.io.IOException;
@@ -138,6 +142,66 @@ public final class StocksClientImpl implements StocksClient {
                 .build();
     }
 
+    @Override
+    public List<StockUpsertResult> upsertStocks(List<VersionlessStockOperation> operations) {
+        return toUpsertResults(responseHandler.handle(execute(buildUpsertRequest(operations)), UpsertActionResponse.class));
+    }
+
+    @Override
+    public CompletableFuture<List<StockUpsertResult>> upsertStocksAsync(List<VersionlessStockOperation> operations) {
+        return transport.executeAsync(buildUpsertRequest(operations))
+                .thenApply(r -> toUpsertResults(responseHandler.handle(r, UpsertActionResponse.class)));
+    }
+
+    private SdkHttpRequest buildUpsertRequest(List<VersionlessStockOperation> operations) {
+        Objects.requireNonNull(operations, "operations must not be null");
+        List<Object> bodies = operations.stream().map(this::toOperationBody).toList();
+        return SdkHttpRequest.builder()
+                .method(HttpMethod.POST)
+                .url(baseUrl + "/api/stocks/actions")
+                .body(responseHandler.encode(new UpsertActionBody("UPDATE_VERSIONLESS", bodies)))
+                .build();
+    }
+
+    private Object toOperationBody(VersionlessStockOperation op) {
+        if (op instanceof VersionlessStockCreate c) {
+            return new CreateOperationBody(
+                    "CREATE",
+                    c.tenantArticleId().value(),
+                    c.value(),
+                    c.facilityRef() != null ? c.facilityRef().value() : null,
+                    c.tenantFacilityId() != null ? c.tenantFacilityId().value() : null,
+                    c.locationRef() != null ? c.locationRef().value() : null,
+                    c.tenantStockId() != null ? c.tenantStockId().value() : null,
+                    c.availableUntil(),
+                    c.receiptDate(),
+                    c.conditions(),
+                    c.traitConfig(),
+                    c.properties(),
+                    c.customAttributes());
+        } else if (op instanceof VersionlessStockUpdate u) {
+            return new UpdateOperationBody(
+                    "UPDATE",
+                    u.stockId().value(),
+                    u.value(),
+                    u.locationRef() != null ? u.locationRef().value() : null,
+                    u.tenantStockId() != null ? u.tenantStockId().value() : null,
+                    u.conditions(),
+                    u.traitConfig(),
+                    u.customAttributes());
+        }
+        throw new IllegalArgumentException("Unknown operation type: " + op.getClass());
+    }
+
+    private List<StockUpsertResult> toUpsertResults(UpsertActionResponse response) {
+        if (response.result() == null || response.result().operationResults() == null) {
+            return List.of();
+        }
+        return response.result().operationResults().stream()
+                .map(r -> new StockUpsertResult(r.stock(), r.status()))
+                .toList();
+    }
+
     private Page<StockItem> toPage(StockListResponse body) {
         List<StockItem> items = body.stocks() != null ? body.stocks() : List.of();
         String cursor = body.pageInfo() != null ? body.pageInfo().endCursor() : null;
@@ -176,4 +240,38 @@ public final class StocksClientImpl implements StocksClient {
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
             Map<String, Object> customAttributes) {}
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private record UpsertActionBody(String name, List<Object> stocks) {}
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private record CreateOperationBody(
+            String operationType,
+            String tenantArticleId,
+            Integer value,
+            String facilityRef,
+            String tenantFacilityId,
+            String locationRef,
+            String tenantStockId,
+            Instant availableUntil,
+            Instant receiptDate,
+            List<String> conditions,
+            List<StorageLocationTraitConfigEntry> traitConfig,
+            Map<String, String> properties,
+            Map<String, Object> customAttributes) {}
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private record UpdateOperationBody(
+            String operationType,
+            String id,
+            Integer value,
+            String locationRef,
+            String tenantStockId,
+            List<String> conditions,
+            List<StorageLocationTraitConfigEntry> traitConfig,
+            Map<String, Object> customAttributes) {}
+
+    private record UpsertActionResponse(VersionlessUpsertResult result) {}
+    private record VersionlessUpsertResult(List<UpsertOperationResult> operationResults) {}
+    private record UpsertOperationResult(StockItem stock, String status) {}
 }

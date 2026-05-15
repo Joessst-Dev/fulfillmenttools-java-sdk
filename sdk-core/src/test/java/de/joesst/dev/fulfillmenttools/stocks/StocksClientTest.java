@@ -9,6 +9,9 @@ import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Page;
+import de.joesst.dev.fulfillmenttools.stocks.StockUpsertResult;
+import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockCreate;
+import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockUpdate;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -490,6 +493,119 @@ class StocksClientTest {
                 .withRequestBody(not(matchingJsonPath("$.tenantStockId")))
                 .withRequestBody(not(matchingJsonPath("$.conditions")))
                 .withRequestBody(not(matchingJsonPath("$.customAttributes"))));
+    }
+
+    // --- upsertStocks ---
+
+    @Test
+    void upsertStocks_sendsUpdateVersionlessAction() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":50},"status":"UPDATED"}
+                        ]}}
+                        """)));
+
+        // When
+        client.stocks().upsertStocks(List.of(
+                VersionlessStockUpdate.builder()
+                        .stockId(new StockId("s-1"))
+                        .value(50)
+                        .build()));
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/actions"))
+                .withRequestBody(matchingJsonPath("$.name", equalTo("UPDATE_VERSIONLESS")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].operationType", equalTo("UPDATE")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].id", equalTo("s-1")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].value", equalTo("50"))));
+    }
+
+    @Test
+    void upsertStocks_returnsResults() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-new","facilityRef":"fac-1","tenantArticleId":"art-1","value":100},"status":"CREATED"},
+                          {"stock":{"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-2","value":50},"status":"UPDATED"}
+                        ]}}
+                        """)));
+
+        // When
+        List<StockUpsertResult> results = client.stocks().upsertStocks(List.of(
+                VersionlessStockCreate.builder()
+                        .tenantArticleId(new TenantArticleId("art-1"))
+                        .facilityRef(new FacilityId("fac-1"))
+                        .value(100)
+                        .build(),
+                VersionlessStockUpdate.builder()
+                        .stockId(new StockId("s-1"))
+                        .value(50)
+                        .build()));
+
+        // Then
+        assertThat(results).hasSize(2);
+        assertThat(results.get(0).status()).isEqualTo("CREATED");
+        assertThat(results.get(0).stock().id().value()).isEqualTo("s-new");
+        assertThat(results.get(1).status()).isEqualTo("UPDATED");
+        assertThat(results.get(1).stock().value()).isEqualTo(50);
+    }
+
+    @Test
+    void upsertStocks_sendsCreateOperationFields() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-new","facilityRef":"fac-1","tenantArticleId":"art-1","value":10},"status":"CREATED"}
+                        ]}}
+                        """)));
+
+        // When
+        client.stocks().upsertStocks(List.of(
+                VersionlessStockCreate.builder()
+                        .tenantArticleId(new TenantArticleId("art-1"))
+                        .facilityRef(new FacilityId("fac-1"))
+                        .value(10)
+                        .build()));
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/actions"))
+                .withRequestBody(matchingJsonPath("$.stocks[0].operationType", equalTo("CREATE")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].tenantArticleId", equalTo("art-1")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].facilityRef", equalTo("fac-1")))
+                .withRequestBody(matchingJsonPath("$.stocks[0].value", equalTo("10"))));
+    }
+
+    @Test
+    void upsertStocks_omitsUnsetOptionalFieldsFromCreateOperation() {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-new","facilityRef":"fac-1","tenantArticleId":"art-1","value":5},"status":"CREATED"}
+                        ]}}
+                        """)));
+
+        // When
+        client.stocks().upsertStocks(List.of(
+                VersionlessStockCreate.builder()
+                        .tenantArticleId(new TenantArticleId("art-1"))
+                        .facilityRef(new FacilityId("fac-1"))
+                        .value(5)
+                        .build()));
+
+        // Then
+        server.verify(postRequestedFor(urlPathEqualTo("/api/stocks/actions"))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].locationRef")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].tenantStockId")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].conditions")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].availableUntil")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].receiptDate")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].traitConfig")))
+                .withRequestBody(not(matchingJsonPath("$.stocks[0].properties"))));
     }
 
     // --- Helpers ---

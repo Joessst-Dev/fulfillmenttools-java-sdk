@@ -9,6 +9,11 @@ import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import org.junit.jupiter.api.*;
 
+import de.joesst.dev.fulfillmenttools.stocks.StockUpsertResult;
+import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockUpdate;
+
+import java.util.List;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
@@ -112,6 +117,32 @@ class StocksAsyncTest {
         assertThat(item.id().value()).isEqualTo("s-1");
         assertThat(item.version()).isEqualTo(2);
         assertThat(item.value()).isEqualTo(50);
+    }
+
+    // --- upsertStocksAsync ---
+
+    @Test
+    void upsertStocksAsync_returnsResults() throws Exception {
+        // Given
+        server.stubFor(post(urlPathEqualTo("/api/stocks/actions"))
+                .willReturn(okJson("""
+                        {"name":"UPDATE_VERSIONLESS","result":{"operationResults":[
+                          {"stock":{"id":"s-1","facilityRef":"fac-1","tenantArticleId":"art-1","value":30},"status":"UPDATED"}
+                        ]}}
+                        """)));
+
+        // When
+        List<StockUpsertResult> results = client.stocks().upsertStocksAsync(List.of(
+                VersionlessStockUpdate.builder()
+                        .stockId(new StockId("s-1"))
+                        .value(30)
+                        .build())).get();
+
+        // Then
+        assertThat(results).hasSize(1);
+        assertThat(results.get(0).status()).isEqualTo("UPDATED");
+        assertThat(results.get(0).stock().id().value()).isEqualTo("s-1");
+        assertThat(results.get(0).stock().value()).isEqualTo(30);
     }
 
     // --- Helpers ---
