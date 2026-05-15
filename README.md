@@ -29,9 +29,9 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk:0.1.0-SNAPSHOT")
+    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk:0.0.1")
     // Optional: Spring Boot auto-configuration
-    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0-SNAPSHOT")
+    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk-springboot-starter:0.0.1")
 }
 ```
 
