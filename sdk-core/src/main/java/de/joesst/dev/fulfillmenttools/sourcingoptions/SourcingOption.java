@@ -1,5 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 /**
@@ -8,21 +10,20 @@ import java.util.List;
  *
  * <p>Maps to the {@code SourcingOption} schema in the fulfillmenttools OpenAPI spec.
  *
- * <p>Thread-safety: immutable record; safe for concurrent use.
- *
- * @param id                          Unique identifier of this sourcing option.
- * @param runId                       Identifier of the sourcing options run that produced this option.
- * @param totalPenalty                Aggregate penalty score; lower is better.
- * @param estimatedDeliveryDate       ISO-8601 date string for the estimated consumer delivery date.
- * @param estimatedPickupDate         ISO-8601 date string for the estimated pickup date.
- * @param validUntil                  ISO-8601 timestamp until which this option is valid.
- * @param nodes                       The facility nodes participating in this option.
- * @param transfers                   Stock transfers between nodes required by this option.
- * @param listingDetails              Listing-level stock and configuration details per article.
- * @param nonAssignedOrderLineItems   Line items that could not be assigned to any node.
- * @param ratingResults               Individual rating criterion scores contributing to totalPenalty.
- * @param totalCosts                  Aggregated cost breakdown for this option.
+ * @param id                        unique identifier of this sourcing option
+ * @param runId                     identifier of the sourcing options run
+ * @param totalPenalty              aggregate penalty score; lower is better
+ * @param estimatedDeliveryDate     estimated consumer delivery date (YYYY-MM-DD)
+ * @param estimatedPickupDate       estimated pickup date (YYYY-MM-DD)
+ * @param validUntil                ISO-8601 timestamp until which this option is valid
+ * @param nodes                     facility nodes participating in this option
+ * @param transfers                 stock transfers between nodes required by this option
+ * @param listingDetails            listing-level details per article
+ * @param nonAssignedOrderLineItems articles that could not be assigned to any node
+ * @param ratingResults             individual rating criterion scores
+ * @param totalCosts                aggregated cost breakdown
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record SourcingOption(
         String id,
         String runId,
@@ -33,7 +34,7 @@ public record SourcingOption(
         List<SourcingOptionNode> nodes,
         List<SourcingOptionTransfer> transfers,
         List<SourcingOptionListingDetails> listingDetails,
-        List<SourcingOptionNonAssignedOrderLineItem> nonAssignedOrderLineItems,
+        List<HandledItem> nonAssignedOrderLineItems,
         List<SourcingOptionRatingResult> ratingResults,
         SourcingOptionCosts totalCosts
 ) {
@@ -54,7 +55,7 @@ public record SourcingOption(
         private List<SourcingOptionNode> nodes;
         private List<SourcingOptionTransfer> transfers;
         private List<SourcingOptionListingDetails> listingDetails;
-        private List<SourcingOptionNonAssignedOrderLineItem> nonAssignedOrderLineItems;
+        private List<HandledItem> nonAssignedOrderLineItems;
         private List<SourcingOptionRatingResult> ratingResults;
         private SourcingOptionCosts totalCosts;
 
@@ -67,12 +68,13 @@ public record SourcingOption(
         public Builder nodes(List<SourcingOptionNode> nodes) { this.nodes = nodes; return this; }
         public Builder transfers(List<SourcingOptionTransfer> transfers) { this.transfers = transfers; return this; }
         public Builder listingDetails(List<SourcingOptionListingDetails> listingDetails) { this.listingDetails = listingDetails; return this; }
-        public Builder nonAssignedOrderLineItems(List<SourcingOptionNonAssignedOrderLineItem> nonAssignedOrderLineItems) { this.nonAssignedOrderLineItems = nonAssignedOrderLineItems; return this; }
+        public Builder nonAssignedOrderLineItems(List<HandledItem> nonAssignedOrderLineItems) { this.nonAssignedOrderLineItems = nonAssignedOrderLineItems; return this; }
         public Builder ratingResults(List<SourcingOptionRatingResult> ratingResults) { this.ratingResults = ratingResults; return this; }
         public Builder totalCosts(SourcingOptionCosts totalCosts) { this.totalCosts = totalCosts; return this; }
 
         public SourcingOption build() {
-            return new SourcingOption(id, runId, totalPenalty, estimatedDeliveryDate, estimatedPickupDate, validUntil, nodes, transfers, listingDetails, nonAssignedOrderLineItems, ratingResults, totalCosts);
+            return new SourcingOption(id, runId, totalPenalty, estimatedDeliveryDate, estimatedPickupDate, validUntil,
+                    nodes, transfers, listingDetails, nonAssignedOrderLineItems, ratingResults, totalCosts);
         }
     }
 }

@@ -1,7 +1,6 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
-import de.joesst.dev.fulfillmenttools.id.FacilityId;
-import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 
@@ -11,22 +10,21 @@ import java.util.List;
  *
  * <p>Maps to the {@code SourcingOptionNode} schema in the fulfillmenttools OpenAPI spec.
  *
- * <p>Thread-safety: immutable record; safe for concurrent use.
- *
- * @param id               Unique identifier of this node.
- * @param facilityRef      Reference to the fulfillmenttools facility.
- * @param tenantFacilityId Tenant-specific {@link TenantFacilityId} facility identifier.
- * @param type             Node type (e.g. {@code SHIP_FROM_STORE}, {@code WAREHOUSE}).
- * @param isPickUpLocation Whether this node is a click-and-collect pickup location.
- * @param lineItems        The line items to be fulfilled from this node.
+ * @param id               unique identifier of this node
+ * @param type             node type ({@link NodeType})
+ * @param facilityRef      fulfillmenttools facility reference
+ * @param tenantFacilityId tenant-specific facility identifier
+ * @param isPickUpLocation whether this node is a click-and-collect pickup location
+ * @param lineItems        articles and quantities to be fulfilled from this node
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record SourcingOptionNode(
         String id,
-        FacilityId facilityRef,
-        TenantFacilityId tenantFacilityId,
-        String type,
+        NodeType type,
+        String facilityRef,
+        String tenantFacilityId,
         Boolean isPickUpLocation,
-        List<SourcingOptionNodeLineItem> lineItems
+        List<HandledItem> lineItems
 ) {
 
     public static Builder builder() {
@@ -37,21 +35,21 @@ public record SourcingOptionNode(
         private Builder() {}
 
         private String id;
-        private FacilityId facilityRef;
-        private TenantFacilityId tenantFacilityId;
-        private String type;
+        private NodeType type;
+        private String facilityRef;
+        private String tenantFacilityId;
         private Boolean isPickUpLocation;
-        private List<SourcingOptionNodeLineItem> lineItems;
+        private List<HandledItem> lineItems;
 
         public Builder id(String id) { this.id = id; return this; }
-        public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
-        public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
-        public Builder type(String type) { this.type = type; return this; }
+        public Builder type(NodeType type) { this.type = type; return this; }
+        public Builder facilityRef(String facilityRef) { this.facilityRef = facilityRef; return this; }
+        public Builder tenantFacilityId(String tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
         public Builder isPickUpLocation(Boolean isPickUpLocation) { this.isPickUpLocation = isPickUpLocation; return this; }
-        public Builder lineItems(List<SourcingOptionNodeLineItem> lineItems) { this.lineItems = lineItems; return this; }
+        public Builder lineItems(List<HandledItem> lineItems) { this.lineItems = lineItems; return this; }
 
         public SourcingOptionNode build() {
-            return new SourcingOptionNode(id, facilityRef, tenantFacilityId, type, isPickUpLocation, lineItems);
+            return new SourcingOptionNode(id, type, facilityRef, tenantFacilityId, isPickUpLocation, lineItems);
         }
     }
 }
