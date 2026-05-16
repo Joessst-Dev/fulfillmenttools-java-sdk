@@ -115,6 +115,30 @@ System.out.println(tz.offsetInSeconds()); // e.g. 3600.0
 | `offsetInSeconds()` | `Double` (nullable) | UTC offset in seconds; `null` if unknown |
 | `source()` | `String` | System that determined this time zone |
 
+## Money
+
+A monetary amount with currency information. Used throughout the SDK to represent prices, costs, and financial values.
+
+```java
+import de.joesst.dev.fulfillmenttools.model.Money;
+
+Money price = Money.builder()
+    .value(99.99)
+    .currency("EUR")
+    .decimalPlaces(2.0)
+    .build();
+
+System.out.println(price.value());        // 99.99
+System.out.println(price.currency());     // "EUR"
+System.out.println(price.decimalPlaces()); // 2.0
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `value()` | `Double` | The numeric monetary amount |
+| `currency()` | `String` | ISO 4217 currency code (e.g. `"EUR"`, `"USD"`) |
+| `decimalPlaces()` | `Double` | The number of decimal places for this currency (e.g. 2.0 for most currencies, 0 for JPY) |
+
 ---
 
 ## Exceptions
