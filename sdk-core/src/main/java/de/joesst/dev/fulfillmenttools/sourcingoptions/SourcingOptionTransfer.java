@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.ConnectionId;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public record SourcingOptionTransfer(
         List<HandledItem> lineItems,
         List<SourcingOptionsTransferPackagingInformation> packagingInformation,
         TransferCarrier carrier,
-        String facilityConnectionRef,
+        ConnectionId facilityConnectionRef,
         TransferTimeLine timeLine
 ) {
 
@@ -41,7 +42,7 @@ public record SourcingOptionTransfer(
         private List<HandledItem> lineItems;
         private List<SourcingOptionsTransferPackagingInformation> packagingInformation;
         private TransferCarrier carrier;
-        private String facilityConnectionRef;
+        private ConnectionId facilityConnectionRef;
         private TransferTimeLine timeLine;
 
         public Builder sourceNodeRef(String sourceNodeRef) { this.sourceNodeRef = sourceNodeRef; return this; }
@@ -49,7 +50,7 @@ public record SourcingOptionTransfer(
         public Builder lineItems(List<HandledItem> lineItems) { this.lineItems = lineItems; return this; }
         public Builder packagingInformation(List<SourcingOptionsTransferPackagingInformation> packagingInformation) { this.packagingInformation = packagingInformation; return this; }
         public Builder carrier(TransferCarrier carrier) { this.carrier = carrier; return this; }
-        public Builder facilityConnectionRef(String facilityConnectionRef) { this.facilityConnectionRef = facilityConnectionRef; return this; }
+        public Builder facilityConnectionRef(ConnectionId facilityConnectionRef) { this.facilityConnectionRef = facilityConnectionRef; return this; }
         public Builder timeLine(TransferTimeLine timeLine) { this.timeLine = timeLine; return this; }
 
         public SourcingOptionTransfer build() {

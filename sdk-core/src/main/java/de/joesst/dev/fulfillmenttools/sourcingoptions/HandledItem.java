@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 
 /**
  * An article and quantity handled within a sourcing option node or transfer.
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record HandledItem(
-        String tenantArticleId,
+        TenantArticleId tenantArticleId,
         Double quantity
 ) {
 
@@ -23,10 +24,10 @@ public record HandledItem(
     public static final class Builder {
         private Builder() {}
 
-        private String tenantArticleId;
+        private TenantArticleId tenantArticleId;
         private Double quantity;
 
-        public Builder tenantArticleId(String tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
+        public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
         public Builder quantity(Double quantity) { this.quantity = quantity; return this; }
 
         public HandledItem build() {
