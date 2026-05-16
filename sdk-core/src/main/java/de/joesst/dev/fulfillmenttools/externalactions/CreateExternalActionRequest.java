@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.externalactions;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request object for creating a new external action.

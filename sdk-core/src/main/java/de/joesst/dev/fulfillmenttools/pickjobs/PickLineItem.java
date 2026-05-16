@@ -4,10 +4,10 @@ import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.MeasurementValidation;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
 import de.joesst.dev.fulfillmenttools.orders.Substitute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single pick line item within a pick job, representing a quantity of a specific article

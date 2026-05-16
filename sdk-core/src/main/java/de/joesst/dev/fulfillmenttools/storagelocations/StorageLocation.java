@@ -2,10 +2,10 @@ package de.joesst.dev.fulfillmenttools.storagelocations;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a physical storage location (e.g. aisle, rack, bin) within a facility.

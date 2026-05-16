@@ -6,12 +6,12 @@ import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantStockId;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request to create a new stock entry via {@code POST /api/stocks}.

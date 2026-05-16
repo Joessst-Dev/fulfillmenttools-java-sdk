@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single line item within a stow job, describing an article that needs to be taken

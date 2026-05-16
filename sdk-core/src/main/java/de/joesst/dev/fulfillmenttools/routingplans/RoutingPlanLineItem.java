@@ -4,9 +4,9 @@ import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.MeasurementValidation;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemArticle;
 import de.joesst.dev.fulfillmenttools.orders.Substitute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A line item on a routing plan, extending the base order line item with routing-specific

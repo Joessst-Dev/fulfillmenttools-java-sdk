@@ -3,10 +3,10 @@ package de.joesst.dev.fulfillmenttools.itemreturnjobs;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.ItemReturnJobId;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a fulfillmenttools item return job, which manages the physical return of

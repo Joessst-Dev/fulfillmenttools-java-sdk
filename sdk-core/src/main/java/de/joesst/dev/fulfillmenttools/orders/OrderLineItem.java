@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
 import de.joesst.dev.fulfillmenttools.model.TagReference;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A read-side order line item containing article and fulfillment information.

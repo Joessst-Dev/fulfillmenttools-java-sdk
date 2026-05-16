@@ -4,10 +4,10 @@ import de.joesst.dev.fulfillmenttools.id.StockId;
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantStockId;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An update operation for use in {@link StocksClient#upsertStocks}.

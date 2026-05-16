@@ -123,7 +123,7 @@ class CheckoutOptionsClientTest {
                                 .city("Berlin")
                                 .build())
                         .filterDuplicates(true)
-                        .customAttributes(new CustomAttributes(Map.of("source", "web")))
+                        .customAttributes(CustomAttributes.of(Map.of("source", "web")))
                         .build());
 
         // Then

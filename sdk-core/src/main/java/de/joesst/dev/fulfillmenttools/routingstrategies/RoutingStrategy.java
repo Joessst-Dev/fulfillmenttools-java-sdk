@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.routingstrategies;
 
 import de.joesst.dev.fulfillmenttools.id.RoutingStrategyId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A routing strategy that determines how fulfillment orders are routed to facilities.

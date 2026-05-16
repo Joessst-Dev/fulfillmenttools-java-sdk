@@ -2,10 +2,10 @@ package de.joesst.dev.fulfillmenttools.facilityconnections;
 
 import de.joesst.dev.fulfillmenttools.id.ConnectionId;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a facility connection returned by the fulfillmenttools API.

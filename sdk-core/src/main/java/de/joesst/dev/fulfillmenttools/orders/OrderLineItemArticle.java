@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An article on a read-side order line item.

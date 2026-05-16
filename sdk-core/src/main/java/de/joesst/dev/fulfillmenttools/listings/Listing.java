@@ -5,11 +5,11 @@ import de.joesst.dev.fulfillmenttools.id.ListingId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A listing represents an article that is offered in a specific facility.

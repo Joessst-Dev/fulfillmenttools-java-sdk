@@ -3,10 +3,10 @@ package de.joesst.dev.fulfillmenttools.reservations;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ReservationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a stock reservation in fulfillmenttools.

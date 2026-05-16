@@ -2,9 +2,9 @@ package de.joesst.dev.fulfillmenttools.handoverjobs;
 
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A line item that is expected (anticipated) on a handover job but not yet confirmed.

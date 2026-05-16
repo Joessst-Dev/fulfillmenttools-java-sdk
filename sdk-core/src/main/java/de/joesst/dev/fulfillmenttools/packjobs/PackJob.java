@@ -13,10 +13,10 @@ import de.joesst.dev.fulfillmenttools.orders.Sticker;
 import de.joesst.dev.fulfillmenttools.pickjobs.DocumentHandling;
 import de.joesst.dev.fulfillmenttools.pickjobs.PickJobEditor;
 import de.joesst.dev.fulfillmenttools.pickjobs.WorkflowInformation;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A pack job representing the task of packing picked articles into parcels.

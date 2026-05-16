@@ -1,11 +1,11 @@
 package de.joesst.dev.fulfillmenttools.itemreturnjobs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a single physical item return within an item return job.

@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.internal.pickjobs;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 record UpdatePickJobBody(Integer version, List<ModifyPickJobAction> actions) {
     record ModifyPickJobAction(

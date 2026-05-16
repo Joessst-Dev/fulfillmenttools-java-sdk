@@ -2,10 +2,10 @@ package de.joesst.dev.fulfillmenttools.returns;
 
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An article attached to a return job line item.

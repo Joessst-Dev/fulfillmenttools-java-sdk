@@ -4,9 +4,9 @@ import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.MeasurementValidation;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
 import de.joesst.dev.fulfillmenttools.orders.Substitute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An expected pick line item representing an article that is anticipated to be picked

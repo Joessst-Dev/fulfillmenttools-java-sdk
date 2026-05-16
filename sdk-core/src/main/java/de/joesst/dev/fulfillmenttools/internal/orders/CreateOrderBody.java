@@ -9,10 +9,10 @@ import de.joesst.dev.fulfillmenttools.orders.OrderPaymentInfoForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderSource;
 import de.joesst.dev.fulfillmenttools.orders.OrderStatusReason;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record CreateOrderBody(

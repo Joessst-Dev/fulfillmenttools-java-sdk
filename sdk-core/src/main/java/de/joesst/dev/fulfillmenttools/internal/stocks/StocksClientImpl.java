@@ -22,6 +22,7 @@ import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockCreate;
 import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockOperation;
 import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockUpdate;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -29,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 public final class StocksClientImpl implements StocksClient {
 

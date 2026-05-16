@@ -2,10 +2,10 @@ package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request payload for creating a new facility.

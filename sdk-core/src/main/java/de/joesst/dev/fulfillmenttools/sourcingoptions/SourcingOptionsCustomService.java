@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A custom service attached to an order for sourcing options evaluation.

@@ -6,11 +6,11 @@ import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantStockId;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single stock entry representing the physical availability of an article at a facility.

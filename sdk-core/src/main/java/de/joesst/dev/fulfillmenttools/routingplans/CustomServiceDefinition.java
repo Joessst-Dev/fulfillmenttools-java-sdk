@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * The definition of a custom service applied to order line items.

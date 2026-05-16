@@ -3,10 +3,10 @@ package de.joesst.dev.fulfillmenttools.facilities;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a facility in the fulfillmenttools platform.

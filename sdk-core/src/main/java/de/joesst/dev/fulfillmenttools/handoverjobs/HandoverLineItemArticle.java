@@ -2,10 +2,10 @@ package de.joesst.dev.fulfillmenttools.handoverjobs;
 
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * The article associated with a handover job line item.

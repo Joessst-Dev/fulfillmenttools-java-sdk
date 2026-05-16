@@ -7,11 +7,11 @@ import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderPaymentInfoForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderStatusReason;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An order submitted to the sourcing options engine for fulfillment evaluation.

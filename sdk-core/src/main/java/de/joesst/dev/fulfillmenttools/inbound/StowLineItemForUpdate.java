@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A stow line item as provided in an {@link UpdateStowJobRequest}.

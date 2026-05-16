@@ -3,11 +3,11 @@ package de.joesst.dev.fulfillmenttools.orders;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request object for creating a new fulfillmenttools order.

@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request for updating an existing pack job with new status or attributes.

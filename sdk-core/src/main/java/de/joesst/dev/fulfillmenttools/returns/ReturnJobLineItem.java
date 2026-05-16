@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
 import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A line item on a return job, describing an article that is or is not returnable.

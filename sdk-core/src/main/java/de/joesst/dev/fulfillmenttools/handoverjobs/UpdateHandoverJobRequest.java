@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.handoverjobs;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request for updating an existing handover job with new status or attributes.

@@ -2,9 +2,9 @@ package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.model.Coordinates;
 import de.joesst.dev.fulfillmenttools.model.TimeZone;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Physical address and contact information for a facility.

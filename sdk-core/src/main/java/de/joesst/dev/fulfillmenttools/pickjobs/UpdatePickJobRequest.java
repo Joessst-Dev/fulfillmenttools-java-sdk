@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request for updating an existing pick job with new status, attributes, or picking methods.

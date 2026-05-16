@@ -1,11 +1,11 @@
 package de.joesst.dev.fulfillmenttools.checkoutoptions;
 
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request object for evaluating checkout options against the fulfillmenttools promise engine.

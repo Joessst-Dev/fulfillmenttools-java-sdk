@@ -4,11 +4,11 @@ import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A fulfillmenttools order as returned by the read API.

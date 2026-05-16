@@ -8,10 +8,10 @@ import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A pick job representing the fulfilment task to pick articles for an order at a facility.

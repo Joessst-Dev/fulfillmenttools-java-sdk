@@ -2,9 +2,9 @@ package de.joesst.dev.fulfillmenttools.purchaseorders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.model.Quantity;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single line item on a purchase order, identifying the requested article and quantity.

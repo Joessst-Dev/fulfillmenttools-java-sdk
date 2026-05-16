@@ -2,10 +2,10 @@ package de.joesst.dev.fulfillmenttools.inbound;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.model.Quantity;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single line item within an inbound receipt, recording accepted and rejected quantities

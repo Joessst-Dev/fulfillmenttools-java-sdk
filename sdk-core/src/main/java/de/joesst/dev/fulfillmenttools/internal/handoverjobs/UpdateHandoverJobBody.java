@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.internal.handoverjobs;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 record UpdateHandoverJobBody(Integer version, List<ModifyHandoverjobAction> actions) {
 

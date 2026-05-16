@@ -3,10 +3,10 @@ package de.joesst.dev.fulfillmenttools.inbound;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a stow job in fulfillmenttools.

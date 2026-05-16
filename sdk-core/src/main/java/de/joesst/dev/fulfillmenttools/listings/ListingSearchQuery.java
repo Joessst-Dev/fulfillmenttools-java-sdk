@@ -1,12 +1,12 @@
 package de.joesst.dev.fulfillmenttools.listings;
 
 import de.joesst.dev.fulfillmenttools.id.TagId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Typed builder for the query sent to POST /api/listings/search.

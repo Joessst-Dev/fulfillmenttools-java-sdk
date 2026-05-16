@@ -3,10 +3,10 @@ package de.joesst.dev.fulfillmenttools.inbound;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.InboundDeliveryId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a fulfillmenttools inbound delivery (called {@code InboundProcess} in the API),

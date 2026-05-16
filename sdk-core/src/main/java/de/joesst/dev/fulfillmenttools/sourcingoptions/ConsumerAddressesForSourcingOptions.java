@@ -2,9 +2,9 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A collection of consumer addresses for use in sourcing options requests.

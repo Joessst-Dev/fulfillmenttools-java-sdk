@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.checkoutoptions.CheckoutOptionsConsumerAddress;
 import de.joesst.dev.fulfillmenttools.checkoutoptions.GeoFence;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record EvaluateCheckoutOptionsBody(

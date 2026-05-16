@@ -2,11 +2,11 @@ package de.joesst.dev.fulfillmenttools.facilitygroups;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityGroupId;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a facility group in the fulfillmenttools platform.

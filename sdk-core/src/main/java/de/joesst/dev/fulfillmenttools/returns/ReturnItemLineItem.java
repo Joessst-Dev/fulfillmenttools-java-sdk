@@ -2,10 +2,10 @@ package de.joesst.dev.fulfillmenttools.returns;
 
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single returned line item within a return, capturing condition, reasons, and refund details.

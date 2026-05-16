@@ -11,10 +11,10 @@ import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
 import de.joesst.dev.fulfillmenttools.packjobs.OperativeTransfer;
 import de.joesst.dev.fulfillmenttools.pickjobs.WorkflowInformation;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A handover job representing the task of handing over picked articles to a customer or carrier.

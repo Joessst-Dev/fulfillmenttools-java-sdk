@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import de.joesst.dev.fulfillmenttools.model.Coordinates;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A consumer address for use in sourcing options requests.

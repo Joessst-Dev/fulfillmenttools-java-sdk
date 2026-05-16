@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.orders;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request to update an existing order.

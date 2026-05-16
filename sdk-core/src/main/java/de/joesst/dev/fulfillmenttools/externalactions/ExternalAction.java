@@ -2,11 +2,11 @@ package de.joesst.dev.fulfillmenttools.externalactions;
 
 import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents an external action returned by the fulfillmenttools API.

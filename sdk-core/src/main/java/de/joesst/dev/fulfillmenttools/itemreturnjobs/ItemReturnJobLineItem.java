@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.itemreturnjobs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single line item within an item return job, tracking returnable and returned quantities.

@@ -2,9 +2,9 @@ package de.joesst.dev.fulfillmenttools.returns;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A line item supplied when creating or updating a return job, describing an article

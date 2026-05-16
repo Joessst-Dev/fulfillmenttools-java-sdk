@@ -2,9 +2,9 @@ package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request payload for updating an existing facility with partial changes.

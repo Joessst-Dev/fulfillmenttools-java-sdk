@@ -41,6 +41,16 @@ public final class CustomAttributes {
     }
 
     /**
+     * Convenience factory — equivalent to {@code new CustomAttributes(attributes)}.
+     *
+     * @param attributes the raw attributes map; {@code null} is treated as an empty map
+     * @return a new {@code CustomAttributes} instance
+     */
+    public static CustomAttributes of(Map<String, Object> attributes) {
+        return new CustomAttributes(attributes);
+    }
+
+    /**
      * Returns the raw attributes map.
      */
     @JsonValue

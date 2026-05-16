@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.storagelocations;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Objects;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request parameters for updating an existing storage location via
