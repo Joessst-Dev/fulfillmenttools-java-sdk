@@ -17,8 +17,8 @@ import de.joesst.dev.fulfillmenttools.model.Money;
  * and composes them into a {@link Money} object; explicit {@link JsonProperty} getters write them
  * back at the same level for serialization.
  *
- * @param money                   the monetary amount (value, currency, decimalPlaces)
- * @param deliveryCostCoefficient optional weight-based cost coefficient
+ * The composed {@code money} field carries the monetary amount; {@code deliveryCostCoefficient}
+ * is an optional weight-based cost coefficient.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class SourcingOptionsTransferDeliveryCost {
