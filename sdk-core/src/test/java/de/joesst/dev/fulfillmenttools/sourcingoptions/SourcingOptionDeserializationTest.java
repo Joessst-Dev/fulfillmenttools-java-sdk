@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.*;
  * deserialize correctly from JSON, covering the novel paths:
  * <ul>
  *   <li>{@link NodeType} enum and typed node IDs</li>
- *   <li>{@link SourcingOptionsTransferDeliveryCost} with {@code @JsonUnwrapped Money} composition</li>
+ *   <li>{@link SourcingOptionsTransferDeliveryCost} with {@code @JsonCreator}/{@code @JsonProperty} flat Money composition</li>
  *   <li>Typed rating result fields ({@link de.joesst.dev.fulfillmenttools.id.RatingResultId},
  *       {@link RatingResultType}, {@link de.joesst.dev.fulfillmenttools.id.RoutingStrategyNodeId})</li>
  *   <li>{@link SourcingOptionCosts} with nested {@link ShippingCosts} and {@link Money}</li>
@@ -128,7 +128,7 @@ class SourcingOptionDeserializationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Transfers — DeliveryCost @JsonUnwrapped Money path
+    // Transfers — DeliveryCost @JsonCreator + @JsonProperty flat Money path
     // -------------------------------------------------------------------------
 
     @Nested
