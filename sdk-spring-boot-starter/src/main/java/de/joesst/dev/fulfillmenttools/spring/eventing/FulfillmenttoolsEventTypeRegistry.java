@@ -1,21 +1,31 @@
 package de.joesst.dev.fulfillmenttools.spring.eventing;
 
+import de.joesst.dev.fulfillmenttools.expiryentities.ExpiryEntity;
 import de.joesst.dev.fulfillmenttools.externalactions.ExternalAction;
 import de.joesst.dev.fulfillmenttools.facilities.Facility;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroup;
 import de.joesst.dev.fulfillmenttools.handoverjobs.HandoverJob;
+import de.joesst.dev.fulfillmenttools.inbound.InboundDelivery;
+import de.joesst.dev.fulfillmenttools.inbound.InboundReceipt;
 import de.joesst.dev.fulfillmenttools.inbound.StowJob;
+import de.joesst.dev.fulfillmenttools.itemreturnjobs.ItemReturnJob;
 import de.joesst.dev.fulfillmenttools.listings.Listing;
 import de.joesst.dev.fulfillmenttools.orders.Order;
 import de.joesst.dev.fulfillmenttools.packjobs.PackJob;
+import de.joesst.dev.fulfillmenttools.packingcontainers.PackingTargetContainer;
+import de.joesst.dev.fulfillmenttools.parcels.Parcel;
 import de.joesst.dev.fulfillmenttools.pickjobs.PickJob;
 import de.joesst.dev.fulfillmenttools.processes.Process;
+import de.joesst.dev.fulfillmenttools.purchaseorders.PurchaseOrder;
 import de.joesst.dev.fulfillmenttools.reservations.Reservation;
 import de.joesst.dev.fulfillmenttools.returns.Return;
 import de.joesst.dev.fulfillmenttools.routingplans.RoutingPlan;
+import de.joesst.dev.fulfillmenttools.servicejobs.ServiceJob;
+import de.joesst.dev.fulfillmenttools.shipments.Shipment;
 import de.joesst.dev.fulfillmenttools.stocks.StockItem;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocation;
 import de.joesst.dev.fulfillmenttools.users.User;
+import de.joesst.dev.fulfillmenttools.zones.Zone;
 
 import java.util.Map;
 import java.util.Optional;
@@ -128,6 +138,47 @@ public class FulfillmenttoolsEventTypeRegistry {
         register("LISTINGS_INFORMATION_CHANGED", Listing.class);
         register("LISTINGS_STATUS_CHANGED", Listing.class);
         register("LISTINGS_STOCK_CONFIGURATIONS_CHANGED", Listing.class);
+
+        register("EXPIRY_ENTITY_CREATED", ExpiryEntity.class);
+        register("EXPIRY_ENTITY_UPDATED", ExpiryEntity.class);
+        register("EXPIRY_ENTITY_EXPIRED", ExpiryEntity.class);
+
+        register("ITEM_RETURN_JOB_CREATED", ItemReturnJob.class);
+        register("ITEM_RETURN_JOB_UPDATED", ItemReturnJob.class);
+
+        register("PACKING_TARGET_CONTAINER_CREATED_EVENT", PackingTargetContainer.class);
+        register("PACKING_TARGET_CONTAINER_UPDATED_EVENT", PackingTargetContainer.class);
+        register("PACKING_TARGET_CONTAINER_DELETED_EVENT", PackingTargetContainer.class);
+
+        register("PARCEL_CARRIER_ACKNOWLEDGED", Parcel.class);
+        register("PARCEL_CARRIER_CREATED", Parcel.class);
+        register("PARCEL_CARRIER_FAILED", Parcel.class);
+        register("PARCEL_CARRIER_REQUESTED", Parcel.class);
+        register("PARCEL_TRACK_AND_TRACE_STATUS_UPDATED", Parcel.class);
+
+        register("SERVICE_JOB_CREATED", ServiceJob.class);
+        register("SERVICE_JOB_FINISHED", ServiceJob.class);
+
+        register("SHIPMENT_CREATED", Shipment.class);
+        register("SHIPMENT_UPDATED", Shipment.class);
+
+        register("INBOUND_DELIVERY_FINISHED", InboundDelivery.class);
+        register("INBOUND_DELIVERY_ON_HOLD", InboundDelivery.class);
+        register("INBOUND_DELIVERY_RECEIVED", InboundDelivery.class);
+        register("INBOUND_DELIVERY_RELEASED", InboundDelivery.class);
+
+        register("INBOUND_PROCESS_PURCHASE_ORDER_CANCELED", PurchaseOrder.class);
+        register("INBOUND_PROCESS_PURCHASE_ORDER_CREATED", PurchaseOrder.class);
+        register("INBOUND_PROCESS_PURCHASE_ORDER_DELETED", PurchaseOrder.class);
+        register("INBOUND_PROCESS_PURCHASE_ORDER_LINE_ITEMS_CHANGED", PurchaseOrder.class);
+        register("INBOUND_PROCESS_PURCHASE_ORDER_REQUESTED_DATE_CHANGED", PurchaseOrder.class);
+
+        register("INBOUND_PROCESS_RECEIPT_CREATED", InboundReceipt.class);
+        register("INBOUND_PROCESS_RECEIPT_LINE_ITEM_CHANGED", InboundReceipt.class);
+        register("INBOUND_PROCESS_RECEIPT_STARTED", InboundReceipt.class);
+
+        register("ZONE_CREATED", Zone.class);
+        register("ZONE_DELETED", Zone.class);
     }
 
     /**
