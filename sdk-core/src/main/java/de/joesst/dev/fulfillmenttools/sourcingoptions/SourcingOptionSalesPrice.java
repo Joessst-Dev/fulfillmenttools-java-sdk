@@ -53,8 +53,8 @@ public record SourcingOptionSalesPrice(
         public Builder amount(Double amount) { this.amount = amount; return this; }
         public Builder sourceFacilityRef(FacilityId sourceFacilityRef) { this.sourceFacilityRef = sourceFacilityRef; return this; }
         public Builder sourceTenantFacilityId(TenantFacilityId sourceTenantFacilityId) { this.sourceTenantFacilityId = sourceTenantFacilityId; return this; }
-        public Builder salesPricePerUnitWithoutDiscountAmount(Money m) { this.salesPricePerUnitWithoutDiscountAmount = m; return this; }
-        public Builder salesPricePerUnitWithDiscountAmount(Money m) { this.salesPricePerUnitWithDiscountAmount = m; return this; }
+        public Builder salesPricePerUnitWithoutDiscountAmount(Money salesPricePerUnitWithoutDiscountAmount) { this.salesPricePerUnitWithoutDiscountAmount = salesPricePerUnitWithoutDiscountAmount; return this; }
+        public Builder salesPricePerUnitWithDiscountAmount(Money salesPricePerUnitWithDiscountAmount) { this.salesPricePerUnitWithDiscountAmount = salesPricePerUnitWithDiscountAmount; return this; }
         public Builder discount(List<FacilityDiscountValue> discount) { this.discount = discount; return this; }
 
         public SourcingOptionSalesPrice build() {
