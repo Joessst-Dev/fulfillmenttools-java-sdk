@@ -1,21 +1,31 @@
 package de.joesst.dev.fulfillmenttools.spring.eventing;
 
+import de.joesst.dev.fulfillmenttools.expiryentities.ExpiryEntity;
 import de.joesst.dev.fulfillmenttools.externalactions.ExternalAction;
 import de.joesst.dev.fulfillmenttools.facilities.Facility;
 import de.joesst.dev.fulfillmenttools.facilitygroups.FacilityGroup;
 import de.joesst.dev.fulfillmenttools.handoverjobs.HandoverJob;
+import de.joesst.dev.fulfillmenttools.inbound.InboundDelivery;
+import de.joesst.dev.fulfillmenttools.inbound.InboundReceipt;
 import de.joesst.dev.fulfillmenttools.inbound.StowJob;
+import de.joesst.dev.fulfillmenttools.itemreturnjobs.ItemReturnJob;
 import de.joesst.dev.fulfillmenttools.listings.Listing;
 import de.joesst.dev.fulfillmenttools.orders.Order;
 import de.joesst.dev.fulfillmenttools.packjobs.PackJob;
+import de.joesst.dev.fulfillmenttools.packingcontainers.PackingTargetContainer;
+import de.joesst.dev.fulfillmenttools.parcels.Parcel;
 import de.joesst.dev.fulfillmenttools.pickjobs.PickJob;
 import de.joesst.dev.fulfillmenttools.processes.Process;
+import de.joesst.dev.fulfillmenttools.purchaseorders.PurchaseOrder;
 import de.joesst.dev.fulfillmenttools.reservations.Reservation;
 import de.joesst.dev.fulfillmenttools.returns.Return;
 import de.joesst.dev.fulfillmenttools.routingplans.RoutingPlan;
+import de.joesst.dev.fulfillmenttools.servicejobs.ServiceJob;
+import de.joesst.dev.fulfillmenttools.shipments.Shipment;
 import de.joesst.dev.fulfillmenttools.stocks.StockItem;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocation;
 import de.joesst.dev.fulfillmenttools.users.User;
+import de.joesst.dev.fulfillmenttools.zones.Zone;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -154,7 +164,58 @@ class FulfillmenttoolsEventTypeRegistryTest {
                     Arguments.of("LISTINGS_DELETED", Listing.class),
                     Arguments.of("LISTINGS_INFORMATION_CHANGED", Listing.class),
                     Arguments.of("LISTINGS_STATUS_CHANGED", Listing.class),
-                    Arguments.of("LISTINGS_STOCK_CONFIGURATIONS_CHANGED", Listing.class)
+                    Arguments.of("LISTINGS_STOCK_CONFIGURATIONS_CHANGED", Listing.class),
+
+                    // Expiry Entities
+                    Arguments.of("EXPIRY_ENTITY_CREATED", ExpiryEntity.class),
+                    Arguments.of("EXPIRY_ENTITY_UPDATED", ExpiryEntity.class),
+                    Arguments.of("EXPIRY_ENTITY_EXPIRED", ExpiryEntity.class),
+
+                    // Item Return Jobs
+                    Arguments.of("ITEM_RETURN_JOB_CREATED", ItemReturnJob.class),
+                    Arguments.of("ITEM_RETURN_JOB_UPDATED", ItemReturnJob.class),
+
+                    // Packing Target Containers
+                    Arguments.of("PACKING_TARGET_CONTAINER_CREATED_EVENT", PackingTargetContainer.class),
+                    Arguments.of("PACKING_TARGET_CONTAINER_UPDATED_EVENT", PackingTargetContainer.class),
+                    Arguments.of("PACKING_TARGET_CONTAINER_DELETED_EVENT", PackingTargetContainer.class),
+
+                    // Parcels
+                    Arguments.of("PARCEL_CARRIER_ACKNOWLEDGED", Parcel.class),
+                    Arguments.of("PARCEL_CARRIER_CREATED", Parcel.class),
+                    Arguments.of("PARCEL_CARRIER_FAILED", Parcel.class),
+                    Arguments.of("PARCEL_CARRIER_REQUESTED", Parcel.class),
+                    Arguments.of("PARCEL_TRACK_AND_TRACE_STATUS_UPDATED", Parcel.class),
+
+                    // Service Jobs
+                    Arguments.of("SERVICE_JOB_CREATED", ServiceJob.class),
+                    Arguments.of("SERVICE_JOB_FINISHED", ServiceJob.class),
+
+                    // Shipments
+                    Arguments.of("SHIPMENT_CREATED", Shipment.class),
+                    Arguments.of("SHIPMENT_UPDATED", Shipment.class),
+
+                    // Inbound Deliveries
+                    Arguments.of("INBOUND_DELIVERY_FINISHED", InboundDelivery.class),
+                    Arguments.of("INBOUND_DELIVERY_ON_HOLD", InboundDelivery.class),
+                    Arguments.of("INBOUND_DELIVERY_RECEIVED", InboundDelivery.class),
+                    Arguments.of("INBOUND_DELIVERY_RELEASED", InboundDelivery.class),
+
+                    // Purchase Orders
+                    Arguments.of("INBOUND_PROCESS_PURCHASE_ORDER_CANCELED", PurchaseOrder.class),
+                    Arguments.of("INBOUND_PROCESS_PURCHASE_ORDER_CREATED", PurchaseOrder.class),
+                    Arguments.of("INBOUND_PROCESS_PURCHASE_ORDER_DELETED", PurchaseOrder.class),
+                    Arguments.of("INBOUND_PROCESS_PURCHASE_ORDER_LINE_ITEMS_CHANGED", PurchaseOrder.class),
+                    Arguments.of("INBOUND_PROCESS_PURCHASE_ORDER_REQUESTED_DATE_CHANGED", PurchaseOrder.class),
+
+                    // Inbound Receipts
+                    Arguments.of("INBOUND_PROCESS_RECEIPT_CREATED", InboundReceipt.class),
+                    Arguments.of("INBOUND_PROCESS_RECEIPT_LINE_ITEM_CHANGED", InboundReceipt.class),
+                    Arguments.of("INBOUND_PROCESS_RECEIPT_STARTED", InboundReceipt.class),
+
+                    // Zones
+                    Arguments.of("ZONE_CREATED", Zone.class),
+                    Arguments.of("ZONE_DELETED", Zone.class)
             );
         }
     }
