@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.internal.orders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 import de.joesst.dev.fulfillmenttools.orders.OrderForCreationConsumer;
@@ -9,7 +10,6 @@ import de.joesst.dev.fulfillmenttools.orders.OrderPaymentInfoForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderSource;
 import de.joesst.dev.fulfillmenttools.orders.OrderStatusReason;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;

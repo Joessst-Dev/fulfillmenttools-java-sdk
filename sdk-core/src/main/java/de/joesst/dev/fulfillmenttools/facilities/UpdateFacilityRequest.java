@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
-import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
 

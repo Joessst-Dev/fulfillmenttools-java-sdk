@@ -6,8 +6,8 @@ import de.joesst.dev.fulfillmenttools.facilities.FacilityContact;
 import de.joesst.dev.fulfillmenttools.facilities.FacilityOperativeCost;
 import de.joesst.dev.fulfillmenttools.facilities.PickingTimes;
 import de.joesst.dev.fulfillmenttools.facilities.ScanningRuleConfiguration;
-import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
 

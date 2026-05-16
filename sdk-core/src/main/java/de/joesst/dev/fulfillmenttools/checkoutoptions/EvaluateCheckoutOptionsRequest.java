@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.checkoutoptions;
 
-import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 
 import java.util.List;
 import java.util.Map;

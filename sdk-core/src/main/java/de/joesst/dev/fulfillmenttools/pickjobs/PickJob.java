@@ -7,8 +7,8 @@ import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.RoutingPlanId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
-import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
 import java.util.List;

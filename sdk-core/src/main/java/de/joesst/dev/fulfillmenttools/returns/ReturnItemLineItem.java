@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
-import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
 
 import java.util.List;
 import java.util.Map;

@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.MeasurementValidation;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
 import de.joesst.dev.fulfillmenttools.orders.Substitute;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 

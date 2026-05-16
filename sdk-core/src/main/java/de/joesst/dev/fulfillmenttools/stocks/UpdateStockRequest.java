@@ -2,8 +2,8 @@ package de.joesst.dev.fulfillmenttools.stocks;
 
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantStockId;
-import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.util.List;
 import java.util.Objects;

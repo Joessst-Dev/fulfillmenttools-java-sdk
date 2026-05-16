@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.Coordinates;
-import de.joesst.dev.fulfillmenttools.orders.PhoneNumber;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.orders.PhoneNumber;
 
 import java.util.List;
 

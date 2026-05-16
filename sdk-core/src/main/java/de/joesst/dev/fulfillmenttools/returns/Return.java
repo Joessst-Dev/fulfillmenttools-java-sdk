@@ -4,8 +4,8 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
-import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
 import java.time.Instant;
 import java.util.List;

@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.internal.returns;
 
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 import de.joesst.dev.fulfillmenttools.returns.ReturnJobLineItemForCreation;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 

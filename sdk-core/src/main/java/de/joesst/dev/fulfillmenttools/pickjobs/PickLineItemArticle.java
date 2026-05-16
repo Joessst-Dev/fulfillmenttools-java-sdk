@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
-import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
 import java.util.List;
 import java.util.Map;

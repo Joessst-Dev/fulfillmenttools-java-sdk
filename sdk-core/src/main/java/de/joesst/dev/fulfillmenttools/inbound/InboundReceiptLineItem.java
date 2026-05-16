@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import de.joesst.dev.fulfillmenttools.model.Quantity;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.model.Quantity;
 
 import java.util.List;
 import java.util.Map;

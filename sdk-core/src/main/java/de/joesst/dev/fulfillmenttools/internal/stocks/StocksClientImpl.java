@@ -10,6 +10,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StockItem;
@@ -22,7 +23,6 @@ import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockCreate;
 import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockOperation;
 import de.joesst.dev.fulfillmenttools.stocks.VersionlessStockUpdate;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
-import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.io.IOException;
 import java.time.Instant;

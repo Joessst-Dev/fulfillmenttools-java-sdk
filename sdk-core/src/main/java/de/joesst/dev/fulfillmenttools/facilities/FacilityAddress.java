@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.model.Coordinates;
-import de.joesst.dev.fulfillmenttools.model.TimeZone;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.model.TimeZone;
 
 import java.util.List;
 
