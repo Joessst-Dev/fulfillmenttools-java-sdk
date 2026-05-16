@@ -1,6 +1,8 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.SourcingOptionId;
+import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRunId;
 
 import java.util.List;
 
@@ -10,8 +12,8 @@ import java.util.List;
  *
  * <p>Maps to the {@code SourcingOption} schema in the fulfillmenttools OpenAPI spec.
  *
- * @param id                        unique identifier of this sourcing option
- * @param runId                     identifier of the sourcing options run
+ * @param id                        platform-assigned {@link SourcingOptionId}
+ * @param runId                     {@link SourcingOptionsRunId} of the run that produced this option
  * @param totalPenalty              aggregate penalty score; lower is better
  * @param estimatedDeliveryDate     estimated consumer delivery date (YYYY-MM-DD)
  * @param estimatedPickupDate       estimated pickup date (YYYY-MM-DD)
@@ -25,8 +27,8 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SourcingOption(
-        String id,
-        String runId,
+        SourcingOptionId id,
+        SourcingOptionsRunId runId,
         Double totalPenalty,
         String estimatedDeliveryDate,
         String estimatedPickupDate,
@@ -46,8 +48,8 @@ public record SourcingOption(
     public static final class Builder {
         private Builder() {}
 
-        private String id;
-        private String runId;
+        private SourcingOptionId id;
+        private SourcingOptionsRunId runId;
         private Double totalPenalty;
         private String estimatedDeliveryDate;
         private String estimatedPickupDate;
@@ -59,8 +61,8 @@ public record SourcingOption(
         private List<SourcingOptionRatingResult> ratingResults;
         private SourcingOptionCosts totalCosts;
 
-        public Builder id(String id) { this.id = id; return this; }
-        public Builder runId(String runId) { this.runId = runId; return this; }
+        public Builder id(SourcingOptionId id) { this.id = id; return this; }
+        public Builder runId(SourcingOptionsRunId runId) { this.runId = runId; return this; }
         public Builder totalPenalty(Double totalPenalty) { this.totalPenalty = totalPenalty; return this; }
         public Builder estimatedDeliveryDate(String estimatedDeliveryDate) { this.estimatedDeliveryDate = estimatedDeliveryDate; return this; }
         public Builder estimatedPickupDate(String estimatedPickupDate) { this.estimatedPickupDate = estimatedPickupDate; return this; }

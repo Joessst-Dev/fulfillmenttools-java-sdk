@@ -76,7 +76,7 @@ class SourcingOptionsClientTest {
         // Then
         assertThat(result.id().value()).isEqualTo("run-1");
         assertThat(result.options()).hasSize(1);
-        assertThat(result.options().get(0).id()).isEqualTo("opt-1");
+        assertThat(result.options().get(0).id().value()).isEqualTo("opt-1");
         assertThat(result.options().get(0).totalPenalty()).isEqualTo(42.5);
     }
 
@@ -194,7 +194,7 @@ class SourcingOptionsClientTest {
         // Then
         assertThat(result.id().value()).isEqualTo("run-42");
         assertThat(result.options()).hasSize(1);
-        assertThat(result.options().get(0).runId()).isEqualTo("run-42");
+        assertThat(result.options().get(0).runId().value()).isEqualTo("run-42");
     }
 
     @Test
