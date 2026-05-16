@@ -141,7 +141,7 @@ CreateStockRequest request = CreateStockRequest.builder()
     .tenantArticleId(new TenantArticleId("SKU-001"))
     .value(100)
     .facilityRef(new FacilityId("fac-001"))
-    .customAttributes(CustomAttributes.of(Map.of("warehouse_zone", "A3")))
+    .customAttributes(CustomAttributes.of(Map.of("warehouseZone", "A3")))
     .build();
 ```
 
@@ -154,12 +154,12 @@ CreateStockRequest request = CreateStockRequest.builder()
 ```java
 CustomAttributes attrs = stock.customAttributes();
 Map<String, Object> raw = attrs.attributes();
-System.out.println(raw.get("warehouse_zone")); // "A3"
+System.out.println(raw.get("warehouseZone")); // "A3"
 ```
 
 ### Converting to a typed POJO
 
-`as(Class<T>)` converts the attributes map to your own type using the SDK's Jackson ObjectMapper — no I/O is performed:
+`as(Class<T>)` converts the attributes map to your own type using the SDK's Jackson ObjectMapper — no I/O is performed. Map keys must match the record component names exactly (camelCase by default):
 
 ```java
 record WarehouseMeta(String warehouseZone, int shelfNumber) {}
@@ -185,6 +185,8 @@ myMapper.registerModule(CustomAttributes.jacksonModule(myMapper));
 ```
 
 Without this registration, `as()` still works — it falls back to the SDK's default mapper — but the conversion ignores any custom serializers you may have configured.
+
+### API reference
 
 | Method / Factory | Returns | Description |
 |------------------|---------|-------------|
