@@ -3,7 +3,6 @@ package de.joesst.dev.fulfillmenttools.servicejobs;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ServiceJobId;
-import de.joesst.dev.fulfillmenttools.model.LocaleString;
 
 import java.time.Instant;
 import java.util.List;
@@ -46,14 +45,14 @@ public record ServiceJob(
         FacilityId facilityRef,
         ServiceJobStatus status,
         String name,
-        LocaleString nameLocalized,
+        Map<String, String> nameLocalized,
         String customServiceRef,
         Instant targetTime,
         List<ServiceJobLineItem> lineItems,
         String shortId,
         String tenantOrderId,
         String description,
-        LocaleString descriptionLocalized,
+        Map<String, String> descriptionLocalized,
         Boolean anonymized,
         Integer executionTimeInMin,
         Map<String, Object> customAttributes
@@ -74,14 +73,14 @@ public record ServiceJob(
         private FacilityId facilityRef;
         private ServiceJobStatus status;
         private String name;
-        private LocaleString nameLocalized;
+        private Map<String, String> nameLocalized;
         private String customServiceRef;
         private Instant targetTime;
         private List<ServiceJobLineItem> lineItems;
         private String shortId;
         private String tenantOrderId;
         private String description;
-        private LocaleString descriptionLocalized;
+        private Map<String, String> descriptionLocalized;
         private Boolean anonymized;
         private Integer executionTimeInMin;
         private Map<String, Object> customAttributes;
@@ -126,7 +125,7 @@ public record ServiceJob(
             return this;
         }
 
-        public Builder nameLocalized(LocaleString nameLocalized) {
+        public Builder nameLocalized(Map<String, String> nameLocalized) {
             this.nameLocalized = nameLocalized;
             return this;
         }
@@ -161,7 +160,7 @@ public record ServiceJob(
             return this;
         }
 
-        public Builder descriptionLocalized(LocaleString descriptionLocalized) {
+        public Builder descriptionLocalized(Map<String, String> descriptionLocalized) {
             this.descriptionLocalized = descriptionLocalized;
             return this;
         }

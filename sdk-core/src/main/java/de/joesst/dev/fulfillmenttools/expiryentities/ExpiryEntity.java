@@ -25,14 +25,14 @@ import java.time.Instant;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ExpiryEntity(
         ExpiryEntityId id,
-        Long version,
+        Integer version,
         Instant created,
         Instant lastModified,
         String processRef,
         Instant provisioningTime,
         Instant expiryTime,
         ExpiryEntityStatus status,
-        Long processVersion
+        Integer processVersion
 ) {
 
     public static Builder builder() {
@@ -43,21 +43,21 @@ public record ExpiryEntity(
         private Builder() {}
 
         private ExpiryEntityId id;
-        private Long version;
+        private Integer version;
         private Instant created;
         private Instant lastModified;
         private String processRef;
         private Instant provisioningTime;
         private Instant expiryTime;
         private ExpiryEntityStatus status;
-        private Long processVersion;
+        private Integer processVersion;
 
         public Builder id(ExpiryEntityId id) {
             this.id = id;
             return this;
         }
 
-        public Builder version(Long version) {
+        public Builder version(Integer version) {
             this.version = version;
             return this;
         }
@@ -92,7 +92,7 @@ public record ExpiryEntity(
             return this;
         }
 
-        public Builder processVersion(Long processVersion) {
+        public Builder processVersion(Integer processVersion) {
             this.processVersion = processVersion;
             return this;
         }

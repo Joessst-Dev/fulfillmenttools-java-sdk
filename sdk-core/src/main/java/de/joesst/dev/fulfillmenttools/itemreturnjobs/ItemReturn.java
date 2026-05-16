@@ -12,6 +12,7 @@ import java.util.Map;
  * @param id the platform-generated identifier for this item return
  * @param status the current lifecycle status
  * @param returnFacilityRef reference to the facility handling this return
+ * @param returnedLineItems the line items that were physically returned
  * @param created the timestamp when this item return was created
  * @param lastModified the timestamp of the last modification
  * @param parcelRefs references to parcels associated with this return
@@ -24,6 +25,7 @@ public record ItemReturn(
         String id,
         ItemReturnStatus status,
         String returnFacilityRef,
+        List<Map<String, Object>> returnedLineItems,
         Instant created,
         Instant lastModified,
         List<String> parcelRefs,
@@ -42,6 +44,7 @@ public record ItemReturn(
         private String id;
         private ItemReturnStatus status;
         private String returnFacilityRef;
+        private List<Map<String, Object>> returnedLineItems;
         private Instant created;
         private Instant lastModified;
         private List<String> parcelRefs;
@@ -61,6 +64,11 @@ public record ItemReturn(
 
         public Builder returnFacilityRef(String returnFacilityRef) {
             this.returnFacilityRef = returnFacilityRef;
+            return this;
+        }
+
+        public Builder returnedLineItems(List<Map<String, Object>> returnedLineItems) {
+            this.returnedLineItems = returnedLineItems;
             return this;
         }
 
@@ -95,8 +103,8 @@ public record ItemReturn(
         }
 
         public ItemReturn build() {
-            return new ItemReturn(id, status, returnFacilityRef, created, lastModified,
-                    parcelRefs, scannableCodes, tenantOrderId, customAttributes);
+            return new ItemReturn(id, status, returnFacilityRef, returnedLineItems,
+                    created, lastModified, parcelRefs, scannableCodes, tenantOrderId, customAttributes);
         }
     }
 }

@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ParcelId;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +44,8 @@ import java.util.Map;
 public record Parcel(
         ParcelId id,
         Integer version,
-        java.time.Instant created,
-        java.time.Instant lastModified,
+        Instant created,
+        Instant lastModified,
         ParcelStatus status,
         CarrierId carrierRef,
         String carrierProduct,
@@ -71,8 +72,8 @@ public record Parcel(
 
         private ParcelId id;
         private Integer version;
-        private java.time.Instant created;
-        private java.time.Instant lastModified;
+        private Instant created;
+        private Instant lastModified;
         private ParcelStatus status;
         private CarrierId carrierRef;
         private String carrierProduct;
@@ -99,12 +100,12 @@ public record Parcel(
             return this;
         }
 
-        public Builder created(java.time.Instant created) {
+        public Builder created(Instant created) {
             this.created = created;
             return this;
         }
 
-        public Builder lastModified(java.time.Instant lastModified) {
+        public Builder lastModified(Instant lastModified) {
             this.lastModified = lastModified;
             return this;
         }

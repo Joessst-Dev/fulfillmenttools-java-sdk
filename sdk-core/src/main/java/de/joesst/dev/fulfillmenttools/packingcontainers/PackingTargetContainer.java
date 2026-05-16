@@ -3,7 +3,6 @@ package de.joesst.dev.fulfillmenttools.packingcontainers;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.PackingTargetContainerId;
-import de.joesst.dev.fulfillmenttools.model.LocaleString;
 
 import java.util.List;
 import java.util.Map;
@@ -38,9 +37,9 @@ public record PackingTargetContainer(
         String packJobRef,
         PackingTargetContainerType type,
         String name,
-        LocaleString nameLocalized,
+        Map<String, String> nameLocalized,
         String description,
-        LocaleString descriptionLocalized,
+        Map<String, String> descriptionLocalized,
         List<PackingTargetContainerLineItem> lineItems,
         String shortId,
         Double weightLimitInG,
@@ -60,9 +59,9 @@ public record PackingTargetContainer(
         private String packJobRef;
         private PackingTargetContainerType type;
         private String name;
-        private LocaleString nameLocalized;
+        private Map<String, String> nameLocalized;
         private String description;
-        private LocaleString descriptionLocalized;
+        private Map<String, String> descriptionLocalized;
         private List<PackingTargetContainerLineItem> lineItems;
         private String shortId;
         private Double weightLimitInG;
@@ -98,7 +97,7 @@ public record PackingTargetContainer(
             return this;
         }
 
-        public Builder nameLocalized(LocaleString nameLocalized) {
+        public Builder nameLocalized(Map<String, String> nameLocalized) {
             this.nameLocalized = nameLocalized;
             return this;
         }
@@ -108,7 +107,7 @@ public record PackingTargetContainer(
             return this;
         }
 
-        public Builder descriptionLocalized(LocaleString descriptionLocalized) {
+        public Builder descriptionLocalized(Map<String, String> descriptionLocalized) {
             this.descriptionLocalized = descriptionLocalized;
             return this;
         }

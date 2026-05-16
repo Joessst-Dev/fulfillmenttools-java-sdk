@@ -34,7 +34,7 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record PurchaseOrder(
         PurchaseOrderId id,
-        Double version,
+        Integer version,
         Instant created,
         Instant lastModified,
         FacilityId facilityRef,
@@ -55,7 +55,7 @@ public record PurchaseOrder(
         private Builder() {}
 
         private PurchaseOrderId id;
-        private Double version;
+        private Integer version;
         private Instant created;
         private Instant lastModified;
         private FacilityId facilityRef;
@@ -72,7 +72,7 @@ public record PurchaseOrder(
             return this;
         }
 
-        public Builder version(Double version) {
+        public Builder version(Integer version) {
             this.version = version;
             return this;
         }

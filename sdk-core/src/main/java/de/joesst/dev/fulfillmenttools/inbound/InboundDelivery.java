@@ -34,7 +34,7 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record InboundDelivery(
         InboundDeliveryId id,
-        Double version,
+        Integer version,
         Instant created,
         Instant lastModified,
         FacilityId facilityRef,
@@ -57,7 +57,7 @@ public record InboundDelivery(
         private Builder() {}
 
         private InboundDeliveryId id;
-        private Double version;
+        private Integer version;
         private Instant created;
         private Instant lastModified;
         private FacilityId facilityRef;
@@ -76,7 +76,7 @@ public record InboundDelivery(
             return this;
         }
 
-        public Builder version(Double version) {
+        public Builder version(Integer version) {
             this.version = version;
             return this;
         }
