@@ -123,21 +123,23 @@ A monetary amount with currency information. Used throughout the SDK to represen
 import de.joesst.dev.fulfillmenttools.model.Money;
 
 Money price = Money.builder()
-    .value(99.99)
+    .value(499.0)
     .currency("EUR")
     .decimalPlaces(2.0)
     .build();
 
-System.out.println(price.value());        // 99.99
+System.out.println(price.value());        // 499.0
 System.out.println(price.currency());     // "EUR"
 System.out.println(price.decimalPlaces()); // 2.0
+System.out.println(price.toAmount());     // 4.99
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `value()` | `Double` | The numeric monetary amount |
+| Field / Method | Type | Description |
+|----------------|------|-------------|
+| `value()` | `Double` | The raw numeric amount as returned by the API (minor units, e.g. `499.0` for €4.99) |
 | `currency()` | `String` | ISO 4217 currency code (e.g. `"EUR"`, `"USD"`) |
-| `decimalPlaces()` | `Double` | The number of decimal places for this currency (e.g. 2.0 for most currencies, 0 for JPY) |
+| `decimalPlaces()` | `Double` | The number of decimal places for this currency (e.g. `2.0` for most currencies, `0.0` for JPY) |
+| `toAmount()` | `Double` | Converts the raw value to its decimal representation by dividing by 10^`decimalPlaces` (e.g. `499.0` → `4.99`). Returns `value` unchanged when `decimalPlaces` is null or zero; returns `null` when `value` is null. |
 
 ---
 
