@@ -1,6 +1,8 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.SourcingOptionsRequestId;
 import de.joesst.dev.fulfillmenttools.orders.CollectDelivery;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferencesShipping;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryReservationPreferences;
@@ -23,8 +25,8 @@ import java.util.List;
 public final class DeliveryPreferences {
 
     private final Instant targetTime;
-    private final List<String> sourcingOptionRefs;
-    private final List<String> supplyingFacilities;
+    private final List<SourcingOptionsRequestId> sourcingOptionRefs;
+    private final List<FacilityId> supplyingFacilities;
     private final DeliveryPreferencesShipping shipping;
     private final List<CollectDelivery> collect;
     private final DeliveryReservationPreferences reservationPreferences;
@@ -48,13 +50,13 @@ public final class DeliveryPreferences {
      * Returns references to pre-computed sourcing options.
      * @return the sourcing option refs, or {@code null} if not set
      */
-    public List<String> sourcingOptionRefs() { return sourcingOptionRefs; }
+    public List<SourcingOptionsRequestId> sourcingOptionRefs() { return sourcingOptionRefs; }
 
     /**
      * Returns the supplying facilities.
      * @return the supplying facilities, or {@code null} if not set
      */
-    public List<String> supplyingFacilities() { return supplyingFacilities; }
+    public List<FacilityId> supplyingFacilities() { return supplyingFacilities; }
 
     /**
      * Returns the shipping delivery configuration.
@@ -89,8 +91,8 @@ public final class DeliveryPreferences {
         public Builder() {}
 
         private Instant targetTime;
-        private List<String> sourcingOptionRefs;
-        private List<String> supplyingFacilities;
+        private List<SourcingOptionsRequestId> sourcingOptionRefs;
+        private List<FacilityId> supplyingFacilities;
         private DeliveryPreferencesShipping shipping;
         private List<CollectDelivery> collect;
         private DeliveryReservationPreferences reservationPreferences;
@@ -107,14 +109,14 @@ public final class DeliveryPreferences {
          * @param sourcingOptionRefs the sourcing option refs
          * @return this builder
          */
-        public Builder sourcingOptionRefs(List<String> sourcingOptionRefs) { this.sourcingOptionRefs = sourcingOptionRefs; return this; }
+        public Builder sourcingOptionRefs(List<SourcingOptionsRequestId> sourcingOptionRefs) { this.sourcingOptionRefs = sourcingOptionRefs; return this; }
 
         /**
          * Sets the supplying facilities.
          * @param supplyingFacilities the supplying facilities
          * @return this builder
          */
-        public Builder supplyingFacilities(List<String> supplyingFacilities) { this.supplyingFacilities = supplyingFacilities; return this; }
+        public Builder supplyingFacilities(List<FacilityId> supplyingFacilities) { this.supplyingFacilities = supplyingFacilities; return this; }
 
         /**
          * Sets the shipping delivery configuration.
