@@ -137,7 +137,7 @@ class SourcingOptionsAsyncTest {
         // Then
         assertThat(result.id().value()).isEqualTo("run-1");
         assertThat(result.options()).hasSize(1);
-        assertThat(result.options().get(0).id()).isEqualTo("opt-1");
+        assertThat(result.options().get(0).id().value()).isEqualTo("opt-1");
     }
 
     // --- Helpers ---

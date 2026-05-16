@@ -2,7 +2,7 @@
 
 The Sourcing Options client evaluates order sourcing options to determine the best fulfillment choices. Analyze facility availability, costs, and constraints to compute feasible sourcing solutions for orders.
 
-The evaluate endpoint takes an `OrderForSourcingOptionsRequest` describing the customer's order and returns a `SourcingOptionsResult` containing ranked fulfillment options across your facility network.
+The evaluate endpoint takes a `SourcingOptionsRequest` describing the customer's order and returns a `SourcingOptionsResult` containing ranked fulfillment options across your facility network.
 
 ## Minimal Example
 
@@ -219,22 +219,40 @@ SourcingOptionsResult result = client.sourcingOptions().evaluate(
 
 ## Reading the Result
 
-Each `SourcingOption` in the result represents one feasible fulfillment plan, ranked by `totalPenalty` (lower is better):
+Each `SourcingOption` in the result represents one feasible fulfillment plan, ranked by `totalPenalty` (lower is better). An option contains facility nodes, stock transfers between them, associated costs, and rating criteria that contributed to its score:
 
 ```java
 import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOption;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionNode;
+import de.joesst.dev.fulfillmenttools.sourcingoptions.HandledItem;
 
 for (SourcingOption option : result.options()) {
-    System.out.println("Option: " + option.id());
+    System.out.println("Option: " + option.id().value());
     System.out.println("  Penalty: " + option.totalPenalty());
     System.out.println("  Est. delivery: " + option.estimatedDeliveryDate());
     System.out.println("  Valid until: " + option.validUntil());
     System.out.println("  Nodes: " + option.nodes().size());
 
+    // Examine nodes (facility sources)
+    for (SourcingOptionNode node : option.nodes()) {
+        System.out.println("    Node: " + node.type() + " [" + node.facilityRef().value() + "]");
+        for (HandledItem item : node.lineItems()) {
+            System.out.println("      - " + item.tenantArticleId().value() + " x " + item.quantity());
+        }
+    }
+
+    // Examine unassigned items
     if (option.nonAssignedOrderLineItems() != null
             && !option.nonAssignedOrderLineItems().isEmpty()) {
         System.out.println("  WARNING: " + option.nonAssignedOrderLineItems().size()
                 + " line item(s) could not be assigned");
+    }
+
+    // Examine costs
+    if (option.totalCosts() != null) {
+        var costs = option.totalCosts();
+        System.out.println("  Total cost: " + costs.totalCosts().value() + " " 
+            + costs.totalCosts().currency());
     }
 }
 ```
@@ -303,6 +321,101 @@ future.whenComplete((result, ex) -> {
     }
 });
 ```
+
+## Core Concepts
+
+### Node Types
+
+A `SourcingOption` comprises one or more `SourcingOptionNode` entries, each representing a facility source in the fulfillment plan. Every node has a `NodeType`:
+
+- `SUPPLIER` — external supplier providing stock
+- `MANAGED_FACILITY` — fulfillmenttools-managed warehouse or fulfillment center
+- `CUSTOMER` — the customer's address (applicable for returns or special handling)
+
+Nodes are identified by typed IDs: `SourcingOptionNodeId` (platform-assigned), with optional references to `FacilityId` (fulfillmenttools facility) and `TenantFacilityId` (tenant-specific facility identifier).
+
+### Handled Items
+
+Line items in a sourcing option are represented as `HandledItem` objects, which combine a tenant-specific article ID (`TenantArticleId`) and quantity. This unified model replaces the previous separate types and appears throughout:
+
+- `SourcingOptionNode.lineItems()` — articles to fulfill from a facility
+- `SourcingOptionTransfer.lineItems()` — articles being transferred between nodes
+- `SourcingOption.nonAssignedOrderLineItems()` — articles that could not be assigned to any facility
+
+### Cost Breakdown
+
+Sourcing option costs are modeled in `SourcingOptionCosts`, which breaks down the financial impact:
+
+- `salesPrices` — per-article sales prices (list of `SourcingOptionSalesPrice`)
+- `totalCosts` — total cost amount (`Money`)
+- `totalSalesPriceAmount` — total sales price amount (`Money`)
+- `totalShippingCosts` — shipping cost breakdown (`ShippingCosts`)
+
+The `ShippingCosts` type further breaks down transport costs:
+
+- `totalTransportCostAmount` — aggregate transport cost (`Money`)
+- `packageCosts` — per-package shipping costs (list of `PackageCost`)
+
+All monetary amounts use the `Money` type: `value` (numeric amount), `currency` (ISO 4217 code), and `decimalPlaces` (decimal precision).
+
+### Transfers and Packaging
+
+Transfers between nodes are captured in `SourcingOptionTransfer`:
+
+- `sourceNodeRef` / `targetNodeRef` — `SourcingOptionNodeId` references to the source and destination facility nodes
+- `lineItems` — articles being moved (list of `HandledItem`)
+- `packagingInformation` — list of `SourcingOptionsTransferPackagingInformation` describing units and dimensions
+- `carrier` — `TransferCarrier` (carrier name and service type)
+- `timeLine` — `TransferTimeLine` (departure and arrival times)
+- `facilityConnectionRef` — `ConnectionId` linking to the facility connection used
+
+### Rating Results
+
+Each sourcing option includes a list of `SourcingOptionRatingResult` objects representing individual rating criteria that contributed to the overall penalty score:
+
+- `id` — `RatingResultId` (unique identifier for this rating)
+- `name` — criterion name (e.g., `DISTANCE`, `COST`)
+- `penalty` — the penalty value assigned by this criterion
+- `type` — `RatingResultType` (e.g., `StandardRating`, `ToolkitRating`)
+- `routingStrategyNodeId` — `RoutingStrategyNodeId` reference to the rating source
+
+### Delivery Cost Composition
+
+The `SourcingOptionsTransferDeliveryCost` type demonstrates the SDK's pattern for composing the OpenAPI schema's `allOf: [Money]` pattern:
+
+```java
+import de.joesst.dev.fulfillmenttools.sourcingoptions.SourcingOptionsTransferDeliveryCost;
+import de.joesst.dev.fulfillmenttools.model.Money;
+
+// Build using composed Money object
+var cost = SourcingOptionsTransferDeliveryCost.builder()
+    .money(Money.builder()
+        .value(25.50)
+        .currency("EUR")
+        .decimalPlaces(2.0)
+        .build())
+    .deliveryCostCoefficient(...)
+    .build();
+
+// Access monetary fields directly (serialized as flat JSON)
+System.out.println(cost.value());           // 25.50
+System.out.println(cost.currency());        // "EUR"
+System.out.println(cost.decimalPlaces());   // 2.0
+
+// Or access the composed Money object
+System.out.println(cost.money().value());   // 25.50
+```
+
+This design ensures compatibility with the API's flat JSON structure while maintaining an object-oriented interface in Java.
+
+### Delivery Preferences with Typed IDs
+
+The `DeliveryPreferences` type now uses typed ID references:
+
+- `sourcingOptionRefs` — list of `SourcingOptionsRequestId` (references to pre-computed sourcing option runs)
+- `supplyingFacilities` — list of `FacilityId` (facilities to source from, if constraining)
+
+Other fields like `shipping`, `collect`, and `reservationPreferences` remain unchanged and reuse the orders domain types.
 
 ## API Reference
 

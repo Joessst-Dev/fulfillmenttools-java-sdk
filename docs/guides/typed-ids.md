@@ -62,11 +62,16 @@ String urn = id.toUrn("facility:tenantFacilityId");
 | `PackJobId` | Packing client |
 | `PickJobId` | Picking client |
 | `ProcessId` | External Actions client (`processRef`) |
+| `RatingResultId` | Sourcing Options client (rating result identifiers); use `RatingResultType` for the criterion type (e.g. `StandardRating`, `ToolkitRating`) |
 | `ReservationId` | Reservations client |
 | `ReturnId` | Returns client |
 | `RoutingPlanId` | Routing Plans client |
 | `RoutingStrategyId` | Routing Strategy client |
-| `SourcingOptionsRequestId` | Sourcing Options client |
+| `RoutingStrategyNodeId` | Routing Strategy client (strategy nodes) |
+| `SourcingOptionId` | Sourcing Options client (individual options) |
+| `SourcingOptionNodeId` | Sourcing Options client (facility nodes within options) |
+| `SourcingOptionsRequestId` | Sourcing Options client (evaluation requests) |
+| `SourcingOptionsRunId` | Sourcing Options client (evaluation runs) |
 | `StockId` | Stocks client |
 | `StorageLocationId` | Storage Locations client |
 | `StowJobId` | Inbound / stow jobs |
