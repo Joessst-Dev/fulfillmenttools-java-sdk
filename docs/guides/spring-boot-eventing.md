@@ -16,7 +16,7 @@ The Spring Boot starter includes a GCP Pub/Sub event-receiver pipeline that deli
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk-springboot-starter:0.0.1")
+    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0")
 }
 ```
 
@@ -25,7 +25,7 @@ dependencies {
 <dependency>
     <groupId>io.github.joessst-dev</groupId>
     <artifactId>fulfillmenttools-java-sdk-springboot-starter</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 

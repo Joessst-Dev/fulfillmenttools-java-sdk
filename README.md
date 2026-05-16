@@ -18,20 +18,10 @@ A lightweight Java 21 client library for the [fulfillmenttools](https://fulfillm
 **Gradle (Kotlin DSL):**
 
 ```kotlin
-repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/Joessst-Dev/fulfillmenttools-java-sdk")
-        credentials {
-            username = System.getenv("GITHUB_ACTOR")
-            password = System.getenv("GITHUB_TOKEN")
-        }
-    }
-}
-
 dependencies {
-    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk:0.0.1")
+    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk:0.1.0")
     // Optional: Spring Boot auto-configuration
-    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk-springboot-starter:0.0.1")
+    implementation("io.github.joessst-dev:fulfillmenttools-java-sdk-springboot-starter:0.1.0")
 }
 ```
 
