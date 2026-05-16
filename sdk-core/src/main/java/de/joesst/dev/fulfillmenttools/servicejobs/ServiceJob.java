@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.id.ServiceJobId;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a fulfillmenttools service job, which models a configurable operative task
@@ -55,7 +56,7 @@ public record ServiceJob(
         Map<String, String> descriptionLocalized,
         Boolean anonymized,
         Integer executionTimeInMin,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -83,7 +84,7 @@ public record ServiceJob(
         private Map<String, String> descriptionLocalized;
         private Boolean anonymized;
         private Integer executionTimeInMin;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(ServiceJobId id) {
             this.id = id;
@@ -175,7 +176,7 @@ public record ServiceJob(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

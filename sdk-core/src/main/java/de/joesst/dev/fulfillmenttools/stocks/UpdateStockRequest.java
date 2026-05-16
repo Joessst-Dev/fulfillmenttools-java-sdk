@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfi
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request to update an existing stock entry via {@code PUT /api/stocks/{stockId}}.
@@ -27,7 +28,7 @@ public final class UpdateStockRequest {
     private final TenantStockId tenantStockId;
     private final List<String> conditions;
     private final List<StorageLocationTraitConfigEntry> traitConfig;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private UpdateStockRequest(Builder builder) {
         this.version = Objects.requireNonNull(builder.version, "version must not be null");
@@ -87,7 +88,7 @@ public final class UpdateStockRequest {
      *
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new {@link Builder} for constructing an {@code UpdateStockRequest}.
@@ -107,7 +108,7 @@ public final class UpdateStockRequest {
         private TenantStockId tenantStockId;
         private List<String> conditions;
         private List<StorageLocationTraitConfigEntry> traitConfig;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -165,7 +166,7 @@ public final class UpdateStockRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link UpdateStockRequest}.

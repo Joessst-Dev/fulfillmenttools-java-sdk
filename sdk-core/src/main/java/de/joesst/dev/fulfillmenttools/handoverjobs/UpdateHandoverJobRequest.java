@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.handoverjobs;
 
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request for updating an existing handover job with new status or attributes.
@@ -13,7 +14,7 @@ public final class UpdateHandoverJobRequest {
 
     private final Integer version;
     private final String status;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private UpdateHandoverJobRequest(Builder builder) {
         this.version = Objects.requireNonNull(builder.version, "version must not be null");
@@ -37,7 +38,7 @@ public final class UpdateHandoverJobRequest {
      * Returns the free-form custom attributes.
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new builder for constructing {@code UpdateHandoverJobRequest} instances.
@@ -55,7 +56,7 @@ public final class UpdateHandoverJobRequest {
 
         private Integer version;
         private String status;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /** Creates a new Builder instance. */
         public Builder() {}
@@ -79,7 +80,7 @@ public final class UpdateHandoverJobRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@code UpdateHandoverJobRequest}.

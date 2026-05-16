@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.model.Quantity;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single line item within an inbound receipt, recording accepted and rejected quantities
@@ -28,7 +29,7 @@ public record InboundReceiptLineItem(
         List<InboundReceiptComment> comments,
         String storageLocationRef,
         Map<String, String> stockProperties,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -45,7 +46,7 @@ public record InboundReceiptLineItem(
         private List<InboundReceiptComment> comments;
         private String storageLocationRef;
         private Map<String, String> stockProperties;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(String id) {
             this.id = id;
@@ -82,7 +83,7 @@ public record InboundReceiptLineItem(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

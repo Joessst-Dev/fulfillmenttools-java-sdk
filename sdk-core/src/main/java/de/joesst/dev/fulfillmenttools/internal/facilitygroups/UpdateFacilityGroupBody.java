@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record UpdateFacilityGroupBody(
@@ -11,5 +12,5 @@ record UpdateFacilityGroupBody(
         String tenantFacilityGroupId,
         List<String> facilityRefs,
         Map<String, String> nameLocalized,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

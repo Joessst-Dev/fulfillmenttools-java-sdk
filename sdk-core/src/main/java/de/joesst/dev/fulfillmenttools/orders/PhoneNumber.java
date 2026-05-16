@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.orders;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A phone number entry on a consumer address.
@@ -22,7 +23,7 @@ public record PhoneNumber(
         String value,
         String type,
         String label,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     /**
@@ -42,7 +43,7 @@ public record PhoneNumber(
         private String value;
         private String type;
         private String label;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -81,7 +82,7 @@ public record PhoneNumber(
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

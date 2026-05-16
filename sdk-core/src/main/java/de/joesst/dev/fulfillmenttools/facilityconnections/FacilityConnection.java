@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a facility connection returned by the fulfillmenttools API.
@@ -45,7 +46,7 @@ public record FacilityConnection(
         List<PackagingUnitsByContext> packagingUnitsByContexts,
         CutoffTimes cutoffTimes,
         CarrierTransitTime fallbackTransitTime,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     /**
@@ -76,7 +77,7 @@ public record FacilityConnection(
         private List<PackagingUnitsByContext> packagingUnitsByContexts;
         private CutoffTimes cutoffTimes;
         private CarrierTransitTime fallbackTransitTime;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -210,7 +211,7 @@ public record FacilityConnection(
          * @param customAttributes free-form tenant-defined attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

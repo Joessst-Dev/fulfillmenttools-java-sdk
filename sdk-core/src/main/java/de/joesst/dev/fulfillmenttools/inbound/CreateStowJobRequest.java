@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request parameters for creating a new stow job via
@@ -28,7 +29,7 @@ public final class CreateStowJobRequest {
     private final String status;
     private final List<StowLineItemForCreation> stowLineItems;
     private final List<AssignedUserInput> assignedUsers;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
     private final Integer priority;
     private final String shortId;
     private final Instant targetTime;
@@ -72,7 +73,7 @@ public final class CreateStowJobRequest {
      * Returns the free-form custom attributes.
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns the priority level of the job.
@@ -110,7 +111,7 @@ public final class CreateStowJobRequest {
         private String status;
         private List<StowLineItemForCreation> stowLineItems;
         private List<AssignedUserInput> assignedUsers;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private Integer priority;
         private String shortId;
         private Instant targetTime;
@@ -148,7 +149,7 @@ public final class CreateStowJobRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Sets the priority level.

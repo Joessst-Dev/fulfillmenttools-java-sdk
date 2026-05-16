@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.orders.Substitute;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An expected pick line item representing an article that is anticipated to be picked
@@ -45,7 +46,7 @@ public record ExpectedPickLineItem(
         List<Substitute> allowedSubstitutes,
         List<Sticker> stickers,
         List<TagReference> tags,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -66,7 +67,7 @@ public record ExpectedPickLineItem(
         private List<Substitute> allowedSubstitutes;
         private List<Sticker> stickers;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -83,7 +84,7 @@ public record ExpectedPickLineItem(
         public Builder allowedSubstitutes(List<Substitute> allowedSubstitutes) { this.allowedSubstitutes = allowedSubstitutes; return this; }
         public Builder stickers(List<Sticker> stickers) { this.stickers = stickers; return this; }
         public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public ExpectedPickLineItem build() {
             return new ExpectedPickLineItem(id, transferId, quantity, article, measurementUnitKey, secondaryMeasurementUnitKey, secondaryQuantity, scannableCodes, measurementValidation, partialStockLocations, allowedSubstitutes, stickers, tags, customAttributes);

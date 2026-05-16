@@ -12,6 +12,7 @@ import de.joesst.dev.fulfillmenttools.model.TagReference;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A pick job representing the fulfilment task to pick articles for an order at a facility.
@@ -81,7 +82,7 @@ public record PickJob(
         PickJobPaymentInformation paymentInformation,
         List<UserModificationHistory> usersModificationHistory,
         List<TagReference> tags,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -118,7 +119,7 @@ public record PickJob(
         private PickJobPaymentInformation paymentInformation;
         private List<UserModificationHistory> usersModificationHistory;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -151,7 +152,7 @@ public record PickJob(
         public Builder paymentInformation(PickJobPaymentInformation paymentInformation) { this.paymentInformation = paymentInformation; return this; }
         public Builder usersModificationHistory(List<UserModificationHistory> usersModificationHistory) { this.usersModificationHistory = usersModificationHistory; return this; }
         public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public PickJob build() {
             return new PickJob(id, version, created, lastModified, facilityRef, status, subStatus, shortId, orderRef, orderDate, tenantOrderId, processId, routingPlanRef, operativeProcessRef, pickRunRef, documentsRef, resetBlocked, anonymized, pickLineItems, assignedUsers, deliveryinformation, expectedPickLineItems, pickingZones, workflowInformation, documentHandling, editor, paymentInformation, usersModificationHistory, tags, customAttributes);

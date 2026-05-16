@@ -4,6 +4,7 @@ import de.joesst.dev.fulfillmenttools.id.RoutingStrategyId;
 
 import java.time.Instant;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A routing strategy that determines how fulfillment orders are routed to facilities.
@@ -33,7 +34,7 @@ public record RoutingStrategy(
         Integer revision,
         RoutingStrategyGlobalConfiguration globalConfiguration,
         RoutingStrategyNode rootNode,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     /**
@@ -60,7 +61,7 @@ public record RoutingStrategy(
         private Integer revision;
         private RoutingStrategyGlobalConfiguration globalConfiguration;
         private RoutingStrategyNode rootNode;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -169,7 +170,7 @@ public record RoutingStrategy(
          * @param customAttributes map of custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

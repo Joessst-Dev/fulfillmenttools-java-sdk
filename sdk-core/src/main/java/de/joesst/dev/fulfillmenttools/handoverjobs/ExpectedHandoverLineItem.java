@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.orders.Sticker;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A line item that is expected (anticipated) on a handover job but not yet confirmed.
@@ -33,7 +34,7 @@ public record ExpectedHandoverLineItem(
         List<Sticker> stickers,
         List<String> scannableCodes,
         List<TagReference> tags,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -51,7 +52,7 @@ public record ExpectedHandoverLineItem(
         private List<Sticker> stickers;
         private List<String> scannableCodes;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder quantity(Integer quantity) { this.quantity = quantity; return this; }
@@ -61,7 +62,7 @@ public record ExpectedHandoverLineItem(
         public Builder stickers(List<Sticker> stickers) { this.stickers = stickers; return this; }
         public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
         public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public ExpectedHandoverLineItem build() {
             return new ExpectedHandoverLineItem(id, quantity, transferId, article, status, stickers, scannableCodes, tags, customAttributes);

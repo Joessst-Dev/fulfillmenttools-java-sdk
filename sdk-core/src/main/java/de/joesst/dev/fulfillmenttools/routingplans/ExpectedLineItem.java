@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.orders.Substitute;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An expected line item on a routing plan, extending the base order line item with
@@ -43,7 +44,7 @@ public record ExpectedLineItem(
         List<Substitute> allowedSubstitutes,
         MeasurementValidation measurementValidation,
         List<TagReference> tags,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         FacilityId facilityRef,
         String transferId
 ) {
@@ -63,7 +64,7 @@ public record ExpectedLineItem(
         private List<Substitute> allowedSubstitutes;
         private MeasurementValidation measurementValidation;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private FacilityId facilityRef;
         private String transferId;
 
@@ -79,7 +80,7 @@ public record ExpectedLineItem(
         public Builder allowedSubstitutes(List<Substitute> allowedSubstitutes) { this.allowedSubstitutes = allowedSubstitutes; return this; }
         public Builder measurementValidation(MeasurementValidation measurementValidation) { this.measurementValidation = measurementValidation; return this; }
         public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
         public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
         public Builder transferId(String transferId) { this.transferId = transferId; return this; }
 

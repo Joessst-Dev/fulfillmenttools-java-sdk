@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfi
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An update operation for use in {@link StocksClient#upsertStocks}.
@@ -29,7 +30,7 @@ public final class VersionlessStockUpdate implements VersionlessStockOperation {
     private final TenantStockId tenantStockId;
     private final List<String> conditions;
     private final List<StorageLocationTraitConfigEntry> traitConfig;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private VersionlessStockUpdate(Builder builder) {
         this.stockId = Objects.requireNonNull(builder.stockId, "stockId must not be null");
@@ -60,7 +61,7 @@ public final class VersionlessStockUpdate implements VersionlessStockOperation {
     public List<StorageLocationTraitConfigEntry> traitConfig() { return traitConfig; }
 
     /** Returns the custom attributes, or {@code null} if not set. */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     public static Builder builder() { return new Builder(); }
 
@@ -72,7 +73,7 @@ public final class VersionlessStockUpdate implements VersionlessStockOperation {
         private TenantStockId tenantStockId;
         private List<String> conditions;
         private List<StorageLocationTraitConfigEntry> traitConfig;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -82,7 +83,7 @@ public final class VersionlessStockUpdate implements VersionlessStockOperation {
         public Builder tenantStockId(TenantStockId tenantStockId) { this.tenantStockId = tenantStockId; return this; }
         public Builder conditions(List<String> conditions) { this.conditions = conditions; return this; }
         public Builder traitConfig(List<StorageLocationTraitConfigEntry> traitConfig) { this.traitConfig = traitConfig; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public VersionlessStockUpdate build() { return new VersionlessStockUpdate(this); }
     }

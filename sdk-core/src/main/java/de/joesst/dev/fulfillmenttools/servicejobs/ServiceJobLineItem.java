@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.servicejobs;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single line item within a service job.
@@ -21,7 +22,7 @@ public record ServiceJobLineItem(
         Integer quantity,
         String globalLineItemId,
         String measurementUnitKey,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -36,7 +37,7 @@ public record ServiceJobLineItem(
         private Integer quantity;
         private String globalLineItemId;
         private String measurementUnitKey;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(String id) {
             this.id = id;
@@ -63,7 +64,7 @@ public record ServiceJobLineItem(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

@@ -4,6 +4,7 @@ import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * An article on a read-side order line item.
@@ -30,7 +31,7 @@ public record OrderLineItemArticle(
         Double weight,
         Map<String, String> titleLocalized,
         List<ArticleAttribute> attributes,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     /**
@@ -53,7 +54,7 @@ public record OrderLineItemArticle(
         private Double weight;
         private Map<String, String> titleLocalized;
         private List<ArticleAttribute> attributes;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -122,7 +123,7 @@ public record OrderLineItemArticle(
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

@@ -10,6 +10,7 @@ import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfi
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single stock entry representing the physical availability of an article at a facility.
@@ -66,7 +67,7 @@ public record StockItem(
         String serializedProperties,
         StockFacilityReferences facility,
         Map<String, String> properties,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -98,7 +99,7 @@ public record StockItem(
         private String serializedProperties;
         private StockFacilityReferences facility;
         private Map<String, String> properties;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(StockId id) {
             this.id = id;
@@ -210,7 +211,7 @@ public record StockItem(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.orders;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents the specific changes made in an order update event.
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 public record OrderUpdateDetailChanges(
         OrderForCreationConsumer consumer,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         List<OrderLineItemForUpdate> orderLineItems,
         Instant preferredHandlingTime
 ) {
@@ -34,7 +35,7 @@ public record OrderUpdateDetailChanges(
     public static final class Builder {
 
         private OrderForCreationConsumer consumer;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private List<OrderLineItemForUpdate> orderLineItems;
         private Instant preferredHandlingTime;
 
@@ -55,7 +56,7 @@ public record OrderUpdateDetailChanges(
          * @param customAttributes the updated custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

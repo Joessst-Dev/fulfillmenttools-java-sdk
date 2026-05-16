@@ -9,6 +9,7 @@ import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a fulfillmenttools shipment, which groups parcels dispatched to a consumer
@@ -57,7 +58,7 @@ public record Shipment(
         ConsumerAddress targetAddress,
         Boolean anonymized,
         List<TagReference> tags,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -85,7 +86,7 @@ public record Shipment(
         private ConsumerAddress targetAddress;
         private Boolean anonymized;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(ShipmentId id) {
             this.id = id;
@@ -177,7 +178,7 @@ public record Shipment(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request object for creating a new item return job.
@@ -28,7 +29,7 @@ public final class CreateReturnRequest {
     private final List<String> scannableCodes;
     private final String shortId;
     private final TenantOrderId tenantOrderId;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private CreateReturnRequest(Builder builder) {
         this.originFacilityRefs = Objects.requireNonNull(builder.originFacilityRefs, "originFacilityRefs must not be null");
@@ -94,7 +95,7 @@ public final class CreateReturnRequest {
      * Returns the free-form custom attributes.
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing a {@link CreateReturnRequest}.
@@ -118,7 +119,7 @@ public final class CreateReturnRequest {
         private List<String> scannableCodes;
         private String shortId;
         private TenantOrderId tenantOrderId;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the origin facility IDs (required).
@@ -181,7 +182,7 @@ public final class CreateReturnRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds and returns a new {@link CreateReturnRequest}.

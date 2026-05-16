@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.handoverjobs;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A printable document associated with a handover job.
@@ -34,7 +35,7 @@ public record HandoverJobDocument(
         String path,
         Double priority,
         List<String> operations,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -52,7 +53,7 @@ public record HandoverJobDocument(
         private String path;
         private Double priority;
         private List<String> operations;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder documentType(String documentType) { this.documentType = documentType; return this; }
@@ -62,7 +63,7 @@ public record HandoverJobDocument(
         public Builder path(String path) { this.path = path; return this; }
         public Builder priority(Double priority) { this.priority = priority; return this; }
         public Builder operations(List<String> operations) { this.operations = operations; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public HandoverJobDocument build() {
             return new HandoverJobDocument(id, documentType, documentCategory, status, name, path, priority, operations, customAttributes);

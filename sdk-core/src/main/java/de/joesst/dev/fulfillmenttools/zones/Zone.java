@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ZoneId;
 
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a fulfillmenttools zone within a facility.
@@ -26,7 +27,7 @@ public record Zone(
         Integer version,
         String name,
         Double score,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -41,7 +42,7 @@ public record Zone(
         private Integer version;
         private String name;
         private Double score;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(ZoneId id) {
             this.id = id;
@@ -68,7 +69,7 @@ public record Zone(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

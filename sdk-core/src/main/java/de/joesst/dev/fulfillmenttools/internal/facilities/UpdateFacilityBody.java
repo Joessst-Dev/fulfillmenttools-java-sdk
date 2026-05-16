@@ -10,6 +10,7 @@ import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 record UpdateFacilityBody(
         String name,
@@ -28,5 +29,5 @@ record UpdateFacilityBody(
         Integer fulfillmentProcessBuffer,
         List<FacilityOperativeCost> operativeCosts,
         List<TagReference> tags,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

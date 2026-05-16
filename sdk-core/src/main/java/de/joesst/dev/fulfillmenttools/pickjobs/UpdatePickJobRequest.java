@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.pickjobs;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request for updating an existing pick job with new status, attributes, or picking methods.
@@ -14,7 +15,7 @@ public final class UpdatePickJobRequest {
 
     private final Integer version;
     private final String status;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
     private final List<String> preferredPickingMethods;
 
     /**
@@ -49,7 +50,7 @@ public final class UpdatePickJobRequest {
      *
      * @return the custom attributes map, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns the preferred picking methods.
@@ -78,7 +79,7 @@ public final class UpdatePickJobRequest {
 
         private Integer version;
         private String status;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private List<String> preferredPickingMethods;
 
         /**
@@ -103,7 +104,7 @@ public final class UpdatePickJobRequest {
          * @param customAttributes the custom attributes to set or update
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Sets the preferred picking methods.

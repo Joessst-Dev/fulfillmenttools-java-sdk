@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Article data for creating an order line item.
@@ -24,7 +25,7 @@ public final class OrderLineItemArticleForCreation {
     private final Double weight;
     private final Map<String, String> titleLocalized;
     private final List<ArticleAttribute> attributes;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private OrderLineItemArticleForCreation(Builder builder) {
         this.tenantArticleId = Objects.requireNonNull(builder.tenantArticleId, "tenantArticleId must not be null");
@@ -84,7 +85,7 @@ public final class OrderLineItemArticleForCreation {
      *
      * @return the custom attributes map, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing an {@code OrderLineItemArticleForCreation}.
@@ -107,7 +108,7 @@ public final class OrderLineItemArticleForCreation {
         private Double weight;
         private Map<String, String> titleLocalized;
         private List<ArticleAttribute> attributes;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the tenant article ID (required).
@@ -163,7 +164,7 @@ public final class OrderLineItemArticleForCreation {
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link OrderLineItemArticleForCreation}.

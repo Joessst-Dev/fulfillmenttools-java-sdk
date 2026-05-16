@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.storagelocations;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request parameters for updating an existing storage location via
@@ -29,7 +30,7 @@ public final class UpdateStorageLocationRequest {
     private final String tenantLocationId;
     private final String zoneRef;
     private final List<StorageLocationTraitConfigEntry> traitConfig;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private UpdateStorageLocationRequest(Builder builder) {
         this.version = Objects.requireNonNull(builder.version, "version must not be null");
@@ -112,7 +113,7 @@ public final class UpdateStorageLocationRequest {
      *
      * @return the custom attributes, or {@code null} if not updating
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new {@link Builder} for constructing an {@code UpdateStorageLocationRequest}.
@@ -140,7 +141,7 @@ public final class UpdateStorageLocationRequest {
         private String tenantLocationId;
         private String zoneRef;
         private List<StorageLocationTraitConfigEntry> traitConfig;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the current version of the storage location; used for optimistic locking.
@@ -220,7 +221,7 @@ public final class UpdateStorageLocationRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link UpdateStorageLocationRequest}. Throws {@link NullPointerException}

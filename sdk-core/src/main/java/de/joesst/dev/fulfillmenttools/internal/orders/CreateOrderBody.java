@@ -13,6 +13,7 @@ import de.joesst.dev.fulfillmenttools.orders.Sticker;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record CreateOrderBody(
@@ -26,5 +27,5 @@ record CreateOrderBody(
         List<Sticker> stickers,
         List<OrderStatusReason> statusReasons,
         OrderSource source,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

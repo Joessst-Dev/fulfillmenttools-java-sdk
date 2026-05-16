@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -21,6 +22,7 @@ import java.util.Map;
 public final class CustomAttributes {
 
     private final Map<String, Object> attributes;
+    @JsonIgnore
     private final ObjectMapper mapper;
 
     /** Used by {@link CustomAttributesDeserializer} to inject the active mapper. */

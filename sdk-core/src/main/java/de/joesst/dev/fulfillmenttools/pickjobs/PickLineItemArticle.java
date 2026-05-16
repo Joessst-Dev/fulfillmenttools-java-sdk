@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * The article associated with a pick line item.
@@ -31,7 +32,7 @@ public record PickLineItemArticle(
         Double weight,
         Map<String, String> titleLocalized,
         List<ArticleAttribute> attributes,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -45,7 +46,7 @@ public record PickLineItemArticle(
         private Double weight;
         private Map<String, String> titleLocalized;
         private List<ArticleAttribute> attributes;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -55,7 +56,7 @@ public record PickLineItemArticle(
         public Builder weight(Double weight) { this.weight = weight; return this; }
         public Builder titleLocalized(Map<String, String> titleLocalized) { this.titleLocalized = titleLocalized; return this; }
         public Builder attributes(List<ArticleAttribute> attributes) { this.attributes = attributes; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public PickLineItemArticle build() {
             return new PickLineItemArticle(tenantArticleId, title, imageUrl, weight, titleLocalized, attributes, customAttributes);

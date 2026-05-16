@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.inbound.AssignedUserInput;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record UpdateStowJobBody(
@@ -13,5 +14,5 @@ record UpdateStowJobBody(
         Integer priority,
         Instant targetTime,
         List<AssignedUserInput> assignedUsers,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

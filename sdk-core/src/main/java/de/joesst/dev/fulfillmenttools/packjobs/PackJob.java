@@ -17,6 +17,7 @@ import de.joesst.dev.fulfillmenttools.pickjobs.WorkflowInformation;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A pack job representing the task of packing picked articles into parcels.
@@ -78,7 +79,7 @@ public record PackJob(
         List<AssignedUser> assignedUsers,
         ConsumerAddress recipient,
         ConsumerAddress invoice,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         PickJobEditor editor,
         DocumentHandling documentHandling,
         WorkflowInformation workflowInformation,
@@ -117,7 +118,7 @@ public record PackJob(
         private List<AssignedUser> assignedUsers;
         private ConsumerAddress recipient;
         private ConsumerAddress invoice;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private PickJobEditor editor;
         private DocumentHandling documentHandling;
         private WorkflowInformation workflowInformation;
@@ -148,7 +149,7 @@ public record PackJob(
         public Builder assignedUsers(List<AssignedUser> assignedUsers) { this.assignedUsers = assignedUsers; return this; }
         public Builder recipient(ConsumerAddress recipient) { this.recipient = recipient; return this; }
         public Builder invoice(ConsumerAddress invoice) { this.invoice = invoice; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
         public Builder editor(PickJobEditor editor) { this.editor = editor; return this; }
         public Builder documentHandling(DocumentHandling documentHandling) { this.documentHandling = documentHandling; return this; }
         public Builder workflowInformation(WorkflowInformation workflowInformation) { this.workflowInformation = workflowInformation; return this; }

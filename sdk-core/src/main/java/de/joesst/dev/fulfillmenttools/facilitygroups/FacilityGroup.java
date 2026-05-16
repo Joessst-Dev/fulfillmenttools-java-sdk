@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a facility group in the fulfillmenttools platform.
@@ -29,7 +30,7 @@ public record FacilityGroup(
         List<FacilityId> facilityRefs,
         Map<String, String> nameLocalized,
         String name,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -47,7 +48,7 @@ public record FacilityGroup(
         private List<FacilityId> facilityRefs;
         private Map<String, String> nameLocalized;
         private String name;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(FacilityGroupId id) {
             this.id = id;
@@ -89,7 +90,7 @@ public record FacilityGroup(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Listing details for an article within a sourcing option.
@@ -19,7 +20,7 @@ import java.util.Map;
 public record SourcingOptionListingDetails(
         FacilityId facilityRef,
         TenantArticleId tenantArticleId,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -31,11 +32,11 @@ public record SourcingOptionListingDetails(
 
         private FacilityId facilityRef;
         private TenantArticleId tenantArticleId;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
         public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public SourcingOptionListingDetails build() {
             return new SourcingOptionListingDetails(facilityRef, tenantArticleId, customAttributes);

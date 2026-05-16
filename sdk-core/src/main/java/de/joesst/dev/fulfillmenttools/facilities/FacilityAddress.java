@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.model.TimeZone;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Physical address and contact information for a facility.
@@ -36,7 +37,7 @@ public record FacilityAddress(
         List<FacilityEmailAddress> emailAddresses,
         Coordinates resolvedCoordinates,
         TimeZone resolvedTimeZone,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     /**
@@ -65,7 +66,7 @@ public record FacilityAddress(
         private List<FacilityEmailAddress> emailAddresses;
         private Coordinates resolvedCoordinates;
         private TimeZone resolvedTimeZone;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -181,7 +182,7 @@ public record FacilityAddress(
          * @param customAttributes free-form custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

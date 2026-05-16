@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request to create a new stock entry via {@code POST /api/stocks}.
@@ -37,7 +38,7 @@ public final class CreateStockRequest {
     private final List<String> conditions;
     private final List<StorageLocationTraitConfigEntry> traitConfig;
     private final Map<String, String> properties;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private CreateStockRequest(Builder builder) {
         this.tenantArticleId = Objects.requireNonNull(builder.tenantArticleId, "tenantArticleId must not be null");
@@ -139,7 +140,7 @@ public final class CreateStockRequest {
      *
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new {@link Builder} for constructing a {@code CreateStockRequest}.
@@ -164,7 +165,7 @@ public final class CreateStockRequest {
         private List<String> conditions;
         private List<StorageLocationTraitConfigEntry> traitConfig;
         private Map<String, String> properties;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -262,7 +263,7 @@ public final class CreateStockRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link CreateStockRequest}.

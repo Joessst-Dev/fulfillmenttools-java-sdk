@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.id.PurchaseOrderId;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a fulfillmenttools purchase order, which records requested inbound goods
@@ -44,7 +45,7 @@ public record PurchaseOrder(
         List<InboundLineItem> requestedItems,
         PurchaseOrderStatus status,
         Boolean cancelled,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -65,7 +66,7 @@ public record PurchaseOrder(
         private List<InboundLineItem> requestedItems;
         private PurchaseOrderStatus status;
         private Boolean cancelled;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(PurchaseOrderId id) {
             this.id = id;
@@ -122,7 +123,7 @@ public record PurchaseOrder(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

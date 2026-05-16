@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.returns.ReturnJobLineItemForCreation;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 record CreateReturnBody(
         List<String> originFacilityRefs,
@@ -15,5 +16,5 @@ record CreateReturnBody(
         List<String> scannableCodes,
         String shortId,
         String tenantOrderId,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

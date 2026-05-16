@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 public final class StocksClientImpl implements StocksClient {
 
@@ -261,7 +262,7 @@ public final class StocksClientImpl implements StocksClient {
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
             Map<String, String> properties,
-            Map<String, Object> customAttributes) {}
+            CustomAttributes customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpdateStockBody(
@@ -271,7 +272,7 @@ public final class StocksClientImpl implements StocksClient {
             String tenantStockId,
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
-            Map<String, Object> customAttributes) {}
+            CustomAttributes customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpsertActionBody(String name, List<Object> stocks) {}
@@ -290,7 +291,7 @@ public final class StocksClientImpl implements StocksClient {
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
             Map<String, String> properties,
-            Map<String, Object> customAttributes) {}
+            CustomAttributes customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpdateOperationBody(
@@ -301,7 +302,7 @@ public final class StocksClientImpl implements StocksClient {
             String tenantStockId,
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
-            Map<String, Object> customAttributes) {}
+            CustomAttributes customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpsertActionResponse(VersionlessUpsertResult result) {}

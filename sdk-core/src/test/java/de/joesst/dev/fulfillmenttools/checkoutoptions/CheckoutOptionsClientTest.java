@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.checkoutoptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 import org.junit.jupiter.api.*;
 
@@ -122,7 +123,7 @@ class CheckoutOptionsClientTest {
                                 .city("Berlin")
                                 .build())
                         .filterDuplicates(true)
-                        .customAttributes(Map.of("source", "web"))
+                        .customAttributes(new CustomAttributes(Map.of("source", "web")))
                         .build());
 
         // Then

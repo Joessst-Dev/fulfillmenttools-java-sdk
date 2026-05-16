@@ -4,6 +4,7 @@ import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * The article associated with a stow line item.
@@ -27,7 +28,7 @@ public record StowLineItemArticle(
         String title,
         String imageUrl,
         String measurementUnitKey,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         Map<String, String> titleLocalized,
         List<String> scannableCodes
 ) {
@@ -41,7 +42,7 @@ public record StowLineItemArticle(
         private String title;
         private String imageUrl;
         private String measurementUnitKey;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private Map<String, String> titleLocalized;
         private List<String> scannableCodes;
 
@@ -51,7 +52,7 @@ public record StowLineItemArticle(
         public Builder title(String title) { this.title = title; return this; }
         public Builder imageUrl(String imageUrl) { this.imageUrl = imageUrl; return this; }
         public Builder measurementUnitKey(String measurementUnitKey) { this.measurementUnitKey = measurementUnitKey; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
         public Builder titleLocalized(Map<String, String> titleLocalized) { this.titleLocalized = titleLocalized; return this; }
         public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
 

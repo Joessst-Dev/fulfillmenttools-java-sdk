@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.model.Coordinates;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A consumer address used on an order.
@@ -52,7 +53,7 @@ public record ConsumerAddress(
         String addressType,
         Coordinates coordinates,
         List<PhoneNumber> phoneNumbers,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     /**
@@ -85,7 +86,7 @@ public record ConsumerAddress(
         private String addressType;
         private Coordinates coordinates;
         private List<PhoneNumber> phoneNumbers;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -255,7 +256,7 @@ public record ConsumerAddress(
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

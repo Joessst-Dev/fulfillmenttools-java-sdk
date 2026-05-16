@@ -7,6 +7,7 @@ import de.joesst.dev.fulfillmenttools.model.TagReference;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a facility in the fulfillmenttools platform.
@@ -58,7 +59,7 @@ public record Facility(
         List<FacilityOperativeCost> operativeCosts,
         List<LinkedConfiguration> configs,
         List<TagReference> tags,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     /**
@@ -97,7 +98,7 @@ public record Facility(
         private List<FacilityOperativeCost> operativeCosts;
         private List<LinkedConfiguration> configs;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -303,7 +304,7 @@ public record Facility(
          * @param customAttributes free-form custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

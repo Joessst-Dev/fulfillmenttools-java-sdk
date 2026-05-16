@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.id.InboundReceiptId;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a fulfillmenttools inbound receipt, recording the actual goods received
@@ -31,7 +32,7 @@ public record InboundReceipt(
         List<InboundReceiptComment> comments,
         InboundReceiptStatus status,
         String asnRef,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -47,7 +48,7 @@ public record InboundReceipt(
         private List<InboundReceiptComment> comments;
         private InboundReceiptStatus status;
         private String asnRef;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(InboundReceiptId id) {
             this.id = id;
@@ -79,7 +80,7 @@ public record InboundReceipt(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

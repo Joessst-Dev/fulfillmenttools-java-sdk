@@ -7,13 +7,14 @@ import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record EvaluateCheckoutOptionsBody(
         DeliveryPreferences deliveryPreferences,
         List<Map<String, Object>> orderLineItems,
         CheckoutOptionsConsumerAddress consumerAddress,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         Boolean filterDuplicates,
         List<Map<String, Object>> customServices,
         GeoFence geoFence,

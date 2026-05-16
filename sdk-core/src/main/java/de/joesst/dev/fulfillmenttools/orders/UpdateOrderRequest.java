@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Request to update an existing order.
@@ -13,7 +14,7 @@ public final class UpdateOrderRequest {
     private final Integer version;
     private final String comment;
     private final OrderForCreationConsumer consumer;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
     private final List<OrderLineItemForUpdate> orderLineItems;
     private final Instant preferredHandlingTime;
 
@@ -52,7 +53,7 @@ public final class UpdateOrderRequest {
      *
      * @return the custom attributes map, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns the updated order line items.
@@ -86,7 +87,7 @@ public final class UpdateOrderRequest {
         private Integer version;
         private String comment;
         private OrderForCreationConsumer consumer;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private List<OrderLineItemForUpdate> orderLineItems;
         private Instant preferredHandlingTime;
 
@@ -120,7 +121,7 @@ public final class UpdateOrderRequest {
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Sets the updated order line items.

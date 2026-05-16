@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfi
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record CreateStorageLocationBody(
@@ -19,5 +20,5 @@ record CreateStorageLocationBody(
         String zoneName,
         List<StorageLocationTraitConfigEntry> traitConfig,
         List<String> traits,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

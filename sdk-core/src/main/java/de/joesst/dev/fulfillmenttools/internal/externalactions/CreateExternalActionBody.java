@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.externalactions.ExternalActionDefinition;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record CreateExternalActionBody(
@@ -12,5 +13,5 @@ record CreateExternalActionBody(
         Map<String, String> nameLocalized,
         List<String> groups,
         ExternalActionDefinition action,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

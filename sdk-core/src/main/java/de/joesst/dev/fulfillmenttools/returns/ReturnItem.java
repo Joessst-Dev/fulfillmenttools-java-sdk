@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a single item return in the fulfillmenttools system.
@@ -31,7 +32,7 @@ public record ReturnItem(
         List<String> scannableCodes,
         List<String> parcelRefs,
         List<ReturnItemLineItem> returnedLineItems,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -48,7 +49,7 @@ public record ReturnItem(
         private List<String> scannableCodes;
         private List<String> parcelRefs;
         private List<ReturnItemLineItem> returnedLineItems;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -61,7 +62,7 @@ public record ReturnItem(
         public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
         public Builder parcelRefs(List<String> parcelRefs) { this.parcelRefs = parcelRefs; return this; }
         public Builder returnedLineItems(List<ReturnItemLineItem> returnedLineItems) { this.returnedLineItems = returnedLineItems; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public ReturnItem build() {
             return new ReturnItem(id, created, lastModified, status, returnFacilityRef, tenantOrderId, scannableCodes, parcelRefs, returnedLineItems, customAttributes);

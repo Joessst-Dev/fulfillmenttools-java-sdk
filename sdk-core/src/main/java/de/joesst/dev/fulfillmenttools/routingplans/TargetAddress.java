@@ -8,6 +8,7 @@ import de.joesst.dev.fulfillmenttools.orders.PhoneNumber;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * The delivery target address for a routing plan.
@@ -61,7 +62,7 @@ public record TargetAddress(
         String addressType,
         Coordinates coordinates,
         List<PhoneNumber> phoneNumbers,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         FacilityId facilityRef,
         TenantFacilityId tenantFacilityId
 ) {
@@ -87,7 +88,7 @@ public record TargetAddress(
         private String addressType;
         private Coordinates coordinates;
         private List<PhoneNumber> phoneNumbers;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
 
@@ -109,7 +110,7 @@ public record TargetAddress(
         public Builder addressType(String addressType) { this.addressType = addressType; return this; }
         public Builder coordinates(Coordinates coordinates) { this.coordinates = coordinates; return this; }
         public Builder phoneNumbers(List<PhoneNumber> phoneNumbers) { this.phoneNumbers = phoneNumbers; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
         public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
         public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
 

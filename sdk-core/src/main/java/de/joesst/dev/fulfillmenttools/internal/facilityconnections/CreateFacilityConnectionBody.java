@@ -11,6 +11,7 @@ import de.joesst.dev.fulfillmenttools.facilityconnections.PackagingUnitsByContex
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record CreateFacilityConnectionBody(
@@ -24,5 +25,5 @@ record CreateFacilityConnectionBody(
         List<PackagingUnitsByContext> packagingUnitsByContexts,
         CutoffTimes cutoffTimes,
         CarrierTransitTime fallbackTransitTime,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

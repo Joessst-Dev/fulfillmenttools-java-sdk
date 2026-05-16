@@ -6,6 +6,7 @@ import de.joesst.dev.fulfillmenttools.id.PackingTargetContainerId;
 
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Represents a fulfillmenttools packing target container, which groups packed line items
@@ -43,7 +44,7 @@ public record PackingTargetContainer(
         List<PackingTargetContainerLineItem> lineItems,
         String shortId,
         Double weightLimitInG,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -65,7 +66,7 @@ public record PackingTargetContainer(
         private List<PackingTargetContainerLineItem> lineItems;
         private String shortId;
         private Double weightLimitInG;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(PackingTargetContainerId id) {
             this.id = id;
@@ -127,7 +128,7 @@ public record PackingTargetContainer(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

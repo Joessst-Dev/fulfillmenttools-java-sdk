@@ -112,7 +112,7 @@ class ListingsClientTest {
         assertThat(l.scannableCodes()).containsExactly("123456789");
         assertThat(l.attributes()).hasSize(1);
         assertThat(l.tags()).hasSize(1);
-        assertThat(l.customAttributes()).containsEntry("color", "blue");
+        assertThat(l.customAttributes().attributes()).containsEntry("color", "blue");
         assertThat(l.titleLocalized()).containsEntry("de", "Artikel");
         assertThat(l.legal()).isNotNull();
         assertThat(l.legal().hsCode()).isEqualTo("123456");

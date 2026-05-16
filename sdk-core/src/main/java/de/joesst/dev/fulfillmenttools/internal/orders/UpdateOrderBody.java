@@ -6,12 +6,13 @@ import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForUpdate;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 record UpdateOrderBody(
         Integer version,
         String comment,
         OrderForCreationConsumer consumer,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         List<OrderLineItemForUpdate> orderLineItems,
         Instant preferredHandlingTime
 ) {}
