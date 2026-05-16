@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.id.SourcingOptionNodeId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * <p>Maps to the {@code SourcingOptionNode} schema in the fulfillmenttools OpenAPI spec.
  *
- * @param id               unique identifier of this node
+ * @param id               platform-assigned {@link SourcingOptionNodeId}
  * @param type             node type ({@link NodeType})
  * @param facilityRef      fulfillmenttools facility reference
  * @param tenantFacilityId tenant-specific facility identifier
@@ -21,7 +22,7 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SourcingOptionNode(
-        String id,
+        SourcingOptionNodeId id,
         NodeType type,
         FacilityId facilityRef,
         TenantFacilityId tenantFacilityId,
@@ -36,14 +37,14 @@ public record SourcingOptionNode(
     public static final class Builder {
         private Builder() {}
 
-        private String id;
+        private SourcingOptionNodeId id;
         private NodeType type;
         private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
         private Boolean isPickUpLocation;
         private List<HandledItem> lineItems;
 
-        public Builder id(String id) { this.id = id; return this; }
+        public Builder id(SourcingOptionNodeId id) { this.id = id; return this; }
         public Builder type(NodeType type) { this.type = type; return this; }
         public Builder facilityRef(FacilityId facilityRef) { this.facilityRef = facilityRef; return this; }
         public Builder tenantFacilityId(TenantFacilityId tenantFacilityId) { this.tenantFacilityId = tenantFacilityId; return this; }
