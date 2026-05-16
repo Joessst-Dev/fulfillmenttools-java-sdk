@@ -140,12 +140,12 @@ import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
 CreateStockRequest request = CreateStockRequest.builder()
     .tenantArticleId(new TenantArticleId("SKU-001"))
     .value(100)
-    .facilityRef(FacilityId.builder().value("fac-001").build())
+    .facilityRef(new FacilityId("fac-001"))
     .customAttributes(CustomAttributes.of(Map.of("warehouse_zone", "A3")))
     .build();
 ```
 
-> **Note:** Before PR #175, these builder methods accepted `Map<String, Object>` directly. Any code that previously passed `Map.of(...)` must now wrap the map: `CustomAttributes.of(Map.of(...))`.
+> **Note:** Builder methods that previously accepted `Map<String, Object>` directly now require `CustomAttributes`. Wrap existing maps with `CustomAttributes.of(Map.of(...))`.
 
 ### Reading attributes from a response
 
