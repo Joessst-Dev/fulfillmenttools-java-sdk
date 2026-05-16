@@ -197,7 +197,7 @@ Without this registration, `as()` still works — it falls back to the SDK's def
 
 ## Money
 
-A monetary amount with currency information. Used throughout the SDK to represent prices, costs, and financial values.
+A monetary amount represented as an integer-like value paired with a decimal-places indicator. This design avoids floating-point conversion errors: `value` is always a whole number and `decimalPlaces` tells you how many digits to shift right to get the real amount.
 
 ```java
 import de.joesst.dev.fulfillmenttools.model.Money;
@@ -208,18 +208,18 @@ Money price = Money.builder()
     .decimalPlaces(2.0)
     .build();
 
-System.out.println(price.value());        // 499.0
-System.out.println(price.currency());     // "EUR"
+System.out.println(price.value());         // 499.0
+System.out.println(price.currency());      // "EUR"
 System.out.println(price.decimalPlaces()); // 2.0
-System.out.println(price.toAmount());     // 4.99
+System.out.println(price.toAmount());      // 4.99
 ```
 
 | Field / Method | Type | Description |
 |----------------|------|-------------|
-| `value()` | `Double` | The raw numeric amount as returned by the API (minor units, e.g. `499.0` for €4.99) |
+| `value()` | `Double` | The amount as a whole number (e.g. `499` represents €4.99). Stored without decimal shift to avoid floating-point errors. |
 | `currency()` | `String` | ISO 4217 currency code (e.g. `"EUR"`, `"USD"`) |
-| `decimalPlaces()` | `Double` | The number of decimal places for this currency (e.g. `2.0` for most currencies, `0.0` for JPY) |
-| `toAmount()` | `Double` | Converts the raw value to its decimal representation by dividing by 10^`decimalPlaces` (e.g. `499.0` → `4.99`). Returns `value` unchanged when `decimalPlaces` is null or zero; returns `null` when `value` is null. |
+| `decimalPlaces()` | `Double` | How many decimal places to shift `value` right to get the real amount (e.g. `2` means divide by 100). Set by whoever creates the value, not derived from the currency. |
+| `toAmount()` | `Double` | Computes the real amount: `value / 10^decimalPlaces` (e.g. `499 / 10^2 = 4.99`). Returns `value` unchanged when `decimalPlaces` is null or zero; returns `null` when `value` is null. |
 
 ---
 
