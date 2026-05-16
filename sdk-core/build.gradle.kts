@@ -30,6 +30,12 @@ dependencies {
     testRuntimeOnly("org.slf4j:slf4j-simple:2.0.13")
 }
 
+tasks.processResources {
+    filesMatching("**/version.properties") {
+        expand("version" to project.version)
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }
