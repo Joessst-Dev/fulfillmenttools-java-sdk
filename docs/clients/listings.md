@@ -256,7 +256,8 @@ Instant created = listing.created();
 Instant lastModified = listing.lastModified();
 
 // Custom metadata
-Map<String, Object> customAttrs = listing.customAttributes();
+CustomAttributes customAttrs = listing.customAttributes();
+Map<String, Object> raw = customAttrs.attributes();
 ```
 
 ## Error Handling

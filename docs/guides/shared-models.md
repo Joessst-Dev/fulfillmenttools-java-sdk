@@ -115,6 +115,84 @@ System.out.println(tz.offsetInSeconds()); // e.g. 3600.0
 | `offsetInSeconds()` | `Double` (nullable) | UTC offset in seconds; `null` if unknown |
 | `source()` | `String` | System that determined this time zone |
 
+## CustomAttributes
+
+Tenant-defined extension data attached to a resource. Every model that exposes a `customAttributes` field returns a `CustomAttributes` instance instead of a raw `Map<String, Object>`.
+
+### Constructing for a request
+
+Use `CustomAttributes.of(Map)` when building a request:
+
+```java
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+
+CustomAttributes attrs = CustomAttributes.of(Map.of(
+    "priority", "high",
+    "source",   "ERP"
+));
+```
+
+Pass the result directly to any builder method that accepts `customAttributes`:
+
+```java
+import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
+
+CreateStockRequest request = CreateStockRequest.builder()
+    .tenantArticleId(new TenantArticleId("SKU-001"))
+    .value(100)
+    .facilityRef(FacilityId.builder().value("fac-001").build())
+    .customAttributes(CustomAttributes.of(Map.of("warehouse_zone", "A3")))
+    .build();
+```
+
+> **Note:** Before PR #175, these builder methods accepted `Map<String, Object>` directly. Any code that previously passed `Map.of(...)` must now wrap the map: `CustomAttributes.of(Map.of(...))`.
+
+### Reading attributes from a response
+
+`attributes()` returns the raw map (unmodifiable):
+
+```java
+CustomAttributes attrs = stock.customAttributes();
+Map<String, Object> raw = attrs.attributes();
+System.out.println(raw.get("warehouse_zone")); // "A3"
+```
+
+### Converting to a typed POJO
+
+`as(Class<T>)` converts the attributes map to your own type using the SDK's Jackson ObjectMapper — no I/O is performed:
+
+```java
+record WarehouseMeta(String warehouseZone, int shelfNumber) {}
+
+WarehouseMeta meta = stock.customAttributes().as(WarehouseMeta.class);
+System.out.println(meta.warehouseZone()); // "A3"
+System.out.println(meta.shelfNumber());   // 7
+```
+
+Conversion fails with `IllegalArgumentException` if the attributes map is missing required fields or contains incompatible types.
+
+### Wiring into a custom ObjectMapper
+
+If you configure your own Jackson `ObjectMapper` with field-level visibility (e.g. `PropertyAccessor.FIELD = ANY`), register the SDK's module so that `as()` uses that same mapper:
+
+```java
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+
+ObjectMapper myMapper = new ObjectMapper();
+// ... your own configuration ...
+myMapper.registerModule(CustomAttributes.jacksonModule(myMapper));
+```
+
+Without this registration, `as()` still works — it falls back to the SDK's default mapper — but the conversion ignores any custom serializers you may have configured.
+
+| Method / Factory | Returns | Description |
+|------------------|---------|-------------|
+| `CustomAttributes.of(Map<String, Object>)` | `CustomAttributes` | Static factory for building requests |
+| `attributes()` | `Map<String, Object>` | Raw attributes map (unmodifiable) |
+| `as(Class<T> type)` | `T` | Converts attributes to the given POJO type |
+| `CustomAttributes.jacksonModule(ObjectMapper)` | `SimpleModule` | Jackson module to wire a custom mapper into `as()` |
+
 ## Money
 
 A monetary amount with currency information. Used throughout the SDK to represent prices, costs, and financial values.

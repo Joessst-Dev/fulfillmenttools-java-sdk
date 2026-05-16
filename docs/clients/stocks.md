@@ -827,7 +827,7 @@ for (StockItem item : allResults) {
 | `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
 | `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
 | `properties(Map<String,String>)` | `Map<String,String>` | No | Tracking properties (e.g. expiry dates) |
-| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+| `customAttributes(CustomAttributes)` | `CustomAttributes` | No | Free-form metadata. Construct with `CustomAttributes.of(Map.of(...))` |
 
 ## UpdateStockRequest Parameters
 
@@ -839,7 +839,7 @@ for (StockItem item : allResults) {
 | `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
 | `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
 | `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
-| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+| `customAttributes(CustomAttributes)` | `CustomAttributes` | No | Free-form metadata. Construct with `CustomAttributes.of(Map.of(...))` |
 
 ## VersionlessStockCreate Parameters
 
@@ -856,7 +856,7 @@ for (StockItem item : allResults) {
 | `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
 | `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
 | `properties(Map<String,String>)` | `Map<String,String>` | No | Tracking properties (e.g. expiry dates) |
-| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+| `customAttributes(CustomAttributes)` | `CustomAttributes` | No | Free-form metadata. Construct with `CustomAttributes.of(Map.of(...))` |
 
 ## VersionlessStockUpdate Parameters
 
@@ -868,7 +868,7 @@ for (StockItem item : allResults) {
 | `tenantStockId(TenantStockId)` | `TenantStockId` | No | Your own stock identifier |
 | `conditions(List<String>)` | `List<String>` | No | Condition tags (e.g. `DEFECTIVE`) |
 | `traitConfig(List<StorageLocationTraitConfigEntry>)` | `List<...>` | No | Trait configuration entries |
-| `customAttributes(Map<String,Object>)` | `Map<String,Object>` | No | Free-form metadata |
+| `customAttributes(CustomAttributes)` | `CustomAttributes` | No | Free-form metadata. Construct with `CustomAttributes.of(Map.of(...))` |
 
 ## StockSearchRequest Parameters
 
@@ -979,7 +979,7 @@ The `StockItem` record exposes the following accessor methods (via record compon
 | `traits()` | `List<String>` | Operational trait identifiers |
 | `traitConfig()` | `List<StorageLocationTraitConfigEntry>` | Per-trait configuration entries |
 | `properties()` | `Map<String, String>` | Tracking properties (key-value pairs) |
-| `customAttributes()` | `Map<String, Object>` | Free-form custom metadata |
+| `customAttributes()` | `CustomAttributes` | Free-form custom metadata. Call `.attributes()` for the raw map or `.as(MyType.class)` for typed access |
 | `serializedProperties()` | `String` | Serialised representation of the stock properties (JSON string) |
 | `facility()` | `StockFacilityReferences` | Embedded facility reference data (nullable) |
 
