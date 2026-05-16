@@ -1,17 +1,18 @@
 package de.joesst.dev.fulfillmenttools.checkoutoptions;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
-import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
-import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
-import org.junit.jupiter.api.*;
-
-import java.util.List;
-import java.util.Map;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.*;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
+import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
+
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
+import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
+
+import org.junit.jupiter.api.*;
+import java.util.List;
+import java.util.Map;
 
 class CheckoutOptionsClientTest {
 
@@ -122,7 +123,7 @@ class CheckoutOptionsClientTest {
                                 .city("Berlin")
                                 .build())
                         .filterDuplicates(true)
-                        .customAttributes(Map.of("source", "web"))
+                        .customAttributes(CustomAttributes.of(Map.of("source", "web")))
                         .build());
 
         // Then

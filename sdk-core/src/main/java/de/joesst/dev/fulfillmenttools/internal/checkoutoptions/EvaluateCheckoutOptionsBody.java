@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.internal.checkoutoptions;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.checkoutoptions.CheckoutOptionsConsumerAddress;
 import de.joesst.dev.fulfillmenttools.checkoutoptions.GeoFence;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 
 import java.util.List;
@@ -13,7 +14,7 @@ record EvaluateCheckoutOptionsBody(
         DeliveryPreferences deliveryPreferences,
         List<Map<String, Object>> orderLineItems,
         CheckoutOptionsConsumerAddress consumerAddress,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         Boolean filterDuplicates,
         List<Map<String, Object>> customServices,
         GeoFence geoFence,

@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.id.StockId;
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantStockId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.time.Instant;
@@ -66,7 +67,7 @@ public record StockItem(
         String serializedProperties,
         StockFacilityReferences facility,
         Map<String, String> properties,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -98,7 +99,7 @@ public record StockItem(
         private String serializedProperties;
         private StockFacilityReferences facility;
         private Map<String, String> properties;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(StockId id) {
             this.id = id;
@@ -210,7 +211,7 @@ public record StockItem(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

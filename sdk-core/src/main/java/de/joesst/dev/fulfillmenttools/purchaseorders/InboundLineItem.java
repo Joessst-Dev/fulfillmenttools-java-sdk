@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.purchaseorders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.Quantity;
 
 import java.util.Map;
@@ -18,7 +19,7 @@ public record InboundLineItem(
         String tenantArticleId,
         Quantity quantity,
         Map<String, String> stockProperties,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -31,7 +32,7 @@ public record InboundLineItem(
         private String tenantArticleId;
         private Quantity quantity;
         private Map<String, String> stockProperties;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder tenantArticleId(String tenantArticleId) {
             this.tenantArticleId = tenantArticleId;
@@ -48,7 +49,7 @@ public record InboundLineItem(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

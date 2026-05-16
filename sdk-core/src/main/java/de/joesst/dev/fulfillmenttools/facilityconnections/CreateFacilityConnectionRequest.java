@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilityconnections;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -29,7 +29,7 @@ public final class CreateFacilityConnectionRequest {
     private final List<PackagingUnitsByContext> packagingUnitsByContexts;
     private final CutoffTimes cutoffTimes;
     private final CarrierTransitTime fallbackTransitTime;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private CreateFacilityConnectionRequest(Builder builder) {
         this.target = Objects.requireNonNull(builder.target, "target must not be null");
@@ -102,7 +102,7 @@ public final class CreateFacilityConnectionRequest {
      * Returns the optional free-form custom attributes.
      * @return the custom attributes map, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new builder for constructing a {@code CreateFacilityConnectionRequest}.
@@ -127,7 +127,7 @@ public final class CreateFacilityConnectionRequest {
         private List<PackagingUnitsByContext> packagingUnitsByContexts;
         private CutoffTimes cutoffTimes;
         private CarrierTransitTime fallbackTransitTime;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the target of the connection (required).
@@ -197,7 +197,7 @@ public final class CreateFacilityConnectionRequest {
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds and returns a new {@code CreateFacilityConnectionRequest}.

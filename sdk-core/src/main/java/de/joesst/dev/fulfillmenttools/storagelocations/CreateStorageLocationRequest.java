@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.storagelocations;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -32,7 +32,7 @@ public final class CreateStorageLocationRequest {
     private final String zoneName;
     private final List<StorageLocationTraitConfigEntry> traitConfig;
     private final List<String> traits;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private CreateStorageLocationRequest(Builder builder) {
         this.name = Objects.requireNonNull(builder.name, "name must not be null");
@@ -123,7 +123,7 @@ public final class CreateStorageLocationRequest {
      *
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new {@link Builder} for constructing a {@code CreateStorageLocationRequest}.
@@ -150,7 +150,7 @@ public final class CreateStorageLocationRequest {
         private String zoneName;
         private List<StorageLocationTraitConfigEntry> traitConfig;
         private List<String> traits;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the display name of the storage location.
@@ -238,7 +238,7 @@ public final class CreateStorageLocationRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link CreateStorageLocationRequest}. Throws {@link NullPointerException}

@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.checkoutoptions;
 
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.DeliveryPreferences;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public final class EvaluateCheckoutOptionsRequest {
     private final DeliveryPreferences deliveryPreferences;
     private final List<Map<String, Object>> orderLineItems;
     private final CheckoutOptionsConsumerAddress consumerAddress;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
     private final Boolean filterDuplicates;
     private final List<Map<String, Object>> customServices;
     private final GeoFence geoFence;
@@ -64,7 +65,7 @@ public final class EvaluateCheckoutOptionsRequest {
      *
      * @return custom attributes map, or {@code null} if not provided.
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns whether duplicate facilities should be filtered.
@@ -112,7 +113,7 @@ public final class EvaluateCheckoutOptionsRequest {
         private DeliveryPreferences deliveryPreferences;
         private List<Map<String, Object>> orderLineItems;
         private CheckoutOptionsConsumerAddress consumerAddress;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private Boolean filterDuplicates;
         private List<Map<String, Object>> customServices;
         private GeoFence geoFence;
@@ -155,7 +156,7 @@ public final class EvaluateCheckoutOptionsRequest {
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

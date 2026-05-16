@@ -1,6 +1,6 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
-import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A phone number with optional type and label information.
@@ -10,7 +10,7 @@ import java.util.Map;
  * @param label human-readable label (e.g. "Main", "Warehouse", "Customer Service")
  * @param customAttributes free-form custom attributes
  */
-public record FacilityPhoneNumber(String value, String type, String label, Map<String, Object> customAttributes) {
+public record FacilityPhoneNumber(String value, String type, String label, CustomAttributes customAttributes) {
 
     /**
      * Returns a builder for constructing a {@link FacilityPhoneNumber}.
@@ -29,7 +29,7 @@ public record FacilityPhoneNumber(String value, String type, String label, Map<S
         private String value;
         private String type;
         private String label;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -64,7 +64,7 @@ public record FacilityPhoneNumber(String value, String type, String label, Map<S
          * @param customAttributes free-form custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

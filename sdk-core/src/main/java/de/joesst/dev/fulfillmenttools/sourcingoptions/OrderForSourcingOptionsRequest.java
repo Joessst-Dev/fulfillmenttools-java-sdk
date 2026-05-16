@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.OrderLineItemForCreation;
 import de.joesst.dev.fulfillmenttools.orders.OrderPaymentInfoForCreation;
@@ -10,7 +11,6 @@ import de.joesst.dev.fulfillmenttools.orders.Sticker;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -30,7 +30,7 @@ public final class OrderForSourcingOptionsRequest {
     private final Instant orderDate;
     private final DeliveryPreferences deliveryPreferences;
     private final String status;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
     private final List<SourcingOptionsCustomService> customServices;
     private final OrderPaymentInfoForCreation paymentInfo;
     private final SourcingOptionsPromisesOptions promisesOptions;
@@ -101,7 +101,7 @@ public final class OrderForSourcingOptionsRequest {
      *
      * @return the custom attributes, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Custom services attached to this order.
@@ -168,7 +168,7 @@ public final class OrderForSourcingOptionsRequest {
         private Instant orderDate;
         private DeliveryPreferences deliveryPreferences;
         private String status;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private List<SourcingOptionsCustomService> customServices;
         private OrderPaymentInfoForCreation paymentInfo;
         private SourcingOptionsPromisesOptions promisesOptions;
@@ -248,7 +248,7 @@ public final class OrderForSourcingOptionsRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

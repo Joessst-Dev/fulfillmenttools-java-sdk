@@ -2,10 +2,10 @@ package de.joesst.dev.fulfillmenttools.storagelocations;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a physical storage location (e.g. aisle, rack, bin) within a facility.
@@ -46,7 +46,7 @@ public record StorageLocation(
         String information,
         List<String> traits,
         List<String> scannableCodes,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         Double schemaVersion,
         List<StorageLocationTraitConfigEntry> traitConfig,
         List<StorageLocationSequenceItem> runningSequences
@@ -72,7 +72,7 @@ public record StorageLocation(
         private String information;
         private List<String> traits;
         private List<String> scannableCodes;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private Double schemaVersion;
         private List<StorageLocationTraitConfigEntry> traitConfig;
         private List<StorageLocationSequenceItem> runningSequences;
@@ -142,7 +142,7 @@ public record StorageLocation(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

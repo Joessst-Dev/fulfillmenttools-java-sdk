@@ -1,19 +1,19 @@
 package de.joesst.dev.fulfillmenttools.listings;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.assertj.core.api.Assertions.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.joesst.dev.fulfillmenttools.FulfillmenttoolsClient;
 import de.joesst.dev.fulfillmenttools.auth.TokenProvider;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.model.Page;
-import org.junit.jupiter.api.*;
 
+import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.assertj.core.api.Assertions.*;
 
 class ListingsClientTest {
 
@@ -112,7 +112,7 @@ class ListingsClientTest {
         assertThat(l.scannableCodes()).containsExactly("123456789");
         assertThat(l.attributes()).hasSize(1);
         assertThat(l.tags()).hasSize(1);
-        assertThat(l.customAttributes()).containsEntry("color", "blue");
+        assertThat(l.customAttributes().attributes()).containsEntry("color", "blue");
         assertThat(l.titleLocalized()).containsEntry("de", "Artikel");
         assertThat(l.legal()).isNotNull();
         assertThat(l.legal().hsCode()).isEqualTo("123456");

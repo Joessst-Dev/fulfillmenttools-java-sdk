@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A read-side order line item containing article and fulfillment information.
@@ -35,7 +35,7 @@ public record OrderLineItem(
         List<Substitute> allowedSubstitutes,
         MeasurementValidation measurementValidation,
         List<TagReference> tags,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     /**
@@ -62,7 +62,7 @@ public record OrderLineItem(
         private List<Substitute> allowedSubstitutes;
         private MeasurementValidation measurementValidation;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -171,7 +171,7 @@ public record OrderLineItem(
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

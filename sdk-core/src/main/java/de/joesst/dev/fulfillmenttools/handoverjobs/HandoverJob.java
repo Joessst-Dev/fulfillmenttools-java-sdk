@@ -2,10 +2,11 @@ package de.joesst.dev.fulfillmenttools.handoverjobs;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.HandoverJobId;
-import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.id.PickJobId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
@@ -14,7 +15,6 @@ import de.joesst.dev.fulfillmenttools.pickjobs.WorkflowInformation;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A handover job representing the task of handing over picked articles to a customer or carrier.
@@ -84,7 +84,7 @@ public record HandoverJob(
         ConsumerAddress invoiceAddress,
         HandoverJobParcelInfo handoverJobParcelInfo,
         WorkflowInformation workflowInformation,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         List<Sticker> stickers,
         List<OperativeTransfer> transfers,
         List<TagReference> tags,
@@ -124,7 +124,7 @@ public record HandoverJob(
         private ConsumerAddress invoiceAddress;
         private HandoverJobParcelInfo handoverJobParcelInfo;
         private WorkflowInformation workflowInformation;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private List<Sticker> stickers;
         private List<OperativeTransfer> transfers;
         private List<TagReference> tags;
@@ -156,7 +156,7 @@ public record HandoverJob(
         public Builder invoiceAddress(ConsumerAddress invoiceAddress) { this.invoiceAddress = invoiceAddress; return this; }
         public Builder handoverJobParcelInfo(HandoverJobParcelInfo handoverJobParcelInfo) { this.handoverJobParcelInfo = handoverJobParcelInfo; return this; }
         public Builder workflowInformation(WorkflowInformation workflowInformation) { this.workflowInformation = workflowInformation; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
         public Builder stickers(List<Sticker> stickers) { this.stickers = stickers; return this; }
         public Builder transfers(List<OperativeTransfer> transfers) { this.transfers = transfers; return this; }
         public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }

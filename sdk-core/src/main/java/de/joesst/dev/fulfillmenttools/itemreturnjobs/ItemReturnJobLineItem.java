@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.itemreturnjobs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A single line item within an item return job, tracking returnable and returned quantities.
@@ -28,7 +28,7 @@ public record ItemReturnJobLineItem(
         String globalLineItemId,
         List<String> scannableCodes,
         List<String> serviceJobRefs,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -46,7 +46,7 @@ public record ItemReturnJobLineItem(
         private String globalLineItemId;
         private List<String> scannableCodes;
         private List<String> serviceJobRefs;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(String id) {
             this.id = id;
@@ -88,7 +88,7 @@ public record ItemReturnJobLineItem(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

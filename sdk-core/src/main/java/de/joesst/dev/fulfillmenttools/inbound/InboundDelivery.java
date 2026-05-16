@@ -3,10 +3,10 @@ package de.joesst.dev.fulfillmenttools.inbound;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.InboundDeliveryId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a fulfillmenttools inbound delivery (called {@code InboundProcess} in the API),
@@ -46,7 +46,7 @@ public record InboundDelivery(
         List<String> scannableCodes,
         List<InboundReceipt> receipts,
         String tenantInboundProcessId,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -69,7 +69,7 @@ public record InboundDelivery(
         private List<String> scannableCodes;
         private List<InboundReceipt> receipts;
         private String tenantInboundProcessId;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(InboundDeliveryId id) {
             this.id = id;
@@ -136,7 +136,7 @@ public record InboundDelivery(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

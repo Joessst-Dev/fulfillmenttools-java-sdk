@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -41,7 +41,7 @@ public final class CreateFacilityRequest {
     private final Integer fulfillmentProcessBuffer;
     private final List<FacilityOperativeCost> operativeCosts;
     private final List<TagReference> tags;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private CreateFacilityRequest(Builder builder) {
         this.name = Objects.requireNonNull(builder.name, "name must not be null");
@@ -163,7 +163,7 @@ public final class CreateFacilityRequest {
      * Returns the custom attributes.
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing a {@link CreateFacilityRequest}.
@@ -195,7 +195,7 @@ public final class CreateFacilityRequest {
         private Integer fulfillmentProcessBuffer;
         private List<FacilityOperativeCost> operativeCosts;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the facility name (required).
@@ -314,7 +314,7 @@ public final class CreateFacilityRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds and returns a new {@link CreateFacilityRequest}.

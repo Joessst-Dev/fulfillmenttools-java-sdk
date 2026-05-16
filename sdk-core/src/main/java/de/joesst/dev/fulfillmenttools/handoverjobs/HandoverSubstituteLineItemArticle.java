@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.handoverjobs;
 
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public record HandoverSubstituteLineItemArticle(
         String imageUrl,
         Double weight,
         Map<String, String> titleLocalized,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         List<ArticleAttribute> attributes
 ) {
 
@@ -46,7 +47,7 @@ public record HandoverSubstituteLineItemArticle(
         private String imageUrl;
         private Double weight;
         private Map<String, String> titleLocalized;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private List<ArticleAttribute> attributes;
 
         public Builder tenantArticleId(TenantArticleId tenantArticleId) { this.tenantArticleId = tenantArticleId; return this; }
@@ -54,7 +55,7 @@ public record HandoverSubstituteLineItemArticle(
         public Builder imageUrl(String imageUrl) { this.imageUrl = imageUrl; return this; }
         public Builder weight(Double weight) { this.weight = weight; return this; }
         public Builder titleLocalized(Map<String, String> titleLocalized) { this.titleLocalized = titleLocalized; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
         public Builder attributes(List<ArticleAttribute> attributes) { this.attributes = attributes; return this; }
 
         public HandoverSubstituteLineItemArticle build() {

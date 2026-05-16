@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Request payload for updating an existing facility with partial changes.
@@ -38,7 +38,7 @@ public final class UpdateFacilityRequest {
     private final Integer fulfillmentProcessBuffer;
     private final List<FacilityOperativeCost> operativeCosts;
     private final List<TagReference> tags;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private UpdateFacilityRequest(Builder builder) {
         this.name = builder.name;
@@ -160,7 +160,7 @@ public final class UpdateFacilityRequest {
      * Returns the free-form custom attributes.
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new builder for constructing an {@code UpdateFacilityRequest}.
@@ -187,7 +187,7 @@ public final class UpdateFacilityRequest {
         private Integer fulfillmentProcessBuffer;
         private List<FacilityOperativeCost> operativeCosts;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /** Creates a new Builder instance. */
         public Builder() {}
@@ -309,7 +309,7 @@ public final class UpdateFacilityRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds and returns a new {@code UpdateFacilityRequest}.

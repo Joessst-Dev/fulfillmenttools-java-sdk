@@ -1,5 +1,6 @@
 package de.joesst.dev.fulfillmenttools.pickjobs;
 
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.MeasurementValidation;
 import de.joesst.dev.fulfillmenttools.orders.Sticker;
@@ -7,7 +8,6 @@ import de.joesst.dev.fulfillmenttools.orders.Substitute;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A single pick line item within a pick job, representing a quantity of a specific article
@@ -64,7 +64,7 @@ public record PickLineItem(
         List<Substitute> allowedSubstitutes,
         List<Sticker> stickers,
         List<TagReference> tags,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -94,7 +94,7 @@ public record PickLineItem(
         private List<Substitute> allowedSubstitutes;
         private List<Sticker> stickers;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -120,7 +120,7 @@ public record PickLineItem(
         public Builder allowedSubstitutes(List<Substitute> allowedSubstitutes) { this.allowedSubstitutes = allowedSubstitutes; return this; }
         public Builder stickers(List<Sticker> stickers) { this.stickers = stickers; return this; }
         public Builder tags(List<TagReference> tags) { this.tags = tags; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public PickLineItem build() {
             return new PickLineItem(id, quantity, picked, status, article, measurementUnitKey, secondaryMeasurementUnitKey, secondaryQuantity, secondaryPicked, globalLineItemId, originId, pickJobLineItemRef, pickedAt, stockEmptied, scannableCodes, partialStockLocations, recordableAttributes, measurementValidation, shortPickReason, allowedSubstitutes, stickers, tags, customAttributes);

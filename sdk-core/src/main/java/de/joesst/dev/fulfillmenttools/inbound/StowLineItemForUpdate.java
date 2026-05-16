@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.inbound;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A stow line item as provided in an {@link UpdateStowJobRequest}.
@@ -29,7 +29,7 @@ public record StowLineItemForUpdate(
         List<StowLineItemStowToForUpdate> stowTo,
         StowLineItemTakeFrom takeFrom,
         List<ExternalStockChangeReasonInput> reasons,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -42,7 +42,7 @@ public record StowLineItemForUpdate(
         private List<StowLineItemStowToForUpdate> stowTo;
         private StowLineItemTakeFrom takeFrom;
         private List<ExternalStockChangeReasonInput> reasons;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -51,7 +51,7 @@ public record StowLineItemForUpdate(
         public Builder stowTo(List<StowLineItemStowToForUpdate> stowTo) { this.stowTo = stowTo; return this; }
         public Builder takeFrom(StowLineItemTakeFrom takeFrom) { this.takeFrom = takeFrom; return this; }
         public Builder reasons(List<ExternalStockChangeReasonInput> reasons) { this.reasons = reasons; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public StowLineItemForUpdate build() {
             return new StowLineItemForUpdate(id, article, stowTo, takeFrom, reasons, customAttributes);

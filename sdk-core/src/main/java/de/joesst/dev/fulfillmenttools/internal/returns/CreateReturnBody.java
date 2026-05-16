@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.internal.returns;
 
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 import de.joesst.dev.fulfillmenttools.returns.ReturnJobLineItemForCreation;
 
 import java.util.List;
-import java.util.Map;
 
 record CreateReturnBody(
         List<String> originFacilityRefs,
@@ -15,5 +15,5 @@ record CreateReturnBody(
         List<String> scannableCodes,
         String shortId,
         String tenantOrderId,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}

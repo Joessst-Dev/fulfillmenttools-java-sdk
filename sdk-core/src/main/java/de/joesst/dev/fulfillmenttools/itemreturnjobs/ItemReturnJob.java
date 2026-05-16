@@ -2,11 +2,11 @@ package de.joesst.dev.fulfillmenttools.itemreturnjobs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.id.ItemReturnJobId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a fulfillmenttools item return job, which manages the physical return of
@@ -49,7 +49,7 @@ public record ItemReturnJob(
         String tenantOrderId,
         List<String> scannableCodes,
         List<ItemReturnJobLineItem> notReturnableLineItems,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -74,7 +74,7 @@ public record ItemReturnJob(
         private String tenantOrderId;
         private List<String> scannableCodes;
         private List<ItemReturnJobLineItem> notReturnableLineItems;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(ItemReturnJobId id) {
             this.id = id;
@@ -151,7 +151,7 @@ public record ItemReturnJob(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

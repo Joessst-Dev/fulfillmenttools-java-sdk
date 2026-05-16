@@ -38,6 +38,15 @@ class CustomAttributesTest {
         }
 
         @Test
+        void ofFactoryDelegatesToConstructor() {
+            // Given / When
+            CustomAttributes attrs = CustomAttributes.of(Map.of("k", "v"));
+
+            // Then
+            assertThat(attrs.attributes()).containsEntry("k", "v");
+        }
+
+        @Test
         void attributesMapIsUnmodifiable() {
             // Given
             CustomAttributes attrs = new CustomAttributes(Map.of("k", "v"));

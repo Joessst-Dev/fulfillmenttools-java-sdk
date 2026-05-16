@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.orders;
 import de.joesst.dev.fulfillmenttools.id.OrderId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
@@ -61,7 +62,7 @@ public record Order(
         List<Sticker> stickers,
         List<OrderStatusReason> statusReasons,
         OrderSource source,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         Boolean anonymized
 ) {
 
@@ -99,7 +100,7 @@ public record Order(
         private List<Sticker> stickers;
         private List<OrderStatusReason> statusReasons;
         private OrderSource source;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private Boolean anonymized;
 
         private Builder() {}
@@ -309,7 +310,7 @@ public record Order(
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

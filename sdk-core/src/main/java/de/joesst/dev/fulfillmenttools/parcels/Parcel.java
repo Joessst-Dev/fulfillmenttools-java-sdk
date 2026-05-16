@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.facilities.FacilityAddress;
 import de.joesst.dev.fulfillmenttools.id.CarrierId;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ParcelId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
 import java.time.Instant;
@@ -60,7 +61,7 @@ public record Parcel(
         String shortId,
         Boolean anonymized,
         Map<String, Object> carrierInformation,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -88,7 +89,7 @@ public record Parcel(
         private String shortId;
         private Boolean anonymized;
         private Map<String, Object> carrierInformation;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(ParcelId id) {
             this.id = id;
@@ -180,7 +181,7 @@ public record Parcel(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

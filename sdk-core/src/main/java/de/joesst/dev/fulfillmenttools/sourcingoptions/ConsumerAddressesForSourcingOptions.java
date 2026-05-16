@@ -2,9 +2,9 @@ package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A collection of consumer addresses for use in sourcing options requests.
@@ -17,7 +17,7 @@ public final class ConsumerAddressesForSourcingOptions {
     private final String consumerId;
     private final FacilityId facilityRef;
     private final TenantFacilityId tenantFacilityId;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private ConsumerAddressesForSourcingOptions(Builder builder) {
         this.addresses = builder.addresses;
@@ -55,7 +55,7 @@ public final class ConsumerAddressesForSourcingOptions {
      * Returns the free-form custom attributes.
      * @return the custom attributes map, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing instances.
@@ -75,7 +75,7 @@ public final class ConsumerAddressesForSourcingOptions {
         private String consumerId;
         private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the list of consumer addresses.
@@ -110,7 +110,7 @@ public final class ConsumerAddressesForSourcingOptions {
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds and returns a new instance.

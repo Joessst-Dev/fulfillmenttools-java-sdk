@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A line item supplied when creating or updating a return job, describing an article
@@ -32,7 +32,7 @@ public record ReturnJobLineItemForCreation(
         List<String> scannableCodes,
         List<String> serviceJobRefs,
         List<RecordableAttribute> recordableAttributes,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -46,7 +46,7 @@ public record ReturnJobLineItemForCreation(
         private List<String> scannableCodes;
         private List<String> serviceJobRefs;
         private List<RecordableAttribute> recordableAttributes;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -56,7 +56,7 @@ public record ReturnJobLineItemForCreation(
         public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
         public Builder serviceJobRefs(List<String> serviceJobRefs) { this.serviceJobRefs = serviceJobRefs; return this; }
         public Builder recordableAttributes(List<RecordableAttribute> recordableAttributes) { this.recordableAttributes = recordableAttributes; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public ReturnJobLineItemForCreation build() {
             return new ReturnJobLineItemForCreation(article, delivered, globalLineItemId, scannableCodes, serviceJobRefs, recordableAttributes, customAttributes);

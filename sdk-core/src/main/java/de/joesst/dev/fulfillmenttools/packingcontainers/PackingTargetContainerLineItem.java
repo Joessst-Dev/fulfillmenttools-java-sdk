@@ -2,7 +2,7 @@ package de.joesst.dev.fulfillmenttools.packingcontainers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * A single line item within a packing target container, tracking what has been packed.
@@ -17,7 +17,7 @@ public record PackingTargetContainerLineItem(
         String id,
         Integer quantity,
         String globalLineItemId,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -30,7 +30,7 @@ public record PackingTargetContainerLineItem(
         private String id;
         private Integer quantity;
         private String globalLineItemId;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(String id) {
             this.id = id;
@@ -47,7 +47,7 @@ public record PackingTargetContainerLineItem(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

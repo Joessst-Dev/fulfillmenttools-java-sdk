@@ -1,10 +1,10 @@
 package de.joesst.dev.fulfillmenttools.orders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -27,7 +27,7 @@ public final class OrderLineItemForCreation {
     private final List<Substitute> allowedSubstitutes;
     private final MeasurementValidation measurementValidation;
     private final List<TagReference> tags;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private OrderLineItemForCreation(Builder builder) {
         this.article = Objects.requireNonNull(builder.article, "article must not be null");
@@ -110,7 +110,7 @@ public final class OrderLineItemForCreation {
      *
      * @return the custom attributes map, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing an {@code OrderLineItemForCreation}.
@@ -136,7 +136,7 @@ public final class OrderLineItemForCreation {
         private List<Substitute> allowedSubstitutes;
         private MeasurementValidation measurementValidation;
         private List<TagReference> tags;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the article (required).
@@ -216,7 +216,7 @@ public final class OrderLineItemForCreation {
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link OrderLineItemForCreation}.

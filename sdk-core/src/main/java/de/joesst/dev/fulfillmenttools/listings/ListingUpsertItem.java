@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.listings;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
@@ -46,7 +47,7 @@ public final class ListingUpsertItem {
     private final ListingStockInformation stockinformation;
     private final Map<String, ListingStockPropertyDefinition> stockProperties;
     private final ListingAvailabilityTimeframe availabilityTimeframe;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private ListingUpsertItem(Builder builder) {
         this.facilityId = Objects.requireNonNull(builder.facilityId, "facilityId must not be null");
@@ -236,7 +237,7 @@ public final class ListingUpsertItem {
      * Returns the arbitrary caller-defined metadata.
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new {@link Builder} for constructing a {@link ListingUpsertItem}.
@@ -272,7 +273,7 @@ public final class ListingUpsertItem {
         private ListingStockInformation stockinformation;
         private Map<String, ListingStockPropertyDefinition> stockProperties;
         private ListingAvailabilityTimeframe availabilityTimeframe;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -449,7 +450,7 @@ public final class ListingUpsertItem {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link ListingUpsertItem}.

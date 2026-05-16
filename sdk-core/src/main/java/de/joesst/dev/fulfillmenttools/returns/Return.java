@@ -4,11 +4,11 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
 import de.joesst.dev.fulfillmenttools.id.ReturnId;
 import de.joesst.dev.fulfillmenttools.id.TenantOrderId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.orders.ConsumerAddress;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a return in the fulfillmenttools system.
@@ -46,7 +46,7 @@ public record Return(
         List<ReturnJobLineItem> notReturnableLineItems,
         List<ReturnItem> itemReturns,
         Boolean anonymized,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -69,7 +69,7 @@ public record Return(
         private List<ReturnJobLineItem> notReturnableLineItems;
         private List<ReturnItem> itemReturns;
         private Boolean anonymized;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -88,7 +88,7 @@ public record Return(
         public Builder notReturnableLineItems(List<ReturnJobLineItem> notReturnableLineItems) { this.notReturnableLineItems = notReturnableLineItems; return this; }
         public Builder itemReturns(List<ReturnItem> itemReturns) { this.itemReturns = itemReturns; return this; }
         public Builder anonymized(Boolean anonymized) { this.anonymized = anonymized; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public Return build() {
             return new Return(id, version, created, lastModified, status, shortId, processRef, tenantOrderId, originFacilityRefs, scannableCodes, consumerAddresses, returnableLineItems, notReturnableLineItems, itemReturns, anonymized, customAttributes);

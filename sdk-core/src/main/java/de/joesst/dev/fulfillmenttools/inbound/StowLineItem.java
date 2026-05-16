@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.inbound;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A single line item within a stow job, describing an article that needs to be taken
@@ -23,7 +23,7 @@ import java.util.Map;
 public record StowLineItem(
         String id,
         StowLineItemArticle article,
-        Map<String, Object> customAttributes,
+        CustomAttributes customAttributes,
         String heldStockRef,
         List<ExternalStockChangeReason> reasons,
         List<StowLineItemStowTo> stowTo,
@@ -37,7 +37,7 @@ public record StowLineItem(
     public static final class Builder {
         private String id;
         private StowLineItemArticle article;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
         private String heldStockRef;
         private List<ExternalStockChangeReason> reasons;
         private List<StowLineItemStowTo> stowTo;
@@ -47,7 +47,7 @@ public record StowLineItem(
 
         public Builder id(String id) { this.id = id; return this; }
         public Builder article(StowLineItemArticle article) { this.article = article; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
         public Builder heldStockRef(String heldStockRef) { this.heldStockRef = heldStockRef; return this; }
         public Builder reasons(List<ExternalStockChangeReason> reasons) { this.reasons = reasons; return this; }
         public Builder stowTo(List<StowLineItemStowTo> stowTo) { this.stowTo = stowTo; return this; }

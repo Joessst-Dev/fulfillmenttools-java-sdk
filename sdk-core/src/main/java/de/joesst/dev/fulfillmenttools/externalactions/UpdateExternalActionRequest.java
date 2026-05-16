@@ -1,4 +1,5 @@
 package de.joesst.dev.fulfillmenttools.externalactions;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public final class UpdateExternalActionRequest {
     private final Map<String, String> nameLocalized;
     private final List<String> groups;
     private final ExternalActionDefinition action;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private UpdateExternalActionRequest(Builder builder) {
         this.version       = Objects.requireNonNull(builder.version,       "version must not be null");
@@ -74,7 +75,7 @@ public final class UpdateExternalActionRequest {
      *
      * @return free-form custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new builder for constructing an {@link UpdateExternalActionRequest}.
@@ -95,7 +96,7 @@ public final class UpdateExternalActionRequest {
         private Map<String, String> nameLocalized;
         private List<String> groups;
         private ExternalActionDefinition action;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the optimistic-locking version of the entity to update (required).
@@ -147,7 +148,7 @@ public final class UpdateExternalActionRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.listings;
 
 import de.joesst.dev.fulfillmenttools.id.TagId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -33,7 +34,7 @@ public final class ListingSearchQuery {
     private final Map<String, Object> categoryRefs;
     private final Map<String, Object> availabilityTimeframe;
     private final Map<String, Object> tags;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
     private final List<ListingSearchQuery> and;
     private final List<ListingSearchQuery> or;
 
@@ -50,7 +51,7 @@ public final class ListingSearchQuery {
         this.categoryRefs = b.categoryRefs;
         this.availabilityTimeframe = b.availabilityTimeframe;
         this.tags = b.tags;
-        this.customAttributes = b.customAttributes;
+        this.customAttributes = b.customAttributesMap != null ? new CustomAttributes(b.customAttributesMap) : null;
         this.and = b.and;
         this.or = b.or;
     }
@@ -131,7 +132,7 @@ public final class ListingSearchQuery {
      * Returns the custom attributes filter.
      * @return the custom attributes filter, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns the AND-combined sub-queries.
@@ -166,7 +167,7 @@ public final class ListingSearchQuery {
         private Map<String, Object> categoryRefs;
         private Map<String, Object> availabilityTimeframe;
         private Map<String, Object> tags;
-        private Map<String, Object> customAttributes;
+        private Map<String, Object> customAttributesMap;
         private List<ListingSearchQuery> and;
         private List<ListingSearchQuery> or;
 
@@ -507,8 +508,8 @@ public final class ListingSearchQuery {
          * @return this builder
          */
         public Builder customAttribute(String key, Object filter) {
-            if (customAttributes == null) customAttributes = new LinkedHashMap<>();
-            customAttributes.put(key, filter);
+            if (customAttributesMap == null) customAttributesMap = new LinkedHashMap<>();
+            customAttributesMap.put(key, filter);
             return this;
         }
 

@@ -1,12 +1,12 @@
 package de.joesst.dev.fulfillmenttools.internal.handoverjobs;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 record UpdateHandoverJobBody(Integer version, List<ModifyHandoverjobAction> actions) {
 
-    record ModifyHandoverjobAction(String action, String status, Map<String, Object> customAttributes) {
-        ModifyHandoverjobAction(String status, Map<String, Object> customAttributes) {
+    record ModifyHandoverjobAction(String action, String status, CustomAttributes customAttributes) {
+        ModifyHandoverjobAction(String status, CustomAttributes customAttributes) {
             this("ModifyHandoverjob", status, customAttributes);
         }
     }

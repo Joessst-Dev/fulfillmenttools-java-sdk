@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.listings;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ListingId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 import de.joesst.dev.fulfillmenttools.orders.ArticleAttribute;
 
@@ -79,7 +80,7 @@ public record Listing(
         ListingStockInformation stockinformation,
         Map<String, ListingStockPropertyDefinition> stockProperties,
         ListingAvailabilityTimeframe availabilityTimeframe,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -116,7 +117,7 @@ public record Listing(
         private ListingStockInformation stockinformation;
         private Map<String, ListingStockPropertyDefinition> stockProperties;
         private ListingAvailabilityTimeframe availabilityTimeframe;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -149,7 +150,7 @@ public record Listing(
         public Builder stockinformation(ListingStockInformation stockinformation) { this.stockinformation = stockinformation; return this; }
         public Builder stockProperties(Map<String, ListingStockPropertyDefinition> stockProperties) { this.stockProperties = stockProperties; return this; }
         public Builder availabilityTimeframe(ListingAvailabilityTimeframe availabilityTimeframe) { this.availabilityTimeframe = availabilityTimeframe; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public Listing build() {
             return new Listing(id, version, created, lastModified, facilityId, tenantArticleId, status, title, titleLocalized, imageUrl, measurementUnitKey, outOfStockBehaviour, currency, price, weight, categoryRefs, scannableCodes, attributes, recordableAttributes, outOfStockBehaviourByContexts, partialStocks, tags, legal, outOfStockConfig, scanningRule, stockAvailableUntil, stockinformation, stockProperties, availabilityTimeframe, customAttributes);

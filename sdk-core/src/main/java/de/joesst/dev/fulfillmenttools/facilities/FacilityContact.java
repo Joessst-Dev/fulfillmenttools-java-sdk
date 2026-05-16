@@ -1,6 +1,6 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
-import java.util.Map;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**
  * Primary contact person for a facility.
@@ -10,7 +10,7 @@ import java.util.Map;
  * @param roleDescription job title or role description
  * @param customAttributes free-form custom attributes
  */
-public record FacilityContact(String firstName, String lastName, String roleDescription, Map<String, Object> customAttributes) {
+public record FacilityContact(String firstName, String lastName, String roleDescription, CustomAttributes customAttributes) {
 
     /**
      * Returns a builder for constructing a {@link FacilityContact}.
@@ -29,7 +29,7 @@ public record FacilityContact(String firstName, String lastName, String roleDesc
         private String firstName;
         private String lastName;
         private String roleDescription;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -64,7 +64,7 @@ public record FacilityContact(String firstName, String lastName, String roleDesc
          * @param customAttributes free-form custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

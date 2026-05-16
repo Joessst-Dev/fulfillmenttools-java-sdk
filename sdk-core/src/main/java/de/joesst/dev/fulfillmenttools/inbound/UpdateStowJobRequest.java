@@ -1,8 +1,8 @@
 package de.joesst.dev.fulfillmenttools.inbound;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -25,7 +25,7 @@ public final class UpdateStowJobRequest {
     private final Integer priority;
     private final Instant targetTime;
     private final List<AssignedUserInput> assignedUsers;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private UpdateStowJobRequest(Builder builder) {
         this.version = Objects.requireNonNull(builder.version, "version must not be null");
@@ -63,7 +63,7 @@ public final class UpdateStowJobRequest {
      * Returns the free-form custom attributes.
      * @return the custom attributes, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new {@link Builder} for constructing an {@code UpdateStowJobRequest}.
@@ -80,7 +80,7 @@ public final class UpdateStowJobRequest {
         private Integer priority;
         private Instant targetTime;
         private List<AssignedUserInput> assignedUsers;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /** Creates a new Builder instance. */
         public Builder() {}
@@ -118,7 +118,7 @@ public final class UpdateStowJobRequest {
          * @param customAttributes the custom attributes
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link UpdateStowJobRequest}.

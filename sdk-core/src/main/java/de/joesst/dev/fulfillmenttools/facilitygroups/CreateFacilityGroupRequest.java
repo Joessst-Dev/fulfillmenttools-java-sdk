@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilitygroups;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public final class CreateFacilityGroupRequest {
     private final String tenantFacilityGroupId;
     private final List<FacilityId> facilityRefs;
     private final Map<String, String> nameLocalized;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private CreateFacilityGroupRequest(Builder builder) {
         this.tenantFacilityGroupId = Objects.requireNonNull(builder.tenantFacilityGroupId, "tenantFacilityGroupId must not be null");
@@ -49,7 +50,7 @@ public final class CreateFacilityGroupRequest {
      *
      * @return the custom attributes map, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing CreateFacilityGroupRequest instances.
@@ -68,7 +69,7 @@ public final class CreateFacilityGroupRequest {
         private String tenantFacilityGroupId;
         private List<FacilityId> facilityRefs;
         private Map<String, String> nameLocalized;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the tenant-scoped identifier for this facility group.
@@ -100,7 +101,7 @@ public final class CreateFacilityGroupRequest {
          * @param customAttributes the custom attributes map
          * @return this builder instance
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds a new CreateFacilityGroupRequest with the configured values.

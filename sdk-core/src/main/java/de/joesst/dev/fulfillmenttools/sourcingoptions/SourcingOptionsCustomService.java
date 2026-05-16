@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.Map;
 
@@ -20,7 +21,7 @@ import java.util.Map;
 public record SourcingOptionsCustomService(
         String type,
         Map<String, Object> attributes,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -32,11 +33,11 @@ public record SourcingOptionsCustomService(
 
         private String type;
         private Map<String, Object> attributes;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder type(String type) { this.type = type; return this; }
         public Builder attributes(Map<String, Object> attributes) { this.attributes = attributes; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public SourcingOptionsCustomService build() {
             return new SourcingOptionsCustomService(type, attributes, customAttributes);

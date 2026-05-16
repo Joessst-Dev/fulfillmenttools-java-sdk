@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.returns;
 
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A line item on a return job, describing an article that is or is not returnable.
@@ -36,7 +36,7 @@ public record ReturnJobLineItem(
         List<String> scannableCodes,
         List<String> serviceJobRefs,
         List<RecordableAttribute> recordableAttributes,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -54,7 +54,7 @@ public record ReturnJobLineItem(
         private List<String> scannableCodes;
         private List<String> serviceJobRefs;
         private List<RecordableAttribute> recordableAttributes;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -68,7 +68,7 @@ public record ReturnJobLineItem(
         public Builder scannableCodes(List<String> scannableCodes) { this.scannableCodes = scannableCodes; return this; }
         public Builder serviceJobRefs(List<String> serviceJobRefs) { this.serviceJobRefs = serviceJobRefs; return this; }
         public Builder recordableAttributes(List<RecordableAttribute> recordableAttributes) { this.recordableAttributes = recordableAttributes; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public ReturnJobLineItem build() {
             return new ReturnJobLineItem(id, status, globalLineItemId, delivered, returned, returnable, article, scannableCodes, serviceJobRefs, recordableAttributes, customAttributes);

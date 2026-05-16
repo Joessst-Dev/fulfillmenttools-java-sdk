@@ -3,6 +3,7 @@ package de.joesst.dev.fulfillmenttools.reservations;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.ReservationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.Map;
@@ -37,7 +38,7 @@ public record Reservation(
         int quantity,
         ReservationHost host,
         RelatedRefs relatedRefs,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -56,7 +57,7 @@ public record Reservation(
         private int quantity;
         private ReservationHost host;
         private RelatedRefs relatedRefs;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(ReservationId id) {
             this.id = id;
@@ -103,7 +104,7 @@ public record Reservation(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

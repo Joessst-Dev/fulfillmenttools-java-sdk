@@ -1,9 +1,9 @@
 package de.joesst.dev.fulfillmenttools.sourcingoptions;
 
 import de.joesst.dev.fulfillmenttools.model.Coordinates;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -30,7 +30,7 @@ public final class ConsumerAddressForSourcingOptions {
     private final String addressType;
     private final Coordinates coordinates;
     private final List<PhoneNumber> phoneNumbers;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private ConsumerAddressForSourcingOptions(Builder builder) {
         this.country = Objects.requireNonNull(builder.country, "country must not be null");
@@ -152,7 +152,7 @@ public final class ConsumerAddressForSourcingOptions {
      * Returns the free-form custom attributes.
      * @return the custom attributes map, or {@code null} if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing instances.
@@ -168,7 +168,7 @@ public final class ConsumerAddressForSourcingOptions {
      * @param label an optional display label
      * @param customAttributes free-form custom attributes
      */
-    public record PhoneNumber(String value, String type, String label, Map<String, Object> customAttributes) {}
+    public record PhoneNumber(String value, String type, String label, CustomAttributes customAttributes) {}
 
     /**
      * Builder for {@link ConsumerAddressForSourcingOptions}.
@@ -194,7 +194,7 @@ public final class ConsumerAddressForSourcingOptions {
         private String addressType;
         private Coordinates coordinates;
         private List<PhoneNumber> phoneNumbers;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the country code (required).
@@ -313,7 +313,7 @@ public final class ConsumerAddressForSourcingOptions {
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds and returns a new instance.

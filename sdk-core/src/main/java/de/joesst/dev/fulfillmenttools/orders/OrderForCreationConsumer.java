@@ -2,9 +2,9 @@ package de.joesst.dev.fulfillmenttools.orders;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents consumer information for order creation.
@@ -16,7 +16,7 @@ public final class OrderForCreationConsumer {
     private final String email;
     private final FacilityId facilityRef;
     private final TenantFacilityId tenantFacilityId;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private OrderForCreationConsumer(Builder builder) {
         this.addresses = builder.addresses;
@@ -67,7 +67,7 @@ public final class OrderForCreationConsumer {
      *
      * @return the custom attributes map, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing an {@code OrderForCreationConsumer}.
@@ -89,7 +89,7 @@ public final class OrderForCreationConsumer {
         private String email;
         private FacilityId facilityRef;
         private TenantFacilityId tenantFacilityId;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the consumer's addresses.
@@ -137,7 +137,7 @@ public final class OrderForCreationConsumer {
          * @param customAttributes the custom attributes map
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@link OrderForCreationConsumer}.

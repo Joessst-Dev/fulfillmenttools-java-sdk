@@ -10,6 +10,7 @@ import de.joesst.dev.fulfillmenttools.internal.http.HttpTransport;
 import de.joesst.dev.fulfillmenttools.internal.http.ResponseHandler;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpRequest;
 import de.joesst.dev.fulfillmenttools.internal.http.SdkHttpResponse;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.model.Page;
 import de.joesst.dev.fulfillmenttools.stocks.CreateStockRequest;
 import de.joesst.dev.fulfillmenttools.stocks.StockItem;
@@ -261,7 +262,7 @@ public final class StocksClientImpl implements StocksClient {
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
             Map<String, String> properties,
-            Map<String, Object> customAttributes) {}
+            CustomAttributes customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpdateStockBody(
@@ -271,7 +272,7 @@ public final class StocksClientImpl implements StocksClient {
             String tenantStockId,
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
-            Map<String, Object> customAttributes) {}
+            CustomAttributes customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpsertActionBody(String name, List<Object> stocks) {}
@@ -290,7 +291,7 @@ public final class StocksClientImpl implements StocksClient {
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
             Map<String, String> properties,
-            Map<String, Object> customAttributes) {}
+            CustomAttributes customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpdateOperationBody(
@@ -301,7 +302,7 @@ public final class StocksClientImpl implements StocksClient {
             String tenantStockId,
             List<String> conditions,
             List<StorageLocationTraitConfigEntry> traitConfig,
-            Map<String, Object> customAttributes) {}
+            CustomAttributes customAttributes) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record UpsertActionResponse(VersionlessUpsertResult result) {}

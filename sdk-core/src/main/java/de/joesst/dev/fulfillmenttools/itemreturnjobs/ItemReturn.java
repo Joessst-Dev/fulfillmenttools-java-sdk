@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.itemreturnjobs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
@@ -31,7 +32,7 @@ public record ItemReturn(
         List<String> parcelRefs,
         List<String> scannableCodes,
         String tenantOrderId,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -50,7 +51,7 @@ public record ItemReturn(
         private List<String> parcelRefs;
         private List<String> scannableCodes;
         private String tenantOrderId;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(String id) {
             this.id = id;
@@ -97,7 +98,7 @@ public record ItemReturn(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

@@ -5,6 +5,7 @@ import de.joesst.dev.fulfillmenttools.id.StorageLocationId;
 import de.joesst.dev.fulfillmenttools.id.TenantArticleId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantStockId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.time.Instant;
@@ -37,7 +38,7 @@ public final class VersionlessStockCreate implements VersionlessStockOperation {
     private final List<String> conditions;
     private final List<StorageLocationTraitConfigEntry> traitConfig;
     private final Map<String, String> properties;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private VersionlessStockCreate(Builder builder) {
         this.tenantArticleId = Objects.requireNonNull(builder.tenantArticleId, "tenantArticleId must not be null");
@@ -91,7 +92,7 @@ public final class VersionlessStockCreate implements VersionlessStockOperation {
     public Map<String, String> properties() { return properties; }
 
     /** Returns the custom attributes, or {@code null} if not set. */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     public static Builder builder() { return new Builder(); }
 
@@ -108,7 +109,7 @@ public final class VersionlessStockCreate implements VersionlessStockOperation {
         private List<String> conditions;
         private List<StorageLocationTraitConfigEntry> traitConfig;
         private Map<String, String> properties;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -123,7 +124,7 @@ public final class VersionlessStockCreate implements VersionlessStockOperation {
         public Builder conditions(List<String> conditions) { this.conditions = conditions; return this; }
         public Builder traitConfig(List<StorageLocationTraitConfigEntry> traitConfig) { this.traitConfig = traitConfig; return this; }
         public Builder properties(Map<String, String> properties) { this.properties = properties; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public VersionlessStockCreate build() { return new VersionlessStockCreate(this); }
     }

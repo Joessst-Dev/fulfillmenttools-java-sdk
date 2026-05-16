@@ -1,7 +1,7 @@
 package de.joesst.dev.fulfillmenttools.routingplans;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The definition of a custom service applied to order line items.
@@ -21,7 +21,7 @@ public record CustomServiceDefinition(
         String tenantCustomServiceId,
         Boolean isBundled,
         List<CustomServiceAdditionalInformation> additionalInformation,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -33,7 +33,7 @@ public record CustomServiceDefinition(
         private String tenantCustomServiceId;
         private Boolean isBundled;
         private List<CustomServiceAdditionalInformation> additionalInformation;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -41,7 +41,7 @@ public record CustomServiceDefinition(
         public Builder tenantCustomServiceId(String tenantCustomServiceId) { this.tenantCustomServiceId = tenantCustomServiceId; return this; }
         public Builder isBundled(Boolean isBundled) { this.isBundled = isBundled; return this; }
         public Builder additionalInformation(List<CustomServiceAdditionalInformation> additionalInformation) { this.additionalInformation = additionalInformation; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public CustomServiceDefinition build() {
             return new CustomServiceDefinition(customServiceRef, tenantCustomServiceId, isBundled, additionalInformation, customAttributes);

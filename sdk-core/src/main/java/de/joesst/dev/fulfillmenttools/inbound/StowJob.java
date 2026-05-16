@@ -3,10 +3,10 @@ package de.joesst.dev.fulfillmenttools.inbound;
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.StowJobId;
 import de.joesst.dev.fulfillmenttools.model.AssignedUser;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a stow job in fulfillmenttools.
@@ -36,7 +36,7 @@ public record StowJob(
         Instant targetTime,
         List<StowLineItem> stowLineItems,
         List<AssignedUser> assignedUsers,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -55,7 +55,7 @@ public record StowJob(
         private Instant targetTime;
         private List<StowLineItem> stowLineItems;
         private List<AssignedUser> assignedUsers;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         private Builder() {}
 
@@ -70,7 +70,7 @@ public record StowJob(
         public Builder targetTime(Instant targetTime) { this.targetTime = targetTime; return this; }
         public Builder stowLineItems(List<StowLineItem> stowLineItems) { this.stowLineItems = stowLineItems; return this; }
         public Builder assignedUsers(List<AssignedUser> assignedUsers) { this.assignedUsers = assignedUsers; return this; }
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         public StowJob build() {
             return new StowJob(id, version, created, lastModified, facilityRef, status, shortId, priority, targetTime, stowLineItems, assignedUsers, customAttributes);

@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -21,6 +22,7 @@ import java.util.Map;
 public final class CustomAttributes {
 
     private final Map<String, Object> attributes;
+    @JsonIgnore
     private final ObjectMapper mapper;
 
     /** Used by {@link CustomAttributesDeserializer} to inject the active mapper. */
@@ -36,6 +38,16 @@ public final class CustomAttributes {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public CustomAttributes(Map<String, Object> attributes) {
         this(attributes, null);
+    }
+
+    /**
+     * Convenience factory — equivalent to {@code new CustomAttributes(attributes)}.
+     *
+     * @param attributes the raw attributes map; {@code null} is treated as an empty map
+     * @return a new {@code CustomAttributes} instance
+     */
+    public static CustomAttributes of(Map<String, Object> attributes) {
+        return new CustomAttributes(attributes);
     }
 
     /**

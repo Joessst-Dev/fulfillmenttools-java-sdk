@@ -1,6 +1,6 @@
 package de.joesst.dev.fulfillmenttools.packjobs;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -13,7 +13,7 @@ public final class UpdatePackJobRequest {
 
     private final Integer version;
     private final String status;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     /**
      * @param version The optimistic-locking version counter (required).
@@ -45,7 +45,7 @@ public final class UpdatePackJobRequest {
      *
      * @return the custom attributes map, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Returns a new builder for constructing {@code UpdatePackJobRequest} instances.
@@ -67,7 +67,7 @@ public final class UpdatePackJobRequest {
 
         private Integer version;
         private String status;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the optimistic-locking version counter (required).
@@ -91,7 +91,7 @@ public final class UpdatePackJobRequest {
          * @param customAttributes the custom attributes to set or update
          * @return this builder
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds the {@code UpdatePackJobRequest}.

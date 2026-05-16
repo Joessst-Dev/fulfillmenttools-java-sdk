@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.facilitygroups;
 
 import de.joesst.dev.fulfillmenttools.id.FacilityId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ public final class UpdateFacilityGroupRequest {
     private final String tenantFacilityGroupId;
     private final List<FacilityId> facilityRefs;
     private final Map<String, String> nameLocalized;
-    private final Map<String, Object> customAttributes;
+    private final CustomAttributes customAttributes;
 
     private UpdateFacilityGroupRequest(Builder builder) {
         this.version = Objects.requireNonNull(builder.version, "version must not be null");
@@ -58,7 +59,7 @@ public final class UpdateFacilityGroupRequest {
      *
      * @return the custom attributes map, or null if not set
      */
-    public Map<String, Object> customAttributes() { return customAttributes; }
+    public CustomAttributes customAttributes() { return customAttributes; }
 
     /**
      * Creates a new builder for constructing UpdateFacilityGroupRequest instances.
@@ -77,7 +78,7 @@ public final class UpdateFacilityGroupRequest {
         private String tenantFacilityGroupId;
         private List<FacilityId> facilityRefs;
         private Map<String, String> nameLocalized;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         /**
          * Sets the version of the facility group to update.
@@ -117,7 +118,7 @@ public final class UpdateFacilityGroupRequest {
          * @param customAttributes the custom attributes map
          * @return this builder instance
          */
-        public Builder customAttributes(Map<String, Object> customAttributes) { this.customAttributes = customAttributes; return this; }
+        public Builder customAttributes(CustomAttributes customAttributes) { this.customAttributes = customAttributes; return this; }
 
         /**
          * Builds a new UpdateFacilityGroupRequest with the configured values.

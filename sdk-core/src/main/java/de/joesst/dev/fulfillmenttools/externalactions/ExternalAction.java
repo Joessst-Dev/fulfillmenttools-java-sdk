@@ -2,6 +2,7 @@ package de.joesst.dev.fulfillmenttools.externalactions;
 
 import de.joesst.dev.fulfillmenttools.id.ExternalActionId;
 import de.joesst.dev.fulfillmenttools.id.ProcessId;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.time.Instant;
 import java.util.List;
@@ -38,7 +39,7 @@ public record ExternalAction(
         Map<String, String> nameLocalized,
         ExternalActionDefinition action,
         List<String> groups,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {
 
     public static Builder builder() {
@@ -57,7 +58,7 @@ public record ExternalAction(
         private Map<String, String> nameLocalized;
         private ExternalActionDefinition action;
         private List<String> groups;
-        private Map<String, Object> customAttributes;
+        private CustomAttributes customAttributes;
 
         public Builder id(ExternalActionId id) {
             this.id = id;
@@ -104,7 +105,7 @@ public record ExternalAction(
             return this;
         }
 
-        public Builder customAttributes(Map<String, Object> customAttributes) {
+        public Builder customAttributes(CustomAttributes customAttributes) {
             this.customAttributes = customAttributes;
             return this;
         }

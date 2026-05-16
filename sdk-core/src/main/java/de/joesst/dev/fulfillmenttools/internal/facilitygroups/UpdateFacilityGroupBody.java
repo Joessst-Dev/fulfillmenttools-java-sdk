@@ -1,6 +1,7 @@
 package de.joesst.dev.fulfillmenttools.internal.facilitygroups;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -11,5 +12,5 @@ record UpdateFacilityGroupBody(
         String tenantFacilityGroupId,
         List<String> facilityRefs,
         Map<String, String> nameLocalized,
-        Map<String, Object> customAttributes
+        CustomAttributes customAttributes
 ) {}
