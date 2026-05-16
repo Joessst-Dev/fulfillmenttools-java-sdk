@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.model.Coordinates;
 
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**

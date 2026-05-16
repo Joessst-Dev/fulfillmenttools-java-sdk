@@ -4,7 +4,6 @@ import de.joesst.dev.fulfillmenttools.id.FacilityId;
 import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**

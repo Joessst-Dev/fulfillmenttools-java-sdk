@@ -1,6 +1,5 @@
 package de.joesst.dev.fulfillmenttools.facilities;
 
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**

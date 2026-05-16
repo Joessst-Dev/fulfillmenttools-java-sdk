@@ -4,7 +4,6 @@ import de.joesst.dev.fulfillmenttools.model.Coordinates;
 import de.joesst.dev.fulfillmenttools.model.TimeZone;
 
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**

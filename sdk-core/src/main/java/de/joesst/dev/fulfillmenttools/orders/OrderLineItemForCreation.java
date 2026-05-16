@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 

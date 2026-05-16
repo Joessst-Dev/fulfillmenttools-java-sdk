@@ -7,7 +7,6 @@ import de.joesst.dev.fulfillmenttools.inbound.StowLineItemForCreation;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

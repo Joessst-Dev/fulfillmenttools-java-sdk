@@ -3,7 +3,6 @@ package de.joesst.dev.fulfillmenttools.returns;
 import de.joesst.dev.fulfillmenttools.pickjobs.RecordableAttribute;
 
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**

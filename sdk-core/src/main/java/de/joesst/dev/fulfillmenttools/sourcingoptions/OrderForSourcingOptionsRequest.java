@@ -10,7 +10,6 @@ import de.joesst.dev.fulfillmenttools.orders.Sticker;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 

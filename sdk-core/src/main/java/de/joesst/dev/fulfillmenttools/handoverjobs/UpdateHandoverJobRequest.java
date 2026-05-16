@@ -1,6 +1,5 @@
 package de.joesst.dev.fulfillmenttools.handoverjobs;
 
-import java.util.Map;
 import java.util.Objects;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 

@@ -11,7 +11,6 @@ import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**

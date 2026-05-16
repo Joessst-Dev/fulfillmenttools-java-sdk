@@ -10,7 +10,6 @@ import de.joesst.dev.fulfillmenttools.facilityconnections.NonDeliveryDaysPerCoun
 import de.joesst.dev.fulfillmenttools.facilityconnections.PackagingUnitsByContext;
 
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

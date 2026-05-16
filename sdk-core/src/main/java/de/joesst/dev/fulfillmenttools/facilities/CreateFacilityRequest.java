@@ -4,7 +4,6 @@ import de.joesst.dev.fulfillmenttools.id.TenantFacilityId;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 

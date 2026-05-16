@@ -2,7 +2,6 @@ package de.joesst.dev.fulfillmenttools.servicejobs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**

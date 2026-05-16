@@ -3,7 +3,6 @@ package de.joesst.dev.fulfillmenttools.inbound;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 /**

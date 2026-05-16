@@ -9,7 +9,6 @@ import de.joesst.dev.fulfillmenttools.facilities.ScanningRuleConfiguration;
 import de.joesst.dev.fulfillmenttools.model.TagReference;
 
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 record UpdateFacilityBody(

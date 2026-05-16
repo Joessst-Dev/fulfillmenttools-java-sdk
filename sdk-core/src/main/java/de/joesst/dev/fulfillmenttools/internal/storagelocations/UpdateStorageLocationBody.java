@@ -5,7 +5,6 @@ import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationSequenceIt
 import de.joesst.dev.fulfillmenttools.storagelocations.StorageLocationTraitConfigEntry;
 
 import java.util.List;
-import java.util.Map;
 import de.joesst.dev.fulfillmenttools.model.CustomAttributes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
