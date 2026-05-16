@@ -18,6 +18,17 @@ public record Money(
         Double decimalPlaces
 ) {
 
+    /**
+     * Returns the value scaled to its decimal representation.
+     * Divides {@code value} by 10^{@code decimalPlaces} (e.g. 499.0 with 2 decimal places → 4.99).
+     * Returns {@code value} unchanged when {@code decimalPlaces} is null or zero.
+     */
+    public Double toAmount() {
+        if (value == null) return null;
+        if (decimalPlaces == null || Double.compare(decimalPlaces, 0.0) == 0) return value;
+        return value / Math.pow(10, decimalPlaces);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
